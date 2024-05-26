@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+// import {useUser} from "@clerk/clerk-expo"
 const Home = () => {
   const colors = useTheme().colors;
 
