@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Colors from '../Components/Colors';
 // import {useUser} from "@clerk/clerk-expo"
 const Home = () => {
   const colors = useTheme().colors;
@@ -16,8 +17,8 @@ const styles = (colors) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: Colors.dark.colors.backGroundColor,
     },
   });
 

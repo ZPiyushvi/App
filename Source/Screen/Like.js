@@ -3,12 +3,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Colors from '../Components/Colors';
 
-const Cart = () => {
+const Likes = () => {
   const colors = useTheme().colors;
 
   return (
     <View style={styles(colors).container}>
-      <Text>Cart</Text>
+      <Text>Likes</Text>
     </View>
   );
 };
@@ -16,10 +16,10 @@ const Cart = () => {
 const styles = (colors) =>
   StyleSheet.create({
     container: {
-      flex: 1,
-      alignItems: 'center',
-      backgroundColor: Colors.dark.colors.backGroundColor,
-    },
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: Colors.dark.colors.backGroundColor,
+      },
   });
 
-export default Cart;
+export default Likes;

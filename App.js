@@ -15,7 +15,7 @@ export default function App() {
           <AppNavigator />
         </SignedIn>
         <SignedOut>
-          <Login />
+        <AppNavigator />
         </SignedOut>
         {/* </Provider> */}
       </ClerkProvider>
