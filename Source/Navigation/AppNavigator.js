@@ -17,7 +17,6 @@ export default function AppNavigator() {
                     options={{ headerShown: false }}
                     component={BottomNavigator}
                 />
-                <Stack.Screen name="Login" component={Login} />
             </Stack.Navigator>
         </NavigationContainer>
     );
