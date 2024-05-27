@@ -21,6 +21,7 @@ const dark = {
     fond_iconColor: "#E7E1E6",
 
     primaryColor: "#4A4356",
+    afterSelection: "#E8DDF7",
 
     primaryColor_Background0: "#29272d",
     primaryColor_Background1: "#3e3c42",

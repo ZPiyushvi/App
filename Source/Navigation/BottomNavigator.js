@@ -54,7 +54,7 @@ export default function BottomNavigator() {
           }
 
           return (
-            <Text style={{ color: focused ? "#E4DFE5" : "#CBC3CF", fontSize: 14, marginTop: -9, marginBottom: 9 }}>
+            <Text style={{ color: focused ? "#E4DFE5" : "#CBC3CF", fontSize: 12, marginTop: -9, marginBottom: 9 }}>
               {label}
             </Text>
           );
