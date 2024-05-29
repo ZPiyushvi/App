@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Components/Colors';
 import { images } from '../Data/images';
+import foodTypes from '../Data/foodtype';
 
 const Likes = () => {
   const { colors } = useTheme();
@@ -17,11 +18,12 @@ const Likes = () => {
 
   const fetchFeatures = async () => {
     try {
-      const response = await fetch('https://c0cb8f55-d104-4407-82ae-17ae6ceeabc6.mock.pstmn.io/users/products/123');
+      const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
       if (!response.ok) {
         console.log('Network response was not ok');
       }
       const data = await response.json();
+      console.log(data)
       setFeatures(data);
       if (!data) {
         console.log('Failed to parse response as JSON');
@@ -36,8 +38,8 @@ const Likes = () => {
       <View style={styles.popularFeaturesContainer}>
         <Image source={images[item.image]} style={styles.popularFeaturesImage} alt="Feature" />
         <View style={styles.popularFeaturesContent}>
-          <Text style={styles.NormalTxt}>{item.normalText}</Text>
-          <Text style={styles.BoldTxt}>{item.boldText}</Text>
+          <Text style={styles.NormalTxt}>{item.menutype}</Text>
+          <Text style={styles.BoldTxt}>{item.name}</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonTxt}>Buy now</Text>
           </TouchableOpacity>
@@ -69,6 +71,7 @@ const Likes = () => {
             ref={flatListRef}
             data={features}
             horizontal
+            showsHorizontalScrollIndicator={false}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
@@ -89,18 +92,41 @@ const Likes = () => {
             />
           ))}
         </View>
-      </View>
-      <View>
-        
+        <ScrollView horizontal>
+          <View style={styles.foodcontainer}>
+            {foodTypes.map((foodType, index) => (
+              <View key={index} style={styles.foodTypeContainer}>
+                <Image source={foodType.iconName} style={styles.foodTypeImage} />
+                <Text>{foodType.name}</Text>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  foodcontainer: {
+    marginTop: 30,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: Dimensions.get('window').width * 0.05,
+    columnGap: Dimensions.get('window').width * 0.05,
+    width: (Dimensions.get('window').width * 0.2 + Dimensions.get('window').width * 0.05) * Math.ceil(foodTypes.length / 2), // Adjust the width based on the number of items
+  },
+  foodTypeContainer: {
+    alignItems: 'center',
+  },
+  foodTypeImage: {
+    width: Dimensions.get('window').width * 0.2,
+    height: Dimensions.get('window').width * 0.2,
+    borderRadius: 20,
+  },
   main: {
     flex: 1,
-    backgroundColor: "#29272D"
+    backgroundColor: "#29272D" //
   },
   container: {
     flex: 1,
@@ -109,7 +135,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     backgroundColor: "#4A4356",
-    height: "35%",
+    height: "32%",
     width: "100%",
     // bottom: 0,
     // position: 'relative',
@@ -119,8 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   searchContainer: {
-    padding: Dimensions.get('window').width * 0.1,
-    marginVertical: 20,
+    paddingHorizontal: Dimensions.get('window').width * 0.1,
+    paddingTop: Dimensions.get('window').height * 0.08,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', // Center items vertically
@@ -140,14 +166,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.colors.primaryColor_Background2,
   },
   flatListContainer: {
-    height: 145, // Set a fixed height for the FlatList container
+    marginTop: 30,
+    // height: 145, // Set a fixed height for the FlatList container
   },
   popularFeatures: {
     marginHorizontal: Dimensions.get('window').width * 0.1,
     // marginRight: 25,
     width: Dimensions.get('window').width * 0.8,
     padding: 12,
-    marginVertical: 20,
     height: 135, // Ensure minHeight for better visibility
     backgroundColor: "#29272D",
     borderTopRightRadius: 16,
@@ -161,21 +187,24 @@ const styles = StyleSheet.create({
     width: '58%', // Adjust width for responsiveness
   },
   popularFeaturesContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center', // Center items vertically
     height: '100%'
   },
   popularFeaturesContent: {
     padding: 7,
+    flex: 1, // Ensure content takes available space
   },
   scrollViwerContainer: {
     padding: 15,
     gap: 3,
     flexDirection: 'row',
-    marginTop: 0,
+    // marginTop: 0,
     borderBottomRightRadius: 13,
     borderBottomLeftRadius: 13,
     // height: 30,
+    flexWrap: 'wrap',
     justifyContent: 'center',
     backgroundColor: "#29272D",
   },
@@ -192,8 +221,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '40%',
-    width: '70%',
+    // height:
+    width: 70,
+    paddingVertical: 8, // Adjust padding instead of fixed height
+    // paddingHorizontal: 10, // Add padding for horizontal space
     backgroundColor: Colors.dark.colors.primaryColor_Background5,
   },
   buttonTxt: {
@@ -202,6 +233,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   NormalTxt: {
+    color: "#CBC3CE",
     fontWeight: '500',
     fontSize: 14,
   },
@@ -209,6 +241,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 8,
     fontSize: 16,
+    color: "#E8DDF7",
   },
 });
 
