@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Components/Colors';
 import { images } from '../Data/images';
 import foodTypes from '../Data/foodtype';
+import { mockcampus_home_popular } from '../Data/mockcampus_home_popular';
+
 
 const Likes = () => {
   const { colors } = useTheme();
@@ -17,21 +19,88 @@ const Likes = () => {
   }, []);
 
   const fetchFeatures = async () => {
-    try {
-      const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-      if (!response.ok) {
-        console.log('Network response was not ok');
-      }
-      const data = await response.json();
-      console.log(data)
-      setFeatures(data);
-      if (!data) {
-        console.log('Failed to parse response as JSON');
-      }
-    } catch (error) {
-      console.error("Error loading features:", error);
-    }
+    setFeatures(mockcampus_home_popular)
+    // try {
+    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
+    //   if (!response.ok) {
+    //     console.log('Network response was not ok');
+    //   }
+    //   const data = await response.json();
+    //   console.log(data)
+    //   setFeatures(data);
+    //   if (!data) {
+    //     console.log('Failed to parse response as JSON');
+    //   }
+    // } catch (error) {
+    //   console.error("Error loading features:", error);
+    // }
   };
+
+  const makeFourCrossTwoMatrix = () => {
+    const matrix = [];
+    for (let row = 1; row <= 2; row++) {
+      for (let col = 1; col <= 4; col++) {
+        if (col === 1 || col === 3) {
+          matrix.push(
+            <View key={`${row}-${col}`} style={styles.foodTypeContainer}>
+              <Text>{item.name}</Text>
+            </View>
+          );
+        } else {
+          matrix.push(
+            <View key={`${row}-${col}`} style={styles.foodTypeContainer}>
+              <Text>responsiveness</Text>
+            </View>
+          );
+        }
+      }
+    }
+    return matrix;
+  };
+
+  const renderImages = ({ item }) => (
+    <View style={styles.scrollView}>
+      <View style={styles.foodContainer}>
+        <View style={styles.foodTypeContainer}>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <Text>{item.name}</Text>
+        </View>
+        
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <Text>{item.name}</Text>
+      </View>
+
+
+      <View style={styles.foodContainer}>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodContainer}>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodContainer}>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodTypeContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   const renderItem = ({ item, index }) => (
     <View style={[styles.popularFeatures]}>
@@ -92,31 +161,63 @@ const Likes = () => {
             />
           ))}
         </View>
-        <ScrollView horizontal>
-          <View style={styles.foodcontainer}>
-            {foodTypes.map((foodType, index) => (
-              <View key={index} style={styles.foodTypeContainer}>
-                <Image source={foodType.iconName} style={styles.foodTypeImage} />
-                <Text>{foodType.name}</Text>
-              </View>
-            ))}
+
+        <FlatList
+          ref={flatListRef}
+          data={foodTypes}
+          horizontal
+          showsHorizontalScrollIndicator={true}
+          renderItem={renderImages}
+          snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
+          decelerationRate="normal" // Adjust the snapping speed
+          pagingEnabled
+          viewabilityConfig={viewabilityConfig}
+        />
+
+
+        <View
+          style={styles.scrollContainer}
+        // showsVerticalScrollIndicator={true} // Enable vertical scroll indicator
+        >
+          <View style={styles.content}>
+            <Text>Hello</Text>
           </View>
-        </ScrollView>
+        </View>
+
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  foodcontainer: {
-    marginTop: 30,
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: "#4A4356", // Colors.dark.colors.backGroundColor, // Static background color
+  },
+  content: {
+    minHeight: Dimensions.get('window').height * 3, // Ensure content exceeds container height for scrolling
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollView: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: Dimensions.get('window').width * 0.05,
-    columnGap: Dimensions.get('window').width * 0.05,
-    width: (Dimensions.get('window').width * 0.2 + Dimensions.get('window').width * 0.05) * Math.ceil(foodTypes.length / 2), // Adjust the width based on the number of items
+    marginTop: Dimensions.get('window').height * 0.045,
+    paddingHorizontal: Dimensions.get('window').width * 0.1,
+    gap: Dimensions.get('window').width * 0.04,
+  },
+  foodcontainer: {
+    // width: Dimensions.get('window').width * 0.8,
+    // marginTop: 30,
+    // flexWrap: 'wrap',
+    // width: (Dimensions.get('window').width * 0.2 + Dimensions.get('window').width * 0.05) * Math.ceil(foodTypes.length / 2), // Adjust the width based on the number of items
   },
   foodTypeContainer: {
+    borderRadius: 15,
+    marginBottom: Dimensions.get('window').width * 0.04,
+    justifyContent: 'center',
+    width: Dimensions.get('window').width * 0.17,
+    height: Dimensions.get('window').width * 0.17,
+    backgroundColor: "#4A4356",
     alignItems: 'center',
   },
   foodTypeImage: {
@@ -126,7 +227,7 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
-    backgroundColor: "#29272D" //
+    backgroundColor: "#29272D" // 
   },
   container: {
     flex: 1,
@@ -134,7 +235,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   subContainer: {
-    backgroundColor: "#4A4356",
+    backgroundColor: "#E8DDF7", //"#4A4356",
     height: "32%",
     width: "100%",
     // bottom: 0,
@@ -166,7 +267,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.dark.colors.primaryColor_Background2,
   },
   flatListContainer: {
-    marginTop: 30,
+    marginTop: Dimensions.get('window').height * 0.045,
     // height: 145, // Set a fixed height for the FlatList container
   },
   popularFeatures: {
