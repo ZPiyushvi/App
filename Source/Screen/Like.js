@@ -2,17 +2,37 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '../Components/Colors';
+
 import { images } from '../Data/images';
 import foodTypes from '../Data/foodtype';
 import { mockcampus_home_popular } from '../Data/mockcampus_home_popular';
 
+import Colors from '../Components/Colors';
+import ScrollViewer from '../Components/scrollViwer';
+
 
 const Likes = () => {
+  const [verticalScrollHeight, setVerticalScrollHeight] = useState(0);
   const { colors } = useTheme();
   const [features, setFeatures] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
+
+  const bufferForsearchBodyContainer = Dimensions.get('window').height * 0.52;
+  const bufferForpopularFeatureBodyContainer = Dimensions.get('window').height * 0.30;
+  const bufferForscrollViwerContainer = Dimensions.get('window').height * 0.27;
+  const bufferForfoodItemCollectionContainer = Dimensions.get('window').height * 0.03;
+
+  let index = 0;
+
+  const createZIndexForVerticalScroll = (buffer) => {
+    index++;
+    console.log("done " + index);
+    return {
+      // backgroundColor: verticalScrollHeight < buffer ? 'white' : 'black',
+      zIndex: verticalScrollHeight < (buffer + Dimensions.get('window').height * 0.01) ? 1 : 0,
+    };
+  };
 
   useEffect(() => {
     fetchFeatures();
@@ -58,271 +78,264 @@ const Likes = () => {
     return matrix;
   };
 
-  const renderImages = ({ item }) => (
-    <View style={styles.scrollView}>
-      <View style={styles.foodContainer}>
-        <View style={styles.foodTypeContainer}>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <Text>{item.name}</Text>
-        </View>
-        
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <Text>{item.name}</Text>
-      </View>
+  const renderPopularFeatureContainer = ({ item, index }) => (
+    <View style={styles.popularFeatureBodyContainer}>
+      <View style={styles.popularFeatureSplitContainer}>
 
-
-      <View style={styles.foodContainer}>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodContainer}>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodContainer}>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodTypeContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  const renderItem = ({ item, index }) => (
-    <View style={[styles.popularFeatures]}>
-      <View style={styles.popularFeaturesContainer}>
-        <Image source={images[item.image]} style={styles.popularFeaturesImage} alt="Feature" />
+        <Image source={images[item.image]} style={styles.popularFeatureImage} alt="Feature" />
         <View style={styles.popularFeaturesContent}>
+
           <Text style={styles.NormalTxt}>{item.menutype}</Text>
           <Text style={styles.BoldTxt}>{item.name}</Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonTxt}>Buy now</Text>
           </TouchableOpacity>
+
         </View>
+
       </View>
     </View>
   );
 
-  const onViewableItemsChanged = useRef(({ viewableItems }) => {
+  // Checks ------------------- can me moved to common or not
+  const onViewablePopularFeatureChanged = useRef(({ viewableItems }) => {
     if (viewableItems.length > 0) {
       setCurrentIndex(viewableItems[0].index);
     }
   }).current;
+
+  const renderFoodItemContainer = ({ item }) => (
+    <View style={styles.foodItemCollectionContainer}>
+      <View style={styles.foodItemBodyContainer}>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodItemBodyContainer}>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodItemBodyContainer}>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodItemBodyContainer}>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 50
   };
 
   return (
-    <View style={styles.main}>
-      <View style={styles.subContainer} />
-      <View style={styles.container}>
-        <View style={styles.searchContainer}>
+    <View style={styles.bodyContainer}>
+      <View style={styles.bodyBGContainer} />
+      <View style={styles.staticContainer}>
+
+        <View style={[createZIndexForVerticalScroll(bufferForsearchBodyContainer), styles.searchBodyContainer]}>
           <TextInput placeholder='Search' style={styles.searchInputTxt}></TextInput>
           <Ionicons name="search" size={24} style={styles.searchIcon} />
         </View>
-        <View style={styles.flatListContainer}>
+
+        <View style={[createZIndexForVerticalScroll(bufferForpopularFeatureBodyContainer)]}>
           <FlatList
             ref={flatListRef}
             data={features}
             horizontal
             showsHorizontalScrollIndicator={false}
-            renderItem={renderItem}
+            renderItem={renderPopularFeatureContainer}
             keyExtractor={(item, index) => index.toString()}
             snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
             decelerationRate="normal" // Adjust the snapping speed
             pagingEnabled
-            onViewableItemsChanged={onViewableItemsChanged}
+            onViewableItemsChanged={onViewablePopularFeatureChanged}
             viewabilityConfig={viewabilityConfig}
           />
         </View>
-        <View style={styles.scrollViwerContainer}>
-          {features.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.scrollViwerIdentifier,
-                currentIndex === index && styles.scrollViwerIdentifierActive
-              ]}
-            />
-          ))}
+        <View style={[createZIndexForVerticalScroll(bufferForscrollViwerContainer), styles.scrollViwerContainer]}>
+          <ScrollViewer data={features} currentIndex={currentIndex} />
         </View>
 
-        <FlatList
-          ref={flatListRef}
-          data={foodTypes}
-          horizontal
-          showsHorizontalScrollIndicator={true}
-          renderItem={renderImages}
-          snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
-          decelerationRate="normal" // Adjust the snapping speed
-          pagingEnabled
-          viewabilityConfig={viewabilityConfig}
-        />
+        <View style={[createZIndexForVerticalScroll(bufferForfoodItemCollectionContainer)]}>
+          <FlatList
+            ref={flatListRef}
+            data={foodTypes}
+            horizontal
+            showsHorizontalScrollIndicator={true}
+            renderItem={renderFoodItemContainer}
+            snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
+            decelerationRate="normal" // Adjust the snapping speed
+            pagingEnabled
+            viewabilityConfig={viewabilityConfig}
+          />
+        </View>
 
+      </View>
 
-        <View
-          style={styles.scrollContainer}
-        // showsVerticalScrollIndicator={true} // Enable vertical scroll indicator
-        >
+      <ScrollView
+        onScroll={e => setVerticalScrollHeight(e.nativeEvent.contentOffset.y)}
+        scrollEventThrottle={6}
+        keyboardDismissMode='on-drag'
+      >
+        <View style={styles.verticalScrollContainer}>
           <View style={styles.content}>
             <Text>Hello</Text>
           </View>
         </View>
+      </ScrollView>
 
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollContainer: {
+
+  bodyContainer: {
     flex: 1,
-    backgroundColor: "#4A4356", // Colors.dark.colors.backGroundColor, // Static background color
+    backgroundColor: "#4A4356" // bg color
   },
-  content: {
-    minHeight: Dimensions.get('window').height * 3, // Ensure content exceeds container height for scrolling
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollView: {
-    flexDirection: 'row',
-    marginTop: Dimensions.get('window').height * 0.045,
-    paddingHorizontal: Dimensions.get('window').width * 0.1,
-    gap: Dimensions.get('window').width * 0.04,
-  },
-  foodcontainer: {
-    // width: Dimensions.get('window').width * 0.8,
-    // marginTop: 30,
-    // flexWrap: 'wrap',
-    // width: (Dimensions.get('window').width * 0.2 + Dimensions.get('window').width * 0.05) * Math.ceil(foodTypes.length / 2), // Adjust the width based on the number of items
-  },
-  foodTypeContainer: {
-    borderRadius: 15,
-    marginBottom: Dimensions.get('window').width * 0.04,
-    justifyContent: 'center',
-    width: Dimensions.get('window').width * 0.17,
-    height: Dimensions.get('window').width * 0.17,
-    backgroundColor: "#4A4356",
-    alignItems: 'center',
-  },
-  foodTypeImage: {
-    width: Dimensions.get('window').width * 0.2,
-    height: Dimensions.get('window').width * 0.2,
-    borderRadius: 20,
-  },
-  main: {
-    flex: 1,
-    backgroundColor: "#29272D" // 
-  },
-  container: {
-    flex: 1,
-    // padding: Dimensions.get('window').width * 0.1, // Responsive padding
+  bodyBGContainer: {
     position: 'absolute',
-  },
-  subContainer: {
-    backgroundColor: "#E8DDF7", //"#4A4356",
-    height: "32%",
+    height: Dimensions.get('window').height * 0.3,
     width: "100%",
-    // bottom: 0,
-    // position: 'relative',
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#E8DDF7", // bg color
   },
-  searchContainer: {
-    paddingHorizontal: Dimensions.get('window').width * 0.1,
-    paddingTop: Dimensions.get('window').height * 0.08,
+
+  staticContainer: {
+    flex: 1,
+    position: 'absolute',
+  },
+
+  searchBodyContainer: {
+    zIndex: 1,
+    paddingHorizontal: Dimensions.get('window').width * 0.1, // should be applyed to all fixed items
+    marginTop: Dimensions.get('window').height * 0.08, // should be applyed to all fixed items
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Center items vertically
+    height: Dimensions.get('window').height * 0.07,
   },
   searchInputTxt: {
     width: '73%',
-    fontSize: 14,
-    padding: 14,
+    height: '100%',
+    // padding: 14,
+    paddingLeft: 14,
+    textAlignVertical: 'center',
+    fontSize: 16, // font size
+    backgroundColor: Colors.dark.colors.primaryColor_Background2, // bg color
     borderRadius: 14,
-    backgroundColor: Colors.dark.colors.primaryColor_Background2,
   },
   searchIcon: {
+    height: '100%',
     width: '20%',
-    padding: 14,
+    // padding: 14,
     textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: Colors.dark.colors.primaryColor_Background2, // bg color
     borderRadius: 14,
-    backgroundColor: Colors.dark.colors.primaryColor_Background2,
   },
-  flatListContainer: {
-    marginTop: Dimensions.get('window').height * 0.045,
-    // height: 145, // Set a fixed height for the FlatList container
-  },
-  popularFeatures: {
-    marginHorizontal: Dimensions.get('window').width * 0.1,
-    // marginRight: 25,
+
+  popularFeatureBodyContainer: {
+    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
+    marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
+    height: Dimensions.get('window').height * 0.18,
     width: Dimensions.get('window').width * 0.8,
     padding: 12,
-    height: 135, // Ensure minHeight for better visibility
-    backgroundColor: "#29272D",
+    backgroundColor: "#4A4356", // bg color
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
   },
-  popularFeaturesImage: {
-    borderRadius: 14,
-    borderWidth: 2,
-    borderColor: 'black',
+  popularFeatureSplitContainer: {
+    flex: 1,
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  popularFeatureImage: {
     height: '100%',
     width: '58%', // Adjust width for responsiveness
-  },
-  popularFeaturesContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center', // Center items vertically
-    height: '100%'
+    borderWidth: 2,
+    borderColor: 'black', // border color
+    borderRadius: 14,
   },
   popularFeaturesContent: {
+    flex: 1,
     padding: 7,
-    flex: 1, // Ensure content takes available space
   },
-  scrollViwerContainer: {
-    padding: 15,
+
+  scrollViwerContainer: { //Checks ----- not in center 
+    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
+    height: Dimensions.get('window').height * 0.03,
     gap: 3,
+    flexWrap: 'wrap',
     flexDirection: 'row',
-    // marginTop: 0,
+    justifyContent: 'center',
+    backgroundColor: "#4A4356", // bg color
     borderBottomRightRadius: 13,
     borderBottomLeftRadius: 13,
-    // height: 30,
-    flexWrap: 'wrap',
+  },
+
+  foodItemCollectionContainer: {
+    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
+    marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
+    height: Dimensions.get('window').height * 0.20,
+    width: Dimensions.get('window').width * 0.8,
+    flexDirection: 'row',
+    gap: Dimensions.get('window').width * 0.04,
+    // justifyContent: 'space-between', // can be also appled
+  },
+  foodItemBodyContainer: {
+    rowGap: Dimensions.get('window').width * 0.04,
+    // justifyContent: 'space-between', // can be also appled
+  },
+  foodItemContainer: {
+    width: Dimensions.get('window').width * 0.169,
+    height: Dimensions.get('window').width * 0.169,
+    backgroundColor: "#29272D", // bg color
     justifyContent: 'center',
-    backgroundColor: "#29272D",
+    alignItems: 'center',
+    borderRadius: 15,
   },
-  scrollViwerIdentifier: {
-    borderRadius: 99,
-    height: 6,
-    width: 6,
-    backgroundColor: Colors.dark.colors.primaryColor_Background1,
+
+  verticalScrollContainer: {
+    marginTop: Dimensions.get('window').height * 0.67,
+    minHeight: Dimensions.get('window').height * 3,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    flex: 1,
+    backgroundColor: Colors.dark.colors.backGroundColor, // bg color
   },
-  scrollViwerIdentifierActive: {
-    backgroundColor: Colors.dark.colors.primaryColor_Background10, // Change color for active indicator
+  content: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+
+
+
+  // Common Styling
   button: {
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    // height:
     width: 70,
     paddingVertical: 8, // Adjust padding instead of fixed height
     // paddingHorizontal: 10, // Add padding for horizontal space
