@@ -23,11 +23,7 @@ const Likes = () => {
   const bufferForscrollViwerContainer = Dimensions.get('window').height * 0.27;
   const bufferForfoodItemCollectionContainer = Dimensions.get('window').height * 0.03;
 
-  let index = 0;
-
   const createZIndexForVerticalScroll = (buffer) => {
-    index++;
-    console.log("done " + index);
     return {
       // backgroundColor: verticalScrollHeight < buffer ? 'white' : 'black',
       zIndex: verticalScrollHeight < (buffer + Dimensions.get('window').height * 0.01) ? 1 : 0,
@@ -108,34 +104,34 @@ const Likes = () => {
     <View style={styles.foodItemCollectionContainer}>
       <View style={styles.foodItemBodyContainer}>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodItemBodyContainer}>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.foodItemBodyContainer}>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.foodItemBodyContainer}>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.foodItemContainer}>
-          <Text>{item.name}</Text>
+          <Text style={styles.txt}>{item.name}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.foodItemBodyContainer}>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text style={styles.txt}>{item.name}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.foodItemContainer}>
+          <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -207,10 +203,13 @@ const Likes = () => {
 };
 
 const styles = StyleSheet.create({
+  txt: {
+    color:'#F7F6BB'
+  },
 
   bodyContainer: {
     flex: 1,
-    backgroundColor: "#4A4356" // bg color
+    backgroundColor: "#F8DE22" // bg color
   },
   bodyBGContainer: {
     position: 'absolute',
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: "#E8DDF7", // bg color
+    backgroundColor: "#C70039", // bg color
   },
 
   staticContainer: {
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     textAlignVertical: 'center',
     fontSize: 16, // font size
-    backgroundColor: Colors.dark.colors.primaryColor_Background2, // bg color
+    backgroundColor: '#e2c625', // bg color
     borderRadius: 14,
   },
   searchIcon: {
@@ -250,7 +249,7 @@ const styles = StyleSheet.create({
     // padding: 14,
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: Colors.dark.colors.primaryColor_Background2, // bg color
+    backgroundColor: '#e2c625', // bg color
     borderRadius: 14,
   },
 
@@ -260,7 +259,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height * 0.18,
     width: Dimensions.get('window').width * 0.8,
     padding: 12,
-    backgroundColor: "#4A4356", // bg color
+    backgroundColor: "#F8DE22", // bg color
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
   },
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '58%', // Adjust width for responsiveness
     borderWidth: 2,
-    borderColor: 'black', // border color
+    borderColor: '#114232', // border color
     borderRadius: 14,
   },
   popularFeaturesContent: {
@@ -282,14 +281,14 @@ const styles = StyleSheet.create({
     padding: 7,
   },
 
-  scrollViwerContainer: { //Checks ----- not in center 
+  scrollViwerContainer: {
     marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
     height: Dimensions.get('window').height * 0.03,
     gap: 3,
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: "#4A4356", // bg color
+    backgroundColor: "#F8DE22", // bg color
     borderBottomRightRadius: 13,
     borderBottomLeftRadius: 13,
   },
@@ -310,7 +309,7 @@ const styles = StyleSheet.create({
   foodItemContainer: {
     width: Dimensions.get('window').width * 0.169,
     height: Dimensions.get('window').width * 0.169,
-    backgroundColor: "#29272D", // bg color
+    backgroundColor: "#00224D", // bg color
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 15,
@@ -322,9 +321,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     flex: 1,
-    backgroundColor: Colors.dark.colors.backGroundColor, // bg color
+    backgroundColor: '#00224D', // bg color
   },
   content: {
+    color: '#006769',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -339,15 +339,16 @@ const styles = StyleSheet.create({
     width: 70,
     paddingVertical: 8, // Adjust padding instead of fixed height
     // paddingHorizontal: 10, // Add padding for horizontal space
-    backgroundColor: Colors.dark.colors.primaryColor_Background5,
+    backgroundColor: '#C70039',
   },
   buttonTxt: {
+    color: '#F7F6BB',
     textAlign: 'center',
     fontSize: 14,
     fontWeight: '500',
   },
   NormalTxt: {
-    color: "#CBC3CE",
+    color: "#FCDC2A",
     fontWeight: '500',
     fontSize: 14,
   },
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 8,
     fontSize: 16,
-    color: "#E8DDF7",
+    color: "#F7F6BB",
   },
 });
 
