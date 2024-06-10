@@ -1,135 +1,39 @@
+import { BANNER_H } from "./../Constants/Constants"
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { images } from '../Data/images';
-import foodTypes from '../Data/foodtype';
-import { mockcampus_home_popular } from '../Data/mockcampus_home_popular';
+import SlideContainor from "../Components/SlideContainor";
+import { mockCampusShops } from "../Data/mockCampusShops";
+import { mockCampusMenu } from "../Data/mockCampusMenu";
+import PopularMenuContainor from "../Components/PopularMenuContainor";
 
-import Colors from '../Components/Colors';
-import ScrollViewer from '../Components/scrollViwer';
+const Cart = () => {
+  const scrollA = useRef(new Animated.Value(0)).current;
 
-
-const Likes = () => {
   const [verticalScrollHeight, setVerticalScrollHeight] = useState(0);
   const { colors } = useTheme();
-  const [features, setFeatures] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [campusShops, setcampusShops] = useState([]);
+  const [campusMenu, setcampusMenu] = useState([]);
   const flatListRef = useRef(null);
-
-  const bufferForsearchBodyContainer = Dimensions.get('window').height * 0.52;
-  const bufferForpopularFeatureBodyContainer = Dimensions.get('window').height * 0.30;
-  const bufferForscrollViwerContainer = Dimensions.get('window').height * 0.27;
-  const bufferForfoodItemCollectionContainer = Dimensions.get('window').height * 0.03;
-
-  const createZIndexForVerticalScroll = (buffer) => {
-    return {
-      // backgroundColor: verticalScrollHeight < buffer ? 'white' : 'black',
-      zIndex: verticalScrollHeight < (buffer + Dimensions.get('window').height * 0.01) ? 1 : 0,
-    };
-  };
+  const flatListMenuRef = useRef(null);
 
   useEffect(() => {
     fetchFeatures();
   }, []);
 
   const fetchFeatures = async () => {
-    setFeatures(mockcampus_home_popular)
-    // try {
-    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-    //   if (!response.ok) {
-    //     console.log('Network response was not ok');
-    //   }
-    //   const data = await response.json();
-    //   console.log(data)
-    //   setFeatures(data);
-    //   if (!data) {
-    //     console.log('Failed to parse response as JSON');
-    //   }
-    // } catch (error) {
-    //   console.error("Error loading features:", error);
-    // }
+    setcampusShops(mockCampusShops);
+    setcampusMenu(mockCampusMenu);
   };
 
-  const makeFourCrossTwoMatrix = () => {
-    const matrix = [];
-    for (let row = 1; row <= 2; row++) {
-      for (let col = 1; col <= 4; col++) {
-        if (col === 1 || col === 3) {
-          matrix.push(
-            <View key={`${row}-${col}`} style={styles.foodTypeContainer}>
-              <Text>{item.name}</Text>
-            </View>
-          );
-        } else {
-          matrix.push(
-            <View key={`${row}-${col}`} style={styles.foodTypeContainer}>
-              <Text>responsiveness</Text>
-            </View>
-          );
-        }
-      }
-    }
-    return matrix;
-  };
-
-  const renderPopularFeatureContainer = ({ item, index }) => (
-    <View style={styles.popularFeatureBodyContainer}>
-      <View style={styles.popularFeatureSplitContainer}>
-
-        <Image source={images[item.image]} style={styles.popularFeatureImage} alt="Feature" />
-        <View style={styles.popularFeaturesContent}>
-
-          <Text style={styles.NormalTxt}>{item.menutype}</Text>
-          <Text style={styles.BoldTxt}>{item.name}</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonTxt}>Buy now</Text>
-          </TouchableOpacity>
-
-        </View>
-
-      </View>
-    </View>
-  );
-
-  // Checks ------------------- can me moved to common or not
-  const onViewablePopularFeatureChanged = useRef(({ viewableItems }) => {
-    if (viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
-    }
-  }).current;
+  const featuredData = campusShops.filter(item => item.featured === "true");
+  const popularMenu = campusMenu.filter(item => item.popular === "true");
 
   const renderFoodItemContainer = ({ item }) => (
     <View style={styles.foodItemCollectionContainer}>
       <View style={styles.foodItemBodyContainer}>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodItemBodyContainer}>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodItemBodyContainer}>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.foodItemBodyContainer}>
-        <TouchableOpacity style={styles.foodItemContainer}>
-          <Text style={styles.txt}>{item.name}</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.foodItemContainer}>
           <Text style={styles.txt}>{item.name}</Text>
         </TouchableOpacity>
@@ -141,75 +45,78 @@ const Likes = () => {
     itemVisiblePercentThreshold: 50
   };
 
+  const viewabilityMenuConfig = {
+    itemVisiblePercentThreshold: 50
+  };
+
   return (
     <View style={styles.bodyContainer}>
       <View style={styles.bodyBGContainer} />
-      <View style={styles.staticContainer}>
-
-        <View style={[createZIndexForVerticalScroll(bufferForsearchBodyContainer), styles.searchBodyContainer]}>
-          <TextInput placeholder='Search' style={styles.searchInputTxt}></TextInput>
-          <Ionicons name="search" size={24} style={styles.searchIcon} />
-        </View>
-
-        <View style={[createZIndexForVerticalScroll(bufferForpopularFeatureBodyContainer)]}>
-          <FlatList
-            ref={flatListRef}
-            data={features}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            renderItem={renderPopularFeatureContainer}
-            keyExtractor={(item, index) => index.toString()}
-            snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
-            decelerationRate="normal" // Adjust the snapping speed
-            pagingEnabled
-            onViewableItemsChanged={onViewablePopularFeatureChanged}
-            viewabilityConfig={viewabilityConfig}
-          />
-        </View>
-        <View style={[createZIndexForVerticalScroll(bufferForscrollViwerContainer), styles.scrollViwerContainer]}>
-          <ScrollViewer data={features} currentIndex={currentIndex} />
-        </View>
-
-        <View style={[createZIndexForVerticalScroll(bufferForfoodItemCollectionContainer)]}>
-          <FlatList
-            ref={flatListRef}
-            data={foodTypes}
-            horizontal
-            showsHorizontalScrollIndicator={true}
-            renderItem={renderFoodItemContainer}
-            snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin
-            decelerationRate="normal" // Adjust the snapping speed
-            pagingEnabled
-            viewabilityConfig={viewabilityConfig}
-          />
-        </View>
-
-      </View>
-
-      <ScrollView
-        onScroll={e => setVerticalScrollHeight(e.nativeEvent.contentOffset.y)}
-        scrollEventThrottle={6}
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollA } } }],
+          { useNativeDriver: true }
+        )}
+        scrollEventThrottle={16}
         keyboardDismissMode='on-drag'
       >
-        <View style={styles.verticalScrollContainer}>
-          <View style={styles.content}>
-            <Text>Hello</Text>
-          </View>
-        </View>
-      </ScrollView>
 
+        <View className='staticContainer align-middle flex w-1/2'>
+          <Animated.View style={[styles.banner(scrollA)]}>
+            <View style={styles.searchContainer}>
+              <TextInput placeholder='Search' style={styles.searchInputTxt} />
+              <Ionicons name="search" size={24} style={styles.searchIcon} />
+            </View>
+            <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
+            <ScrollView horizontal>
+              {campusMenu.map(item => (
+                <View key={item.id}>
+                  <View style={styles.foodItemCollectionContainer}>
+                    <TouchableOpacity>
+                      <View style={styles.foodItemContainer}>
+                        <Text>{item.name}</Text>
+                      </View>
+                      <View>
+                        <Text>{item.name}</Text>
+                        <Text>{item.price}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </Animated.View>
+        </View>
+        <View style={styles.verticalScrollContainer}>
+          <Text>Hello</Text>
+        </View>
+      </Animated.ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  txt: {
-    color:'#F7F6BB'
+  
+  foodItemCollectionContainer: {
+    marginHorizontal: Dimensions.get('window').width * 0.03, // should be applyed to all fixed items
+    marginTop: Dimensions.get('window').height * 0.02, // should be applyed to all fixed items
+    height: Dimensions.get('window').height * 0.40,
+    gap: Dimensions.get('window').width * 0.04,
+    // justifyContent: 'space-between', // can be also appled
+  },
+  foodItemContainer: {
+    backgroundColor: "#114232", // bg color
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
   },
 
+  txt: {
+    color: '#40A578'
+  },
   bodyContainer: {
     flex: 1,
-    backgroundColor: "#F8DE22" // bg color
+    backgroundColor: "#40A578"
   },
   bodyBGContainer: {
     position: 'absolute',
@@ -217,147 +124,50 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: "#C70039", // bg color
+    backgroundColor: "#FCDC2A",
   },
-
-  staticContainer: {
-    flex: 1,
-    position: 'absolute',
-  },
-
-  searchBodyContainer: {
-    zIndex: 1,
-    paddingHorizontal: Dimensions.get('window').width * 0.1, // should be applyed to all fixed items
-    marginTop: Dimensions.get('window').height * 0.08, // should be applyed to all fixed items
+  searchContainer: {
+    marginTop: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: Dimensions.get('window').height * 0.07,
+    height: 60,
+    marginHorizontal: Dimensions.get('window').width * 0.03,
   },
   searchInputTxt: {
-    width: '73%',
-    height: '100%',
-    // padding: 14,
+    width: '78%',
+    backgroundColor: '#e2c625',
+    borderRadius: 14,
     paddingLeft: 14,
     textAlignVertical: 'center',
-    fontSize: 16, // font size
-    backgroundColor: '#e2c625', // bg color
-    borderRadius: 14,
+    fontSize: 16,
   },
   searchIcon: {
-    height: '100%',
-    width: '20%',
-    // padding: 14,
+    backgroundColor: '#e2c625',
+    borderRadius: 15,
+    width: 60,
+    height: 60,
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: '#e2c625', // bg color
-    borderRadius: 14,
   },
-
-  popularFeatureBodyContainer: {
-    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
-    marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
-    height: Dimensions.get('window').height * 0.18,
-    width: Dimensions.get('window').width * 0.8,
-    padding: 12,
-    backgroundColor: "#F8DE22", // bg color
-    borderTopRightRadius: 16,
-    borderTopLeftRadius: 16,
-  },
-  popularFeatureSplitContainer: {
-    flex: 1,
-    height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  popularFeatureImage: {
-    height: '100%',
-    width: '58%', // Adjust width for responsiveness
-    borderWidth: 2,
-    borderColor: '#114232', // border color
-    borderRadius: 14,
-  },
-  popularFeaturesContent: {
-    flex: 1,
-    padding: 7,
-  },
-
-  scrollViwerContainer: {
-    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
-    height: Dimensions.get('window').height * 0.03,
-    gap: 3,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: "#F8DE22", // bg color
-    borderBottomRightRadius: 13,
-    borderBottomLeftRadius: 13,
-  },
-
-  foodItemCollectionContainer: {
-    marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
-    marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
-    height: Dimensions.get('window').height * 0.20,
-    width: Dimensions.get('window').width * 0.8,
-    flexDirection: 'row',
-    gap: Dimensions.get('window').width * 0.04,
-    // justifyContent: 'space-between', // can be also appled
-  },
-  foodItemBodyContainer: {
-    rowGap: Dimensions.get('window').width * 0.04,
-    // justifyContent: 'space-between', // can be also appled
-  },
-  foodItemContainer: {
-    width: Dimensions.get('window').width * 0.169,
-    height: Dimensions.get('window').width * 0.169,
-    backgroundColor: "#00224D", // bg color
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-  },
-
   verticalScrollContainer: {
-    marginTop: Dimensions.get('window').height * 0.67,
     minHeight: Dimensions.get('window').height * 3,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     flex: 1,
-    backgroundColor: '#00224D', // bg color
+    backgroundColor: '#114232',
   },
-  content: {
-    color: '#006769',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-
-
-  // Common Styling
-  button: {
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 70,
-    paddingVertical: 8, // Adjust padding instead of fixed height
-    // paddingHorizontal: 10, // Add padding for horizontal space
-    backgroundColor: '#C70039',
-  },
-  buttonTxt: {
-    color: '#F7F6BB',
-    textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  NormalTxt: {
-    color: "#FCDC2A",
-    fontWeight: '500',
-    fontSize: 14,
-  },
-  BoldTxt: {
-    fontWeight: '700',
-    marginBottom: 8,
-    fontSize: 16,
-    color: "#F7F6BB",
-  },
+  banner: scrollA => ({
+    height: BANNER_H,
+    width: '200%',
+    transform: [
+      {
+        translateY: scrollA.interpolate({
+          inputRange: [-BANNER_H, 0, BANNER_H, BANNER_H],
+          outputRange: [-0, 0, BANNER_H * 0.99, -BANNER_H * 0.5],
+        }),
+      },
+    ],
+  }),
 });
 
-export default Likes;
+export default Cart;

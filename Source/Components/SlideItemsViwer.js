@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Colors from './Colors';
 
-const ScrollViewer = ({ data, currentIndex }) => {
+const SlideItemsViwer = ({ data, currentIndex }) => {
     return (
         <View style={styles.scrollViewerContainer}>
             {data.map((_, index) => (
@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ScrollViewer;
+export default SlideItemsViwer;
