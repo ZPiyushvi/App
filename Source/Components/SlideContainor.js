@@ -1,5 +1,5 @@
 import { View, Text, FlatList, Dimensions } from 'react-native'
-import React, { useRef, useState, useEffect } from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import SlideItems from './SlideItems'
 import { StyledComponent } from 'nativewind'
 import SlideItemsViwer from './SlideItemsViwer'
@@ -20,10 +20,10 @@ export default function SlideContainor({ flatListRef, data, viewabilityConfig })
 
     const onViewablePopularFeatureChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
-            setCurrentIndex(viewableItems[0].index);
+          setCurrentIndex(viewableItems[0].index);
         }
-    }).current;
-
+      }).current;
+      
 
     return (
         <View>
@@ -44,7 +44,7 @@ export default function SlideContainor({ flatListRef, data, viewabilityConfig })
             <View style={styles.scrollViwerContainer}>
                 <SlideItemsViwer data={data} currentIndex={currentIndex} />
             </View>
-        </View>
+       </View>
 
 
     )

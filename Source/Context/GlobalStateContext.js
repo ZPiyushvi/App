@@ -1,16 +1,20 @@
 // GlobalStateContext.js
 import React, { createContext, useState, useEffect } from 'react';
 export const GlobalStateContext = createContext();
+import { mockCampusShops } from "../Data/mockCampusShops";
+import { mockCampusMenu } from "../Data/mockCampusMenu";
 
 export const GlobalStateProvider = ({ children }) => {
-  const [features, setFeatures] = useState([]);
+  const [campusShops, setcampusShops] = useState([]);
+  const [campusMenu, setcampusMenu] = useState([]);
 
   useEffect(() => {
     fetchFeatures();
   }, []);
 
   const fetchFeatures = async () => {
-    setFeatures(mockcampus_home_popular)
+    setcampusShops(mockCampusShops)
+    setcampusMenu(mockCampusMenu)
     // try {
     //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
     //   if (!response.ok) {
@@ -26,8 +30,9 @@ export const GlobalStateProvider = ({ children }) => {
     //   console.error("Error loading features:", error);
     // }
   };
+
   return (
-    <GlobalStateContext.Provider value={{ features, setFeatures }}>
+    <GlobalStateContext.Provider value={{ campusMenu, setcampusMenu }}>
       {children}
     </GlobalStateContext.Provider>
   );

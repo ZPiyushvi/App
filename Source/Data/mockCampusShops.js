@@ -7,23 +7,39 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "Beverage",
         "menu": [
-            { "item": "Masala Chai", "price": "50" },
-            { "item": "Cold Coffee", "price": "70" },
-            { "item": "Sandwich", "price": "100" },
-            { "item": "Maggi", "price": "80" },
-            { "item": "Cold Coco", "price": "60" },
-            { "item": "Iced Tea", "price": "65" },
-            { "item": "Puff", "price": "40" },
-            { "item": "Noodles", "price": "90" },
-            { "item": "Thepla", "price": "30" },
-            { "item": "Poha", "price": "35" },
-            { "item": "Upma", "price": "35" }
+            {
+                "title": "Beverages",
+                "items": [
+                    { "item": "Masala Chai", "price": "50" },
+                    { "item": "Cold Coffee", "price": "70" },
+                    { "item": "Cold Coco", "price": "60" },
+                    { "item": "Iced Tea", "price": "65" }
+                ]
+            },
+            {
+                "title": "Snacks",
+                "items": [
+                    { "item": "Sandwich", "price": "100" },
+                    { "item": "Maggi", "price": "80" },
+                    { "item": "Puff", "price": "40" }
+                ]
+            },
+            {
+                "title": "Meals",
+                "items": [
+                    { "item": "Noodles", "price": "90" },
+                    { "item": "Thepla", "price": "30" },
+                    { "item": "Poha", "price": "35" },
+                    { "item": "Upma", "price": "35" }
+                ]
+            }
         ],
         "location": "Library Cafe",
         "rating": "4.5",
+        "ratingcount": "4 ratings",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/teapost.jpg",
         "details": "The Tea Post outlet in the campus has a relaxed environment and serves great tea, light snacks, magazines and newspapers. The outlet offers a variety of hot and cold beverages like cold coffee, cold coco and iced tea, apart from a range of food items including sandwiches, puffs, noodles and many other traditional snacks like thepla, poha, and upma.",
-        "openingtime": "11:00 am",
+        "openingtime": "8:00 am",
         "closingtime": "3:00 am",
         "offdays": "None"
     },
@@ -35,9 +51,19 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "Dessert",
         "menu": [
-            { "item": "Ice Cream", "price": "50" },
-            { "item": "Milk Shake", "price": "70" },
-            { "item": "Chocolate", "price": "40" }
+            {
+                "title": "Desserts",
+                "items": [
+                    { "item": "Ice Cream", "price": "50" },
+                    { "item": "Chocolate", "price": "40" }
+                ]
+            },
+            {
+                "title": "Beverages",
+                "items": [
+                    { "item": "Milk Shake", "price": "70" }
+                ]
+            }
         ],
         "location": "Outside the Mess",
         "rating": "4.2",
@@ -55,8 +81,13 @@ export const mockCampusShops = [
         "type": "Non-Veg",
         "menutype": "Indian",
         "menu": [
-            { "item": "Chicken Biryani", "price": "150" },
-            { "item": "Mutton Curry", "price": "200" }
+            {
+                "title": "Meals",
+                "items": [
+                    { "item": "Chicken Biryani", "price": "150" },
+                    { "item": "Mutton Curry", "price": "200" }
+                ]
+            }
         ],
         "location": "Central Plaza",
         "rating": "4.4",
@@ -74,8 +105,13 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "Beverage",
         "menu": [
-            { "item": "Orange Juice", "price": "50" },
-            { "item": "Mango Shake", "price": "70" }
+            {
+                "title": "Beverages",
+                "items": [
+                    { "item": "Orange Juice", "price": "50" },
+                    { "item": "Mango Shake", "price": "70" }
+                ]
+            }
         ],
         "location": "Near the Gym",
         "rating": "4.3",
@@ -93,8 +129,18 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "Grocery",
         "menu": [
-            { "item": "Fresh Vegetables", "price": "Varies" },
-            { "item": "Frozen Items", "price": "Varies" }
+            {
+                "title": "Produce",
+                "items": [
+                    { "item": "Fresh Vegetables", "price": "Varies" }
+                ]
+            },
+            {
+                "title": "Frozen Foods",
+                "items": [
+                    { "item": "Frozen Items", "price": "Varies" }
+                ]
+            }
         ],
         "location": "East Wing, Block C",
         "rating": "4.1",
@@ -112,8 +158,18 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "General",
         "menu": [
-            { "item": "Stationery", "price": "Varies" },
-            { "item": "FMCG Items", "price": "Varies" }
+            {
+                "title": "Stationery",
+                "items": [
+                    { "item": "Stationery", "price": "Varies" }
+                ]
+            },
+            {
+                "title": "FMCG",
+                "items": [
+                    { "item": "FMCG Items", "price": "Varies" }
+                ]
+            }
         ],
         "location": "West Wing, Block B",
         "rating": "4.0",
@@ -131,8 +187,18 @@ export const mockCampusShops = [
         "type": "Veg",
         "menutype": "Indian",
         "menu": [
-            { "item": "Thali", "price": "100" },
-            { "item": "Masala Dosa", "price": "80" }
+            {
+                "title": "Meals",
+                "items": [
+                    { "item": "Thali", "price": "100" }
+                ]
+            },
+            {
+                "title": "Snacks",
+                "items": [
+                    { "item": "Masala Dosa", "price": "80" }
+                ]
+            }
         ],
         "location": "Hostel Premises",
         "rating": "4.3",

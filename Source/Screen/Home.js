@@ -1,15 +1,19 @@
 import { BANNER_H } from "./../Constants/Constants"
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import SlideContainor from "../Components/SlideContainor";
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import PopularMenuContainor from "../Components/PopularMenuContainor";
+import Content from "../Components/Content";
+import Titles from "../Components/Titles";
 
 const Cart = () => {
+  const navigation = useNavigation();
+
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
   const [campusShops, setcampusShops] = useState([]);
@@ -62,20 +66,25 @@ const Cart = () => {
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
 
-              <View className='searchBodyContainer mt-14 flex-row justify-between' style={{ height: 60, marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                <TextInput placeholder='Search' className='searchInputTxt bg-[#e2c625] rounded-xl w-[78%] text-base pl-3' />
-                <Ionicons name="search" size={24} className='searchIcon' style={{ backgroundColor: '#e2c625', borderRadius: 15, width: 60, height: 60, textAlign: 'center', textAlignVertical: 'center' }} />
-              </View>
+            <View className='searchBodyContainer mt-14 flex-row justify-between' style={{ height: 60, marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+              <TextInput placeholder='Search' className='searchInputTxt bg-[#e2c625] rounded-xl w-[78%] text-base pl-3' />
+              <Ionicons name="search" size={24} className='searchIcon' style={{ backgroundColor: '#e2c625', borderRadius: 15, width: 60, height: 60, textAlign: 'center', textAlignVertical: 'center' }} />
+            </View>
 
-              <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
-              
-              <PopularMenuContainor data={popularMenu} />
+            <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
+
+            <Titles title={"What’s on your heart?"} width={25} />
+            <PopularMenuContainor data={popularMenu} />
 
           </Animated.View>
 
         </View>
+
         <View style={styles.verticalScrollContainer}>
-          <Text>Hello</Text>
+
+          <Titles title={"All Restaurants"} width={60} />
+          <Content data={campusShops} />
+
         </View>
 
       </Animated.ScrollView>
@@ -84,6 +93,13 @@ const Cart = () => {
 };
 
 const styles = {
+
+  line: {
+    width: 60,
+    height: 1,
+    backgroundColor: '#D1D5DB', // Equivalent to bg-gray-200
+  },
+
   txt: {
     color: '#40A578'
   },
@@ -133,9 +149,9 @@ const styles = {
 
   verticalScrollContainer: {
     // marginTop: Dimensions.get('window').height * 0.6,
-    minHeight: Dimensions.get('window').height * 3,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    // minHeight: Dimensions.get('window').height * 3,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     flex: 1,
     backgroundColor: '#114232', // bg color
   },
