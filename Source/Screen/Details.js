@@ -3,16 +3,25 @@ import React, { useRef, useState } from 'react';
 import { View, ScrollView, Image, Animated, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+import PopUp from '../Components/PopUp';
 
-const BANNER_H = 350;
+const BANNER_H = 400;
 
 const Details = ({ route }) => {
     const { data } = route.params || {};
     const scrollA = useRef(new Animated.Value(0)).current;
+    const { Openmodal, setOpenmodal, renderModal } = PopUp();
+    const [selectedItemData, setSelectedItemData] = useState(null);
 
     const viewabilityMenuConfig = {
         itemVisiblePercentThreshold: 50
     };
+
+    const renderAddToCart = ({ item }) => {
+        const [quantity, setQuantity] = useState(0);
+        setQuantity(quantity++)
+        { console.log(quantity) }
+    }
 
     const renderDropdown = ({ typetitle, items }) => {
         const [openDropDown, setOpenDropDown] = useState(true); // State to manage dropdown visibility
@@ -22,11 +31,36 @@ const Details = ({ route }) => {
         };
 
         const renderItem = ({ item }) => (
-            <TouchableOpacity className=' flex-row justify-between items-center' style={{ backgroundColor: 'fuchsia', padding: 30 }}>
-                <Text>{item.item} - ₹{item.price}</Text>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonTxt}>Add to Cart</Text>
-                </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+                className=' flex-row justify-between items-center'
+                style={{ backgroundColor: 'fuchsia', padding: 30 }}
+            >
+                <View>
+                    <Text>{item.item} - ₹{item.price}</Text>
+                </View>
+                <View>
+                    <Image
+                        source={{
+                            uri: item.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        className=' bg-black w-36 h-36 border-2 border-slate-950'
+                        style={{borderWidth:2, borderColor:'black', borderRadius:8}}
+                        alt="Logo"
+                    />
+                    <TouchableOpacity
+                        onPress={() => { renderAddToCart(item) }}
+                        style={styles.button}
+                        className=' absolute top-32 left-4 w-28 h-9'
+                    >
+                        <Text style={styles.buttonTxt}>Add to Cart</Text>
+                    </TouchableOpacity>
+                </View>
+
             </TouchableOpacity>
         );
 
@@ -48,6 +82,7 @@ const Details = ({ route }) => {
     };
 
     const status = ({ closingTime, openingTime }) => {
+
         const currentTime = moment();
         let currentDay = moment().format('dddd');
 
@@ -74,19 +109,19 @@ const Details = ({ route }) => {
 
         if (currentTime.isBetween(openingMoment, closingMoment)) {
             return (
-                <Text className='text-center'>We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!</Text>
+                <Text className='text-center text-gray-50'>We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!</Text>
             );
         } else if (openingDifference > 0 && openingDifference <= 60) {
             return (
-                <Text className='text-center'>Almost there! just {openingDifference} minutes until kitchen's back in action! Get ready to place your order!</Text>
+                <Text className='text-center text-gray-50'>Almost there! just {openingDifference} minutes until kitchen's back in action! Get ready to place your order!</Text>
             );
         } else if (closingDifference > 0 && closingDifference <= 60) {
             return (
-                <Text className='text-center'>Hurry up! Kitchen's closing in {closingDifference} minutes!. Get your order in now before it's too late!"</Text>
+                <Text className='text-center text-gray-50'>Hurry up! Kitchen's closing in {closingDifference} minutes!. Get your order in now before it's too late!"</Text>
             );
         } else {
             return (
-                <Text className='text-center text-base font-medium leading-5'>Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place</Text>
+                <Text className='text-center text-base font-medium leading-5 text-gray-50'>Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place</Text>
             );
         }
     };
@@ -101,10 +136,34 @@ const Details = ({ route }) => {
                 scrollEventThrottle={16}
             >
                 <View style={[styles.bannerContainer, { alignItems: 'center' }]}>
-                    <Animated.View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 50 }}>
+                    {/* <Animated. */}
+                    <Animated.View style={styles.banner(scrollA)}>
+                        <View className=' w-full h-64'>
+                            <Image
+                                source={{
+                                    uri: data.image,
+                                    method: 'POST',
+                                    headers: {
+                                        Pragma: 'no-cache',
+                                    },
+                                }}
+                                className=' w-full h-full'
+                                alt="Logo"
+                            />
 
-                        {status({ closingTime: data.closingtime, openingTime: data.openingtime })}
-                        <View className="w-48 h-1 mx-auto my-4 bg-gray-900 border-0 rounded md:my-10 dark:bg-gray-700" />
+                            <View className='w-full absolute bottom-0' style={{ backgroundColor: 'rgba(0, 0, 0, 0.40)' }}>
+                                <View
+                                    className=' w-1/2 items-center justify-center p-4'
+                                    style={{
+                                        left: '25%', // Center horizontally by setting the left margin to 25% of the screen width
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    {status({ closingTime: data.closingtime, openingTime: data.openingtime })}
+                                </View>
+                            </View>
+                        </View>
 
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                             <Text className='text-3xl font-semibold'>{data.name}</Text>
@@ -129,9 +188,10 @@ const Details = ({ route }) => {
                                 <Text className=' m-1'>{data.location}</Text>
                             </View>
                         </View>
-
                     </Animated.View>
                 </View>
+
+                <View className="w-48 h-1 mx-auto my-4 bg-gray-900 border-0 rounded md:my-10 dark:bg-gray-700" />
 
                 {data.menu.map((menu, index) => (
                     <React.Fragment key={index}>
@@ -139,6 +199,7 @@ const Details = ({ route }) => {
                     </React.Fragment>
                 ))}
 
+                {renderModal({ data: selectedItemData })}
             </Animated.ScrollView>
         </View>
     );

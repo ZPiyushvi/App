@@ -28,7 +28,12 @@ const Content = ({ data }) => {
                             alt="Logo"
                         />
                         <Text className=' left-3 top-3 absolute p-1 rounded-md bg-zinc-900 text-stone-50'>{item.name}</Text>
-                        <Text className=' left-0 bottom-0 absolute w-2/5 h-7 rounded-tr-md bg-stone-50 text-stone-50'>{item.name}</Text>
+
+                        <View className=' flex-row items-center left-0 bottom-0 absolute w-2/5 h-7 rounded-tr-md bg-stone-50 text-stone-50'>
+                            <Ionicons name="location" size={20} color={'blue'}/>
+                            <Text className='text-blue-600'>{item.location}</Text>
+                        </View>
+
                     </View>
                     <View className='flex-row justify-between p-3'>
                         <View className='flex-1'>

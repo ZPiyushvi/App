@@ -11,7 +11,8 @@ const PopularMenuContainer = ({ data }) => {
 
     const renderItem = ({ item }) => (
         <View style={styles.foodItemCollectionContainer}>
-            <TouchableOpacity onPress={() => navToDetails(item)}>
+            {/* onPress={() => navToDetails(item)} */}
+            <TouchableOpacity>
                 <View style={styles.foodItemContainer}>
                     <Text>{item.name}</Text>
                 </View>
