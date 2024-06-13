@@ -3,6 +3,7 @@ import React, {useRef, useState, useEffect} from 'react'
 import SlideItems from './SlideItems'
 import { StyledComponent } from 'nativewind'
 import SlideItemsViwer from './SlideItemsViwer'
+import Colors from './Colors'
 
 export default function SlideContainor({ flatListRef, data, viewabilityConfig }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,13 +53,13 @@ export default function SlideContainor({ flatListRef, data, viewabilityConfig })
 
 const styles = {
     scrollViwerContainer: {
-        marginHorizontal: Dimensions.get('window').width * 0.1,  // should be applyed to all fixed items
-        height: Dimensions.get('window').height * 0.03,
+        marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
+        height: Dimensions.get('window').height * 0.02,
         gap: 3,
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: "#40A578", // bg color
+        backgroundColor: Colors.dark.colors.secComponentColor, // bg color
         borderBottomRightRadius: 13,
         borderBottomLeftRadius: 13,
     }

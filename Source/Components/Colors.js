@@ -17,44 +17,52 @@ const light = {
 
 const dark = {
   colors: {
+
+    backGroundColor: "#0C0F14",
+    componentColor: "#252A32",
+    secComponentColor: "#52555A",
     backGroundColor: "#1C1C1E",
-    fond_iconColor: "#E7E1E6",
+    mainTextColor: "#FFFFFF",
+    textColor: "#AEAEAE",
+    diffrentColorOrange: "#ff4501",
+    // backGroundColor: "#1C1C1E",
+    // fond_iconColor: "#E7E1E6",
 
-    primaryColor: "#4A4356",
-    afterSelection: "#E8DDF7",
+    // primaryColor: "#4A4356",
+    // afterSelection: "#E8DDF7",
 
-    primaryColor_Background0: "#29272d",
-    primaryColor_Background1: "#3e3c42",
-    primaryColor_Background2: "#535256",
-    primaryColor_Background3: "#69676c",
-    primaryColor_Background4: "#7e7d81",
-    primaryColor_Background5: "#949396",
-    primaryColor_Background6: "#a9a8ab",
-    primaryColor_Background7: "#bebec0",
-    primaryColor_Background8: "#d4d3d5",
-    primaryColor_Background9: "#e9e9ea",
-    primaryColor_Background10: "#ffffff",
+    // primaryColor_Background0: "#29272d",
+    // primaryColor_Background1: "#3e3c42",
+    // primaryColor_Background2: "#535256",
+    // primaryColor_Background3: "#69676c",
+    // primaryColor_Background4: "#7e7d81",
+    // primaryColor_Background5: "#949396",
+    // primaryColor_Background6: "#a9a8ab",
+    // primaryColor_Background7: "#bebec0",
+    // primaryColor_Background8: "#d4d3d5",
+    // primaryColor_Background9: "#e9e9ea",
+    // primaryColor_Background10: "#ffffff",
 
-    primaryColor_Shade0: "#4a4356",
-    primaryColor_Shade1: "#5c5566",
-    primaryColor_Shade2: "#6e6877",
-    primaryColor_Shade3: "#807b88",
-    primaryColor_Shade4: "#928e99",
-    primaryColor_Shade5: "#a4a1aa",
-    primaryColor_Shade6: "#b6b3bb",
-    primaryColor_Shade7: "#c8c6cc",
-    primaryColor_Shade8: "#dad9dd",
-    primaryColor_Shade9: "#ececee",
-    primaryColor_Shade10: "#ffffff",
-
-
-    fond_iconInsidePrimaryColor: "#E8DDF9",
+    // primaryColor_Shade0: "#4a4356",
+    // primaryColor_Shade1: "#5c5566",
+    // primaryColor_Shade2: "#6e6877",
+    // primaryColor_Shade3: "#807b88",
+    // primaryColor_Shade4: "#928e99",
+    // primaryColor_Shade5: "#a4a1aa",
+    // primaryColor_Shade6: "#b6b3bb",
+    // primaryColor_Shade7: "#c8c6cc",
+    // primaryColor_Shade8: "#dad9dd",
+    // primaryColor_Shade9: "#ececee",
+    // primaryColor_Shade10: "#ffffff",
 
 
+    // fond_iconInsidePrimaryColor: "#E8DDF9",
 
-    themeColor: "#130B4D",
-    text: "#FFFFFF",
-    ...commonColor.colors,
+
+
+    // themeColor: "#130B4D",
+    // text: "#FFFFFF",
+    // ...commonColor.colors,
   },
 };
 

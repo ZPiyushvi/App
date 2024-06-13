@@ -64,7 +64,7 @@ export default function BottomNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Likes" component={Likes} />
       <Tab.Screen name="Cart" component={Cart} />
-      <Tab.Screen name="Profile" component={Profile} />
+      {/* <Tab.Screen name="Profile" component={Profile} /> */}
     </Tab.Navigator>
   );
 }

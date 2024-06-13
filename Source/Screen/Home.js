@@ -10,8 +10,13 @@ import { mockCampusMenu } from "../Data/mockCampusMenu";
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import Content from "../Components/Content";
 import Titles from "../Components/Titles";
+import Colors from "../Components/Colors";
+import TruncatedTextComponent from "../Components/TruncatedTextComponent";
+import PopUpLang from "../Components/PopUpLang";
+import SearchBox from "../Components/SearchBox";
 
 const Cart = () => {
+  // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
 
   const scrollA = useRef(new Animated.Value(0)).current;
@@ -19,6 +24,10 @@ const Cart = () => {
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
   const flatListRef = useRef(null);
+
+  const navToPage = (page) => {
+    navigation.navigate(page);
+  };
 
   useEffect(() => {
     fetchFeatures();
@@ -43,16 +52,16 @@ const Cart = () => {
     // }
   };
 
-  const featuredData = campusShops.filter(item => item.featured === "true");
-  const popularMenu = campusMenu.filter(item => item.popular === "true");
+  const featuredData = campusShops ? campusShops.filter(item => item.featured === "true") : [];
+  const popularMenu = campusMenu ? campusMenu.filter(item => item.popular === "true") : [];
 
   const viewabilityMenuConfig = {
     itemVisiblePercentThreshold: 50
   };
 
   return (
-    <View className='bodyContainer w-full bg-[#40A578] flex'>
-      <View className='bodyBGContainer bg-[#FCDC2A] absolute w-full rounded-b-3xl' style={{ height: Dimensions.get('window').height * 0.3 }} />
+    <View className={`bodyContainer w-full bg-[] flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+      <View className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
       <Animated.ScrollView
         // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
         onScroll={Animated.event(
@@ -66,14 +75,39 @@ const Cart = () => {
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
 
-            <View className='searchBodyContainer mt-14 flex-row justify-between' style={{ height: 60, marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <TextInput placeholder='Search' className='searchInputTxt bg-[#e2c625] rounded-xl w-[78%] text-base pl-3' />
-              <Ionicons name="search" size={24} className='searchIcon' style={{ backgroundColor: '#e2c625', borderRadius: 15, width: 60, height: 60, textAlign: 'center', textAlignVertical: 'center' }} />
+            <View className='searchBodyContainer mt-14 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+              <View className='address flex-row gap-2 items-center w-9/12'>
+                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+                <View>
+                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row '>
+                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent("Owner Full UserName", 18)}</Text>
+                    <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+                  </TouchableOpacity>
+                  <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{TruncatedTextComponent("plot number 45, new row house", 27)}</Text>
+                </View>
+              </View>
+              <View className='address flex-row gap-2 items-center'>
+                <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons color={Colors.dark.colors.textColor} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+              </View>
+            </View>
+
+            <View className='pt-7 px-4'>
+              <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Discover the best</Text>
+              <View className='flex-row'>
+                <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Meal </Text>
+                <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>for you</Text>
+              </View>
+            </View>
+
+            <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+              <SearchBox />
+              <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
             </View>
 
             <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
 
-            <Titles title={"What’s on your heart?"} width={25} />
+            <Titles title={"What’s on your heart?"} width={30} />
             <PopularMenuContainor data={popularMenu} />
 
           </Animated.View>
@@ -93,20 +127,15 @@ const Cart = () => {
 };
 
 const styles = {
-
   line: {
     width: 60,
     height: 1,
     backgroundColor: '#D1D5DB', // Equivalent to bg-gray-200
   },
 
-  txt: {
-    color: '#40A578'
-  },
-
   bodyContainer: {
     flex: 1,
-    backgroundColor: "#40A578" // bg color
+    backgroundColor: "black" // bg color
   },
   bodyBGContainer: {
     position: 'absolute',
@@ -114,7 +143,7 @@ const styles = {
     width: "100%",
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
-    backgroundColor: "#FCDC2A", // bg color
+    backgroundColor: "white", // bg color
   },
 
   staticContainer: {
@@ -153,7 +182,8 @@ const styles = {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flex: 1,
-    backgroundColor: '#114232', // bg color
+    // backgroundColor: 'white',
+    backgroundColor: Colors.dark.colors.backGroundColor, // bg color
   },
   content: {
     color: '#006769',

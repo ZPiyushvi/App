@@ -49,7 +49,7 @@ const Details = ({ route }) => {
                             },
                         }}
                         className=' bg-black w-36 h-36 border-2 border-slate-950'
-                        style={{borderWidth:2, borderColor:'black', borderRadius:8}}
+                        style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
                         alt="Logo"
                     />
                     <TouchableOpacity
@@ -65,9 +65,9 @@ const Details = ({ route }) => {
         );
 
         return (
-            <View style={{ marginBottom: 10 }}>
-                <TouchableOpacity onPress={toggleDropDown}>
-                    <Text style={{ fontWeight: 'bold', marginBottom: 5 }}>{typetitle}</Text>
+            <View>
+                <TouchableOpacity className='flex-row p-4 justify-between' onPress={toggleDropDown}>
+                    <Text className=' font-extrabold text-xl'>{typetitle}</Text>
                     <Ionicons name={openDropDown ? "caret-up-outline" : "caret-down-outline"} size={24} />
                 </TouchableOpacity>
                 {openDropDown && (
@@ -138,16 +138,11 @@ const Details = ({ route }) => {
                 <View style={[styles.bannerContainer, { alignItems: 'center' }]}>
                     {/* <Animated. */}
                     <Animated.View style={styles.banner(scrollA)}>
-                        <View className=' w-full h-64'>
+                        <View className=' w-full h-64 bg-gradient-to-r from-cyan-500 to-blue-500 bg-black'>
                             <Image
-                                source={{
-                                    uri: data.image,
-                                    method: 'POST',
-                                    headers: {
-                                        Pragma: 'no-cache',
-                                    },
-                                }}
-                                className=' w-full h-full'
+                                source={require('./../../assets/burgur.png')}
+                                className=' w-full h-full object-contain'
+                                style={{ objectFit: 'contain' }}
                                 alt="Logo"
                             />
 

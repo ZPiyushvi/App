@@ -46,7 +46,7 @@ const PopUp = () => {
 
         return (
             <Modal visible={Openmodal} animationType="fade" transparent={true} statusBarTranslucent>
-                <View style={styles.container}>
+                <View style={styles.container} className='blur-sm'>
 
                     <TouchableOpacity style={[styles.background, { zIndex: 1 }]} onPress={() => setOpenmodal(false)} />
 

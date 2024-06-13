@@ -33,17 +33,17 @@ const PopularMenuContainer = ({ data }) => {
 
 const styles = StyleSheet.create({
     foodItemCollectionContainer: {
-        marginHorizontal: Dimensions.get('window').width * 0.03,
+        marginLeft: Dimensions.get('window').width * 0.035,
         marginTop: Dimensions.get('window').height * 0.02,
-        gap: Dimensions.get('window').width * 0.04,
+        gap: Dimensions.get('window').width * 0.02,
     },
     foodItemContainer: {
         backgroundColor: "#114232",
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        height: Dimensions.get('window').height * 0.20,
-        width: Dimensions.get('window').width * 0.30,
+        height: Dimensions.get('window').height * 0.16,
+        width: Dimensions.get('window').height * 0.13,
     },
     txt: {
         color: '#40A578',

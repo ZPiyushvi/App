@@ -11,8 +11,8 @@ const Content = ({ data }) => {
     };
 
     const renderItem = ({ item }) => (
-        <View className='mb-2' style={styles.foodItemCollectionContainer}>
-            <TouchableOpacity onPress={() => navToDetails(item)}>
+        <View className='mb-2 drop-shadow-2xl' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+            <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
                 <View style={styles.foodItemContainer}>
                     <View className=' w-full h-44'>
                         <Image
@@ -30,7 +30,7 @@ const Content = ({ data }) => {
                         <Text className=' left-3 top-3 absolute p-1 rounded-md bg-zinc-900 text-stone-50'>{item.name}</Text>
 
                         <View className=' flex-row items-center left-0 bottom-0 absolute w-2/5 h-7 rounded-tr-md bg-stone-50 text-stone-50'>
-                            <Ionicons name="location" size={20} color={'blue'}/>
+                            <Ionicons name="location" size={20} color={'blue'} />
                             <Text className='text-blue-600'>{item.location}</Text>
                         </View>
 
@@ -69,10 +69,23 @@ const Content = ({ data }) => {
 };
 
 const styles = StyleSheet.create({
+    shadowProp: {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        // shadowOffset: {
+        //   width: 0,
+        //   height: 12,
+        // },
+        // shadowOpacity: 0.58,
+        // shadowRadius: 16.00,
+        elevation: 30,
+
+    },
     foodItemCollectionContainer: {
         marginHorizontal: Dimensions.get('window').width * 0.03,
         marginTop: Dimensions.get('window').height * 0.02,
         gap: Dimensions.get('window').width * 0.04,
+        backgroundColor: 'white',
+        borderRadius: 18,
     },
     foodItemContainer: {
         overflow: 'hidden',

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Profiler } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Screen/Home';
@@ -8,6 +8,8 @@ import Login from '../Screen/Login';
 import Details from '../Screen/Details';
 import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import SelectAddress from '../Screen/SelectAddress';
+import Profile from '../Screen/Profile';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +44,15 @@ export default function AppNavigator() {
                     name="Details"
                     options={{ headerShown: true, headerRight: () => <HeaderRightIcons />}}
                     component={Details}
+                />
+                <Stack.Screen
+                    name="SelectAddress"
+                    options={{ headerShown: true, title:'Select Your Location'}}
+                    component={SelectAddress}
+                />
+                <Stack.Screen
+                    name="Profile"
+                    component={Profile}
                 />
             </Stack.Navigator>
         </NavigationContainer>

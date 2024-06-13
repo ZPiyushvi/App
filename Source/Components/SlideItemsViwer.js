@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
         height: 6,
         width: 6,
         borderRadius: 99,
-        backgroundColor: '#114232',
+        backgroundColor: Colors.dark.colors.componentColor,
         margin: 2, // Adjust spacing between indicators as needed
     },
     scrollViewerIdentifierActive: {
-        backgroundColor: '#F7F6BB',
+        backgroundColor: Colors.dark.colors.mainTextColor,
     },
 });
 
