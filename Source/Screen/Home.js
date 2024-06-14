@@ -1,4 +1,5 @@
-import { BANNER_H } from "./../Constants/Constants"
+// import { BANNER_H } from "./../Constants/Constants"
+const BANNER_H = Dimensions.get('window').height * 0.86;
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
@@ -14,6 +15,7 @@ import Colors from "../Components/Colors";
 import TruncatedTextComponent from "../Components/TruncatedTextComponent";
 import PopUpLang from "../Components/PopUpLang";
 import SearchBox from "../Components/SearchBox";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Cart = () => {
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
@@ -61,7 +63,9 @@ const Cart = () => {
 
   return (
     <View className={`bodyContainer w-full bg-[] flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-      <View className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
+      <LinearGradient
+        // Button Linear Gradient
+        colors={[Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
       <Animated.ScrollView
         // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
         onScroll={Animated.event(
@@ -116,8 +120,10 @@ const Cart = () => {
 
         <View style={styles.verticalScrollContainer}>
 
-          <Titles title={"All Restaurants"} width={60} />
-          <Content data={campusShops} />
+          <View style={{marginTop:Dimensions.get('window').height * 0.01}}>
+            <Titles title={"All Restaurants"} width={60} />
+            <Content data={campusShops} />
+          </View>
 
         </View>
 
@@ -177,7 +183,7 @@ const styles = {
   },
 
   verticalScrollContainer: {
-    // marginTop: Dimensions.get('window').height * 0.6,
+    // marginTop: Dimensions.get('window').height * 0.1,
     // minHeight: Dimensions.get('window').height * 3,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

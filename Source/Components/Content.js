@@ -23,7 +23,6 @@ const Content = ({ data }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-
                             className=' w-full h-44'
                             alt="Logo"
                         />

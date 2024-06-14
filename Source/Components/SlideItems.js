@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'rea
 import React from 'react'
 import Colors from './Colors'
 import TruncatedTextComponent from './TruncatedTextComponent'
+import FoodIcon from './FoodIcon'
 
 const SlideItems = ({ item }) => {
 

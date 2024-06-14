@@ -1,6 +1,9 @@
-import { StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Colors from './Colors';
+import TruncatedTextComponent from './TruncatedTextComponent';
 
 const PopularMenuContainer = ({ data }) => {
     const navigation = useNavigation();
@@ -13,8 +16,32 @@ const PopularMenuContainer = ({ data }) => {
         <View style={styles.foodItemCollectionContainer}>
             {/* onPress={() => navToDetails(item)} */}
             <TouchableOpacity>
-                <View style={styles.foodItemContainer}>
-                    <Text>{item.name}</Text>
+                <View className='overflow-hidden' style={styles.foodItemContainer}>
+                    <ImageBackground
+                        source={{
+                            uri: item.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        // source={item.image}
+                        className=' h-full w-full overflow-hidden'
+                        alt="Logo"
+                        resizeMode='cover'
+                        style={{ flex: 1, justifyContent: 'center', }}
+                    >
+                        <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
+                            <View className='absolute bottom-1 p-2'>
+                                <Text className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {TruncatedTextComponent(item.name, 6)}
+                                </Text>
+                                <Text className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
+                                    {TruncatedTextComponent(item.name, 11)}
+                                </Text>
+                            </View>
+                        </LinearGradient>
+                    </ImageBackground>
                 </View>
             </TouchableOpacity>
         </View>
@@ -38,12 +65,12 @@ const styles = StyleSheet.create({
         gap: Dimensions.get('window').width * 0.02,
     },
     foodItemContainer: {
-        backgroundColor: "#114232",
+        backgroundColor: Colors.dark.colors.textColor,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        height: Dimensions.get('window').height * 0.16,
-        width: Dimensions.get('window').height * 0.13,
+        height: Dimensions.get('window').height * 0.18,
+        width: Dimensions.get('window').height * 0.14,
     },
     txt: {
         color: '#40A578',

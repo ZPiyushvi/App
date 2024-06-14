@@ -4,6 +4,7 @@ import { View, ScrollView, Image, Animated, Text, FlatList, TouchableOpacity } f
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import PopUp from '../Components/PopUp';
+import Colors from '../Components/Colors';
 
 const BANNER_H = 400;
 
@@ -126,6 +127,29 @@ const Details = ({ route }) => {
         }
     };
 
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const renderMenuScroll = ({ typetitle, index }) => {
+        const isSelected = selectedIndex === index; // Check if the current item is selected
+
+        return (
+            <TouchableOpacity
+                key={index}
+                style={{ padding: 12 }}
+                onPress={() => setSelectedIndex(index)} // Update the selected index on press
+            >
+                <Text
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        color: isSelected ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.textColor
+                    }}
+                >
+                    {typetitle}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+
     return (
         <View>
             <Animated.ScrollView
@@ -134,6 +158,7 @@ const Details = ({ route }) => {
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
+                contentContainerStyle={{ paddingBottom: 67 }}
             >
                 <View style={[styles.bannerContainer, { alignItems: 'center' }]}>
                     {/* <Animated. */}
@@ -196,11 +221,31 @@ const Details = ({ route }) => {
 
                 {renderModal({ data: selectedItemData })}
             </Animated.ScrollView>
+
+            {/* MenuScrollView */}
+
+            <View style={styles.bottomContainer}>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {data.menu.map((menu, index) => (
+                        renderMenuScroll({ typetitle: menu.title, index: index })
+                    ))}
+                </ScrollView>
+            </View>
         </View>
     );
 };
 
 const styles = {
+    bottomContainer: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: Colors.dark.colors.backGroundColor, // Adjust if you want a specific background color
+        paddingVertical: 8, // Adjust padding as needed
+    },
     button: {
         borderRadius: 8,
         justifyContent: 'center',

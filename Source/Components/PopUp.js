@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import FoodTypeIcon from "./FoodTypeIcon";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import Colors from "./Colors";
 
 const PopUp = () => {
     const slideAnim = useRef(new Animated.Value(500)).current;
@@ -68,10 +69,10 @@ const PopUp = () => {
                                 // style={styles.popularFeatureImage}
                                 alt="Logo"
                             />
-                            <View className='w-full absolute bottom-0 p-4 rounded-t-2xl' style={{backgroundColor: 'rgba(0, 0, 0, 0.40)'}}>
+                            <View className='w-full absolute bottom-0 p-4 rounded-t-2xl' style={{backgroundColor: 'rgba(0, 0, 0, 0.60)'}}>
                                 <View className=' flex-row justify-between'>
                                     <View>
-                                        <Text className=' text-xl font-bold'>{data.item}</Text>
+                                        <Text className=' text-xl font-bold' style={{color:Colors.dark.colors.mainTextColor}}>{data.item}</Text>
                                         {/* <Text className=' text-lg font-medium'>Item Name</Text> */}
                                     </View>
                                     <View className=' flex-row gap-3'>
@@ -133,32 +134,24 @@ const styles = {
 
     container: {
         height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.67)',
-        // backgroundColor: 'white',
+        backgroundColor: 'rgba(0, 0, 0, 0.63)',
         width: "100%",
         flex: 1,
         justifyContent: "flex-end",
     },
     title: {
-        // color: colors.text,
         fontWeight: "bold",
         fontSize: 18,
         marginBottom: 10,
     },
-
     modalContent: {
         borderTopWidth: 1,
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        // borderColor: colors.text,
         borderTopLeftRadius: 22,
         borderTopRightRadius: 22,
-        // height: Dimensions.get('window').height * 0.57,
-        // alignItems: "center",
         backgroundColor: "white",
-        // opacity: 0.9,
     },
-
     itemContainer: {
         // marginTop: "7%",
         marginBottom: "5%",
