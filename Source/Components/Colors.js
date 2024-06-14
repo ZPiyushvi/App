@@ -17,14 +17,15 @@ const light = {
 
 const dark = {
   colors: {
-
-    backGroundColor: "#0C0F14",
+    backGroundColor: "rgba(5, 6, 8)",
     componentColor: "#252A32",
     secComponentColor: "#52555A",
     backGroundColor: "#1C1C1E",
     mainTextColor: "#FFFFFF",
     textColor: "#AEAEAE",
     diffrentColorOrange: "#ff4501",
+    diffrentColorPerple: "#0092ff", 
+    diffrentColorPerpleBG: "#d0c5f6",
     // backGroundColor: "#1C1C1E",
     // fond_iconColor: "#E7E1E6",
 

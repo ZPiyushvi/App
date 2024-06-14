@@ -51,9 +51,10 @@ export const mockCampusShops = [
                 ]
             },
         ],
-        "location": "Emiet",
+        "location": "Emiet Hostel",
+        "locationdetailed": "Emiet Hostel",
         "rating": "4.5",
-        "ratingcount": "314 ratings",
+        "ratingcount": "314",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/teapost.jpg",
         "details": "The Tea Post outlet in the campus has a relaxed environment and serves great tea, light snacks, magazines and newspapers. The outlet offers a variety of hot and cold beverages like cold coffee, cold coco and iced tea, apart from a range of food items including sandwiches, puffs, noodles and many other traditional snacks like thepla, poha, and upma.",
         "openingtime": "9:00 am",
@@ -82,9 +83,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Duven",
+        "location": "Emiet Hostel",
+        "locationdetailed": "Emiet Hostel",
         "rating": "4.2",
-        "ratingcount": "500 ratings",
+        "ratingcount": "500",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/fac-img/amul.JPG",
         "details": "The Amul store, located just outside the mess, serves ice creams, milk shakes, chocolates and many other dairy products.",
         "openingtime": "10:00 am",
@@ -109,9 +111,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Duven",
+        "location": "Duven Hostel",
+        "locationdetailed": "Duven Hostel",
         "rating": "4.0",
-        "ratingcount": "445 ratings",
+        "ratingcount": "445",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/krupa.JPG",
         "details": "Krupa General Store is another convenience shop, which provides the stationery, printing facilities and other FMCG items for personal use.",
         "openingtime": "11:00 am",
@@ -142,9 +145,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Academic Block-1 (Ground Floor)",
+        "location": "Acad Block 1",
+        "locationdetailed": "Ground Floor, Academic Block-1",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://img.restaurantguru.com/r515-2-degree-cafe-interior.jpg",
         "details": "2 Degree Café offers a cozy atmosphere perfect for coffee enthusiasts. Enjoy a variety of coffees and light snacks.",
         "openingtime": "9:30 am",
@@ -175,9 +179,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Near Sabarmati Cafe, Academic Block-4",
+        "location": "Acad Block 4",
+        "locationdetailed": "Near Sabarmati Cafe, Academic Block-4",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/2degree.jpg",
         "details": "2 Degree Café offers a cozy atmosphere perfect for coffee enthusiasts. Enjoy a variety of coffees and light snacks.",
         "openingtime": "9:30 am",
@@ -196,7 +201,7 @@ export const mockCampusShops = [
     //     ],
     //     "location": "Academic Block-3 (near the Central Library entrance)",
     //     "rating": "Not rated yet",
-    //     "ratingcount": "0 ratings",
+    //     "ratingcount": "0",
     //     "image": "https://www.example.com/reprographic.jpg",
     //     "details": "Reprographic Facility offers printing and photocopying services conveniently located near the Central Library entrance.",
     //     "openingtime": "10:00 am",
@@ -225,9 +230,10 @@ export const mockCampusShops = [
                 ]
             },
         ],
-        "location": "Hiqom",
+        "location": "Hiqom Hostel",
+        "locationdetailed":  "Hiqom Hostel",
         "rating": "4.7",
-        "ratingcount": "400 ratings",
+        "ratingcount": "400",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/dawat.jpg",
         "details": "Dawat Food is known for its lip-smacking dishes and a variety of both veg and non-veg items. It serves one of the best chicken curries, chicken rice, and egg rolls on campus.",
         "openingtime": "7:00 pm",
@@ -250,9 +256,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Sport Complex, Near the Gym",
+        "locationdetailed": "Sport Complex, Near the Gym",
+        "location":  "Sport Complex",
         "rating": "4.3",
-        "ratingcount": "311 ratings",
+        "ratingcount": "311",
         "image": "https://content.jdmagicbox.com/comp/gandhinagar-gujarat/j6/9999pxx79.xx79.230912003229.b7j6/catalogue/samyak-juice-gandhinagar-gujarat-juice-centres-fqv4zbv421.jpg", // Remaining to edit Store Image
         "details": "It is our one and only fruit juice shop, which provides juices and milk shakes.",
         "openingtime": "3:00 pm",
@@ -276,9 +283,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Firpeal Hostel (Near Panchayat Circle)",
+        "location": "Firpeal Hostel",
+        "locationdetailed": "Firpeal Hostel, Near Panchayat Circle",
         "rating": "4.1",
-        "ratingcount": "389 ratings",
+        "ratingcount": "389",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/fac-img/grocery.jpg",
         "details": "JK Grocery store is a convenience shop, which provides fruits, vegetables, general grocery and frozen items.",
         "openingtime": "10:00 am",
@@ -305,9 +313,10 @@ export const mockCampusShops = [
                 ]
             },
         ],
-        "location": "Emiet",
+        "location": "Emiet Hostel",
+        "locationdetailed": "Emiet Hostel",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/fac-img/mahavir2.jpg",
         "details": "Mahavir Healthy Food offers nutritious and wholesome meals. They are open late into the night for those looking for healthy food options.",
         "openingtime": "4:00 pm",
@@ -324,7 +333,7 @@ export const mockCampusShops = [
     //     "menu": [],
     //     "location": "Central Arcade (Ground Floor)",
     //     "rating": "Not rated yet",
-    //     "ratingcount": "0 ratings",
+    //     "ratingcount": "0",
     //     "image": "https://www.example.com/brahmani.jpg",
     //     "details": "Brahmani Veg Solutions serves delicious vegetarian Indian meals. Visit their location at Central Arcade for a delightful dining experience.",
     //     "openingtime": "9:00 am",
@@ -355,9 +364,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Hiqom",
+        "location": "Hiqom Hostel",
+        "locationdetailed": "Hiqom Hostel",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/goinsta.jpg",
         "details": "Go Insta Cafe offers a variety of coffees and light snacks. Perfect place to unwind after a long day.",
         "openingtime": "4:00 pm",
@@ -397,9 +407,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Hiqom",
+        "location": "Hiqom Hostel",
+        "locationdetailed": "Hiqom Hostel",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/vsfastfood.jpg",
         "details": "VS Fastfood serves quick and tasty non-vegetarian fast food items. Open from early morning to late night, it's a favorite spot for late-night cravings.",
         "openingtime": "9:00 am",
@@ -436,8 +447,9 @@ export const mockCampusShops = [
             }
         ],
         "location": "Beauki Hostel",
+        "locationdetailed": "Beauki Hostel",
         "rating": "4.3",
-        "ratingcount": "512 ratings",
+        "ratingcount": "512",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/fac-img/sainath.jpg",
         "details": "Shri Sainath Canteen (A) is a full-fledged canteen facility available at hostel premises, which serves nutritious food cum meal to the students at reasonable prices.",
         "openingtime": "7:00 pm",
@@ -461,9 +473,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Central Arcade, Shop 101",
+        "location": "Central Arcade",
+        "locationdetailed": "Shop 101, Central Arcade",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/pooja_stationery.jpg",
         "details": "Pooja Stationery offers a wide range of stationery items. They are conveniently located in Central Arcade and open throughout the week with varying hours on Sundays.",
         "openingtime": "10:00 am",
@@ -491,9 +504,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Ground Floor, Central Arcade",
+        "location": "Central Arcade",
+        "locationdetailed": "Ground Floor, Central Arcade",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/mondego.jpg",
         "details": "Mondego - The Restaurant offers a variety of dishes with free home delivery options. Located on the ground floor of Central Arcade, it is open from morning till late evening.",
         "openingtime": "10:00 am",
@@ -521,9 +535,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Academic Block 8",
+        "location": "Acad Block 8",
+        "locationdetailed": "Academic Block 8",
         "rating": "Not rated yet",
-        "ratingcount": "0 ratings",
+        "ratingcount": "0",
         "image": "https://www.example.com/terra_food_cafeteria.jpg",
         "details": "Terra Food Cafeteria offers a diverse menu within Academic Block 8. They are open from morning till early evening, catering to the campus community.",
         "openingtime": "10:00 am",
@@ -540,7 +555,7 @@ export const mockCampusShops = [
     //     "menu": [],
     //     "location": "Central Arcade, Shop Number - 113",
     //     "rating": "Not rated yet",
-    //     "ratingcount": "0 ratings",
+    //     "ratingcount": "0",
     //     "image": "https://www.example.com/safety_laundry.jpg",
     //     "details": "M/s Safety Laundry provides comprehensive laundry services. Located in Central Arcade, they operate from late morning until early evening.",
     //     "openingtime": "10:30 am",
@@ -575,9 +590,10 @@ export const mockCampusShops = [
                 ]
             }
         ],
-        "location": "Emiet",
+        "location": "Emiet Hostel",
+        "locationdetailed": "Emiet Hostel",
         "rating": "4.7",
-        "ratingcount": "600 ratings",
+        "ratingcount": "600",
         "image": "https://content.jdmagicbox.com/comp/surat/c5/0261px261.x261.200703011143.r4c5/catalogue/atul-bakery-kim-char-rasta-surat-bakeries-h3pa4un0w5.jpg",
         "details": "The outlet of Atul Bakery serves cakes, pastries, cookies, toasts and other bakery items.",
         "openingtime": "9:00 am",
