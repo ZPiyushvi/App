@@ -462,7 +462,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Stationery",
-        "menutype": "Stationery",
+        "menutype": " ",
         "menu": [
             {
                 "title": "Stationery",
@@ -489,7 +489,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Restaurant",
-        "menutype": "Multi-Cuisine",
+        "menutype": "Cuisine",
         "menu": [
             {
                 "title": "Meals",
@@ -520,7 +520,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Cafeteria",
-        "menutype": "Multi-Cuisine",
+        "menutype": "Cuisine",
         "menu": [
             {
                 "title": "Meals",

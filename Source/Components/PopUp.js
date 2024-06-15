@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useContext } from "react";
 import {
     Modal,
     Text,
@@ -16,12 +16,19 @@ import FoodTypeIcon from "./FoodTypeIcon";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
 import Colors from "./Colors";
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 
 const PopUp = () => {
     const slideAnim = useRef(new Animated.Value(500)).current;
     const navigation = useNavigation();
     const [Openmodal, setOpenmodal] = useState(false);
 
+    const { CartItems, setCartItems } = useContext(GlobalStateContext);
+
+    const renderAddToCart = (item) => {
+        setCartItems((prevItems) => [...prevItems, item]);
+    };
+    
     useEffect(() => {
         if (Openmodal) {
             Animated.timing(slideAnim, {
@@ -69,32 +76,32 @@ const PopUp = () => {
                                 // style={styles.popularFeatureImage}
                                 alt="Logo"
                             />
-                            <View className='w-full absolute bottom-0 p-4 rounded-t-2xl' style={{backgroundColor: 'rgba(0, 0, 0, 0.60)'}}>
+                            <View className='w-full absolute bottom-0 p-4 rounded-t-2xl' style={{ backgroundColor: 'rgba(0, 0, 0, 0.60)' }}>
                                 <View className=' flex-row justify-between'>
                                     <View>
-                                        <Text className=' text-xl font-bold' style={{color:Colors.dark.colors.mainTextColor}}>{data.item}</Text>
+                                        <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{data.item}</Text>
                                         {/* <Text className=' text-lg font-medium'>Item Name</Text> */}
                                     </View>
                                     <View className=' flex-row gap-3'>
-                                        <TouchableOpacity style={{backgroundColor: 'black'}} className=' rounded-full border-2 p-1'>
+                                        <TouchableOpacity style={{ backgroundColor: 'black' }} className=' rounded-full border-2 p-1'>
                                             <Ionicons name="heart-outline" size={20} color={'red'} />
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{backgroundColor: 'black'}} className=' rounded-full border-2 p-1'>
+                                        <TouchableOpacity style={{ backgroundColor: 'black' }} className=' rounded-full border-2 p-1'>
                                             <Ionicons name="arrow-redo-outline" size={20} color={'blue'} />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                                 <View className='flex-row'>
-                                {
-                                    data.type &&
-                                    <FoodIcon style={{backgroundColor: 'black'}} type={data.type} size={16} padding={2} />
-                                }
-                                {
-                                    data.category.split('_').map((part, index) => (
-                                        <FoodTypeIcon key={index} type={part} size={18} padding={6} />
-                                    ))
-                                }
-                            </View>
+                                    {
+                                        data.type &&
+                                        <FoodIcon style={{ backgroundColor: 'black' }} type={data.type} size={16} padding={2} />
+                                    }
+                                    {
+                                        data.category.split('_').map((part, index) => (
+                                            <FoodTypeIcon key={index} type={part} size={18} padding={6} />
+                                        ))
+                                    }
+                                </View>
                             </View>
                         </View>
 
@@ -105,9 +112,17 @@ const PopUp = () => {
                                 <TouchableOpacity className=' rounded-lg items-center justify-center w-[33%] py-3 px-10 bg-green-600' onPress={() => setOpenmodal(false)}>
                                     <Text style={styles.buttonText}>Add</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity className=' rounded-lg items-center justify-center w-[63%] py-3 px-10 bg-green-600' onPress={() => setOpenmodal(false)}>
-                                    <Text style={styles.buttonText}>Add item 99</Text>
+
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        renderAddToCart(data.item);
+                                        setOpenmodal(false);
+                                    }}
+                                    className='rounded-lg items-center justify-center w-[63%] py-3 px-10 bg-green-600'
+                                >
+                                    <Text style={styles.buttonText}>Add item ₹{data.price}</Text>
                                 </TouchableOpacity>
+
                             </View>
                         </View>
                     </Animated.View>

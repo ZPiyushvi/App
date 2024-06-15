@@ -5,6 +5,7 @@ import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 
 export const GlobalStateProvider = ({ children }) => {
+  const [CartItems, setCartItems] = useState([]);
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
 
@@ -32,7 +33,7 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   return (
-    <GlobalStateContext.Provider value={{ campusMenu, setcampusMenu }}>
+    <GlobalStateContext.Provider value={{ campusMenu, setcampusMenu, CartItems, setCartItems }}>
       {children}
     </GlobalStateContext.Provider>
   );

@@ -21,16 +21,16 @@ const SlideItems = ({ item }) => {
                     alt="Logo"
                 />
                 <View style={styles.popularFeaturesContent}>
-                    <Text className='text-base font-bold' style={{ color: Colors.dark.colors.textColor }}>{item.menutype}</Text>
-                    <Text className='text-xl font-normal' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(item.name, 13)}</Text>
+                    <Text className='font-extrabold text-lg' style={{ color: Colors.dark.colors.textColor }}>{item.menutype}</Text>
+                    <Text className='font-normal text-xl -mt-1' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(item.name, 12)}</Text>
                     <TouchableOpacity
-                        className='justify-center items-center rounded-md mt-1 px-2 py-1'
+                        className='justify-center items-center rounded-md mt-2 px-3 py-1'
                         style={{
                             backgroundColor: Colors.dark.colors.diffrentColorOrange,
                             alignSelf: 'flex-start',
                         }}
                     >
-                        <Text className='text-[#F7F6BB] text-base font-bold'>Buy now</Text>
+                        <Text className='text-base font-bold' style={{color:Colors.dark.colors.mainTextColor}}>Buy now</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     popularFeatureBodyContainer: {
         marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
         // marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
-        height: Dimensions.get('window').height * 0.168,
+        height: Dimensions.get('window').height * 0.170,
         width: Dimensions.get('window').width * 0.94,
         // padding: 12,
         backgroundColor: Colors.dark.colors.secComponentColor, // bg color

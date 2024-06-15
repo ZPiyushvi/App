@@ -1,50 +1,75 @@
-import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { mockCampusShops } from '../Data/mockCampusShops';
+import MasonryList from '@react-native-seoul/masonry-list';
+import CoffeeCard from '../Components/CoffeeCart';
 
 export default function Like() {
   return (
     <View style={styles.container}>
-      <LinearGradient
-      // start={{x: 0.5, y: 0.5}} 
-      // end={{x: 0.5, y: 1.0}}
-      // locations={[0,0.5,0.6]}
-        // Background Linear Gradient
-        colors={['rgba(0,0,0,0.8)', 'transparent']}
-        style={styles.background}
-      />
-      <LinearGradient
-        // Button Linear Gradient
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-        style={styles.button}>
-        <Text style={styles.text}>Sign in with Facebook</Text>
-      </LinearGradient>
+      <Text style={styles.headerText}>Recipe</Text>
+      <View>
+        <FlatList
+          data={mockCampusShops}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
+          columnWrapperStyle={{
+            justifyContent: 'space-between'
+          }}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          showsHorizontalScrollIndicator={false}
+        />
+        {/* <MasonryList
+          data={mockCampusShops}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.masonryContentContainer}
+          columnWrapperStyle={styles.masonryColumnWrapper}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          showsHorizontalScrollIndicator={false}
+        /> */}
+      </View>
     </View>
   );
 }
 
+const renderItem = ({ item }) => {
+  return (
+    <View style={styles.itemContainer}>
+      <CoffeeCard data={item} />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'red',
+    paddingHorizontal: 12,
+    paddingTop: 16,
+    backgroundColor: '#fff',
   },
-  background: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    height: 300,
+  headerText: {
+    fontSize: 33,
+    fontWeight: '600',
+    color: '#4B5563', // Neutral-600 color
+    marginBottom: 20,
   },
-  button: {
-    padding: 15,
-    alignItems: 'center',
-    borderRadius: 5,
+  masonryContentContainer: {
+    paddingBottom: 50,
+    paddingTop: 20,
   },
-  text: {
-    backgroundColor: 'transparent',
-    fontSize: 15,
-    color: '#fff',
+  masonryColumnWrapper: {
+    justifyContent: 'space-between',
+  },
+  itemContainer: {
+    marginBottom: 20,
+  },
+  itemText: {
+    fontSize: 16,
+    color: '#000',
   },
 });
+

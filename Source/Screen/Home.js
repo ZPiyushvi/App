@@ -62,7 +62,7 @@ const Cart = () => {
   };
 
   return (
-    <View className={`bodyContainer w-full bg-[] flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+    <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
       <LinearGradient
         // Button Linear Gradient
         colors={[Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
@@ -79,12 +79,12 @@ const Cart = () => {
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
 
-            <View className='searchBodyContainer mt-14 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+            <View className='searchBodyContainer mt-11 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
               <View className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row '>
-                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent("Owner Full UserName", 18)}</Text>
+                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent("Owner Full UserName", 16)} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
                   <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{TruncatedTextComponent("plot number 45, new row house", 27)}</Text>
@@ -92,7 +92,7 @@ const Cart = () => {
               </View>
               <View className='address flex-row gap-2 items-center'>
                 <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                <Ionicons color={Colors.dark.colors.textColor} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
             </View>
 

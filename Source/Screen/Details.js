@@ -1,10 +1,11 @@
 // Details.js
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { View, ScrollView, Image, Animated, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import PopUp from '../Components/PopUp';
 import Colors from '../Components/Colors';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const BANNER_H = 400;
 
@@ -13,16 +14,17 @@ const Details = ({ route }) => {
     const scrollA = useRef(new Animated.Value(0)).current;
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
     const [selectedItemData, setSelectedItemData] = useState(null);
+    const { CartItems, setCartItems } = useContext(GlobalStateContext);
+
+    const renderAddToCart = ({ item }) => {
+        setCartItems([...CartItems, item]);
+        { console.log(CartItems) }
+    }
 
     const viewabilityMenuConfig = {
         itemVisiblePercentThreshold: 50
     };
 
-    const renderAddToCart = ({ item }) => {
-        const [quantity, setQuantity] = useState(0);
-        setQuantity(quantity++)
-        { console.log(quantity) }
-    }
 
     const renderDropdown = ({ typetitle, items }) => {
         const [openDropDown, setOpenDropDown] = useState(true); // State to manage dropdown visibility

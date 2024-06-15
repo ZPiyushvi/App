@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 15,
-        height: Dimensions.get('window').height * 0.18,
+        height: Dimensions.get('window').height * 0.20,
         width: Dimensions.get('window').height * 0.14,
     },
     txt: {
