@@ -8,10 +8,12 @@ const HomeScreen = () => {
   return (
     <View>
       {CartItems.map((item, index) => (
-        <Text className=' text-3xl font-extrabold' key={index}>
-          {console.log(item)}
-          {item}
-        </Text>
+        <View>
+            <Text className=' text-3xl font-extrabold' key={index}>
+              {item.item}
+              {console.log(item.item)}
+            </Text>
+        </View>
       ))}
     </View>
   );

@@ -1,6 +1,6 @@
 // Details.js
 import React, { useContext, useRef, useState } from 'react';
-import { View, ScrollView, Image, Animated, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, Animated, Text, FlatList, TouchableOpacity, TextInput, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import PopUp from '../Components/PopUp';
@@ -10,21 +10,49 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 const BANNER_H = 400;
 
 const Details = ({ route }) => {
+    // const [value, setValue] = useState('');
     const { data } = route.params || {};
     const scrollA = useRef(new Animated.Value(0)).current;
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
-    const [selectedItemData, setSelectedItemData] = useState(null);
+    const [selectedItemData, setSelectedItemData] = useState();
+
     const { CartItems, setCartItems } = useContext(GlobalStateContext);
 
-    const renderAddToCart = ({ item }) => {
-        setCartItems([...CartItems, item]);
-        { console.log(CartItems) }
-    }
+    const renderAddToCart = (item) => {
+        setCartItems(prevCartItems => [...prevCartItems, item]);
+    };
 
     const viewabilityMenuConfig = {
         itemVisiblePercentThreshold: 50
     };
 
+    const [quantity, setQuantity] = useState(0);
+
+    const handleIncrement = () => {
+        setQuantity(quantity + 1); // Increment quantity for this item
+    };
+    const handleDecrement = () => {
+        if (quantity > 0) {
+            setQuantity(quantity - 1); // Decrement quantity, but ensure it doesn't go below 0
+        }
+    };
+
+    const RenderInputText = () => {
+        const [value, setValue] = React.useState('');
+
+        const handleChange = (newValue) => {
+            setValue(newValue);
+        };
+
+        return (
+            <TextInput
+                style={[styles.textInput, { backgroundColor: Colors.dark.colors.secComponentColor }]}
+                value={value}
+                onChangeText={handleChange}
+                keyboardType="numeric"
+            />
+        );
+    };
 
     const renderDropdown = ({ typetitle, items }) => {
         const [openDropDown, setOpenDropDown] = useState(true); // State to manage dropdown visibility
@@ -34,14 +62,47 @@ const Details = ({ route }) => {
         };
 
         const renderItem = ({ item }) => (
-            <TouchableOpacity
-                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+            <View
                 className=' flex-row justify-between items-center'
                 style={{ backgroundColor: 'fuchsia', padding: 30 }}
             >
-                <View>
+                <TouchableOpacity
+                    onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+                >
                     <Text>{item.item} - ₹{item.price}</Text>
-                </View>
+                    <Text>{quantity}</Text>
+                    {item.size && item.size.length > 0 && (
+                        item.size[0] === "noncountable" ? (
+                            <RenderInputText />
+                        ) : item.size[0] === "countable" ? (
+                            <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                                {item.size.map((size, index) => {
+                                    if (index >= 1) { // Start rendering from the second index
+                                        return (
+                                            <TouchableOpacity key={index}>
+                                                <Text
+                                                    className='searchIcon'
+                                                    style={{
+                                                        color: Colors.dark.colors.diffrentColorOrange,
+                                                        backgroundColor: Colors.dark.colors.secComponentColor,
+                                                        borderRadius: 15,
+                                                        width: 50,
+                                                        height: 50,
+                                                        textAlign: 'center',
+                                                        textAlignVertical: 'center',
+                                                    }}
+                                                >
+                                                    {size}
+                                                    {/* {console.log(size)} */}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        );
+                                    }
+                                })}
+                            </View>
+                        ) : null
+                    )}
+                </TouchableOpacity>
                 <View>
                     <Image
                         source={{
@@ -55,16 +116,31 @@ const Details = ({ route }) => {
                         style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
                         alt="Logo"
                     />
-                    <TouchableOpacity
-                        onPress={() => { renderAddToCart(item) }}
+                    <View
                         style={styles.button}
-                        className=' absolute top-32 left-4 w-28 h-9'
+                        className=' absolute top-32 left-4 w-28 h-9 flex-row overflow-hidden'
                     >
-                        <Text style={styles.buttonTxt}>Add to Cart</Text>
-                    </TouchableOpacity>
+                        {/* <Text style={styles.buttonTxt}>Add to Cart</Text> */}
+                        {quantity ? (
+                            <>
+                                <TouchableOpacity className='z-10 left-0 absolute w-6/12 p-3' onPress={handleDecrement}>
+                                    <Text style={styles.buttonTxt}>-</Text>
+                                </TouchableOpacity>
+                                <Text style={styles.buttonTxt}>{quantity}</Text>
+                                <TouchableOpacity className=' right-0 absolute w-5/12 p-3' onPress={handleIncrement}>
+                                    <Text style={styles.buttonTxt}>+</Text>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            <TouchableOpacity className='w-full h-full justify-center items-center'  onPress={()=>{handleIncrement(), renderAddToCart(item)}}>
+                                <Text style={styles.buttonTxt}>Add to Cart</Text>
+                            </TouchableOpacity>
+                        )}
+
+                    </View>
                 </View>
 
-            </TouchableOpacity>
+            </View>
         );
 
         return (
@@ -104,11 +180,11 @@ const Details = ({ route }) => {
         const openingDifference = openingMoment.diff(currentTime, 'minutes');
         const closingDifference = closingMoment.diff(currentTime, 'minutes');
 
-        console.log("Current Time:", currentTime.format('LT'));
-        console.log("Opening Time:", openingMoment.format('LT'));
-        console.log("Closing Time:", closingMoment.format('LT'));
-        console.log("openingDifference", openingDifference);
-        console.log("closingDifference", closingDifference);
+        // console.log("Current Time:", currentTime.format('LT'));
+        // console.log("Opening Time:", openingMoment.format('LT'));
+        // console.log("Closing Time:", closingMoment.format('LT'));
+        // console.log("openingDifference", openingDifference);
+        // console.log("closingDifference", closingDifference);
 
         if (currentTime.isBetween(openingMoment, closingMoment)) {
             return (
@@ -241,6 +317,13 @@ const Details = ({ route }) => {
 };
 
 const styles = {
+    textInput: {
+        flex: 1,
+        paddingLeft: 60, // Padding to make space for the icon
+        fontSize: 16,
+        borderRadius: 15,
+    },
+
     bottomContainer: {
         position: 'absolute',
         bottom: 0,
@@ -252,8 +335,8 @@ const styles = {
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 8, // Adjust padding instead of fixed height
-        paddingHorizontal: 10, // Add padding for horizontal space
+        // paddingVertical: 8, // Adjust padding instead of fixed height
+        // paddingHorizontal: 10, // Add padding for horizontal space
         backgroundColor: '#114232',
     },
     buttonTxt: {

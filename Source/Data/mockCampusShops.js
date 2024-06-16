@@ -11,10 +11,10 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea. Traditional Indian spiced tea. Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "item": "Masala Chai", "price": "50", "size":["noncountable"], "description": "Traditional Indian spiced tea. Traditional Indian spiced tea. Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
+                    { "item": "Cold Coffee", "price": "70", "size":["countable", "small", "large"], "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
+                    { "item": "Cold Coco", "price": "60", "size":["noncountable"], "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
+                    { "item": "Iced Tea", "price": "65", "size":["countable", "small", "large"], "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
                 ]
             },
             {
@@ -32,22 +32,6 @@ export const mockCampusShops = [
                     { "item": "Thepla", "price": "30", "description": "Gujarati flatbread seasoned with spices.", "type": "Veg", "category": "Hot_Meal", "image": "https://pipingpotcurry.com/wp-content/uploads/2023/03/methi-thepla-recipe.jpg" },
                     { "item": "Poha", "price": "35", "description": "Flattened rice cooked with spices and vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg" },
                     { "item": "Upma", "price": "35", "description": "South Indian dish made from semolina.", "type": "Veg", "category": "Hot_Meal", "image": "https://www.dwarakaorganic.com/wp-content/uploads/2022/04/Upma-870x470.jpg" }
-                ]
-            },
-            {
-                "title": "Snacks",
-                "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
-                    { "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg" },
-                    { "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351" }
-                ]
-            },
-            {
-                "title": "Snacks",
-                "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
-                    { "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg" },
-                    { "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351" }
                 ]
             },
         ],
