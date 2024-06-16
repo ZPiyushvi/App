@@ -11,30 +11,30 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "size":["noncountable"], "description": "Traditional Indian spiced tea. Traditional Indian spiced tea. Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea. \n Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "size":["countable", "small", "large"], "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "size":["noncountable"], "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "size":["countable", "small", "large"], "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
-                    { "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg" },
-                    { "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351" }
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351", "quantity": "0" }
                 ]
             },
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Noodles", "price": "90", "description": "Stir-fried noodles with vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://recipetineats.com/wp-content/uploads/2019/11/Lo-Mein_3.jpg" },
-                    { "item": "Thepla", "price": "30", "description": "Gujarati flatbread seasoned with spices.", "type": "Veg", "category": "Hot_Meal", "image": "https://pipingpotcurry.com/wp-content/uploads/2023/03/methi-thepla-recipe.jpg" },
-                    { "item": "Poha", "price": "35", "description": "Flattened rice cooked with spices and vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg" },
-                    { "item": "Upma", "price": "35", "description": "South Indian dish made from semolina.", "type": "Veg", "category": "Hot_Meal", "image": "https://www.dwarakaorganic.com/wp-content/uploads/2022/04/Upma-870x470.jpg" }
+                    { "id": "1", "item": "Noodles", "price": "90", "description": "Stir-fried noodles with vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://recipetineats.com/wp-content/uploads/2019/11/Lo-Mein_3.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Thepla", "price": "30", "description": "Gujarati flatbread seasoned with spices.", "type": "Veg", "category": "Hot_Meal", "image": "https://pipingpotcurry.com/wp-content/uploads/2023/03/methi-thepla-recipe.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Poha", "price": "35", "description": "Flattened rice cooked with spices and vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg", "quantity": "0" },
+                    { "id": "4", "item": "Upma", "price": "35", "description": "South Indian dish made from semolina.", "type": "Veg", "category": "Hot_Meal", "image": "https://www.dwarakaorganic.com/wp-content/uploads/2022/04/Upma-870x470.jpg", "quantity": "0" }
                 ]
-            },
-        ],
+            }
+        ],    
         "location": "Emiet Hostel",
         "locationdetailed": "Emiet Hostel",
         "rating": "4.5",
@@ -56,14 +56,14 @@ export const mockCampusShops = [
             {
                 "title": "Desserts",
                 "items": [
-                    { "item": "Amul TriCone", "price": "50", "description": "Creamy frozen dessert in various flavors.", "type": "Veg", "category": "Cold_Dessert", "image": "https://i.pinimg.com/736x/33/e6/ff/33e6ff011d887758fa255ea000d3be4c.jpg" },
-                    { "item": "Amul Chocominis", "price": "40", "description": "Rich and indulgent chocolate.", "type": "Veg", "category": "Cold_Dessert", "image": "https://www.shutterstock.com/shutterstock/photos/1878842344/display_1500/stock-photo-india-april-chocolate-brand-amul-chocominis-1878842344.jpg" }
+                    { "id": "1", "item": "Amul TriCone", "price": "50", "description": "Creamy frozen dessert in various flavors.", "type": "Veg", "category": "Cold_Dessert", "image": "https://i.pinimg.com/736x/33/e6/ff/33e6ff011d887758fa255ea000d3be4c.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Amul Chocominis", "price": "40", "description": "Rich and indulgent chocolate.", "type": "Veg", "category": "Cold_Dessert", "image": "https://www.shutterstock.com/shutterstock/photos/1878842344/display_1500/stock-photo-india-april-chocolate-brand-amul-chocominis-1878842344.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://d161wrq7muokn7.cloudfront.net/images/product/600.600/Summer-Drinks-Amul.jpg" }
+                    { "id": "1", "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://d161wrq7muokn7.cloudfront.net/images/product/600.600/Summer-Drinks-Amul.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -89,9 +89,9 @@ export const mockCampusShops = [
             {
                 "title": "Stationery",
                 "items": [
-                    { "item": "Doms Pencil Sets", "price": "5", "description": "Various stationery items.", "category": "Stationery", "image": "https://cdn.shopify.com/s/files/1/0549/6982/7490/products/DSCN5545.jpg" },
-                    { "item": "Classmate Pulse Subject Notebook", "price": "60", "description": "Various stationery items.", "category": "Stationery", "image": "https://offimart.com/9506-large_default/classmate-pulse-1-subject-notebook-240mm-x-180mm-soft-cover-180-pages-single-line.jpg" },
-                    { "item": "Parker Pen", "price": "50", "description": "Various stationery items.", "category": "Stationery", "image": "https://www.dhresource.com/260x260/f2/albu/g5/M00/3F/81/rBVaJFkabvWAFZDQAAUf4v-o9gE173.jpg" }
+                    { "id": "1", "item": "Doms Pencil Sets", "price": "5", "description": "Various stationery items.", "category": "Stationery", "image": "https://cdn.shopify.com/s/files/1/0549/6982/7490/products/DSCN5545.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Classmate Pulse Subject Notebook", "price": "60", "description": "Various stationery items.", "category": "Stationery", "image": "https://offimart.com/9506-large_default/classmate-pulse-1-subject-notebook-240mm-x-180mm-soft-cover-180-pages-single-line.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Parker Pen", "price": "50", "description": "Various stationery items.", "category": "Stationery", "image": "https://www.dhresource.com/260x260/f2/albu/g5/M00/3F/81/rBVaJFkabvWAFZDQAAUf4v-o9gE173.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -116,16 +116,16 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -150,16 +150,16 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -203,19 +203,19 @@ export const mockCampusShops = [
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Chicken Curry", "price": "150", "description": "Spicy chicken curry served with rice or bread.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/09/kolhapuri-chicken-recipe.jpg" },
-                    { "item": "Chicken Rice", "price": "200", "description": "Chicken cooked with rice and spices.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.kannammacooks.com/wp-content/uploads/street-style-chicken-rice-recipe-1-3.jpg" },
+                    { "id": "1", "item": "Chicken Curry", "price": "150", "description": "Spicy chicken curry served with rice or bread.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/09/kolhapuri-chicken-recipe.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Chicken Rice", "price": "200", "description": "Chicken cooked with rice and spices.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.kannammacooks.com/wp-content/uploads/street-style-chicken-rice-recipe-1-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Roll",
                 "items": [
-                    { "item": "Egg Roll", "price": "200", "description": "Egg wrapped in flatbread with sauces.", "type": "NonVeg", "category": "Snacks", "image": "https://static.wixstatic.com/media/05c508_45d4d6bcbf404857a08b1965018af143~mv2.jpg/v1/fill/w_640,h_640,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/05c508_45d4d6bcbf404857a08b1965018af143~mv2.jpg" }
+                    { "id": "1", "item": "Egg Roll", "price": "200", "description": "Egg wrapped in flatbread with sauces.", "type": "NonVeg", "category": "Snacks", "image": "https://static.wixstatic.com/media/05c508_45d4d6bcbf404857a08b1965018af143~mv2.jpg/v1/fill/w_640,h_640,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/05c508_45d4d6bcbf404857a08b1965018af143~mv2.jpg", "quantity": "0" }
                 ]
-            },
+            }
         ],
         "location": "Hiqom Hostel",
-        "locationdetailed":  "Hiqom Hostel",
+        "locationdetailed": "Hiqom Hostel",
         "rating": "4.7",
         "ratingcount": "400",
         "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/dawat.jpg",
@@ -235,13 +235,13 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Orange Juice", "price": "50", "description": "Freshly squeezed orange juice.", "type": "Veg", "category": "Beverage", "image": "https://hips.hearstapps.com/hmg-prod/images/is-orange-juice-healthy-1578411142.jpg?crop=0.8893081761006288xw:1xh;center,top&resize=1200:*" },
-                    { "item": "Mango Shake", "price": "70", "description": "Thick and luscious mango-flavored shake.", "type": "Veg", "category": "Cold_Beverage", "image": "https://gheespot.com/wp-content/uploads/2019/09/Mango-Shake.jpeg" }
+                    { "id": "1", "item": "Orange Juice", "price": "50", "description": "Freshly squeezed orange juice.", "type": "Veg", "category": "Beverage", "image": "https://hips.hearstapps.com/hmg-prod/images/is-orange-juice-healthy-1578411142.jpg?crop=0.8893081761006288xw:1xh;center,top&resize=1200:*", "quantity": "0" },
+                    { "id": "2", "item": "Mango Shake", "price": "70", "description": "Thick and luscious mango-flavored shake.", "type": "Veg", "category": "Cold_Beverage", "image": "https://gheespot.com/wp-content/uploads/2019/09/Mango-Shake.jpeg", "quantity": "0" }
                 ]
             }
         ],
         "locationdetailed": "Sport Complex, Near the Gym",
-        "location":  "Sport Complex",
+        "location": "Sport Complex",
         "rating": "4.3",
         "ratingcount": "311",
         "image": "https://content.jdmagicbox.com/comp/gandhinagar-gujarat/j6/9999pxx79.xx79.230912003229.b7j6/catalogue/samyak-juice-gandhinagar-gujarat-juice-centres-fqv4zbv421.jpg", // Remaining to edit Store Image
@@ -261,9 +261,9 @@ export const mockCampusShops = [
             {
                 "title": "Produce",
                 "items": [
-                    { "item": "Apple", "price": "100", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://hips.hearstapps.com/hmg-prod/images/apples-at-farmers-market-royalty-free-image-1627321463.jpg?crop=1.00xw:0.631xh;0.00160xw,0.206xh&resize=1200:*" },
-                    { "item": "Kiwi", "price": "60", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://cookingchew.com/wp-content/uploads/2022/03/How-To-Store-Kiwi-CO1620-Pin-7.jpg.webp" },
-                    { "item": "Banana", "price": "120", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://hips.hearstapps.com/hmg-prod/images/ripe-yellow-bananas-at-the-shopping-market-fruits-royalty-free-image-1712833209.jpg?crop=0.66635xw:1xh;center,top&resize=640:*" }
+                    { "id": "1", "item": "Apple", "price": "100", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://hips.hearstapps.com/hmg-prod/images/apples-at-farmers-market-royalty-free-image-1627321463.jpg?crop=1.00xw:0.631xh;0.00160xw,0.206xh&resize=1200:*", "quantity": "0" },
+                    { "id": "2", "item": "Kiwi", "price": "60", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://cookingchew.com/wp-content/uploads/2022/03/How-To-Store-Kiwi-CO1620-Pin-7.jpg.webp", "quantity": "0" },
+                    { "id": "3", "item": "Banana", "price": "120", "description": "Assorted fresh vegetables.", "type": "Veg", "category": "Fresh", "image": "https://hips.hearstapps.com/hmg-prod/images/ripe-yellow-bananas-at-the-shopping-market-fruits-royalty-free-image-1712833209.jpg?crop=0.66635xw:1xh;center,top&resize=640:*", "quantity": "0" }
                 ]
             }
         ],
@@ -288,14 +288,14 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" },
-                    { "item": "Orange Juice", "price": "50", "description": "Freshly squeezed orange juice.", "type": "Veg", "category": "Beverage", "image": "https://hips.hearstapps.com/hmg-prod/images/is-orange-juice-healthy-1578411142.jpg?crop=0.8893081761006288xw:1xh;center,top&resize=1200:*" },
-                    { "item": "Mango Shake", "price": "70", "description": "Thick and luscious mango-flavored shake.", "type": "Veg", "category": "Cold_Beverage", "image": "https://gheespot.com/wp-content/uploads/2019/09/Mango-Shake.jpeg" },
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" },
+                    { "id": "5", "item": "Orange Juice", "price": "50", "description": "Freshly squeezed orange juice.", "type": "Veg", "category": "Beverage", "image": "https://hips.hearstapps.com/hmg-prod/images/is-orange-juice-healthy-1578411142.jpg?crop=0.8893081761006288xw:1xh;center,top&resize=1200:*", "quantity": "0" },
+                    { "id": "6", "item": "Mango Shake", "price": "70", "description": "Thick and luscious mango-flavored shake.", "type": "Veg", "category": "Cold_Beverage", "image": "https://gheespot.com/wp-content/uploads/2019/09/Mango-Shake.jpeg", "quantity": "0" }
                 ]
-            },
+            }
         ],
         "location": "Emiet Hostel",
         "locationdetailed": "Emiet Hostel",
@@ -335,16 +335,16 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -369,25 +369,25 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
-                    { "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy" },
-                    { "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg" }
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0" },
+                    { "id": "4", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
-                    { "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg" },
-                    { "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351" }
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Puff", "price": "40", "description": "Flaky pastry filled with savory stuffing.", "type": "Veg", "category": "Snacks", "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351", "quantity": "0" }
                 ]
             },
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Noodles", "price": "90", "description": "Stir-fried noodles with vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://recipetineats.com/wp-content/uploads/2019/11/Lo-Mein_3.jpg" },
-                    { "item": "Poha", "price": "35", "description": "Flattened rice cooked with spices and vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg" },
+                    { "id": "1", "item": "Noodles", "price": "90", "description": "Stir-fried noodles with vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://recipetineats.com/wp-content/uploads/2019/11/Lo-Mein_3.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Poha", "price": "35", "description": "Flattened rice cooked with spices and vegetables.", "type": "Veg", "category": "Hot_Meal", "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -412,21 +412,21 @@ export const mockCampusShops = [
             {
                 "title": "Beverages",
                 "items": [
-                    { "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292" },
-                    { "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg" },
+                    { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0" },
+                    { "id": "2", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg" },
-                    { "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg" },
+                    { "id": "1", "item": "Sandwich", "price": "100", "description": "Classic sandwich with assorted fillings.", "type": "Veg", "category": "Snacks", "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Maggi", "price": "80", "description": "Popular instant noodles dish.", "type": "Veg", "category": "Snacks", "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Chicken Rice", "price": "200", "description": "Chicken cooked with rice and spices.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.kannammacooks.com/wp-content/uploads/street-style-chicken-rice-recipe-1-3.jpg" },
+                    { "id": "1", "item": "Chicken Rice", "price": "200", "description": "Chicken cooked with rice and spices.", "type": "NonVeg", "category": "Hot_Meal", "image": "https://www.kannammacooks.com/wp-content/uploads/street-style-chicken-rice-recipe-1-3.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -451,9 +451,9 @@ export const mockCampusShops = [
             {
                 "title": "Stationery",
                 "items": [
-                    { "item": "Doms Pencil Sets", "price": "5", "description": "Various stationery items.", "category": "Stationery", "image": "https://cdn.shopify.com/s/files/1/0549/6982/7490/products/DSCN5545.jpg" },
-                    { "item": "Classmate Pulse Subject Notebook", "price": "60", "description": "Various stationery items.", "category": "Stationery", "image": "https://offimart.com/9506-large_default/classmate-pulse-1-subject-notebook-240mm-x-180mm-soft-cover-180-pages-single-line.jpg" },
-                    { "item": "Parker Pen", "price": "50", "description": "Various stationery items.", "category": "Stationery", "image": "https://www.dhresource.com/260x260/f2/albu/g5/M00/3F/81/rBVaJFkabvWAFZDQAAUf4v-o9gE173.jpg" }
+                    { "id": "1", "item": "Doms Pencil Sets", "price": "5", "description": "Various stationery items.", "category": "Stationery", "image": "https://cdn.shopify.com/s/files/1/0549/6982/7490/products/DSCN5545.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Classmate Pulse Subject Notebook", "price": "60", "description": "Various stationery items.", "category": "Stationery", "image": "https://offimart.com/9506-large_default/classmate-pulse-1-subject-notebook-240mm-x-180mm-soft-cover-180-pages-single-line.jpg", "quantity": "0" },
+                    { "id": "3", "item": "Parker Pen", "price": "50", "description": "Various stationery items.", "category": "Stationery", "image": "https://www.dhresource.com/260x260/f2/albu/g5/M00/3F/81/rBVaJFkabvWAFZDQAAUf4v-o9gE173.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -478,13 +478,13 @@ export const mockCampusShops = [
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Thali", "price": "100", "description": "Traditional Indian meal served on a platter.", "type": "Veg", "category": "Hot_Meal", "image": "https://rakskitchen.net/wp-content/uploads/2016/07/indian-lunch-menu.jpg" }
+                    { "id": "1", "item": "Thali", "price": "100", "description": "Traditional Indian meal served on a platter.", "type": "Veg", "category": "Hot_Meal", "image": "https://rakskitchen.net/wp-content/uploads/2016/07/indian-lunch-menu.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Masala Dosa", "price": "80", "description": "South Indian crispy crepe filled with spicy potato.", "type": "Veg", "category": "Hot_Snacks", "image": "https://www.cookwithmanali.com/wp-content/uploads/2020/05/Masala-Dosa.jpg" }
+                    { "id": "1", "item": "Masala Dosa", "price": "80", "description": "South Indian crispy crepe filled with spicy potato.", "type": "Veg", "category": "Hot_Snacks", "image": "https://www.cookwithmanali.com/wp-content/uploads/2020/05/Masala-Dosa.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -509,13 +509,13 @@ export const mockCampusShops = [
             {
                 "title": "Meals",
                 "items": [
-                    { "item": "Thali", "price": "100", "description": "Traditional Indian meal served on a platter.", "type": "Veg", "category": "Hot_Meal", "image": "https://rakskitchen.net/wp-content/uploads/2016/07/indian-lunch-menu.jpg" }
+                    { "id": "1", "item": "Thali", "price": "100", "description": "Traditional Indian meal served on a platter.", "type": "Veg", "category": "Hot_Meal", "image": "https://rakskitchen.net/wp-content/uploads/2016/07/indian-lunch-menu.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Snacks",
                 "items": [
-                    { "item": "Masala Dosa", "price": "80", "description": "South Indian crispy crepe filled with spicy potato.", "type": "Veg", "category": "Hot_Snacks", "image": "https://www.cookwithmanali.com/wp-content/uploads/2020/05/Masala-Dosa.jpg" }
+                    { "id": "1", "item": "Masala Dosa", "price": "80", "description": "South Indian crispy crepe filled with spicy potato.", "type": "Veg", "category": "Hot_Snacks", "image": "https://www.cookwithmanali.com/wp-content/uploads/2020/05/Masala-Dosa.jpg", "quantity": "0" }
                 ]
             }
         ],
@@ -557,20 +557,20 @@ export const mockCampusShops = [
             {
                 "title": "Cakes",
                 "items": [
-                    { "item": "Black Forest Cake", "price": "500", "description": "Chocolate sponge cake with layers of cream.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://t3.ftcdn.net/jpg/01/20/25/63/360_F_120256331_1K56TF5kDxM88iBuM5vlx9v3QLTzASNT.jpg" }
+                    { "id": "1", "item": "Black Forest Cake", "price": "500", "description": "Chocolate sponge cake with layers of cream.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://t3.ftcdn.net/jpg/01/20/25/63/360_F_120256331_1K56TF5kDxM88iBuM5vlx9v3QLTzASNT.jpg", "quantity": "0" }
                 ]
             },
             {
                 "title": "Pastries",
                 "items": [
-                    { "item": "Red Velvet Pastry", "price": "60", "description": "Red velvet flavored pastry.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://www.bakerykart.com/images/productimg/large/815.jpg" },
-                    { "item": "Blueberry Pastry", "price": "70", "description": "Blueberry flavored pastry.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://bakingo.com/sites/default/files/styles/rdt_img_300_325/public/Blueberry-Cake-Delivery-in-Gurgaon.png" }
+                    { "id": "1", "item": "Red Velvet Pastry", "price": "60", "description": "Red velvet flavored pastry.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://www.bakerykart.com/images/productimg/large/815.jpg", "quantity": "0" },
+                    { "id": "2", "item": "Blueberry Pastry", "price": "70", "description": "Blueberry flavored pastry.", "type": "Veg", "category": "Bakery_Dessert", "image": "https://bakingo.com/sites/default/files/styles/rdt_img_300_325/public/Blueberry-Cake-Delivery-in-Gurgaon.png", "quantity": "0" }
                 ]
             },
             {
                 "title": "Breads",
                 "items": [
-                    { "item": "Garlic Bread", "price": "40", "description": "Bread topped with garlic and olive oil.", "type": "Veg", "category": "Bakery_Bread", "image": "https://www.shutterstock.com/shutterstock/photos/1495273681/display_1500/stock-photo-hot-homemade-garlic-bread-loaf-1495273681.jpg" }
+                    { "id": "1", "item": "Garlic Bread", "price": "40", "description": "Bread topped with garlic and olive oil.", "type": "Veg", "category": "Bakery_Bread", "image": "https://www.shutterstock.com/shutterstock/photos/1495273681/display_1500/stock-photo-hot-homemade-garlic-bread-loaf-1495273681.jpg", "quantity": "0" }
                 ]
             }
         ],
