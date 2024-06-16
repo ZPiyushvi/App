@@ -4,17 +4,19 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 const BANNER_H = 350;
 
 const HomeScreen = () => {
-  const { CartItems, setCartItems } = useContext(GlobalStateContext);
+  const { CartItems, setCartItems, setQuantity, quantity} = useContext(GlobalStateContext);
   return (
     <View>
       {CartItems.map((item, index) => (
         <View>
             <Text className=' text-3xl font-extrabold' key={index}>
-              {item.item}
-              {console.log(item.item)}
+              {item.amount}
+              {item.data.item}
+              {}
             </Text>
         </View>
       ))}
+
     </View>
   );
 };

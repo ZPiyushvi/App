@@ -16,17 +16,16 @@ const Details = ({ route }) => {
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
     const [selectedItemData, setSelectedItemData] = useState();
 
-    const { CartItems, setCartItems } = useContext(GlobalStateContext);
+    const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
 
     const renderAddToCart = (item) => {
+        {console.log(CartItems)}
         setCartItems(prevCartItems => [...prevCartItems, item]);
     };
 
     const viewabilityMenuConfig = {
         itemVisiblePercentThreshold: 50
     };
-
-    const [quantity, setQuantity] = useState(0);
 
     const handleIncrement = () => {
         setQuantity(quantity + 1); // Increment quantity for this item
@@ -132,7 +131,7 @@ const Details = ({ route }) => {
                                 </TouchableOpacity>
                             </>
                         ) : (
-                            <TouchableOpacity className='w-full h-full justify-center items-center'  onPress={()=>{handleIncrement(), renderAddToCart(item)}}>
+                            <TouchableOpacity className='w-full h-full justify-center items-center' onPress={() => { handleIncrement(), renderAddToCart({ data: item, amount: 1 }) }}>
                                 <Text style={styles.buttonTxt}>Add to Cart</Text>
                             </TouchableOpacity>
                         )}
@@ -297,7 +296,7 @@ const Details = ({ route }) => {
                     </React.Fragment>
                 ))}
 
-                {renderModal({ data: selectedItemData })}
+                {/* {renderModal({ data: selectedItemData })} */}
             </Animated.ScrollView>
 
             {/* MenuScrollView */}

@@ -6,8 +6,10 @@ import { mockCampusMenu } from "../Data/mockCampusMenu";
 
 export const GlobalStateProvider = ({ children }) => {
   const [CartItems, setCartItems] = useState([]);
+  // const [CartItems, setCartItems] = useState([{ data, amount }]);
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     fetchFeatures();
@@ -33,7 +35,7 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   return (
-    <GlobalStateContext.Provider value={{ campusMenu, setcampusMenu, CartItems, setCartItems }}>
+    <GlobalStateContext.Provider value={{ quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems }}>
       {children}
     </GlobalStateContext.Provider>
   );
