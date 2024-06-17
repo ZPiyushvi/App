@@ -23,7 +23,7 @@ const DetailsScreen = ({ route }) => {
         });
         return initialDropdowns;
     });
-    
+
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
 
     const [selectedItemData, setSelectedItemData] = useState();
@@ -105,37 +105,6 @@ const DetailsScreen = ({ route }) => {
                     </View>
 
                     <Text style={styles.descriptionText}>{TruncatedTextComponent(item.longdescription, 67, true)}</Text>
-                    {item.size && item.size.length > 0 && (
-                        item.size[0] === "noncountable" ? (
-                            <RenderInputText />
-                        ) : item.size[0] === "countable" ? (
-                            <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                                {item.size.map((size, index) => {
-                                    if (index >= 1) {
-                                        return (
-                                            <TouchableOpacity key={index}>
-                                                <Text
-                                                    className='searchIcon'
-                                                    style={{
-                                                        color: Colors.dark.colors.diffrentColorOrange,
-                                                        backgroundColor: Colors.dark.colors.secComponentColor,
-                                                        borderRadius: 15,
-                                                        width: 50,
-                                                        height: 50,
-                                                        textAlign: 'center',
-                                                        textAlignVertical: 'center',
-                                                    }}
-                                                >
-                                                    {size}
-                                                    {/* {console.log(size)} */}
-                                                </Text>
-                                            </TouchableOpacity>
-                                        );
-                                    }
-                                })}
-                            </View>
-                        ) : null
-                    )}
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
                     <ImageBackground
@@ -148,7 +117,7 @@ const DetailsScreen = ({ route }) => {
                         }}
                         alt="Logo"
                         className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
-                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor}}
+                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
                     >
                         {/* <LinearGradient
                             start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
@@ -158,7 +127,7 @@ const DetailsScreen = ({ route }) => {
                         </LinearGradient> */}
                     </ImageBackground>
                     <View
-                        style={[styles.button, { backgroundColor: Colors.dark.colors.secComponentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                        style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                         className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                     >
                         {item.quantity > 0 ? (
@@ -173,7 +142,7 @@ const DetailsScreen = ({ route }) => {
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => handleIncrement(item.id, title)}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title)}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add</Text>
 
                                 </TouchableOpacity>
@@ -184,15 +153,45 @@ const DetailsScreen = ({ route }) => {
                 </View>
                 {renderModal({ data: selectedItemData })}
             </View>
-            <Text style={{color: Colors.dark.colors.textColor}}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+            <Text style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
         </>
     );
 
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const renderMenuScroll = ({ typetitle, index }) => {
+        const isSelected = selectedIndex === index; // Check if the current item is selected
+
+        return (
+            <TouchableOpacity
+                key={index}
+                style={{ padding: 12 }}
+                onPress={() => setSelectedIndex(index)} // Update the selected index on press
+            >
+                <Text
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
+                    }}
+                >
+                    {typetitle}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+
+    const items = [
+        { "id": "1", "rating": "4.5", "ratingcount": "314", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0", "longdescription": "Aromatic tea blended with a mixture of Indian spices such as cardamom, ginger, and cloves." },
+        { "id": "2", "rating": "3.5", "ratingcount": "314", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0", "longdescription": "Smooth coffee served chilled, often topped with cream or ice cream." },
+        { "id": "3", "rating": "3.0", "ratingcount": "314", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0", "longdescription": "Delicious cocoa drink served cold, perfect for chocolate lovers." },
+        { "id": "4", "rating": "1.5", "ratingcount": "314", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0", "longdescription": "Refreshing iced tea with a hint of lemon, ideal for hot days." }
+    ];
+
     const renderDropdown = (menu) => (
-        <View key={menu.title}>
-            <TouchableOpacity className=' border-b-2 border-zinc-100 flex-row items-center justify-between p-3' style={[{ backgroundColor: Colors.dark.colors.componentColor}]} onPress={() => toggleDropdown(menu.title)}>
-                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.diffrentColorOrange }]}>{menu.title}</Text>
-                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
+        <View className='gap-3' key={menu.title}>
+            <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.diffrentColorPerple }]}>{menu.title}</Text>
+                <Ionicons color={Colors.dark.colors.diffrentColorPerple} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
             </TouchableOpacity>
             {openDropdowns[menu.title] && (
                 <FlatList
@@ -201,17 +200,34 @@ const DetailsScreen = ({ route }) => {
                     keyExtractor={item => item.id}
                 />
             )}
+            {/* {renderDropdownItem({ items, title: 'Beverages' })} */}
         </View>
     );
 
     return (
-        <ScrollView
-            showsHorizontalScrollIndicator={false}
-        >
-            <View style={styles.container}>
-                {menuItems.map(menu => renderDropdown(menu))}
+        <>
+            <ScrollView
+                showsHorizontalScrollIndicator={false}
+            >
+                <View style={styles.container}>
+                    {menuItems.map(menu => renderDropdown(menu))}
+                </View>
+
+            </ScrollView>
+
+            {/* MenuScrollView */}
+
+            <View className=' absolute w-full bottom-0 border-t-2 flex-row items-center justify-between p-2' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                >
+                    {data.menu.map((menu, index) => (
+                        renderMenuScroll({ typetitle: menu.title, index: index })
+                    ))}
+                </ScrollView>
             </View>
-        </ScrollView>
+        </>
     );
 };
 
