@@ -1,8 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
+import FoodIcon from '../Components/FoodIcon';
+import FoodTypeIcon from '../Components/FoodTypeIcon';
+import Colors from '../Components/Colors';
+import TruncatedTextComponent from '../Components/TruncatedTextComponent';
+import LongStarIcon from '../Components/LongStarIcon';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
@@ -60,215 +65,118 @@ const DetailsScreen = ({ route }) => {
         }));
     };
 
-
-    const renderDropdownItem_2 = ({ item, title }) => (
-        // const [Amunt, setAmunt] = useState(0);
-        <View
-            className=' flex-row justify-between items-center'
-            style={{ backgroundColor: 'fuchsia', padding: 30 }}
-        >
-            <TouchableOpacity
-                onPress={() => { setOpenmodal(true) }}
-            >
-                <Text>{item.item} - ₹{item.price}</Text>
-                <Text>{item.quantity}</Text>
-                {item.size && item.size.length > 0 && (
-                    item.size[0] === "noncountable" ? (
-                        <RenderInputText />
-                    ) : item.size[0] === "countable" ? (
-                        <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                            {item.size.map((size, index) => {
-                                if (index >= 1) { // Start rendering from the second index
-                                    return (
-                                        <TouchableOpacity key={index}>
-                                            <Text
-                                                className='searchIcon'
-                                                style={{
-                                                    color: Colors.dark.colors.diffrentColorOrange,
-                                                    backgroundColor: Colors.dark.colors.secComponentColor,
-                                                    borderRadius: 15,
-                                                    width: 50,
-                                                    height: 50,
-                                                    textAlign: 'center',
-                                                    textAlignVertical: 'center',
-                                                }}
-                                            >
-                                                {size}
-                                                {/* {console.log(size)} */}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    );
-                                }
-                            })}
-                        </View>
-                    ) : null
-                )}
-            </TouchableOpacity>
-            <View>
-                <Image
-                    source={{
-                        uri: item.image,
-                        method: 'POST',
-                        headers: {
-                            Pragma: 'no-cache',
-                        },
-                    }}
-                    className=' bg-black w-36 h-36 border-2 border-slate-950'
-                    style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
-                    alt="Logo"
-                />
-                <View
-                    style={styles.button}
-                    className=' absolute top-32 left-4 w-28 h-9 flex-row overflow-hidden'
-                >
-                    {/* <Text style={styles.buttonTxt}>Add to Cart</Text> */}
-                    {item.quantity ? (
-                        <>
-                            <TouchableOpacity className='z-10 left-0 absolute w-6/12 p-3' onPress={handleDecrement(item.id, title)}>
-                                <Text style={styles.buttonTxt}>-</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.buttonTxt}>{item.quantity}</Text>
-                            <TouchableOpacity className=' right-0 absolute w-5/12 p-3' onPress={handleIncrement(item.id, title)}>
-                                <Text style={styles.buttonTxt}>+</Text>
-                            </TouchableOpacity>
-                        </>
-                    ) : (
-                        <TouchableOpacity className='w-full h-full justify-center items-center' onPress={() => { handleDecrement(item.id, title) }}>
-                            <Text style={styles.buttonTxt}>Add to Cart</Text>
-                        </TouchableOpacity>
-                    )}
-
-                </View>
-            </View>
-
-        </View>
-    );
-
-
-
     const renderDropdownItem = ({ item, title }) => (
-        <View
-            className=' flex-row justify-between items-center p-3 pb-7'
-            style={{ backgroundColor: 'fuchsia', }}
-        >
-            <TouchableOpacity
-                className='w-7/12 h-full'
-                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+        <>
+            <View
+                className=' flex-row justify-between items-center p-3 pb-6'
             >
-                <Text style={styles.itemText}>{item.item}</Text>
-                <Text style={styles.descriptionText}>{item.description}</Text>
-                <Text style={styles.priceText}>Price: {item.price}</Text>
-                {item.size && item.size.length > 0 && (
-                    item.size[0] === "noncountable" ? (
-                        <RenderInputText />
-                    ) : item.size[0] === "countable" ? (
-                        <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                            {item.size.map((size, index) => {
-                                if (index >= 1) {
-                                    return (
-                                        <TouchableOpacity key={index}>
-                                            <Text
-                                                className='searchIcon'
-                                                style={{
-                                                    color: Colors.dark.colors.diffrentColorOrange,
-                                                    backgroundColor: Colors.dark.colors.secComponentColor,
-                                                    borderRadius: 15,
-                                                    width: 50,
-                                                    height: 50,
-                                                    textAlign: 'center',
-                                                    textAlignVertical: 'center',
-                                                }}
-                                            >
-                                                {size}
-                                                {/* {console.log(size)} */}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    );
-                                }
-                            })}
-                        </View>
-                    ) : null
-                )}
-            </TouchableOpacity>
-            <View className='w-5/12'>
-                <Image
-                    source={{
-                        uri: item.image,
-                        method: 'POST',
-                        headers: {
-                            Pragma: 'no-cache',
-                        },
-                    }}
-                    className=' bg-black w-full h-36 border-2 border-slate-950'
-                    style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
-                    alt="Logo"
-                />
-                <View
-                    style={styles.button}
-                    className=' absolute top-32 left-[10%] w-[80%] h-9 flex-row overflow-hidden'
+                <TouchableOpacity
+                    className='w-6/12 h-full'
+                    onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
                 >
-                    {/* <Text style={styles.buttonTxt}>Add to Cart</Text> */}
-                    {item.quantity > 0 ? (
-                        <>
-                            <TouchableOpacity onPress={() => handleDecrement(item.id, title)} className='z-10 left-0 absolute w-6/12 p-3'>
-                                <Text style={styles.buttonTxt}>-</Text>
-                            </TouchableOpacity>
-                            <Text style={styles.buttonTxt}>{item.quantity}</Text>
-                            <TouchableOpacity onPress={() => handleIncrement(item.id, title)} className=' right-0 absolute w-5/12 p-3'>
-                                <Text style={styles.buttonTxt}>+</Text>
-                            </TouchableOpacity>
-                        </>
-                    ) : (
-                        <TouchableOpacity style={styles.button} onPress={() => handleIncrement(item.id, title)}>
-                            <Text style={styles.buttonTxt}>Add to Cart</Text>
-                        </TouchableOpacity>
-                    )}
+                    <View className='flex-row'>
+                        {
+                            item.type &&
+                            <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
+                        }
+                        {
+                            item.category.split('_').map((part, index) => (
+                                <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
+                            ))
+                        }
+                    </View>
+                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        {TruncatedTextComponent(item.item, 30)}
+                    </Text>
 
-                    {/* {quantity ? (
+                    <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
+                    <View className=' flex-row py-2'>
+                        <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} />
+                        <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                    </View>
+
+                    <Text style={styles.descriptionText}>{TruncatedTextComponent(item.longdescription, 67, true)}</Text>
+                    {item.size && item.size.length > 0 && (
+                        item.size[0] === "noncountable" ? (
+                            <RenderInputText />
+                        ) : item.size[0] === "countable" ? (
+                            <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                                {item.size.map((size, index) => {
+                                    if (index >= 1) {
+                                        return (
+                                            <TouchableOpacity key={index}>
+                                                <Text
+                                                    className='searchIcon'
+                                                    style={{
+                                                        color: Colors.dark.colors.diffrentColorOrange,
+                                                        backgroundColor: Colors.dark.colors.secComponentColor,
+                                                        borderRadius: 15,
+                                                        width: 50,
+                                                        height: 50,
+                                                        textAlign: 'center',
+                                                        textAlignVertical: 'center',
+                                                    }}
+                                                >
+                                                    {size}
+                                                    {/* {console.log(size)} */}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        );
+                                    }
+                                })}
+                            </View>
+                        ) : null
+                    )}
+                </TouchableOpacity>
+                <View className='w-6/12 p-2'>
+                    <Image
+                        source={{
+                            uri: item.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        className=' bg-black w-full h-36 border-2 border-slate-950'
+                        style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
+                        alt="Logo"
+                    />
+                    <View
+                        style={[styles.button, { backgroundColor: Colors.dark.colors.secComponentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                        className=' absolute left-[15%] w-[80%] -bottom-2 h-9 flex-row overflow-hidden'
+                    >
+                        {item.quantity > 0 ? (
                             <>
-                                <TouchableOpacity className='z-10 left-0 absolute w-6/12 p-3' onPress={handleDecrement}>
-                                    <Text style={styles.buttonTxt}>-</Text>
+                                <TouchableOpacity onPress={() => handleDecrement(item.id, title)} className='z-10 left-0 absolute w-6/12 items-center'>
+                                    <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
-                                <Text style={styles.buttonTxt}>{quantity}</Text>
-                                <TouchableOpacity className=' right-0 absolute w-5/12 p-3' onPress={handleIncrement}>
-                                    <Text style={styles.buttonTxt}>+</Text>
+                                <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.textColor }}>{item.quantity}</Text>
+                                <TouchableOpacity onPress={() => handleIncrement(item.id, title)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                    <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
-                            <TouchableOpacity className='w-full h-full justify-center items-center' onPress={() => { handleIncrement(), renderAddToCart({ data: item, amount: quantity}) }}>
-                                <Text style={styles.buttonTxt}>Add to Cart</Text>
-                            </TouchableOpacity>
-                        )} */}
-                </View>
-            </View>
-            {/* {console.log(selectedItemData)} */}
-            {renderModal({ data: selectedItemData })}
-        </View>
+                            <>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => handleIncrement(item.id, title)}>
+                                    <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add</Text>
 
-        // <View
-        //     className=' flex-row justify-between items-center'
-        //     style={{ backgroundColor: 'fuchsia', padding: 30 }}
-        // >
-        //     <TouchableOpacity
-        //         onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
-        //     >
-        //         <View style={styles.detailsContainer}>
-        //             <Text style={styles.itemText}>{item.item}</Text>
-        //             <Text style={styles.descriptionText}>{item.description}</Text>
-        //             <Text style={styles.priceText}>Price: {item.price}</Text>
-        //             <View style={styles.quantityContainer}>
-        //             </View>
-        //         </View>
-        //     </TouchableOpacity>
-        //     {/* <Image source={{ uri: item.image }} style={styles.image} /> */}
-        // </View>
+                                </TouchableOpacity>
+                                <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                            </>
+                        )}
+                    </View>
+                </View>
+                {renderModal({ data: selectedItemData })}
+            </View>
+            <Text className='text-slate-50'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+        </>
     );
 
     const renderDropdown = (menu) => (
         <View key={menu.title}>
-            <TouchableOpacity style={styles.dropdownHeader} onPress={() => toggleDropdown(menu.title)}>
-                <Text style={styles.dropdownHeaderText}>{menu.title}</Text>
-                <Ionicons name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
+            <TouchableOpacity style={[styles.dropdownHeader, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.diffrentColorOrange }]}>{menu.title}</Text>
+                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
             </TouchableOpacity>
             {openDropdowns[menu.title] && (
                 <FlatList
@@ -300,8 +208,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
+        // padding: 16,
+        backgroundColor: Colors.dark.colors.backGroundColor,
     },
     itemContainer: {
         flexDirection: 'row',
@@ -330,10 +238,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#666',
     },
-    priceText: {
-        fontSize: 16,
-        color: '#333',
-    },
     quantityContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -345,7 +249,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // paddingVertical: 8, // Adjust padding instead of fixed height
         // paddingHorizontal: 10, // Add padding for horizontal space
-        backgroundColor: '#114232',
+        // backgroundColor: '#114232',
     },
     buttonText: {
         fontSize: 18,
@@ -360,14 +264,10 @@ const styles = StyleSheet.create({
     dropdownHeader: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 8,
+        paddingVertical: 10,
         paddingHorizontal: 16,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 8,
-    },
-    dropdownHeaderText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        // backgroundColor: '#f0f0f0',
+        // borderRadius: 8,
     },
 });
 
