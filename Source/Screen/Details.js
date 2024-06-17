@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
+import PopUp from '../Components/PopUp';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
+    const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
+
     const [openDropdowns, setOpenDropdowns] = useState({});
+    const { Openmodal, setOpenmodal, renderModal } = PopUp();
+
+    const [selectedItemData, setSelectedItemData] = useState();
 
     const handleIncrement = (id, title) => {
         setMenuItems(prevItems =>
@@ -61,7 +68,7 @@ const DetailsScreen = ({ route }) => {
             style={{ backgroundColor: 'fuchsia', padding: 30 }}
         >
             <TouchableOpacity
-                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+                onPress={() => { setOpenmodal(true)}}
             >
                 <Text>{item.item} - ₹{item.price}</Text>
                 <Text>{item.quantity}</Text>
@@ -137,40 +144,124 @@ const DetailsScreen = ({ route }) => {
         </View>
     );
 
+
+
     const renderDropdownItem = ({ item, title }) => (
         <View
-            className=' flex-row justify-between items-center'
-            style={{ backgroundColor: 'fuchsia', padding: 30 }}
+            className=' flex-row justify-between items-center p-3 pb-7'
+            style={{ backgroundColor: 'fuchsia', }}
         >
             <TouchableOpacity
-                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+                className='w-7/12 h-full'
+                onPress={() => { setOpenmodal(true), setSelectedItemData(item)}}
             >
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.itemText}>{item.item}</Text>
-                    <Text style={styles.descriptionText}>{item.description}</Text>
-                    <Text style={styles.priceText}>Price: {item.price}</Text>
-                    <View style={styles.quantityContainer}>
-                        {item.quantity > 0 ? (
+                <Text style={styles.itemText}>{item.item}</Text>
+                <Text style={styles.descriptionText}>{item.description}</Text>
+                <Text style={styles.priceText}>Price: {item.price}</Text>
+                {item.size && item.size.length > 0 && (
+                    item.size[0] === "noncountable" ? (
+                        <RenderInputText />
+                    ) : item.size[0] === "countable" ? (
+                        <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                            {item.size.map((size, index) => {
+                                if (index >= 1) {
+                                    return (
+                                        <TouchableOpacity key={index}>
+                                            <Text
+                                                className='searchIcon'
+                                                style={{
+                                                    color: Colors.dark.colors.diffrentColorOrange,
+                                                    backgroundColor: Colors.dark.colors.secComponentColor,
+                                                    borderRadius: 15,
+                                                    width: 50,
+                                                    height: 50,
+                                                    textAlign: 'center',
+                                                    textAlignVertical: 'center',
+                                                }}
+                                            >
+                                                {size}
+                                                {/* {console.log(size)} */}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    );
+                                }
+                            })}
+                        </View>
+                    ) : null
+                )}
+            </TouchableOpacity>
+            <View className='w-5/12'>
+                <Image
+                    source={{
+                        uri: item.image,
+                        method: 'POST',
+                        headers: {
+                            Pragma: 'no-cache',
+                        },
+                    }}
+                    className=' bg-black w-full h-36 border-2 border-slate-950'
+                    style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
+                    alt="Logo"
+                />
+                <View
+                    style={styles.button}
+                    className=' absolute top-32 left-[10%] w-[80%] h-9 flex-row overflow-hidden'
+                >
+                    {/* <Text style={styles.buttonTxt}>Add to Cart</Text> */}
+                    {item.quantity > 0 ? (
+                        <>
+                            <TouchableOpacity onPress={() => handleDecrement(item.id, title)} className='z-10 left-0 absolute w-6/12 p-3'>
+                                <Text style={styles.buttonTxt}>-</Text>
+                            </TouchableOpacity>
+                            <Text style={styles.buttonTxt}>{item.quantity}</Text>
+                            <TouchableOpacity onPress={() => handleIncrement(item.id, title)} className=' right-0 absolute w-5/12 p-3'>
+                                <Text style={styles.buttonTxt}>+</Text>
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <TouchableOpacity style={styles.button} onPress={() => handleIncrement(item.id, title)}>
+                            <Text style={styles.buttonTxt}>Add to Cart</Text>
+                        </TouchableOpacity>
+                    )}
+
+                    {/* {quantity ? (
                             <>
-                                <TouchableOpacity onPress={() => handleDecrement(item.id, title)} style={styles.button}>
-                                    <Text style={styles.buttonText}>-</Text>
+                                <TouchableOpacity className='z-10 left-0 absolute w-6/12 p-3' onPress={handleDecrement}>
+                                    <Text style={styles.buttonTxt}>-</Text>
                                 </TouchableOpacity>
-                                <Text style={styles.quantityText}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => handleIncrement(item.id, title)} style={styles.button}>
-                                    <Text style={styles.buttonText}>+</Text>
+                                <Text style={styles.buttonTxt}>{quantity}</Text>
+                                <TouchableOpacity className=' right-0 absolute w-5/12 p-3' onPress={handleIncrement}>
+                                    <Text style={styles.buttonTxt}>+</Text>
                                 </TouchableOpacity>
                             </>
                         ) : (
-                            <TouchableOpacity style={styles.button} onPress={() => handleIncrement(item.id, title)}>
-                                <Text style={styles.buttonText}>Add to Cart</Text>
+                            <TouchableOpacity className='w-full h-full justify-center items-center' onPress={() => { handleIncrement(), renderAddToCart({ data: item, amount: quantity}) }}>
+                                <Text style={styles.buttonTxt}>Add to Cart</Text>
                             </TouchableOpacity>
-                        )}
-                    </View>
+                        )} */}
                 </View>
-            </TouchableOpacity>
-            {/* <Image source={{ uri: item.image }} style={styles.image} /> */}
-
+            </View>
+            {/* {console.log(selectedItemData)} */}
+            {renderModal({ data: selectedItemData })}
         </View>
+
+        // <View
+        //     className=' flex-row justify-between items-center'
+        //     style={{ backgroundColor: 'fuchsia', padding: 30 }}
+        // >
+        //     <TouchableOpacity
+        //         onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+        //     >
+        //         <View style={styles.detailsContainer}>
+        //             <Text style={styles.itemText}>{item.item}</Text>
+        //             <Text style={styles.descriptionText}>{item.description}</Text>
+        //             <Text style={styles.priceText}>Price: {item.price}</Text>
+        //             <View style={styles.quantityContainer}>
+        //             </View>
+        //         </View>
+        //     </TouchableOpacity>
+        //     {/* <Image source={{ uri: item.image }} style={styles.image} /> */}
+        // </View>
     );
 
     const renderDropdown = (menu) => (
@@ -246,9 +337,12 @@ const styles = StyleSheet.create({
         marginTop: 8,
     },
     button: {
-        backgroundColor: '#ddd',
-        padding: 8,
-        borderRadius: 4,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // paddingVertical: 8, // Adjust padding instead of fixed height
+        // paddingHorizontal: 10, // Add padding for horizontal space
+        backgroundColor: '#114232',
     },
     buttonText: {
         fontSize: 18,

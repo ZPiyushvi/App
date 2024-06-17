@@ -55,12 +55,11 @@ const PopUp = () => {
         return (
             <Modal visible={Openmodal} animationType="fade" transparent={true} statusBarTranslucent>
                 <View style={styles.container} className='blur-sm'>
-
                     <TouchableOpacity style={[styles.background, { zIndex: 1 }]} onPress={() => setOpenmodal(false)} />
 
                     <Animated.View style={[styles.modalContent, { transform: [{ translateY: slideAnim }] }]} className=' overflow-hidden'>
                         <TouchableOpacity style={{ zIndex: 1 }} onPress={() => setOpenmodal(false)}>
-                            <Ionicons name="close-circle" size={42} color={'black'} style={{ position: 'absolute', right: 12, top: 12 }} />
+                            <Ionicons name="close-circle" size={42} color={'black'} style={{ position: 'absolute', right: 12, top: 12, padding: 5 }} />
                         </TouchableOpacity>
 
                         <View className=' h-72 w-full'>
