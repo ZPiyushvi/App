@@ -15,7 +15,15 @@ const DetailsScreen = ({ route }) => {
     const [menuItems, setMenuItems] = useState(data.menu);
     const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
 
-    const [openDropdowns, setOpenDropdowns] = useState({});
+    const [openDropdowns, setOpenDropdowns] = useState(() => {
+        const initialDropdowns = {};
+        // Initialize all dropdowns to be open
+        menuItems.forEach(menu => {
+            initialDropdowns[menu.title] = true;
+        });
+        return initialDropdowns;
+    });
+    
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
 
     const [selectedItemData, setSelectedItemData] = useState();
