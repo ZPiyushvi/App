@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
@@ -8,6 +8,7 @@ import FoodTypeIcon from '../Components/FoodTypeIcon';
 import Colors from '../Components/Colors';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import LongStarIcon from '../Components/LongStarIcon';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
@@ -129,7 +130,7 @@ const DetailsScreen = ({ route }) => {
                     )}
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
-                    <Image
+                    <ImageBackground
                         source={{
                             uri: item.image,
                             method: 'POST',
@@ -137,13 +138,20 @@ const DetailsScreen = ({ route }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        className=' bg-black w-full h-36 border-2 border-slate-950'
-                        style={{ borderWidth: 2, borderColor: 'black', borderRadius: 8 }}
                         alt="Logo"
-                    />
+                        className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
+                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor}}
+                    >
+                        {/* <LinearGradient
+                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                            className='overflow-hidden h-full w-full'
+                            colors={['transparent', Colors.dark.colors.backGroundColor]}
+                        >
+                        </LinearGradient> */}
+                    </ImageBackground>
                     <View
                         style={[styles.button, { backgroundColor: Colors.dark.colors.secComponentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                        className=' absolute left-[15%] w-[80%] -bottom-2 h-9 flex-row overflow-hidden'
+                        className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                     >
                         {item.quantity > 0 ? (
                             <>
@@ -168,13 +176,13 @@ const DetailsScreen = ({ route }) => {
                 </View>
                 {renderModal({ data: selectedItemData })}
             </View>
-            <Text className='text-slate-50'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+            <Text style={{color: Colors.dark.colors.textColor}}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
         </>
     );
 
     const renderDropdown = (menu) => (
         <View key={menu.title}>
-            <TouchableOpacity style={[styles.dropdownHeader, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
+            <TouchableOpacity className=' border-b-2 border-zinc-100 flex-row items-center justify-between p-3' style={[{ backgroundColor: Colors.dark.colors.componentColor}]} onPress={() => toggleDropdown(menu.title)}>
                 <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.diffrentColorOrange }]}>{menu.title}</Text>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
             </TouchableOpacity>
@@ -260,14 +268,6 @@ const styles = StyleSheet.create({
     },
     dropdownContainer: {
         marginBottom: 16,
-    },
-    dropdownHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        // backgroundColor: '#f0f0f0',
-        // borderRadius: 8,
     },
 });
 
