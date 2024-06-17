@@ -220,22 +220,22 @@ const Content = ({ data }) => {
 
         // 2 row fromat design
 
-        <View style={styles.renderItem2container}>
-            <View>
-                <FlatList
-                    data={data}
-                    numColumns={2}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
-                    columnWrapperStyle={{
-                        justifyContent: 'space-around'
-                    }}
-                    renderItem={renderItem2}
-                    keyExtractor={(item, index) => index.toString()}
-                    showsHorizontalScrollIndicator={false}
-                />
-            </View>
-        </View>
+        // <View style={styles.renderItem2container}>
+        //     <View>
+        //         <FlatList
+        //             data={data}
+        //             numColumns={2}
+        //             showsVerticalScrollIndicator={false}
+        //             contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
+        //             columnWrapperStyle={{
+        //                 justifyContent: 'space-around'
+        //             }}
+        //             renderItem={renderItem2}
+        //             keyExtractor={(item, index) => index.toString()}
+        //             showsHorizontalScrollIndicator={false}
+        //         />
+        //     </View>
+        // </View>
 
         // large fromat design (Zomato) 
 
@@ -248,12 +248,12 @@ const Content = ({ data }) => {
 
         // 2 design (Swggi) 
 
-        // <FlatList
-        //     data={data}
-        //     renderItem={renderItem3}
-        //     keyExtractor={(item, index) => index.toString()}
-        //     showsHorizontalScrollIndicator={false}
-        // />
+        <FlatList
+            data={data}
+            renderItem={renderItem3}
+            keyExtractor={(item, index) => index.toString()}
+            showsHorizontalScrollIndicator={false}
+        />
     );
 };
 

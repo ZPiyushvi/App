@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
@@ -68,7 +68,7 @@ const DetailsScreen = ({ route }) => {
             style={{ backgroundColor: 'fuchsia', padding: 30 }}
         >
             <TouchableOpacity
-                onPress={() => { setOpenmodal(true)}}
+                onPress={() => { setOpenmodal(true) }}
             >
                 <Text>{item.item} - ₹{item.price}</Text>
                 <Text>{item.quantity}</Text>
@@ -153,7 +153,7 @@ const DetailsScreen = ({ route }) => {
         >
             <TouchableOpacity
                 className='w-7/12 h-full'
-                onPress={() => { setOpenmodal(true), setSelectedItemData(item)}}
+                onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
             >
                 <Text style={styles.itemText}>{item.item}</Text>
                 <Text style={styles.descriptionText}>{item.description}</Text>
@@ -281,10 +281,13 @@ const DetailsScreen = ({ route }) => {
     );
 
     return (
-        <View style={styles.container}>
-            {menuItems.map(menu => renderDropdown(menu))}
-            <Button title="Add to Cart" onPress={handleAddToCart} />
-        </View>
+        <ScrollView
+            showsHorizontalScrollIndicator={false}
+        >
+            <View style={styles.container}>
+                {menuItems.map(menu => renderDropdown(menu))}
+            </View>
+        </ScrollView>
     );
 };
 
