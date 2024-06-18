@@ -23,9 +23,10 @@ const dark = {
     backGroundColor: "#1C1C1E",
     mainTextColor: "#FFFFFF",
     textColor: "#AEAEAE",
-    diffrentColorOrange: "#ff4501",
+    diffrentColorOrange: "#ff3c00",
     diffrentColorPerple: "#0092ff", 
     diffrentColorPerpleBG: "#d0c5f6",
+    diffrentColorGreen: '#00e676',
     // backGroundColor: "#1C1C1E",
     // fond_iconColor: "#E7E1E6",
 

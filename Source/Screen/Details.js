@@ -135,7 +135,7 @@ const DetailsScreen = ({ route }) => {
                                 <TouchableOpacity onPress={() => handleDecrement(item.id, title)} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
-                                <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.textColor }}>{item.quantity}</Text>
+                                <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
                                 <TouchableOpacity onPress={() => handleIncrement(item.id, title)} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
@@ -143,7 +143,7 @@ const DetailsScreen = ({ route }) => {
                         ) : (
                             <>
                                 <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title)}>
-                                    <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add</Text>
+                                    <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
 
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
@@ -189,9 +189,9 @@ const DetailsScreen = ({ route }) => {
 
     const renderDropdown = (menu) => (
         <View className='gap-3' key={menu.title}>
-            <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.diffrentColorPerple }]}>{menu.title}</Text>
-                <Ionicons color={Colors.dark.colors.diffrentColorPerple} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
+            <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
             </TouchableOpacity>
             {openDropdowns[menu.title] && (
                 <FlatList
@@ -208,6 +208,7 @@ const DetailsScreen = ({ route }) => {
         <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
+                style={{backgroundColor: Colors.dark.colors.backGroundColor}}
             >
                 <View style={styles.container}>
                     {menuItems.map(menu => renderDropdown(menu))}
