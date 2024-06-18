@@ -34,8 +34,15 @@ export const GlobalStateProvider = ({ children }) => {
     // }
   };
 
+  const updateQuantity = (id, newQuantity) => {
+    setQuantity(prevQuantity => ({
+      ...prevQuantity,
+      [id]: newQuantity
+    }));
+  };
+
   return (
-    <GlobalStateContext.Provider value={{ quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems }}>
+    <GlobalStateContext.Provider value={{ quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity }}>
       {children}
     </GlobalStateContext.Provider>
   );

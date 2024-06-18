@@ -13,7 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
-    const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
+    const { CartItems, setCartItems, setQuantity, quantity, updateQuantity } = useContext(GlobalStateContext);
 
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
@@ -43,6 +43,7 @@ const DetailsScreen = ({ route }) => {
                     : menu
             )
         );
+        updateQuantity(id, String(parseInt(quantity[id] || '0') + 1));
     };
 
     const handleDecrement = (id, title) => {
@@ -60,6 +61,7 @@ const DetailsScreen = ({ route }) => {
                     : menu
             )
         );
+        updateQuantity(id, Math.max(0, String(parseInt(quantity[id] || '0') - 1)));
     };
 
     const handleAddToCart = () => {
@@ -165,12 +167,13 @@ const DetailsScreen = ({ route }) => {
             <TouchableOpacity
                 key={index}
                 style={{ padding: 12 }}
+                // className=' h-full'
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
             >
                 <Text
                     style={{
                         fontWeight: 'bold',
-                        fontSize: 20,
+                        fontSize: 21,
                         color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
                     }}
                 >
@@ -208,17 +211,49 @@ const DetailsScreen = ({ route }) => {
         <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
-                style={{backgroundColor: Colors.dark.colors.backGroundColor}}
+                style={{ backgroundColor: Colors.dark.colors.backGroundColor, marginBottom: Dimensions.get('window').height * 0.09 }}
             >
                 <View style={styles.container}>
                     {menuItems.map(menu => renderDropdown(menu))}
+                </View>
+
+                <View className='p-3 pb-24 gap-y-10'>
+                    <View className=' gap-3'>
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                            Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
+                        </Text>
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                            Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
+                        </Text>
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                            The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
+                        </Text>
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                            An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
+                        </Text>
+                    </View>
+                    <TouchableOpacity className='flex-row justify-between items-center'>
+                        <View className='flex-row items-center'>
+                            <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
+                            <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
+                        </View>
+                        <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
+                    </TouchableOpacity>
+                    <View>
+                        <Image
+                            source={require("./../Data/fssai.png")}
+                            className=' w-14 h-11'
+                            alt="Logo"
+                        />
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
+                    </View>
                 </View>
 
             </ScrollView>
 
             {/* MenuScrollView */}
 
-            <View className=' absolute w-full bottom-0 border-t-2 flex-row items-center justify-between p-2' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
+            <View className=' absolute w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.09 }]}>
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
