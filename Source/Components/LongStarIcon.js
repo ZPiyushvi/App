@@ -10,7 +10,6 @@ export default function LongStarIcon({ rating, ratingcount }) {
 
     return (
         <View style={{ borderWidth: 1, padding: 1, backgroundColor:Colors.dark.colors.secComponentColor }} className=' px-1 flex-row items-center border-[#F4BE1B] rounded-md'>
-            {console.log(fullStars, halfStars, emptyStars)}
             {[...Array(fullStars)].map((_, index) => (
                 <Ionicons key={`full-${index}`} name={'star'} size={14} color={'#F4BE1B'} />
             ))}

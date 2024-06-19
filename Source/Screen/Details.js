@@ -15,6 +15,8 @@ const DetailsScreen = ({ route }) => {
     const [menuItems, setMenuItems] = useState(data.menu);
     const { CartItems, setCartItems, setQuantity, quantity, updateQuantity } = useContext(GlobalStateContext);
 
+    // menuItems.forEach((item) => console.log(item))
+
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
         // Initialize all dropdowns to be open
@@ -28,7 +30,37 @@ const DetailsScreen = ({ route }) => {
 
     const [selectedItemData, setSelectedItemData] = useState();
 
+    const renderAddToCart = (item) => {
+        // console.log("quantity", item.data.quantity);
+
+        const itemIndex = CartItems.findIndex(cartItem => cartItem.data.id === item.data.id);
+        // console.log("present in cart", itemIndex);
+        console.log("data", item)
+        if (itemIndex !== -1) {
+            // Item exists in the cart, update the quantity
+            // Ensure currentQuantity is a number
+            // if (isNaN(currentQuantity)) {
+            //     console.error("Current quantity is NaN, setting to 0");
+            //     updatedCartItems[itemIndex].quantity = 0;
+            // }
+
+            const updatedCartItems = [...CartItems];
+            const currentQuantity = updatedCartItems[itemIndex].data.quantity;
+            // console.log("Current quantity:", currentQuantity);
+
+            updatedCartItems[itemIndex].data.quantity = item.data.quantity
+            // console.log("updated Cart quantity:", item.data.quantity);
+
+            setCartItems(updatedCartItems);
+        } else {
+            // Item does not exist in the cart, add it with the initial quantity
+            // console.log("Adding new item to the cart with quantity:", item);
+            setCartItems(prevCartItems => [...prevCartItems, { ...item }]);
+        }
+    };
+
     const handleIncrement = (id, title) => {
+        console.log(id, title)
         setMenuItems(prevItems =>
             prevItems.map(menu =>
                 menu.title === title
@@ -36,16 +68,24 @@ const DetailsScreen = ({ route }) => {
                         ...menu,
                         items: menu.items.map(item =>
                             item.id === id
-                                ? { ...item, quantity: String(parseInt(item.quantity) + 1) }
+                                ? {
+                                    ...item,
+                                    quantity: String(parseInt(item.quantity || '0') + 1),
+                                    // Update cart with incremented quantity
+                                    data: { ...item.data, quantity: String(parseInt(item.quantity || '0') + 1) }
+                                }
                                 : item
                         ),
                     }
                     : menu
             )
         );
-        updateQuantity(id, String(parseInt(quantity[id] || '0') + 1));
+    
+        // Find the updated item to pass to renderAddToCart
+        // const updatedItem = menu.items.find(item => item.id === id);
+        // renderAddToCart(updatedItem);
     };
-
+    
     const handleDecrement = (id, title) => {
         setMenuItems(prevItems =>
             prevItems.map(menu =>
@@ -54,19 +94,22 @@ const DetailsScreen = ({ route }) => {
                         ...menu,
                         items: menu.items.map(item =>
                             item.id === id
-                                ? { ...item, quantity: item.quantity > 0 ? String(parseInt(item.quantity) - 1) : '0' }
+                                ? {
+                                    ...item,
+                                    quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0',
+                                    // Update cart with decremented quantity
+                                    data: { ...item.data, quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0' }
+                                }
                                 : item
                         ),
                     }
                     : menu
             )
         );
-        updateQuantity(id, Math.max(0, String(parseInt(quantity[id] || '0') - 1)));
-    };
-
-    const handleAddToCart = () => {
-        const cartItems = menuItems.flatMap(menu => menu.items.filter(item => item.quantity > 0));
-        alert(`Added to cart: ${cartItems.map(item => `${item.quantity} of ${item.item}`).join(', ')}`);
+    
+        // Find the updated item to pass to renderAddToCart
+        // const updatedItem = menu.items.find(item => item.id === id);
+        // renderAddToCart(updatedItem);
     };
 
     const toggleDropdown = (title) => {
@@ -134,19 +177,18 @@ const DetailsScreen = ({ route }) => {
                     >
                         {item.quantity > 0 ? (
                             <>
-                                <TouchableOpacity onPress={() => handleDecrement(item.id, title)} className='z-10 left-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => handleIncrement(item.id, title)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title)}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
                             </>
@@ -183,13 +225,6 @@ const DetailsScreen = ({ route }) => {
         );
     }
 
-    const items = [
-        { "id": "1", "rating": "4.5", "ratingcount": "314", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0", "longdescription": "Aromatic tea blended with a mixture of Indian spices such as cardamom, ginger, and cloves." },
-        { "id": "2", "rating": "3.5", "ratingcount": "314", "item": "Cold Coffee", "price": "70", "description": "Refreshing cold coffee.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg", "quantity": "0", "longdescription": "Smooth coffee served chilled, often topped with cream or ice cream." },
-        { "id": "3", "rating": "3.0", "ratingcount": "314", "item": "Cold Coco", "price": "60", "description": "Chilled chocolate-flavored drink.", "type": "Veg", "category": "Cold_Cafe", "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy", "quantity": "0", "longdescription": "Delicious cocoa drink served cold, perfect for chocolate lovers." },
-        { "id": "4", "rating": "1.5", "ratingcount": "314", "item": "Iced Tea", "price": "65", "description": "Chilled tea served with ice.", "type": "Veg", "category": "Cold_Cafe", "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg", "quantity": "0", "longdescription": "Refreshing iced tea with a hint of lemon, ideal for hot days." }
-    ];
-
     const renderDropdown = (menu) => (
         <View className='gap-3' key={menu.title}>
             <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
@@ -213,6 +248,55 @@ const DetailsScreen = ({ route }) => {
                 showsHorizontalScrollIndicator={false}
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor, marginBottom: Dimensions.get('window').height * 0.09 }}
             >
+
+                <View className=' w-full h-64 bg-gradient-to-r from-cyan-500 to-blue-500 bg-black'>
+                    <Image
+                        source={require('./../../assets/burgur.png')}
+                        className=' w-full h-full object-contain'
+                        style={{ objectFit: 'contain' }}
+                        alt="Logo"
+                    />
+
+                    <View className='w-full absolute bottom-0' style={{ backgroundColor: 'rgba(0, 0, 0, 0.40)' }}>
+                        <View
+                            className=' w-1/2 items-center justify-center p-4'
+                            style={{
+                                left: '25%', // Center horizontally by setting the left margin to 25% of the screen width
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Text> Hello </Text>
+                            {/* {status({ closingTime: data.closingtime, openingTime: data.openingtime })} */}
+                        </View>
+                    </View>
+                </View>
+
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Text className='text-3xl font-semibold'>{data.name}</Text>
+                    <View className='flex-row gap-2 justify-center items-center mb-2'>
+                        <View className='flex-row justify-center items-center'>
+                            {data.type === "Veg" && <Ionicons name="leaf" size={18} color={'green'} />}
+                            <Text className='text-base ml-1'>{data.type}</Text>
+                        </View>
+                        <Ionicons name="ellipse" size={5} />
+                        <Text className='text-base'>{data.menutype}</Text>
+                    </View>
+
+                    <View className='flex-row justify-center items-center gap-1 mb-3'>
+                        <View className=' flex-row justify-center items-center bg-green-600 rounded-lg px-2'>
+                            <Text className='text-lg font-semibold mr-1 text-white'>{data.rating}</Text>
+                            <Ionicons name="star" color={'white'} />
+                        </View>
+                        <Text className='text-base' style={{ textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}>{data.ratingcount}</Text>
+                    </View>
+                    <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
+                        <Ionicons name="navigate-circle" size={24} color={'red'} />
+                        <Text className=' m-1'>{data.location}</Text>
+                    </View>
+                </View>
+
+
                 <View style={styles.container}>
                     {menuItems.map(menu => renderDropdown(menu))}
                 </View>
