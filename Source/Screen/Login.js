@@ -37,7 +37,7 @@ const Login = () => {
         alt="Logo"
       />
       <View style={styles(colors).subContainer}>
-        <Text style={styles(colors).text_main}>Hungry? {'\n'} We've Got You Covered!</Text>
+        <Text style={styles(colors).text_main}>Hungry? {'\n'} We've Got You Covered !</Text>
         <Text style={styles(colors).text_subMain}>Your go-to app for ordering from campus outlets.</Text>
         <TouchableOpacity
           style={styles(colors).bottom}
@@ -98,6 +98,7 @@ const styles = (colors) =>
       marginTop: 30
     },
     bottomTxt: {
+      textTransform: 'capitalize',
       fontSize: 18,
       fontWeight: "600",
       textAlign: "center",

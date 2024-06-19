@@ -1,24 +1,31 @@
-import { useTheme } from '@react-navigation/native';
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useContext, useRef } from 'react';
+import { View, ScrollView, Image, Animated, Text } from 'react-native';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
+const BANNER_H = 350;
 
-const Cart = () => {
-  const colors = useTheme().colors;
-
+const HomeScreen = () => {
+  const { CartItems, setCartItems, setQuantity, quantity} = useContext(GlobalStateContext);
   return (
-    <View style={styles(colors).container}>
-      <Text>Cart</Text>
+    <View>
+      {CartItems.map((item, index) => (
+        <View>
+            <Text className=' text-3xl font-extrabold' key={index}>
+              {item.data.quantity}
+              {item.data.item}
+              {}
+            </Text>
+        </View>
+      ))}
+
     </View>
   );
 };
 
-const styles = (colors) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  });
+const styles = {
+  text: {
+    margin: 24,
+    fontSize: 16,
+  },
+};
 
-export default Cart;
+export default HomeScreen;
