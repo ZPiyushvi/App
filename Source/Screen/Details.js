@@ -30,87 +30,86 @@ const DetailsScreen = ({ route }) => {
 
     const [selectedItemData, setSelectedItemData] = useState();
 
-    const renderAddToCart = (item) => {
-        // console.log("quantity", item.data.quantity);
+    const handleIncrement = (id, title, itemName) => {
 
-        const itemIndex = CartItems.findIndex(cartItem => cartItem.data.id === item.data.id);
-        // console.log("present in cart", itemIndex);
-        console.log("data", item)
-        if (itemIndex !== -1) {
-            // Item exists in the cart, update the quantity
-            // Ensure currentQuantity is a number
-            // if (isNaN(currentQuantity)) {
-            //     console.error("Current quantity is NaN, setting to 0");
-            //     updatedCartItems[itemIndex].quantity = 0;
-            // }
+        const updatedMenuItems = [...menuItems];
+        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
+    
+        if (categoryIndex !== -1) {
 
-            const updatedCartItems = [...CartItems];
-            const currentQuantity = updatedCartItems[itemIndex].data.quantity;
-            // console.log("Current quantity:", currentQuantity);
+            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
+    
+            if (itemIndex !== -1) {
+                updatedMenuItems[categoryIndex].items[itemIndex] = {
+                    ...updatedMenuItems[categoryIndex].items[itemIndex],
+                    quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) + 1)
+                };
+    
+                const existingCartItemIndex = CartItems.findIndex(item => {
+                    console.log('item.item', item.item, itemName);
+                    return item.item === itemName;
+                });
 
-            updatedCartItems[itemIndex].data.quantity = item.data.quantity
-            // console.log("updated Cart quantity:", item.data.quantity);
+                console.log(existingCartItemIndex)
+                if (existingCartItemIndex !== -1) {
+                    const updatedCartItems = [...CartItems];
+                    updatedCartItems[existingCartItemIndex] = {
+                        ...updatedCartItems[existingCartItemIndex],
+                        quantity: String(parseInt(updatedCartItems[existingCartItemIndex].quantity) + 1)
+                    };
+                    setCartItems(updatedCartItems);
+                } else {
+                    const menuItemToAdd = updatedMenuItems[categoryIndex].items[itemIndex];
+                    menuItemToAdd.quantity = "1";
+                    setCartItems(prevCartItems => [...prevCartItems, menuItemToAdd]);
+                }
 
-            setCartItems(updatedCartItems);
-        } else {
-            // Item does not exist in the cart, add it with the initial quantity
-            // console.log("Adding new item to the cart with quantity:", item);
-            setCartItems(prevCartItems => [...prevCartItems, { ...item }]);
+                setMenuItems(updatedMenuItems);
+            }
         }
     };
+    
+    const handleDecrement = (id, title, itemName) => {
 
-    const handleIncrement = (id, title) => {
-        console.log(id, title)
-        setMenuItems(prevItems =>
-            prevItems.map(menu =>
-                menu.title === title
-                    ? {
-                        ...menu,
-                        items: menu.items.map(item =>
-                            item.id === id
-                                ? {
-                                    ...item,
-                                    quantity: String(parseInt(item.quantity || '0') + 1),
-                                    // Update cart with incremented quantity
-                                    data: { ...item.data, quantity: String(parseInt(item.quantity || '0') + 1) }
-                                }
-                                : item
-                        ),
-                    }
-                    : menu
-            )
-        );
+        const updatedMenuItems = [...menuItems];
+        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
     
-        // Find the updated item to pass to renderAddToCart
-        // const updatedItem = menu.items.find(item => item.id === id);
-        // renderAddToCart(updatedItem);
+        if (categoryIndex !== -1) {
+            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
+    
+            if (itemIndex !== -1) {
+                if (parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) > 0) {
+                    updatedMenuItems[categoryIndex].items[itemIndex] = {
+                        ...updatedMenuItems[categoryIndex].items[itemIndex],
+                        quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) - 1)
+                    };
+    
+                    const existingCartItemIndex = CartItems.findIndex(item => {
+                        console.log('item.item', item.item, itemName);
+                        return item.item === itemName;
+                    });
+    
+                    if (existingCartItemIndex !== -1) {
+                        const updatedCartItems = [...CartItems];
+                        updatedCartItems[existingCartItemIndex] = {
+                            ...updatedCartItems[existingCartItemIndex],
+                            quantity: String(parseInt(updatedCartItems[existingCartItemIndex].quantity) - 1)
+                        };
+                        setCartItems(updatedCartItems);
+                    } else {
+                        // Item does not exist in cart, remove from cart or handle as needed
+                        // For decrement, we might decide to remove if quantity is zero
+                        // or leave handling based on your application's logic
+                        // Example:
+                        // setCartItems(prevCartItems => prevCartItems.filter(item => item.item !== itemName));
+                    }
+    
+                    setMenuItems(updatedMenuItems);
+                }
+            }
+        }
     };
     
-    const handleDecrement = (id, title) => {
-        setMenuItems(prevItems =>
-            prevItems.map(menu =>
-                menu.title === title
-                    ? {
-                        ...menu,
-                        items: menu.items.map(item =>
-                            item.id === id
-                                ? {
-                                    ...item,
-                                    quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0',
-                                    // Update cart with decremented quantity
-                                    data: { ...item.data, quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0' }
-                                }
-                                : item
-                        ),
-                    }
-                    : menu
-            )
-        );
-    
-        // Find the updated item to pass to renderAddToCart
-        // const updatedItem = menu.items.find(item => item.id === id);
-        // renderAddToCart(updatedItem);
-    };
 
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
@@ -177,17 +176,17 @@ const DetailsScreen = ({ route }) => {
                     >
                         {item.quantity > 0 ? (
                             <>
-                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item) }} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title, item.item) }} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title, item.item) }}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
