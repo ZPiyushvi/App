@@ -65,7 +65,7 @@ const Like = () => {
             <TouchableOpacity
               className='px-2 justify-center items-center rounded-lg'
               style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}
-              onPress={() => navigation.navigate('IndiviualCart', { storeName, items })}
+              onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice })}
             >
               <View className='flex-row items-center justify-center'>
                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
