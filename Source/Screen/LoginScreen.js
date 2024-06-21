@@ -37,9 +37,9 @@ const LoginScreen = () => {
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
-        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.mainTextColor, lineHeight: 45}}>Hey,</Text>
-        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45}}>Welcome</Text>
-        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.mainTextColor, lineHeight: 45}}>Back</Text>
+        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Hey,</Text>
+        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }}>Welcome</Text>
+        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Back</Text>
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
@@ -58,7 +58,7 @@ const LoginScreen = () => {
               style={styles.textInput}
               placeholder="Enter your password"
               placeholderTextColor={Colors.dark.colors.textColor}
-              keyboardType="email-address"
+              secureTextEntry={secureEntry}
             />
             <TouchableOpacity
               onPress={() => {
@@ -98,7 +98,7 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View> */}
           <TouchableOpacity>
-            <Text className='text-base font-normal mb-10 text-right mt-4' style={{color: Colors.dark.colors.mainTextColor}}>Forgot Password?</Text>
+            <Text className='text-base font-normal mb-10 text-right mt-4' style={{ color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
           </TouchableOpacity>
           {/* <View className='inputContainer flex-row items-center p-3 px-5 border-solid border-2 rounded-full' style={{borderColor: Colors.dark.colors.secComponentColor}}>
             <Ionicons name={"mail-outline"} size={25} color={Colors.dark.colors.secComponentColor} />
@@ -110,16 +110,16 @@ const LoginScreen = () => {
             />
           </View> */}
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text className=' text-xl font-bold' style={{color: Colors.dark.colors.mainTextColor}}>Login</Text>
+            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
           </TouchableOpacity>
-          <Text className=' text-base font-normal my-4 text-center' style={{color: Colors.dark.colors.textColor}}>or continue with</Text>
+          <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
-            <Text className=' text-xl font-bold'  style={{color: Colors.dark.colors.mainTextColor}}>Google</Text>
+            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text className=' text-base font-normal' style={{color: Colors.dark.colors.textColor}}>Don’t have an account?</Text>
+            <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>Don’t have an account?</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text className=' text-base font-black' style={{color: Colors.dark.colors.mainTextColor}}>Sign up</Text>
+              <Text className=' text-base font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -132,17 +132,17 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   textInput: {
-      fontSize: 16,
-      flex: 1,
-      paddingHorizontal: 10,
-      color: Colors.dark.colors.mainTextColor,
-      // fontFamily: fonts.Light,
+    fontSize: 16,
+    flex: 1,
+    paddingHorizontal: 10,
+    color: Colors.dark.colors.mainTextColor,
+    // fontFamily: fonts.Light,
   },
   footerContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      marginVertical: 20,
-      gap: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 20,
+    gap: 5,
   },
 });

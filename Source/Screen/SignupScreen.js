@@ -57,7 +57,8 @@ import {
                 style={styles.textInput}
                 placeholder="Enter your phone no"
                 placeholderTextColor={Colors.dark.colors.textColor}
-                keyboardType="email-address"
+                // secureTextEntry={secureEntery}
+                keyboardType="phone-pad"
               />
             </View>
             <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
@@ -66,7 +67,7 @@ import {
                 style={styles.textInput}
                 placeholder="Enter your password"
                 placeholderTextColor={Colors.dark.colors.textColor}
-                keyboardType="email-address"
+                secureTextEntry={secureEntry}
               />
               <TouchableOpacity
                 onPress={() => {

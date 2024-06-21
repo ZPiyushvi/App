@@ -7,8 +7,6 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-// import { colors } from "../utils/colors";
-// import { fonts } from "../utils/fonts";
 
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";

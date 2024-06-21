@@ -14,7 +14,7 @@ import useShopStatus from '../Components/useShopStatus';
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
-    const { CartItems, setCartItems, setQuantity, quantity, updateQuantity } = useContext(GlobalStateContext);
+    const { CartItems, setCartItems} = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(data.openingtime, data.closingtime, data.offdays, data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
