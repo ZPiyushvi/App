@@ -12,6 +12,9 @@ import SelectAddress from '../Screen/SelectAddress';
 import Profile from '../Screen/Profile';
 import Colors from '../Components/Colors';
 import IndiviualCart from '../Screen/IndiviualCart';
+import SignupScreen from '../Screen/SignupScreen';
+import LoginScreen from '../Screen/LoginScreen';
+import MainScreen from '../Screen/MainScreen';
 
 const Stack = createStackNavigator();
 
@@ -79,6 +82,18 @@ export default function AppNavigator() {
                     name="IndiviualCart"
                     component={IndiviualCart}
                 />
+                <Stack.Screen
+                    name="SignupScreen"
+                    component={SignupScreen}
+                />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                />
+                {/* <Stack.Screen
+                    name="MainScreen"
+                    component={MainScreen}
+                /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
