@@ -6,29 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 
-const StoreItem = ({ item }) => (
-  <View>
-    <Text>{item.item}</Text>
-    {/* <Card.Image source={{ uri: item.image }} /> */}
-    <Text style={{ marginBottom: 10 }}>{item.longdescription}</Text>
-    <Text>Category: {item.category}</Text>
-    <Text>Price: ₹{item.price}</Text>
-    <Text>Quantity: {item.quantity}</Text>
-    <Text>Rating: {item.rating} ({item.ratingcount} reviews)</Text>
-  </View>
-);
-
-const Store = ({ storeName, items }) => (
-  <View>
-    <Text style={styles.storeTitle}>{storeName}</Text>
-    <FlatList
-      data={items}
-      renderItem={({ item }) => <StoreItem item={item} />}
-      keyExtractor={item => item.id}
-    />
-  </View>
-);
-
 const Like = () => {
   const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
@@ -41,6 +18,7 @@ const Like = () => {
           className=' rounded-xl p-2 mt-3 flex-row'
           style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
         >
+          {console.log("Like", storeDetails)}
           <Image
             // source={require('./../Data/banner.jpg')}
             source={{
@@ -65,7 +43,7 @@ const Like = () => {
             <TouchableOpacity
               className='px-2 justify-center items-center rounded-lg'
               style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}
-              onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice })}
+              onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails})}
             >
               <View className='flex-row items-center justify-center'>
                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>

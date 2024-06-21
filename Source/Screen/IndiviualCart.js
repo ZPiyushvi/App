@@ -8,9 +8,10 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 
 const Cart = ({ route }) => {
-  const { storeName, items, totalPrice } = route.params;
+  const { storeName, items, totalPrice, storeDetails } = route.params;
 
   const navigation = useNavigation();
+  console.log("Cart", storeDetails)
 
   const renderItem = ({ item }) => (
     <View className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -19,10 +20,10 @@ const Cart = ({ route }) => {
           item.type &&
           <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={8} padding={2} />
         }
-        {console.log(item)}
+        {/* {console.log(item)} */}
         <View>
           <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(item.item, 20)}</Text>
-          <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity {item.quantity}</Text>
+          <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity: {item.quantity} * ₹{item.price}</Text>
         </View>
       </View>
 
@@ -74,15 +75,13 @@ const Cart = ({ route }) => {
         </TouchableOpacity>
       </View>
 
-      
-
       <ScrollView>
         <View className=' p-5 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
           <View className=' rounded-xl overflow-hidden'>
             <FlatList
               data={items}
               renderItem={renderItem}
-              keyExtractor={item => item.id.toString()}
+              keyExtractor={(items) => `${items.id}-${items.item}`}
             />
           </View>
 
