@@ -10,8 +10,6 @@ import React, { useState } from "react";
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 
@@ -22,6 +20,7 @@ const LoginScreen = () => {
   const handleGoBack = () => {
     navigation.goBack();
   };
+
   const handleSignup = () => {
     navigation.navigate("LoginScreen");
   };
@@ -39,20 +38,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  textInput: {
-    fontSize: 16,
-    flex: 1,
-    paddingHorizontal: 10,
-    color: Colors.dark.colors.mainTextColor,
-    // fontFamily: fonts.Light,
-  },
-  footerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 20,
-    gap: 5,
-  },
-});
