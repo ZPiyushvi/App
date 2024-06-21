@@ -22,7 +22,7 @@ import {
       navigation.goBack();
     };
     const handleSignup = () => {
-      navigation.navigate("SignupScreen");
+      navigation.navigate("LoginScreen");
     };
   
     return (
