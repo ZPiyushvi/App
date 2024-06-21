@@ -9,12 +9,13 @@ import Colors from '../Components/Colors';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import LongStarIcon from '../Components/LongStarIcon';
 import { LinearGradient } from 'expo-linear-gradient';
+import useShopStatus from '../Components/useShopStatus';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
     const { CartItems, setCartItems, setQuantity, quantity, updateQuantity } = useContext(GlobalStateContext);
-
+    const Shopstatus = useShopStatus(data.openingtime, data.closingtime, data.offdays, data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
 
@@ -251,46 +252,42 @@ const DetailsScreen = ({ route }) => {
         </View>
     );
 
+    const getShopImageSource = (state) => {
+        switch (state) {
+          case 'closed':
+            return require('./../Data/closed.png');
+        //   case 'closedForMaintenance':
+        //     return require('./../Data/closedMaintenance.png');
+        //   case 'open':
+        //     return require('./../Data/opened.png');
+        //   case 'openingSoon':
+        //     return require('./../Data/openingSoon.png');
+          case 'closingSoon':
+            return require('./../Data/closingsoon.png');
+          default:
+            return null; // Or a default image
+        }
+      };
+
     return (
         <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor, marginBottom: Dimensions.get('window').height * 0.09 }}
             >
-
-                {/* <View className=' w-full h-64 bg-gradient-to-r from-cyan-500 to-blue-500 bg-black'>
-                    <Image
-                        source={require('./../../assets/burgur.png')}
-                        className=' w-full h-full object-contain'
-                        style={{ objectFit: 'contain' }}
-                        alt="Logo"
-                    />
-
-                    <View className='w-full absolute bottom-0' style={{ backgroundColor: 'rgba(0, 0, 0, 0.40)' }}>
-                        <View
-                            className=' w-1/2 items-center justify-center p-4'
-                            style={{
-                                left: '25%', // Center horizontally by setting the left margin to 25% of the screen width
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Text> Hello </Text>
-                            {status({ closingTime: data.closingtime, openingTime: data.openingtime })}
-                        </View>
-                    </View>
-                </View> */}
-
-                <LinearGradient colors={[Colors.dark.colors.backGroundColor, 'red']}
-                    start={{ x: 0.0, y: 0.2 }} end={{ x: 0.0, y: 1.8 }}
+                {/* <View style={{backgroundColor: Shopstatus.color, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}} className='overflow-hidden mb-10 p-5 items-center justify-center'> */}
+                <LinearGradient colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
+                    // start={{ x: 0.0, y: 0.2 }} end={{ x: 0.0, y: 1.8 }}
                     className='overflow-hidden mb-10 p-5 items-center justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}>
                     <View className=' items-center mb-6 gap-4'>
                         <Image
-                            source={require("./../Data/closed.png")}
+                            source={getShopImageSource(Shopstatus.state)}
                             className='w-44 h-16'
                             alt="Logo"
                         />
-                        <Text className=' font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}> askdlnlsdn asdlkaskdas awdalsfsdbf asbdaskasdn askdbk</Text>
+                        <Text className=' font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            {Shopstatus.text}
+                        </Text>
                     </View>
                     <View className=' w-full rounded-3xl items-center justify-center p-3' style={{ backgroundColor: Colors.dark.colors.componentColor, }}>
                         {/* <View className=' w-44 h-24 mb-6'>
@@ -327,20 +324,20 @@ const DetailsScreen = ({ route }) => {
 
                 <View className=' flex-row justify-between p-4'>
                     <View className=' flex-row gap-3'>
-                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{borderColor: Colors.dark.colors.textColor}}>
+                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
                             <View className=' absolute z-10 left-3'>
                                 <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={11} padding={2} />
                             </View>
-                            <View className='h-2 w-11 rounded-full' style={{backgroundColor: Colors.dark.colors.textColor}} />
+                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
                         </View>
-                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{borderColor: Colors.dark.colors.textColor}}>
+                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
                             <View className=' absolute z-10 left-3'>
                                 <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={11} padding={2} />
                             </View>
-                            <View className='h-2 w-11 rounded-full' style={{backgroundColor: Colors.dark.colors.textColor}}/>
+                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
                         </View>
                     </View>
-                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{borderColor: Colors.dark.colors.textColor}}>
+                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
                         <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
                         <Ionicons name="barcode-outline" size={24} color={Colors.dark.colors.mainTextColor} />
                     </View>

@@ -6,10 +6,30 @@ import { mockCampusMenu } from "../Data/mockCampusMenu";
 
 export const GlobalStateProvider = ({ children }) => {
   const [CartItems, setCartItems] = useState([]);
-  // const [CartItems, setCartItems] = useState([{ data, amount }]);
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
   const [quantity, setQuantity] = useState(0);
+  const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
+
+  useEffect(() => {
+    const updatedCart = Object.entries(CartItems).map(([storeName, items]) => {
+      const store = mockCampusShops.find(shop => shop.name === storeName);
+      if (store) {
+        const { menu, ...storeDetails } = store; // Exclude the menu
+        return {
+          storeName,
+          storeDetails,
+          items
+        };
+      }
+      return {
+        storeName,
+        storeDetails: null,
+        items
+      };
+    });
+    setUpdatedCartWithDetails(updatedCart);
+  }, [CartItems]); // Dependency array to re-run effect when CartItems changes
 
   useEffect(() => {
     fetchFeatures();
@@ -42,7 +62,7 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
   return (
-    <GlobalStateContext.Provider value={{ quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity }}>
+    <GlobalStateContext.Provider value={{ quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails }}>
       {children}
     </GlobalStateContext.Provider>
   );

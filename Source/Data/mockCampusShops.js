@@ -43,7 +43,8 @@ export const mockCampusShops = [
         "details": "The Tea Post outlet in the campus has a relaxed environment and serves great tea, light snacks, magazines and newspapers. The outlet offers a variety of hot and cold beverages like cold coffee, cold coco and iced tea, apart from a range of food items including sandwiches, puffs, noodles and many other traditional snacks like thepla, poha, and upma.",
         "openingtime": "9:00 am",
         "closingtime": "3:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "Amul Store",
@@ -75,7 +76,8 @@ export const mockCampusShops = [
         "details": "The Amul Store at the campus is a one-stop shop for a variety of dairy products including milk, cheese, ice cream, and other popular Amul products.",
         "openingtime": "10:00 am",
         "closingtime": "10:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "Krupa General Store",
@@ -102,7 +104,8 @@ export const mockCampusShops = [
         "details": "Krupa General Store is another convenience shop, which provides the stationery, printing facilities and other FMCG items for personal use.",
         "openingtime": "11:00 am",
         "closingtime": "8:00 pm",
-        "offdays": "Saturday"
+        "offdays": "Saturday",
+        "leaveDay": "None"
     },
     {
         "name": "2 Degree Café",
@@ -136,7 +139,8 @@ export const mockCampusShops = [
         "details": "2 Degree Café offers a cozy atmosphere perfect for coffee enthusiasts. Enjoy a variety of coffees and light snacks.",
         "openingtime": "9:30 am",
         "closingtime": "11:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "2 Degree Café",
@@ -170,7 +174,8 @@ export const mockCampusShops = [
         "details": "2 Degree Café offers a cozy atmosphere perfect for coffee enthusiasts. Enjoy a variety of coffees and light snacks.",
         "openingtime": "9:30 am",
         "closingtime": "11:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     // {
     //     "name": "Reprographic Facility",
@@ -189,7 +194,8 @@ export const mockCampusShops = [
     //     "details": "Reprographic Facility offers printing and photocopying services conveniently located near the Central Library entrance.",
     //     "openingtime": "10:00 am",
     //     "closingtime": "6:30 pm",
-    //     "offdays": "Sunday"
+    //     "offdays": "Sunday",
+        // "leaveDay": "None"
     // },
     {
         "name": "Dawat Foods",
@@ -221,7 +227,8 @@ export const mockCampusShops = [
         "details": "Dawat Food is known for its lip-smacking dishes and a variety of both veg and non-veg items. It serves one of the best chicken curries, chicken rice, and egg rolls on campus.",
         "openingtime": "7:00 pm",
         "closingtime": "1:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "Samyak Juice",
@@ -247,7 +254,8 @@ export const mockCampusShops = [
         "details": "It is our one and only fruit juice shop, which provides juices and milk shakes.",
         "openingtime": "3:00 pm",
         "closingtime": "10:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "JK Grocery and General Store",
@@ -274,7 +282,8 @@ export const mockCampusShops = [
         "details": "JK Grocery store is a convenience shop, which provides fruits, vegetables, general grocery and frozen items.",
         "openingtime": "10:00 am",
         "closingtime": "8:00 pm",
-        "offdays": "Monday"
+        "offdays": "Monday",
+        "leaveDay": "None"
     },
     {
         "name": "Mahavir Healthy Food",
@@ -304,7 +313,8 @@ export const mockCampusShops = [
         "details": "Mahavir Healthy Food offers nutritious and wholesome meals. They are open late into the night for those looking for healthy food options.",
         "openingtime": "4:00 pm",
         "closingtime": "2:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     // {
     //     "name": "Brahmani Veg Solutions",
@@ -321,7 +331,8 @@ export const mockCampusShops = [
     //     "details": "Brahmani Veg Solutions serves delicious vegetarian Indian meals. Visit their location at Central Arcade for a delightful dining experience.",
     //     "openingtime": "9:00 am",
     //     "closingtime": "9:00 pm",
-    //     "offdays": "None"
+    //     "offdays": "None",
+        // "leaveDay": "None"
     // },
     {
         "name": "Go Insta Cafe",
@@ -355,7 +366,8 @@ export const mockCampusShops = [
         "details": "Go Insta Cafe offers a variety of coffees and light snacks. Perfect place to unwind after a long day.",
         "openingtime": "4:00 pm",
         "closingtime": "3:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "VS Fastfood",
@@ -398,7 +410,8 @@ export const mockCampusShops = [
         "details": "VS Fastfood serves quick and tasty non-vegetarian fast food items. Open from early morning to late night, it's a favorite spot for late-night cravings.",
         "openingtime": "9:00 am",
         "closingtime": "6:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "M/s Just Chill Cafe",
@@ -437,7 +450,8 @@ export const mockCampusShops = [
         "details": "Shri Sainath Canteen (A) is a full-fledged canteen facility available at hostel premises, which serves nutritious food cum meal to the students at reasonable prices.",
         "openingtime": "7:00 pm",
         "closingtime": "3:00 am",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "Pooja Stationery",
@@ -464,7 +478,8 @@ export const mockCampusShops = [
         "details": "Pooja Stationery offers a wide range of stationery items. They are conveniently located in Central Arcade and open throughout the week with varying hours on Sundays.",
         "openingtime": "10:00 am",
         "closingtime": "7:00 pm",
-        "offdays": "Sunday (3:00 pm to 7:00 pm open)"
+        "offdays": "Sunday (3:00 pm to 7:00 pm open)",
+        "leaveDay": "None"
     },
     {
         "name": "Mondego - The Restaurant",
@@ -495,7 +510,8 @@ export const mockCampusShops = [
         "details": "Mondego - The Restaurant offers a variety of dishes with free home delivery options. Located on the ground floor of Central Arcade, it is open from morning till late evening.",
         "openingtime": "10:00 am",
         "closingtime": "11:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     {
         "name": "Terra Food Cafeteria",
@@ -526,7 +542,8 @@ export const mockCampusShops = [
         "details": "Terra Food Cafeteria offers a diverse menu within Academic Block 8. They are open from morning till early evening, catering to the campus community.",
         "openingtime": "10:00 am",
         "closingtime": "8:00 pm",
-        "offdays": "None"
+        "offdays": "None",
+        "leaveDay": "None"
     },
     // {
     //     "name": "M/s Safety Laundry",
@@ -543,7 +560,8 @@ export const mockCampusShops = [
     //     "details": "M/s Safety Laundry provides comprehensive laundry services. Located in Central Arcade, they operate from late morning until early evening.",
     //     "openingtime": "10:30 am",
     //     "closingtime": "7:30 pm",
-    //     "offdays": "None"
+    //     "offdays": "None",
+        // "leaveDay": "None"
     // },
     {
         "name": "Atul Bakery",
@@ -581,6 +599,7 @@ export const mockCampusShops = [
         "details": "The outlet of Atul Bakery serves cakes, pastries, cookies, toasts and other bakery items. It is located at Emiet Hostel and remains closed on Tuesdays.",
         "openingtime": "9:00 am",
         "closingtime": "8:00 pm",
-        "offdays": "Tuesday"
+        "offdays": "Tuesday",
+        "leaveDay": "None"
     },
 ];
