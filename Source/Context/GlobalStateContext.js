@@ -11,15 +11,20 @@ export const GlobalStateProvider = ({ children }) => {
   const [quantity, setQuantity] = useState(0);
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
 
+  
+
   useEffect(() => {
     const updatedCart = Object.entries(CartItems).map(([storeName, items]) => {
+      const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+      // {console.log(totalPrice)}
       const store = mockCampusShops.find(shop => shop.name === storeName);
       if (store) {
         const { menu, ...storeDetails } = store; // Exclude the menu
         return {
           storeName,
           storeDetails,
-          items
+          items,
+          totalPrice
         };
       }
       return {

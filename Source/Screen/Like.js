@@ -30,13 +30,13 @@ const Store = ({ storeName, items }) => (
 );
 
 const Like = () => {
-  const { updatedCartWithDetails } = useContext(GlobalStateContext);
+  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
   return (
     <View className=' h-full justify-center p-3' style={[styles.container, { backgroundColor: Colors.dark.colors.backGroundColor }]}>
-      {updatedCartWithDetails.map(({ storeName, storeDetails, items }) => (
-        <TouchableOpacity
+      {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }) => (
+        <View
           key={storeName}
           className=' rounded-xl p-2 mt-3 flex-row'
           style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
@@ -47,7 +47,7 @@ const Like = () => {
               uri: storeDetails.image,
               method: 'POST',
               headers: {
-                  Pragma: 'no-cache',
+                Pragma: 'no-cache',
               },
             }}
             className=' w-12 h-12 rounded-full mr-2'
@@ -78,7 +78,7 @@ const Like = () => {
                   color={Colors.dark.colors.mainTextColor}
                 />
                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
-                  ₹135
+                  ₹{totalPrice}
                 </Text>
               </View>
               <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base'>
@@ -86,7 +86,7 @@ const Like = () => {
               </Text>
             </TouchableOpacity>
             <View className=' items-center justify-center'>
-              <View
+              <TouchableOpacity
                 className=' rounded-full p-1 items-center justify-center'
                 style={{ backgroundColor: Colors.dark.colors.componentColor }}
               >
@@ -96,10 +96,10 @@ const Like = () => {
                   size={18}
                   color={Colors.dark.colors.mainTextColor}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
       ))}
     </View>
   );
