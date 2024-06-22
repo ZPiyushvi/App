@@ -68,7 +68,7 @@ const Cart = ({ route }) => {
           <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
             <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
           </TouchableOpacity>
-          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{storeName}</Text>
+          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(storeName, 21)}</Text>
         </View>
         <TouchableOpacity className='p-2'>
           <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />

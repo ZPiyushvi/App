@@ -10,11 +10,12 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import LongStarIcon from '../Components/LongStarIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 import useShopStatus from '../Components/useShopStatus';
+import { useNavigation } from '@react-navigation/native';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
-    const { CartItems, setCartItems} = useContext(GlobalStateContext);
+    const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(data.openingtime, data.closingtime, data.offdays, data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
@@ -217,16 +218,17 @@ const DetailsScreen = ({ route }) => {
         return (
             <TouchableOpacity
                 key={index}
-                style={{ padding: 12 }}
-                // className=' h-full'
+                // style={{ padding: 12 }}
+                className=' px-4 py-4'
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
             >
                 <Text
                     style={{
-                        fontWeight: 'bold',
-                        fontSize: 21,
+                        // fontWeight: 'bold',
+                        // fontSize: 21,
                         color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
                     }}
+                    className='text-base font-semibold'
                 >
                     {typetitle}
                 </Text>
@@ -254,26 +256,28 @@ const DetailsScreen = ({ route }) => {
 
     const getShopImageSource = (state) => {
         switch (state) {
-          case 'closed':
-            return require('./../Data/closed.png');
-        //   case 'closedForMaintenance':
-        //     return require('./../Data/closedMaintenance.png');
-        //   case 'open':
-        //     return require('./../Data/opened.png');
-        //   case 'openingSoon':
-        //     return require('./../Data/openingSoon.png');
-          case 'closingSoon':
-            return require('./../Data/closingsoon.png');
-          default:
-            return null; // Or a default image
+            case 'closed':
+                return require('./../Data/closed.png');
+            //   case 'closedForMaintenance':
+            //     return require('./../Data/closedMaintenance.png');
+            //   case 'open':
+            //     return require('./../Data/opened.png');
+            //   case 'openingSoon':
+            //     return require('./../Data/openingSoon.png');
+            case 'closingSoon':
+                return require('./../Data/closingsoon.png');
+            default:
+                return null; // Or a default image
         }
-      };
+    };
+
+    const navigation = useNavigation();
 
     return (
         <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
-                style={{ backgroundColor: Colors.dark.colors.backGroundColor, marginBottom: Dimensions.get('window').height * 0.09 }}
+                style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
             >
                 {/* <View style={{backgroundColor: Shopstatus.color, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}} className='overflow-hidden mb-10 p-5 items-center justify-center'> */}
                 <LinearGradient colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
@@ -382,17 +386,40 @@ const DetailsScreen = ({ route }) => {
 
             </ScrollView>
 
+            {/* {console.log("CartItems", CartItems)} */}
+            {/* {console.log("updatedCartWithDetails", updatedCartWithDetails)} */}
             {/* MenuScrollView */}
 
-            <View className=' absolute w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.09 }]}>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {data.menu.map((menu, index) => (
-                        renderMenuScroll({ typetitle: menu.title, index: index })
-                    ))}
-                </ScrollView>
+            <View className='absolute bottom-0 w-full'>
+                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor}]}>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {data.menu.map((menu, index) => (
+                            renderMenuScroll({ typetitle: menu.title, index: index })
+                        ))}
+                    </ScrollView>
+                </View>
+                {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
+                    storeName === data.name ? (
+
+                        <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                            <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
+                                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
+                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} added
+                                </Text>
+                                <View className=' flex-row items-center'>
+                                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>CheckOut </Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                                        <Ionicons color={Colors.dark.colors.mainTextColor} name={'caret-forward-circle'} size={22} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ) : null
+                ))}
             </View>
         </>
     );
