@@ -9,12 +9,15 @@ import Colors from '../Components/Colors';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import LongStarIcon from '../Components/LongStarIcon';
 import { LinearGradient } from 'expo-linear-gradient';
+import useShopStatus from '../Components/useShopStatus';
+import { useNavigation } from '@react-navigation/native';
 
 const DetailsScreen = ({ route }) => {
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
-    const { CartItems, setCartItems, setQuantity, quantity, updateQuantity } = useContext(GlobalStateContext);
-
+    const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const Shopstatus = useShopStatus(data.openingtime, data.closingtime, data.offdays, data.leaveDay);
+    // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
 
     const [openDropdowns, setOpenDropdowns] = useState(() => {
@@ -30,87 +33,93 @@ const DetailsScreen = ({ route }) => {
 
     const [selectedItemData, setSelectedItemData] = useState();
 
-    const renderAddToCart = (item) => {
-        // console.log("quantity", item.data.quantity);
+    const handleIncrement = (id, title, itemName, hotelName) => {
+        const updatedMenuItems = [...menuItems];
+        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
 
-        const itemIndex = CartItems.findIndex(cartItem => cartItem.data.id === item.data.id);
-        // console.log("present in cart", itemIndex);
-        console.log("data", item)
-        if (itemIndex !== -1) {
-            // Item exists in the cart, update the quantity
-            // Ensure currentQuantity is a number
-            // if (isNaN(currentQuantity)) {
-            //     console.error("Current quantity is NaN, setting to 0");
-            //     updatedCartItems[itemIndex].quantity = 0;
-            // }
+        if (categoryIndex !== -1) {
+            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
 
-            const updatedCartItems = [...CartItems];
-            const currentQuantity = updatedCartItems[itemIndex].data.quantity;
-            // console.log("Current quantity:", currentQuantity);
+            if (itemIndex !== -1) {
+                updatedMenuItems[categoryIndex].items[itemIndex] = {
+                    ...updatedMenuItems[categoryIndex].items[itemIndex],
+                    quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) + 1)
+                };
 
-            updatedCartItems[itemIndex].data.quantity = item.data.quantity
-            // console.log("updated Cart quantity:", item.data.quantity);
+                setMenuItems(updatedMenuItems);
 
-            setCartItems(updatedCartItems);
-        } else {
-            // Item does not exist in the cart, add it with the initial quantity
-            // console.log("Adding new item to the cart with quantity:", item);
-            setCartItems(prevCartItems => [...prevCartItems, { ...item }]);
+                setCartItems(prevCartItems => {
+                    const hotelCart = prevCartItems[hotelName] || [];
+                    const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
+
+                    if (existingCartItemIndex !== -1) {
+                        hotelCart[existingCartItemIndex] = {
+                            ...hotelCart[existingCartItemIndex],
+                            quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
+                        };
+                    } else {
+                        const menuItemToAdd = updatedMenuItems[categoryIndex].items[itemIndex];
+                        menuItemToAdd.quantity = "1";
+                        hotelCart.push(menuItemToAdd);
+                    }
+
+                    return {
+                        ...prevCartItems,
+                        [hotelName]: hotelCart
+                    };
+                });
+                console.log(CartItems)
+            }
         }
     };
 
-    const handleIncrement = (id, title) => {
-        console.log(id, title)
-        setMenuItems(prevItems =>
-            prevItems.map(menu =>
-                menu.title === title
-                    ? {
-                        ...menu,
-                        items: menu.items.map(item =>
-                            item.id === id
-                                ? {
-                                    ...item,
-                                    quantity: String(parseInt(item.quantity || '0') + 1),
-                                    // Update cart with incremented quantity
-                                    data: { ...item.data, quantity: String(parseInt(item.quantity || '0') + 1) }
-                                }
-                                : item
-                        ),
-                    }
-                    : menu
-            )
-        );
-    
-        // Find the updated item to pass to renderAddToCart
-        // const updatedItem = menu.items.find(item => item.id === id);
-        // renderAddToCart(updatedItem);
+    const handleDecrement = (id, title, itemName, hotelName) => {
+        const updatedMenuItems = [...menuItems];
+        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
+
+        if (categoryIndex !== -1) {
+            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
+
+            if (itemIndex !== -1) {
+                if (parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) > 0) {
+                    updatedMenuItems[categoryIndex].items[itemIndex] = {
+                        ...updatedMenuItems[categoryIndex].items[itemIndex],
+                        quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) - 1)
+                    };
+
+                    setMenuItems(updatedMenuItems);
+
+                    setCartItems(prevCartItems => {
+                        const hotelCart = prevCartItems[hotelName] || [];
+                        const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
+
+                        if (existingCartItemIndex !== -1) {
+                            const updatedCartItems = [...hotelCart];
+                            const newQuantity = String(parseInt(updatedCartItems[existingCartItemIndex].quantity) - 1);
+
+                            if (parseInt(newQuantity) > 0) {
+                                updatedCartItems[existingCartItemIndex] = {
+                                    ...updatedCartItems[existingCartItemIndex],
+                                    quantity: newQuantity
+                                };
+                            } else {
+                                updatedCartItems.splice(existingCartItemIndex, 1);
+                            }
+
+                            return {
+                                ...prevCartItems,
+                                [hotelName]: updatedCartItems
+                            };
+                        }
+
+                        return prevCartItems;  // If item is not found, return the current state
+                    });
+                }
+                console.log(CartItems)
+            }
+        }
     };
-    
-    const handleDecrement = (id, title) => {
-        setMenuItems(prevItems =>
-            prevItems.map(menu =>
-                menu.title === title
-                    ? {
-                        ...menu,
-                        items: menu.items.map(item =>
-                            item.id === id
-                                ? {
-                                    ...item,
-                                    quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0',
-                                    // Update cart with decremented quantity
-                                    data: { ...item.data, quantity: item.quantity > 0 ? String(parseInt(item.quantity || '0') - 1) : '0' }
-                                }
-                                : item
-                        ),
-                    }
-                    : menu
-            )
-        );
-    
-        // Find the updated item to pass to renderAddToCart
-        // const updatedItem = menu.items.find(item => item.id === id);
-        // renderAddToCart(updatedItem);
-    };
+
 
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
@@ -177,17 +186,18 @@ const DetailsScreen = ({ route }) => {
                     >
                         {item.quantity > 0 ? (
                             <>
-                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                {/* {console.log(item)} */}
+                                <TouchableOpacity onPress={() => { console.log(item), handleDecrement(item.id, title, item.item, data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title, item.item, data.name) }} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title), renderAddToCart({ data: item }) }}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
@@ -208,16 +218,17 @@ const DetailsScreen = ({ route }) => {
         return (
             <TouchableOpacity
                 key={index}
-                style={{ padding: 12 }}
-                // className=' h-full'
+                // style={{ padding: 12 }}
+                className=' px-4 py-4'
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
             >
                 <Text
                     style={{
-                        fontWeight: 'bold',
-                        fontSize: 21,
+                        // fontWeight: 'bold',
+                        // fontSize: 21,
                         color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
                     }}
+                    className='text-base font-semibold'
                 >
                     {typetitle}
                 </Text>
@@ -228,8 +239,8 @@ const DetailsScreen = ({ route }) => {
     const renderDropdown = (menu) => (
         <View className='gap-3' key={menu.title}>
             <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                <Text className=' text-2xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
-                <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={24} />
+                <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
             </TouchableOpacity>
             {openDropdowns[menu.title] && (
                 <FlatList
@@ -238,61 +249,101 @@ const DetailsScreen = ({ route }) => {
                     keyExtractor={item => item.id}
                 />
             )}
+            {/* {console.log(data.name)} */}
             {/* {renderDropdownItem({ items, title: 'Beverages' })} */}
         </View>
     );
+
+    const getShopImageSource = (state) => {
+        switch (state) {
+            case 'closed':
+                return require('./../Data/closed.png');
+            //   case 'closedForMaintenance':
+            //     return require('./../Data/closedMaintenance.png');
+            //   case 'open':
+            //     return require('./../Data/opened.png');
+            //   case 'openingSoon':
+            //     return require('./../Data/openingSoon.png');
+            case 'closingSoon':
+                return require('./../Data/closingsoon.png');
+            default:
+                return null; // Or a default image
+        }
+    };
+
+    const navigation = useNavigation();
 
     return (
         <>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
-                style={{ backgroundColor: Colors.dark.colors.backGroundColor, marginBottom: Dimensions.get('window').height * 0.09 }}
+                style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
             >
+                {/* <View style={{backgroundColor: Shopstatus.color, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}} className='overflow-hidden mb-10 p-5 items-center justify-center'> */}
+                <LinearGradient colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
+                    // start={{ x: 0.0, y: 0.2 }} end={{ x: 0.0, y: 1.8 }}
+                    className='overflow-hidden mb-10 p-5 items-center justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}>
+                    <View className=' items-center mb-6 gap-4'>
+                        <Image
+                            source={getShopImageSource(Shopstatus.state)}
+                            className='w-44 h-16'
+                            alt="Logo"
+                        />
+                        <Text className=' font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            {Shopstatus.text}
+                        </Text>
+                    </View>
+                    <View className=' w-full rounded-3xl items-center justify-center p-3' style={{ backgroundColor: Colors.dark.colors.componentColor, }}>
+                        {/* <View className=' w-44 h-24 mb-6'>
+                        <Image
+                            source={require("./../Data/Offline.png")}
+                            className=' w-full h-full'
+                            alt="Logo"
+                        />
+                        </View> */}
+                        <Text className=' text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{data.name}</Text>
+                        <View className='flex-row gap-2 justify-center items-center mb-3'>
+                            <View className='flex-row justify-center items-center'>
+                                {data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
+                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{data.type}</Text>
+                            </View>
+                            <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{data.menutype}</Text>
+                        </View>
 
-                <View className=' w-full h-64 bg-gradient-to-r from-cyan-500 to-blue-500 bg-black'>
-                    <Image
-                        source={require('./../../assets/burgur.png')}
-                        className=' w-full h-full object-contain'
-                        style={{ objectFit: 'contain' }}
-                        alt="Logo"
-                    />
-
-                    <View className='w-full absolute bottom-0' style={{ backgroundColor: 'rgba(0, 0, 0, 0.40)' }}>
-                        <View
-                            className=' w-1/2 items-center justify-center p-4'
-                            style={{
-                                left: '25%', // Center horizontally by setting the left margin to 25% of the screen width
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <Text> Hello </Text>
-                            {/* {status({ closingTime: data.closingtime, openingTime: data.openingtime })} */}
+                        <View className='flex-row justify-center items-center gap-1 mb-3'>
+                            <View className=' flex-row justify-center items-center rounded-lg px-1 bg-green-500' style={{ paddingVertical: 2 }}>
+                                <Text className='font-semibold text-lg mr-1 text-white' >{data.rating}</Text>
+                                <Ionicons name="star" color={'white'} />
+                            </View>
+                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {data.ratingcount} ratings</Text>
+                        </View>
+                        <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
+                            <Ionicons name="navigate-circle" size={24} color={'red'} />
+                            <Text className='font-semibold text-base mx-1'>{data.locationdetailed}</Text>
                         </View>
                     </View>
-                </View>
+                    {/* </View> */}
+                </LinearGradient>
 
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Text className='text-3xl font-semibold'>{data.name}</Text>
-                    <View className='flex-row gap-2 justify-center items-center mb-2'>
-                        <View className='flex-row justify-center items-center'>
-                            {data.type === "Veg" && <Ionicons name="leaf" size={18} color={'green'} />}
-                            <Text className='text-base ml-1'>{data.type}</Text>
+                <View className=' flex-row justify-between p-4'>
+                    <View className=' flex-row gap-3'>
+                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                            <View className=' absolute z-10 left-3'>
+                                <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={11} padding={2} />
+                            </View>
+                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
                         </View>
-                        <Ionicons name="ellipse" size={5} />
-                        <Text className='text-base'>{data.menutype}</Text>
-                    </View>
-
-                    <View className='flex-row justify-center items-center gap-1 mb-3'>
-                        <View className=' flex-row justify-center items-center bg-green-600 rounded-lg px-2'>
-                            <Text className='text-lg font-semibold mr-1 text-white'>{data.rating}</Text>
-                            <Ionicons name="star" color={'white'} />
+                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                            <View className=' absolute z-10 left-3'>
+                                <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={11} padding={2} />
+                            </View>
+                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
                         </View>
-                        <Text className='text-base' style={{ textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}>{data.ratingcount}</Text>
                     </View>
-                    <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
-                        <Ionicons name="navigate-circle" size={24} color={'red'} />
-                        <Text className=' m-1'>{data.location}</Text>
+                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
+                        <Ionicons name="barcode-outline" size={24} color={Colors.dark.colors.mainTextColor} />
                     </View>
                 </View>
 
@@ -335,17 +386,40 @@ const DetailsScreen = ({ route }) => {
 
             </ScrollView>
 
+            {/* {console.log("CartItems", CartItems)} */}
+            {/* {console.log("updatedCartWithDetails", updatedCartWithDetails)} */}
             {/* MenuScrollView */}
 
-            <View className=' absolute w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.09 }]}>
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                >
-                    {data.menu.map((menu, index) => (
-                        renderMenuScroll({ typetitle: menu.title, index: index })
-                    ))}
-                </ScrollView>
+            <View className='absolute bottom-0 w-full'>
+                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor}]}>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    >
+                        {data.menu.map((menu, index) => (
+                            renderMenuScroll({ typetitle: menu.title, index: index })
+                        ))}
+                    </ScrollView>
+                </View>
+                {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
+                    storeName === data.name ? (
+
+                        <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                            <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
+                                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
+                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} added
+                                </Text>
+                                <View className=' flex-row items-center'>
+                                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>CheckOut </Text>
+                                    <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                                        <Ionicons color={Colors.dark.colors.mainTextColor} name={'caret-forward-circle'} size={22} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ) : null
+                ))}
             </View>
         </>
     );

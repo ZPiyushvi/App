@@ -11,6 +11,11 @@ import { Ionicons } from '@expo/vector-icons';
 import SelectAddress from '../Screen/SelectAddress';
 import Profile from '../Screen/Profile';
 import Colors from '../Components/Colors';
+import IndiviualCart from '../Screen/IndiviualCart';
+import SignupScreen from '../Screen/SignupScreen';
+import LoginScreen from '../Screen/LoginScreen';
+import MainScreen from '../Screen/MainScreen';
+import StaterScreen from '../Screen/StaterScreen';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +79,26 @@ export default function AppNavigator() {
                     name="Profile"
                     component={Profile}
                 />
+                <Stack.Screen
+                    name="IndiviualCart"
+                    component={IndiviualCart}
+                />
+                <Stack.Screen
+                    name="SignupScreen"
+                    component={SignupScreen}
+                />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                />
+                <Stack.Screen
+                    name="StaterScreen"
+                    component={StaterScreen}
+                />
+                {/* <Stack.Screen
+                    name="MainScreen"
+                    component={MainScreen}
+                /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );

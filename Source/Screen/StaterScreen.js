@@ -151,7 +151,7 @@ const Circle = ({ onPress, index, quotes, animatedValue, animatedValue2 }) => {
   );
 };
 
-export default function App() {
+export default function StaterScreen() {
   const navigation = useNavigation();
   const animatedValue = React.useRef(new Animated.Value(0)).current;
   const animatedValue2 = React.useRef(new Animated.Value(0)).current;
