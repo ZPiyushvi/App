@@ -22,7 +22,7 @@ const LoginScreen = () => {
   };
 
   const handleSignup = () => {
-    navigation.navigate("LoginScreen");
+    navigation.navigate("StaterScreen");
   };
 
   return (

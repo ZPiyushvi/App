@@ -15,6 +15,7 @@ import IndiviualCart from '../Screen/IndiviualCart';
 import SignupScreen from '../Screen/SignupScreen';
 import LoginScreen from '../Screen/LoginScreen';
 import MainScreen from '../Screen/MainScreen';
+import StaterScreen from '../Screen/StaterScreen';
 
 const Stack = createStackNavigator();
 
@@ -89,6 +90,10 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="LoginScreen"
                     component={LoginScreen}
+                />
+                <Stack.Screen
+                    name="StaterScreen"
+                    component={StaterScreen}
                 />
                 {/* <Stack.Screen
                     name="MainScreen"
