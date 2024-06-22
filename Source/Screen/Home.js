@@ -1,6 +1,6 @@
 // import { BANNER_H } from "./../Constants/Constants"
 const BANNER_H = Dimensions.get('window').height * 0.86;
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,10 +16,13 @@ import TruncatedTextComponent from "../Components/TruncatedTextComponent";
 import PopUpLang from "../Components/PopUpLang";
 import SearchBox from "../Components/SearchBox";
 import { LinearGradient } from 'expo-linear-gradient';
+import { FirstStoreComponent } from '../Components/CartMainContainor';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const Cart = () => {
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
+  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -120,14 +123,31 @@ const Cart = () => {
 
         <View style={styles.verticalScrollContainer}>
 
-          <View style={{marginTop:Dimensions.get('window').height * 0.01}}>
+          <View style={{ marginTop: Dimensions.get('window').height * 0.01 }}>
             <Titles title={"All Restaurants"} width={60} />
             <Content data={campusShops} />
+            <View className='px-2 py-5'>
+              <Text className='font-black text-xl text-center' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Exciting Updates Coming Soon!</Text>
+              <Text className='font-light text-sm text-center' style={{ color: Colors.dark.colors.textColor }}>
+                We're working on bringing you fresh new choices. Meanwhile, explore our current selection and find your perfect match!
+              </Text>
+            </View>
           </View>
 
         </View>
 
       </Animated.ScrollView>
+
+      {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
+        null
+        :
+        <LinearGradient
+          className=' absolute p-2 w-full bottom-0'
+          colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
+          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} />
+        </LinearGradient>
+      }
+
     </View>
   );
 };

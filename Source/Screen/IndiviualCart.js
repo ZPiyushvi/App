@@ -62,7 +62,7 @@ const Cart = ({ route }) => {
 
   return (
     // View style={{backgroundColor: Colors.dark.colors.backGroundColor}}
-    <View className='h-full w-full'  style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+    <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <View className=' p-3 pt-8 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
         <View className='flex-row items-center'>
           <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
@@ -120,12 +120,16 @@ const Cart = ({ route }) => {
 
         </View>
 
-        
+
       </ScrollView>
 
-      <View className=' p-5 flex-row items-center w-full justify-between'>
-        <TouchableOpacity className=' p-2 w-full h-full flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Pay ₹{totalPrice}</Text>
+      <View className=' p-5 rounded-t-2xl flex-row items-center w-full justify-between' style={{backgroundColor: Colors.dark.colors.componentColor}}>
+        <View>
+        <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
+        <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
+        </View>
+        <TouchableOpacity className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width:Dimensions.get('window').width * 0.53}}>
+          <Text className='text-xl font-black' style={{color: Colors.dark.colors.mainTextColor}}>Proceed to Pay</Text>
         </TouchableOpacity>
       </View>
     </View>
