@@ -16,6 +16,7 @@ import SignupScreen from '../Screen/SignupScreen';
 import LoginScreen from '../Screen/LoginScreen';
 import MainScreen from '../Screen/MainScreen';
 import StaterScreen from '../Screen/StaterScreen';
+import ModalScreen from '../Screen/ModelScreen';
 
 const Stack = createStackNavigator();
 
@@ -95,10 +96,10 @@ export default function AppNavigator() {
                     name="StaterScreen"
                     component={StaterScreen}
                 />
-                {/* <Stack.Screen
-                    name="MainScreen"
-                    component={MainScreen}
-                /> */}
+                <Stack.Screen
+                    name="ModalScreen"
+                    component={ModalScreen}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

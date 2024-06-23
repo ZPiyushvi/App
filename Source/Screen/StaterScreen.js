@@ -30,7 +30,7 @@ const colors = [
     nextBgColor: Colors.dark.colors.backGroundColor,
   },
   {
-    initialBgColor: Colors.dark.colors.secComponentColor,
+    initialBgColor: Colors.dark.colors.diffrentColorOrange,
     bgColor: Colors.dark.colors.backGroundColor,
     nextBgColor: Colors.dark.colors.secComponentColor,
   },

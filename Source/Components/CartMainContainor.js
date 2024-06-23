@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export const FirstStoreComponent = ({ updatedCartWithDetails }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+const navigation = useNavigation();
 
   const updatedCartWithDetailsLength = updatedCartWithDetails.length;
   const { storeName, storeDetails, items, totalPrice } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
@@ -18,6 +19,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails }) => {
       {updatedCartWithDetailsLength - 1 != 0 ?
         <>
           <TouchableOpacity
+          onPress={() => navigation.navigate('ModalScreen')}
             className=' absolute flex-row rounded-full mt-2 p-1 px-2 items-center z-50'
             style={{
               backgroundColor: Colors.dark.colors.componentColor,

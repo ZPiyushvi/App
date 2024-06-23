@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
@@ -11,8 +11,14 @@ import LongStarIcon from '../Components/LongStarIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 import useShopStatus from '../Components/useShopStatus';
 import { useNavigation } from '@react-navigation/native';
+import ModelScreen from './ModelScreen';
 
 const DetailsScreen = ({ route }) => {
+    // const [visible, setVisible] = useState(false);
+    // const show = () => setVisible(true);
+    // const hide = () => setVisible(false);
+    const { show, hide, RenderModel } = ModelScreen();
+
     const { data } = route.params || {};
     const [menuItems, setMenuItems] = useState(data.menu);
     const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
@@ -354,20 +360,20 @@ const DetailsScreen = ({ route }) => {
 
                 <View className='p-3 pb-24 gap-y-10'>
                     <View className=' gap-3'>
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
                             Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
                         </Text>
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
                             Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
                         </Text>
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
                             The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
                         </Text>
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>
+                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
                             An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
                         </Text>
                     </View>
-                    <TouchableOpacity className='flex-row justify-between items-center'>
+                    <TouchableOpacity className='flex-row justify-between items-center' onPress={show}>
                         <View className='flex-row items-center'>
                             <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
                             <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
@@ -391,7 +397,7 @@ const DetailsScreen = ({ route }) => {
             {/* MenuScrollView */}
 
             <View className='absolute bottom-0 w-full'>
-                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor}]}>
+                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
                     <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -406,8 +412,8 @@ const DetailsScreen = ({ route }) => {
 
                         <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
                             <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
-                                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
+                                <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {''}
                                     {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} added
                                 </Text>
                                 <View className=' flex-row items-center'>
@@ -421,6 +427,7 @@ const DetailsScreen = ({ route }) => {
                     ) : null
                 ))}
             </View>
+            {RenderModel()}
         </>
     );
 };

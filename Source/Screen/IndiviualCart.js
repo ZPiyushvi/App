@@ -113,7 +113,7 @@ const Cart = ({ route }) => {
 
           <View className='mt-4 mb-24'>
             <Text className='font-semibold text-xl spacing tracking-[4]' style={{ color: Colors.dark.colors.textColor }}>CANCELLATION POLICY</Text>
-            <Text className='mt-1 font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
+            <Text className='mt-1 font-medium text-sm' style={{ color: Colors.dark.colors.textColor }}>
               Help us reduce food waste by avoiding cancellations after placing your order. A 100% cancellation fee will be applied.
             </Text>
           </View>
@@ -126,7 +126,7 @@ const Cart = ({ route }) => {
       <View className=' p-5 rounded-t-2xl flex-row items-center w-full justify-between' style={{backgroundColor: Colors.dark.colors.componentColor}}>
         <View>
         <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
-        <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
+        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
         <TouchableOpacity className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width:Dimensions.get('window').width * 0.53}}>
           <Text className='text-xl font-black' style={{color: Colors.dark.colors.mainTextColor}}>Proceed to Pay</Text>
