@@ -11,7 +11,6 @@ const Cart = ({ route }) => {
   const { storeName, items, totalPrice, storeDetails } = route.params;
 
   const navigation = useNavigation();
-  console.log("Cart", storeDetails)
 
   const renderItem = ({ item }) => (
     <View className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -20,7 +19,6 @@ const Cart = ({ route }) => {
           item.type &&
           <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={8} padding={2} />
         }
-        {/* {console.log(item)} */}
         <View>
           <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(item.item, 20)}</Text>
           <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity: {item.quantity} * ₹{item.price}</Text>
@@ -36,7 +34,6 @@ const Cart = ({ route }) => {
         >
           {item.quantity > 0 ? (
             <>
-              {/* {console.log(item)} */}
               <TouchableOpacity className='z-10 left-0 absolute w-6/12 items-center'>
                 <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
               </TouchableOpacity>

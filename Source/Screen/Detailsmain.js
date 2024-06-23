@@ -6,7 +6,8 @@ import moment from 'moment';
 import PopUp from '../Components/PopUp';
 import Colors from '../Components/Colors';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-
+import useShopStatus from '../Components/useShopStatus';
+// console.log
 const BANNER_H = 400;
 
 const Details = ({ route }) => {
@@ -19,7 +20,6 @@ const Details = ({ route }) => {
     const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
 
     const renderAddToCart = (item) => {
-        { console.log(CartItems) }
         setCartItems(prevCartItems => [...prevCartItems, item]);
     };
 
@@ -52,19 +52,6 @@ const Details = ({ route }) => {
             />
         );
     };
-
-    const renderIncrimentDecriment = (type) => {
-        const [Amunt, setAmunt] = useState(0);
-        if (type == 'incriment') {
-            setAmunt(Amunt + 1)
-        }
-        if (type == 'decriment') {
-            if (quantity > 0) {
-                setAmunt(Amunt - 1)
-            }
-        }
-
-    }
 
     const renderDropdown = ({ typetitle, items }) => {
         const [openDropDown, setOpenDropDown] = useState(true); // State to manage dropdown visibility
@@ -106,7 +93,6 @@ const Details = ({ route }) => {
                                                     }}
                                                 >
                                                     {size}
-                                                    {/* {console.log(size)} */}
                                                 </Text>
                                             </TouchableOpacity>
                                         );
@@ -173,51 +159,6 @@ const Details = ({ route }) => {
         );
     };
 
-    const status = ({ closingTime, openingTime }) => {
-
-        const currentTime = moment();
-        let currentDay = moment().format('dddd');
-
-        let openingMoment = moment(openingTime, 'LT');
-        let closingMoment = moment(closingTime, 'LT');
-
-        // Handling closing time crossing midnight
-        // if (closingMoment.isBefore(openingMoment)) {
-        //     if (currentTime.isAfter(closingMoment)) {
-        //         closingMoment.add(1, 'day'); // Adding a day to closing time if it's before opening time
-        //     } else {
-        //         closingMoment.subtract(1, 'day'); // Subtracting a day from closing time if it's after opening time
-        //     }
-        // }
-
-        const openingDifference = openingMoment.diff(currentTime, 'minutes');
-        const closingDifference = closingMoment.diff(currentTime, 'minutes');
-
-        // console.log("Current Time:", currentTime.format('LT'));
-        // console.log("Opening Time:", openingMoment.format('LT'));
-        // console.log("Closing Time:", closingMoment.format('LT'));
-        // console.log("openingDifference", openingDifference);
-        // console.log("closingDifference", closingDifference);
-
-        if (currentTime.isBetween(openingMoment, closingMoment)) {
-            return (
-                <Text className='text-center text-gray-50'>We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!</Text>
-            );
-        } else if (openingDifference > 0 && openingDifference <= 60) {
-            return (
-                <Text className='text-center text-gray-50'>Almost there! just {openingDifference} minutes until kitchen's back in action! Get ready to place your order!</Text>
-            );
-        } else if (closingDifference > 0 && closingDifference <= 60) {
-            return (
-                <Text className='text-center text-gray-50'>Hurry up! Kitchen's closing in {closingDifference} minutes!. Get your order in now before it's too late!"</Text>
-            );
-        } else {
-            return (
-                <Text className='text-center text-base font-medium leading-5 text-gray-50'>Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place</Text>
-            );
-        }
-    };
-
     const [selectedIndex, setSelectedIndex] = useState(null);
     const renderMenuScroll = ({ typetitle, index }) => {
         const isSelected = selectedIndex === index; // Check if the current item is selected
@@ -271,7 +212,8 @@ const Details = ({ route }) => {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    {status({ closingTime: data.closingtime, openingTime: data.openingtime })}
+                                    {useShopStatus({openingTime: data.openingtime, closingTime: data.closingtime, offDays: data.offdays, leaveDayString: data.leaveDay})}
+                                    {/* {status({ closingTime: data.closingtime, openingTime: data.openingtime })} */}
                                 </View>
                             </View>
                         </View>

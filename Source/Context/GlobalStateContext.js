@@ -11,8 +11,6 @@ export const GlobalStateProvider = ({ children }) => {
   const [quantity, setQuantity] = useState(0);
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
 
-  // console.log("CartItems", CartItems)
-
   useEffect(() => {
     const updatedCart = Object.entries(CartItems)
       .map(([storeName, items]) => {

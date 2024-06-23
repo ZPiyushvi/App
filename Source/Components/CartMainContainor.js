@@ -75,7 +75,6 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
         className=' rounded-xl p-2 -mt-10 flex-row'
       // style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
       >
-        {/* {console.log("Like", storeDetails)} */}
         <Image
           // source={require('./../Data/banner.jpg')}
           source={{

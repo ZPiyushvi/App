@@ -74,7 +74,6 @@ const DetailsScreen = ({ route }) => {
                         [hotelName]: hotelCart
                     };
                 });
-                console.log(CartItems)
             }
         }
     };
@@ -121,7 +120,6 @@ const DetailsScreen = ({ route }) => {
                         return prevCartItems;  // If item is not found, return the current state
                     });
                 }
-                console.log(CartItems)
             }
         }
     };
@@ -193,7 +191,7 @@ const DetailsScreen = ({ route }) => {
                         {item.quantity > 0 ? (
                             <>
                                 {/* {console.log(item)} */}
-                                <TouchableOpacity onPress={() => { console.log(item), handleDecrement(item.id, title, item.item, data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
@@ -392,8 +390,6 @@ const DetailsScreen = ({ route }) => {
 
             </ScrollView>
 
-            {/* {console.log("CartItems", CartItems)} */}
-            {/* {console.log("updatedCartWithDetails", updatedCartWithDetails)} */}
             {/* MenuScrollView */}
 
             <View className='absolute bottom-0 w-full'>
