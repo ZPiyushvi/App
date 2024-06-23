@@ -19,6 +19,8 @@ const Details = ({ route }) => {
 
     const { CartItems, setCartItems, setQuantity, quantity } = useContext(GlobalStateContext);
 
+    console.log("CartItems", CartItems)
+
     const renderAddToCart = (item) => {
         setCartItems(prevCartItems => [...prevCartItems, item]);
     };
@@ -182,8 +184,9 @@ const Details = ({ route }) => {
         );
     }
 
+    // key={storeName}
     return (
-        <View>
+        <View >
             <Animated.ScrollView
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: scrollA } } }],

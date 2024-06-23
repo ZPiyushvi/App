@@ -30,6 +30,7 @@ export default function Cart() {
                 className=' rounded-xl p-2 mt-3 flex-row'
                 style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
               >
+                {/* {console.log(storeDetails)} */}
                 <Image
                   // source={require('./../Data/banner.jpg')}
                   source={{

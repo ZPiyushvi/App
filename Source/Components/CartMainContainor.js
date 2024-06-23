@@ -16,7 +16,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
   const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
 
   return (
-    <View>
+    <View key={storeName}>
       {updatedCartWithDetailsLength - 1 != 0 ?
         <>
           <TouchableOpacity
@@ -42,7 +42,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
             <Ionicons name='caret-up' color={Colors.dark.colors.diffrentColorOrange} size={16} />
           </TouchableOpacity>
           <View
-            key={storeName}
+            // key={storeName}
             style={{
               backgroundColor: Colors.dark.colors.componentColor,
               shadowColor: Colors.dark.colors.secComponentColor, // Replace with your desired glow color
@@ -61,7 +61,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
         null
       }
       <View
-        key={storeName}
+        // key={storeName}
         style={{
           backgroundColor: Colors.dark.colors.componentColor,
           shadowColor: Colors.dark.colors.secComponentColor, // Replace with your desired glow color

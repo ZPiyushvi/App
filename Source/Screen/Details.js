@@ -278,7 +278,7 @@ const DetailsScreen = ({ route }) => {
     const navigation = useNavigation();
 
     return (
-        <>
+        <View key={CartItems.storeName}>
             <ScrollView
                 showsHorizontalScrollIndicator={false}
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
@@ -424,7 +424,7 @@ const DetailsScreen = ({ route }) => {
                 ))}
             </View>
             {RenderModel()}
-        </>
+        </View>
     );
 };
 
