@@ -18,10 +18,12 @@ import SearchBox from "../Components/SearchBox";
 import { LinearGradient } from 'expo-linear-gradient';
 import { FirstStoreComponent } from '../Components/CartMainContainor';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
+import ModelScreen from './ModelScreen';
 
 const Cart = () => {
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
+  const { show, hide, RenderModel } = ModelScreen();
   const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
@@ -144,10 +146,10 @@ const Cart = () => {
         <LinearGradient
           className=' absolute p-2 w-full bottom-0'
           colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} />
+          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show}/>
         </LinearGradient>
       }
-
+{RenderModel()}
     </View>
   );
 };

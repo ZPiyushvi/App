@@ -1,275 +1,107 @@
-import * as React from 'react';
-import {
-  StatusBar,
-  Dimensions,
-  TouchableOpacity,
-  Animated,
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
-import Constants from 'expo-constants';
-import { AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, ScrollView, Button } from 'react-native';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Colors from '../Components/Colors';
+import { Ionicons } from '@expo/vector-icons';
+import TruncatedTextComponent from '../Components/TruncatedTextComponent';
+import { useNavigation } from '@react-navigation/native';
+import { FirstStoreComponent } from '../Components/CartMainContainor';
 
-const { width } = Dimensions.get('window');
-const AnimatedAntDesign = Animated.createAnimatedComponent(AntDesign);
-const DURATION = 1000;
-const TEXT_DURATION = DURATION * 0.8;
-
-const colors = [
-  {
-    initialBgColor: Colors.dark.colors.componentColor,
-    bgColor: Colors.dark.colors.componentColor,
-    nextBgColor: Colors.dark.colors.diffrentColorOrange,
-  },
-  {
-    initialBgColor: Colors.dark.colors.componentColor,
-    bgColor: Colors.dark.colors.diffrentColorOrange,
-    nextBgColor: Colors.dark.colors.backGroundColor,
-  },
-  {
-    initialBgColor: Colors.dark.colors.secComponentColor,
-    bgColor: Colors.dark.colors.backGroundColor,
-    nextBgColor: Colors.dark.colors.secComponentColor,
-  },
-];
-
-const quotes = [
-  {
-    normaltitle: 'Welcome to ',
-    quote: 'Foodie Fiesta! 🍔🍕🥗',
-    author: "Indulge in a culinary adventure with an incredible selection of dishes from the best spots in town. Discover new flavors and enjoy your all-time favorites, all in one place!",
-  },
-  {
-    quote: "Customize👨‍🍳🧤🍽️",
-    normaltitle: "to Your Heart's Content",
-    author: 'Make every meal uniquely yours with a plethora of add-ons! Whether you crave extra cheese, spicy sauces, or a healthy side, tailor your order to perfection.',
-  },
-  {
-    normaltitle: "Pick up your meal",
-    quote: "without waiting 📆⏳🕜👀",
-    author: "Say goodbye to long waits and hello to convenience! Pick up your food exactly when you want it, ensuring it's fresh and hot every time.",
-  },
-];
-
-const Circle = ({ onPress, index, quotes, animatedValue, animatedValue2 }) => {
-  const { initialBgColor, nextBgColor, bgColor } = colors[index];
-  const inputRange = [0, 0.001, 0.5, 0.501, 1];
-  const backgroundColor = animatedValue2.interpolate({
-    inputRange,
-    outputRange: [
-      initialBgColor,
-      initialBgColor,
-      initialBgColor,
-      bgColor,
-      bgColor,
-    ],
-  });
-
-  const dotBgColor = animatedValue2.interpolate({
-    inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1],
-    outputRange: [
-      bgColor,
-      bgColor,
-      bgColor,
-      initialBgColor,
-      initialBgColor,
-      nextBgColor,
-    ],
-  });
-
-  return (
-    <Animated.View
-      style={[
-        StyleSheet.absoluteFillObject,
-        styles.container,
-        { backgroundColor },
-      ]}
-    >
-      <Animated.View
-        style={[
-          styles.circle,
-          {
-            backgroundColor: dotBgColor,
-            transform: [
-              { perspective: 200 },
-              {
-                rotateY: animatedValue2.interpolate({
-                  inputRange: [0, 0.5, 1],
-                  outputRange: ['0deg', '-90deg', '-180deg'],
-                }),
-              },
-              {
-                scale: animatedValue2.interpolate({
-                  inputRange: [0, 0.5, 1],
-                  outputRange: [1, 6, 1],
-                }),
-              },
-              {
-                translateX: animatedValue2.interpolate({
-                  inputRange: [0, 0.5, 1],
-                  outputRange: [0, width * 0.01, 0],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        <TouchableOpacity onPress={onPress}>
-          <Animated.View
-            style={[
-              styles.button,
-              {
-                transform: [
-                  {
-                    scale: animatedValue.interpolate({
-                      inputRange: [0, 0.05, 0.5, 1],
-                      outputRange: [1, 0, 0, 1],
-                    }),
-                  },
-                  {
-                    rotateY: animatedValue.interpolate({
-                      inputRange: [0, 0.5, 0.9, 1],
-                      outputRange: ['0deg', '180deg', '180deg', '180deg'],
-                    }),
-                  },
-                ],
-                opacity: animatedValue.interpolate({
-                  inputRange: [0, 0.05, 0.9, 1],
-                  outputRange: [1, 0, 0, 1],
-                }),
-              },
-            ]}
-          >
-            <AnimatedAntDesign name='arrowright' size={28} color={'white'} />
-          </Animated.View>
-        </TouchableOpacity>
-      </Animated.View>
-    </Animated.View>
-  );
-};
-
-export default function App() {
+export default function Cart() {
+  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
-  const animatedValue = React.useRef(new Animated.Value(0)).current;
-  const animatedValue2 = React.useRef(new Animated.Value(0)).current;
-  const sliderAnimatedValue = React.useRef(new Animated.Value(0)).current;
-  const inputRange = [...Array(quotes.length).keys()];
-  const [index, setIndex] = React.useState(0);
-
-  const animate = (i) =>
-    Animated.parallel([
-      Animated.timing(sliderAnimatedValue, {
-        toValue: i,
-        duration: TEXT_DURATION,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animatedValue, {
-        toValue: 1,
-        duration: DURATION,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animatedValue2, {
-        toValue: 1,
-        duration: DURATION,
-        useNativeDriver: false,
-      }),
-    ]);
-
-  const onPress = () => {
-    if (index === quotes.length - 1) {
-      navigation.navigate("LoginScreen");
-    } else {
-      animatedValue.setValue(0);
-      animatedValue2.setValue(0);
-      animate((index + 1) % colors.length).start();
-      setIndex((index + 1) % colors.length);
-    }
-  };
 
   return (
-    <View className='w-full h-full pt-32'>
-      <StatusBar hidden />
-      <Circle
-        index={index}
-        onPress={onPress}
-        quotes={quotes}
-        animatedValue={animatedValue}
-        animatedValue2={animatedValue2}
-      />
-      <Animated.View
-        style={{
-          flexDirection: 'row',
-          transform: [
-            {
-              translateX: sliderAnimatedValue.interpolate({
-                inputRange,
-                outputRange: quotes.map((_, i) => -i * width * 2),
-              }),
-            },
-          ],
-          opacity: sliderAnimatedValue.interpolate({
-            inputRange: [...Array(quotes.length * 2 + 1).keys()].map(
-              (i) => i / 2
-            ),
-            outputRange: [...Array(quotes.length * 2 + 1).keys()].map((i) =>
-              i % 2 === 0 ? 1 : 0
-            ),
-          }),
-        }}
-      >
-        {quotes.slice(0, colors.length).map(({ quote, author, normaltitle }, i) => {
-          return (
-            <View className='p-3' style={{ paddingRight: width, width: width * 2 }} key={i}>
-              <Text
-                className='font-semibold text-3xl' style={{ color: colors[i].nextBgColor }}
-              >
-                {normaltitle}
-              </Text>
-              <Text
-                className=' pt-1 font-black text-4xl' style={{ color: colors[i].nextBgColor }}
-              >
-                {quote}
-              </Text>
-              <Text
-                className=' pt-5 font-normal text-xl'
-                style={{
-                  color: Colors.dark.colors.mainTextColor,
-                }}
-              >
-                {author}
-              </Text>
-            </View>
-          );
-        })}
-      </Animated.View>
-    </View>
-  );
-}
+    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+      <TouchableOpacity style={{ flex: 1}} />
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    paddingTop: Constants.statusBarHeight,
-    padding: 8,
-    paddingBottom: 50,
-  },
-  button: {
-    height: 70,
-    width: 70,
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  circle: {
-    marginRight: 20,
-    backgroundColor: 'turquoise',
-    width: 70,
-    height: 70,
-    borderRadius: 50,
-  },
-});
+      <View className='p-3 rounded-3xl' style={{ flex: 1, backgroundColor: Colors.dark.colors.backGroundColor }}>
+      <View className='flex-row justify-between p-1 items-center'>
+              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-xl'>Your Carts ({updatedCartWithDetails.length})</Text>
+              <Text style={{ color: Colors.dark.colors.textColor }} className='font-black text-base'>Clear All</Text>
+            </View>
+        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+          <View className='justify-center' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+            {/* <Button title="Hide" /> */}
+            
+            {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }) => (
+              <View
+                key={storeName}
+                className=' rounded-xl p-2 mt-3 flex-row'
+                style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
+              >
+                {console.log("Like", storeDetails)}
+                <Image
+                  // source={require('./../Data/banner.jpg')}
+                  source={{
+                    uri: storeDetails.image,
+                    method: 'POST',
+                    headers: {
+                      Pragma: 'no-cache',
+                    },
+                  }}
+                  className=' w-12 h-12 rounded-full mr-2'
+                  alt="Logo"
+                />
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>
+                    {TruncatedTextComponent(storeName, 13)}
+                  </Text>
+                  <View className=' flex-row items-center'>
+                    <Text style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
+                      View Full Menu
+                    </Text>
+                    <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
+                  </View>
+                </View>
+                <View className='flex-row gap-x-3 absolute right-2 top-2 h-full'>
+                  <TouchableOpacity
+                    className='px-2 justify-center items-center rounded-lg'
+                    style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}
+                    onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}
+                  >
+                    <View className='flex-row items-center justify-center'>
+                      {/* <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
+            {items.length} items
+          </Text> */}
+                      <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.mainTextColor }}>
+                        {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
+                        {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'}
+                      </Text>
+                      <Ionicons
+                        style={{ transform: [{ rotate: '90deg' }], margin: -3 }}
+                        name="remove-outline"
+                        size={16}
+                        color={Colors.dark.colors.mainTextColor}
+                      />
+                      <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
+                        ₹{totalPrice}
+                      </Text>
+                    </View>
+                    <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base'>
+                      CheckOut
+                    </Text>
+                  </TouchableOpacity>
+                  <View className=' items-center justify-center'>
+                    <TouchableOpacity
+                      className=' rounded-full p-1 items-center justify-center'
+                      style={{ backgroundColor: Colors.dark.colors.componentColor }}
+                    >
+                      <Ionicons
+                        name="add-outline"
+                        style={{ transform: [{ rotate: '45deg' }] }}
+                        size={18}
+                        color={Colors.dark.colors.mainTextColor}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+
+    </View>
+  )
+}
