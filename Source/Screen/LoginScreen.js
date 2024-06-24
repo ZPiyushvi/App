@@ -47,21 +47,11 @@ const LoginScreen = () => {
 
   function handle_email(input) {
     const emailVar = input.nativeEvent.text;
-    setemail(phoneVar);
+    setemail(emailVar);
     setemail_verify(false);
-    if (/[6-9]{1}[0-9]{9}/.test(emailVar)) {
-      setemail(phoneVar);
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
+      setemail(emailVar);
       setemail_verify(true);
-    }
-  }
-
-  function handle_password(input) {
-    const passwordVar = input.nativeEvent.text;
-    setpassword(passwordVar);
-    setpassword_verify(false);
-    if (/(?=.*\d.*\d.*\d)(?=.*[^a-zA-Z0-9]).{8,}/.test(passwordVar)) {
-      setpassword(passwordVar);
-      setpassword_verify(true);
     }
   }
 
@@ -93,25 +83,42 @@ const LoginScreen = () => {
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
+          {/* <View className='inputContainer flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
+            <Ionicons name={name_verify ? "person" : "person-outline"} size={22} color={name_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Enter your name"
+              placeholderTextColor={Colors.dark.colors.textColor}
+              // keyboardType="email-address"
+              onChange={txt => handle_name(txt)}
+            />
+          </View>
+          {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -8 }]}>Name must be 3+ characters.</Text>} */}
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
-            <Ionicons name={EmailPhone ? email_verify ? "mail" : "mail-outline" : phone_verify ? "phone-portrait" : "phone-portrait-outline"} size={22} color={phone_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
+            <Ionicons name={EmailPhone ? email_verify ? "mail" : "mail-outline" : phone_verify ? "phone-portrait" : "phone-portrait-outline"} size={22} color={phone_verify || email_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
               style={styles.textInput}
               placeholder={EmailPhone ? "Enter your Email Address" : "Enter your phone no"}
               placeholderTextColor={Colors.dark.colors.textColor}
-              onChange={EmailPhone ? 
-                (txt) => handle_email(txt) : 
+              onChange={EmailPhone ?
+                (txt) => handle_email(txt) :
                 (txt) => handle_phone(txt)}
               // secureTextEntry={secureEntery} EmailPhone
               keyboardType={EmailPhone ? "email-address" : "phone-pad"}
-              maxLength={10}
+              maxLength={EmailPhone ? null : 10}
             />
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
+
+                setemail_verify(false)
+                setemail_verify(false)
+                // handle_email()
+                // handle_phone(phone)
               }}
               style={styles.icon}
+
             >
               {EmailPhone ? (
                 <Ionicons
@@ -129,8 +136,8 @@ const LoginScreen = () => {
               )}
             </TouchableOpacity>
             {EmailPhone ? email_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Email address must be a valid</Text>
-            :
-            phone_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
+              :
+              phone_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
           </View>
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
@@ -165,9 +172,6 @@ const LoginScreen = () => {
             {password_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>}
           </View>
 
-          <TouchableOpacity>
-<Text className='text-base font-normal mb-10 text-right mt-4' style={{ color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
-</TouchableOpacity>
 
           {/* <View style={styles.inputContainer}>
               <SimpleLineIcons name={"lock"} size={30} color={Colors.dark.colors.backGroundColor} />
@@ -194,6 +198,10 @@ const LoginScreen = () => {
                 keyboardType="email-address"
               />
             </View> */}
+          <TouchableOpacity>
+            <Text className='text-base font-normal mb-10 text-right mt-4' style={{ color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
             <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
           </TouchableOpacity>
@@ -246,3 +254,19 @@ const styles = StyleSheet.create({
     gap: 5,
   },
 });
+
+
+{/* <TouchableOpacity>
+<Text className='text-base font-normal mb-10 text-right mt-4' style={{ color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
+</TouchableOpacity> */}
+
+{/* <View style={styles.footerContainer}>
+            <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>Don’t have an account?</Text>
+            <TouchableOpacity onPress={handleSignup}>
+              <Text className=' text-base font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Sign up</Text>
+            </TouchableOpacity>
+          </View> */}
+
+// const handleSignup = () => {
+//   navigation.navigate("SignupScreen");
+// };

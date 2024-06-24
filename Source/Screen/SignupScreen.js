@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
+import { LinearGradient } from 'expo-linear-gradient';
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -94,7 +95,7 @@ const LoginScreen = () => {
             />
             {/* {username.length < 1 ? null : name_verify ? <Ionicons name={"mail-outline"} size={22} color={Colors.dark.colors.diffrentColorGreen} /> : <Ionicons name={"mail-outline"} size={22} color={Colors.dark.colors.diffrentColorOrange} />} */}
           </View>
-          {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -8 }]}>Name must be 3+ characters.</Text>}
+          {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -9 }]}>Name must be 3+ characters.</Text>}
           {/* at least 3 */}
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
@@ -103,8 +104,8 @@ const LoginScreen = () => {
               style={styles.textInput}
               placeholder={EmailPhone ? "Enter your Email Address" : "Enter your phone no"}
               placeholderTextColor={Colors.dark.colors.textColor}
-              onChange={EmailPhone ? 
-                (txt) => handle_email(txt) : 
+              onChange={EmailPhone ?
+                (txt) => handle_email(txt) :
                 (txt) => handle_phone(txt)}
               // secureTextEntry={secureEntery} EmailPhone
               keyboardType={EmailPhone ? "email-address" : "phone-pad"}
@@ -113,14 +114,14 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
-                
+
                 setemail_verify(false)
                 setemail_verify(false)
                 // handle_email()
                 // handle_phone(phone)
               }}
               style={styles.icon}
-              
+
             >
               {EmailPhone ? (
                 <Ionicons
@@ -138,8 +139,8 @@ const LoginScreen = () => {
               )}
             </TouchableOpacity>
             {EmailPhone ? email_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Email address must be a valid</Text>
-            :
-            phone_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
+              :
+              phone_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
           </View>
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
@@ -171,7 +172,17 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity>
-            {password_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>}
+            {password_verify ? null : 
+          //   <LinearGradient
+          //   className=' absolute top-0'
+          //   colors={[Colors.dark.colors.componentColor, Colors.dark.colors.backGroundColor]}
+          //   // start={{ x: 0, y: 0 }}
+          //   // end={{ x: 1, y: 0 }}
+          //   style={styles.textInputSub}
+          // >
+            <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
+          // </LinearGradient>
+          }
           </View>
 
 
@@ -228,14 +239,14 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   textInputSub: {
+    // backgroundColor: Colors.dark.colors.componentColor,
+    // backgroundColor: Colors.dark.colors.backGroundColor,
     marginTop: -10,
     marginLeft: 20,
     fontSize: 14,
     fontWeight: 900,
-    // padding: 1,
-    // backGroundColor: Colors.dark.colors.diffrentColorOrange,
+    paddingHorizontal: 7,
     color: Colors.dark.colors.diffrentColorOrange,
-    // fontFamily: fonts.Light,
   },
   textInput: {
     fontSize: 16,
