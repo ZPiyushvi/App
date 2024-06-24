@@ -38,7 +38,7 @@ const LoginScreen = () => {
     console.log("User Data:", userData);
 
     if (name_verify && contactinfo_verify && password_verify) {
-      fetch("http://192.168.110.12:5001/register", {
+      fetch("http://192.168.118.12:5001/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

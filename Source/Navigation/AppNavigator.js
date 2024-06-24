@@ -1,4 +1,4 @@
-import React, { Profiler } from 'react'
+import React, { Profiler, useEffect, useState } from 'react'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../Screen/Home';
@@ -17,6 +17,7 @@ import LoginScreen from '../Screen/LoginScreen';
 import MainScreen from '../Screen/MainScreen';
 import StaterScreen from '../Screen/StaterScreen';
 import ModalScreen from '../Screen/ModelScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -48,27 +49,66 @@ const CustomBackButton = () => {
 };
 
 export default function AppNavigator() {
+
+    const [isLoggedInValue, setisLoggedInValue] = useState(false)
+
+    const handle_isLoggedIn = async () => {
+        const isLoggedInData = await AsyncStorage.getItem('isLoggedIn');
+        setisLoggedInValue(isLoggedInData);
+        console.log(isLoggedInValue, isLoggedInData, "App")
+    }
+
+    useEffect(() => {
+        handle_isLoggedIn();
+    }, [isLoggedInValue]);
+
+
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 {/* <Stack.Screen name="Login" component={Login} /> */}
-                <Stack.Screen
-                    name="StaterScreen"
-                    component={StaterScreen}
-                />
-                <Stack.Screen
-                    name="SignupScreen"
-                    component={SignupScreen}
-                />
-                <Stack.Screen
-                    name="LoginScreen"
-                    component={LoginScreen}
-                />
-                <Stack.Screen
-                    name="HomeScreen"
-                    options={{ headerShown: false }}
-                    component={BottomNavigator}
-                />
+                {isLoggedInValue ?
+                    (
+                        <>
+                            <Stack.Screen
+                                name="HomeScreen"
+                                options={{ headerShown: false }}
+                                component={BottomNavigator}
+                            />
+                            <Stack.Screen
+                                name="StaterScreen"
+                                component={StaterScreen}
+                            />
+                            <Stack.Screen
+                                name="SignupScreen"
+                                component={SignupScreen}
+                            />
+                            <Stack.Screen
+                                name="LoginScreen"
+                                component={LoginScreen}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Stack.Screen
+                                name="StaterScreen"
+                                component={StaterScreen}
+                            />
+                            <Stack.Screen
+                                name="SignupScreen"
+                                component={SignupScreen}
+                            />
+                            <Stack.Screen
+                                name="LoginScreen"
+                                component={LoginScreen}
+                            />
+                            <Stack.Screen
+                                name="HomeScreen"
+                                options={{ headerShown: false }}
+                                component={BottomNavigator}
+                            />
+                        </>
+                    )}
                 <Stack.Screen
                     name="Details"
                     options={{

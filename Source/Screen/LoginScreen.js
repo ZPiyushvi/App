@@ -25,30 +25,34 @@ const LoginScreen = () => {
   function handleLogin() {
     const userData = {
       // name: username,
-      contactinfo: String(contactinfo), //JSON.stringify(contactinfo),
+      contactinfo: contactinfo,
+      // email: email,
+      // mobile: phone,
       password: password,
     };
 
-    // if (contactinfo_verify && password_verify) {
-      fetch("http://192.168.110.12:5001/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          if (data.status === "ok") {
-            Alert.alert("Logged In Successful");
-            AsyncStorage.setItem("token", data.data);
-            navigation.navigate("HomeScreen");
-          } else {
-            Alert.alert(data.data || "Login failed");
-          }
-        })
-      // .catch(error => console.log("err", error));
+    // if (name_verify && email_verify && password_verify) {
+
+    fetch("http://192.168.118.12:5001/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.status === "ok") {
+        Alert.alert("Logged In Successful");
+        AsyncStorage.setItem('token', data.data);
+        AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+        navigation.navigate("HomeScreen");
+      } else {
+        Alert.alert(data.data || "Login failed");
+      }
+    })
+    .catch(error => console.log("err", error));
     // } else {
     //   Alert.alert("Fill Required Details");
     // }

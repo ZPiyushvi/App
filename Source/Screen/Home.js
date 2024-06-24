@@ -51,7 +51,7 @@ const Cart = () => {
     try {
       const token = await AsyncStorage.getItem("token");
   
-      const response = await fetch('http://192.168.110.12:5001/userdata', {
+      const response = await fetch('http://192.168.118.12:5001/userdata', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
