@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     // backgroundColor: Colors.dark.colors.componentColor,
     // backgroundColor: Colors.dark.colors.backGroundColor,
     marginTop: -10,
-    marginLeft: 25,
+    marginLeft: 20,
     fontSize: 14,
     fontWeight: 900,
     paddingHorizontal: 7,

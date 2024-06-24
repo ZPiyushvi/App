@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
 
@@ -28,7 +29,7 @@ const LoginScreen = () => {
       password: password,
     };
 
-    if (contactinfo_verify && password_verify) {
+    // if (contactinfo_verify && password_verify) {
       fetch("http://192.168.110.12:5001/login", {
         method: "POST",
         headers: {
@@ -41,43 +42,44 @@ const LoginScreen = () => {
           console.log(data);
           if (data.status === "ok") {
             Alert.alert("Logged In Successful");
+            AsyncStorage.setItem("token", data.data);
             navigation.navigate("HomeScreen");
           } else {
             Alert.alert(data.data || "Login failed");
           }
         })
       // .catch(error => console.log("err", error));
-    } else {
-      Alert.alert("Fill Required Details");
-    }
+    // } else {
+    //   Alert.alert("Fill Required Details");
+    // }
   }
 
   // const [username, setusername] = useState('');
   // const [name_verify, setname_verify] = useState(null);
   const [password, setpassword] = useState('');
-  const [password_verify, setpassword_verify] = useState(null);
+  // const [password_verify, setpassword_verify] = useState(null);
   const [contactinfo, setcontactinfo] = useState('');
-  const [contactinfo_verify, setcontactinfo_verify] = useState(null);
+  // const [contactinfo_verify, setcontactinfo_verify] = useState(null);
 
-  function handle_contactinfophone(input) {
-    const phoneVar = input.nativeEvent.text;
-    setcontactinfo(phoneVar);
-    setcontactinfo_verify(false);
-    if (/[6-9]{1}[0-9]{9}/.test(phoneVar)) {
-      setcontactinfo(phoneVar);
-      setcontactinfo_verify(true);
-    }
-  }
+  // function handle_contactinfophone(input) {
+  //   const phoneVar = input.nativeEvent.text;
+  //   setcontactinfo(phoneVar);
+  //   setcontactinfo_verify(false);
+  //   if (/[6-9]{1}[0-9]{9}/.test(phoneVar)) {
+  //     setcontactinfo(phoneVar);
+  //     setcontactinfo_verify(true);
+  //   }
+  // }
 
-  function handle_contactinfoemail(input) {
-    const emailVar = input.nativeEvent.text;
-    setcontactinfo(emailVar);
-    setcontactinfo_verify(false);
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
-      setcontactinfo(emailVar);
-      setcontactinfo_verify(true);
-    }
-  }
+  // function handle_contactinfoemail(input) {
+  //   const emailVar = input.nativeEvent.text;
+  //   setcontactinfo(emailVar);
+  //   setcontactinfo_verify(false);
+  //   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
+  //     setcontactinfo(emailVar);
+  //     setcontactinfo_verify(true);
+  //   }
+  // }
 
   // function handle_name(input) {
   //   const usernameVar = input.nativeEvent.text;
@@ -90,15 +92,15 @@ const LoginScreen = () => {
   //   }
   // }
 
-  function handle_password(input) {
-    const passwordVar = input.nativeEvent.text;
-    setpassword(passwordVar);
-    setpassword_verify(false);
-    if (/(?=.*\d.*\d.*\d)(?=.*[^a-zA-Z0-9]).{8,}/.test(passwordVar)) {
-      setpassword(passwordVar);
-      setpassword_verify(true);
-    }
-  }
+  // function handle_password(input) {
+  //   const passwordVar = input.nativeEvent.text;
+  //   setpassword(passwordVar);
+  //   setpassword_verify(false);
+  //   if (/(?=.*\d.*\d.*\d)(?=.*[^a-zA-Z0-9]).{8,}/.test(passwordVar)) {
+  //     setpassword(passwordVar);
+  //     setpassword_verify(true);
+  //   }
+  // }
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -141,14 +143,15 @@ const LoginScreen = () => {
           {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -9 }]}>Name must be 3+ characters.</Text>} */}
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
-            <Ionicons name={EmailPhone ? contactinfo_verify ? "mail" : "mail-outline" : contactinfo_verify ? "phone-portrait" : "phone-portrait-outline"} size={22} color={contactinfo_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
+            <Ionicons name={EmailPhone ? contactinfo.length > 1 ? "mail" : "mail-outline" : contactinfo.length ? "phone-portrait" : "phone-portrait-outline"} size={22} color={contactinfo.length ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
               style={styles.textInput}
               placeholder={EmailPhone ? "Enter your Email Address" : "Enter your phone no"}
               placeholderTextColor={Colors.dark.colors.textColor}
-              onChange={EmailPhone ?
-                (txt) => handle_contactinfoemail(txt) :
-                (txt) => handle_contactinfophone(txt)}
+              onChange={
+                (txt) => setcontactinfo(txt.nativeEvent.text)
+                // (txt) => handle_contactinfophone(txt)
+              }
               keyboardType={EmailPhone ? "email-address" : "phone-pad"}
               maxLength={EmailPhone ? null : 10}
             />
@@ -156,7 +159,7 @@ const LoginScreen = () => {
               onPress={() => {
                 setEmailPhone((prev) => !prev);
                 console.log(contactinfo)
-                setcontactinfo_verify(false)
+                // setcontactinfo_verify(false)
                 setcontactinfo('')
                 console.log(contactinfo)
               }}
@@ -177,19 +180,19 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity>
-            {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Email address must be a valid</Text>
+            {/* {EmailPhone ? <Text className='absolute top-0' style={styles.textInputSub}>Email address must be a valid</Text>
               :
-              contactinfo_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
+              contactinfo_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>} */}
           </View>
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
-            <Ionicons name={password_verify ? "extension-puzzle" : "extension-puzzle-outline"} size={22} color={password_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
+            <Ionicons name={password.length > 1 ? "extension-puzzle" : "extension-puzzle-outline"} size={22} color={password.length > 1 ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
               style={styles.textInput}
               placeholder="Enter your password"
               placeholderTextColor={Colors.dark.colors.textColor}
               secureTextEntry={secureEntry}
-              onChange={txt => handle_password(txt)}
+              onChange={txt => setpassword(txt.nativeEvent.text)}
             />
             <TouchableOpacity
               onPress={() => {
@@ -211,7 +214,7 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity>
-            {password_verify ? null :
+            {/* {password_verify ? null :
               //   <LinearGradient
               //   className=' absolute top-0'
               //   colors={[Colors.dark.colors.componentColor, Colors.dark.colors.backGroundColor]}
@@ -221,7 +224,7 @@ const LoginScreen = () => {
               // >
               <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
               // </LinearGradient>
-            }
+            } */}
           </View>
 
           <TouchableOpacity>

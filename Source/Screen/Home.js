@@ -19,8 +19,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { FirstStoreComponent } from '../Components/CartMainContainor';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import ModelScreen from './ModelScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = () => {
+  const [userData, setUserData] = useState([]);
+
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
   const { show, hide, RenderModel } = ModelScreen();
@@ -39,6 +42,34 @@ const Cart = () => {
   useEffect(() => {
     fetchFeatures();
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+  
+      const response = await fetch('http://192.168.110.12:5001/userdata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: token })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+  
+      const data = await response.json();
+      setUserData(data.data)
+      console.log(userData, "home", data.data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetchFeatures = async () => {
     setcampusShops(mockCampusShops)
@@ -84,12 +115,13 @@ const Cart = () => {
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
 
-            <View className='searchBodyContainer mt-11 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+            <View className='searchBodyContainer mt-7 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
               <View className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>
-                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row '>
-                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent("Owner Full UserName", 16)} </Text>
+                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
+                    {console.log(userData.name)}
+                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 16) : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
                   <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{TruncatedTextComponent("plot number 45, new row house", 27)}</Text>
@@ -146,10 +178,10 @@ const Cart = () => {
         <LinearGradient
           className=' absolute p-2 w-full bottom-0'
           colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show}/>
+          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} />
         </LinearGradient>
       }
-{RenderModel()}
+      {RenderModel()}
     </View>
   );
 };

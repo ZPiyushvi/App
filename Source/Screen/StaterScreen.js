@@ -191,7 +191,7 @@ export default function StaterScreen() {
 
   return (
     <View className='w-full h-full pt-32'>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <Circle
         index={index}
         onPress={onPress}
