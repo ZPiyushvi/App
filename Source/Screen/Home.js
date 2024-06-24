@@ -18,10 +18,12 @@ import SearchBox from "../Components/SearchBox";
 import { LinearGradient } from 'expo-linear-gradient';
 import { FirstStoreComponent } from '../Components/CartMainContainor';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
+import ModelScreen from './ModelScreen';
 
 const Cart = () => {
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
+  const { show, hide, RenderModel } = ModelScreen();
   const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
@@ -126,7 +128,7 @@ const Cart = () => {
           <View style={{ marginTop: Dimensions.get('window').height * 0.01 }}>
             <Titles title={"All Restaurants"} width={60} />
             <Content data={campusShops} />
-            <View className='px-2 py-5'>
+            <View className='px-2 py-3'>
               <Text className='font-black text-xl text-center' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Exciting Updates Coming Soon!</Text>
               <Text className='font-light text-sm text-center' style={{ color: Colors.dark.colors.textColor }}>
                 We're working on bringing you fresh new choices. Meanwhile, explore our current selection and find your perfect match!
@@ -144,10 +146,10 @@ const Cart = () => {
         <LinearGradient
           className=' absolute p-2 w-full bottom-0'
           colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} />
+          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show}/>
         </LinearGradient>
       }
-
+{RenderModel()}
     </View>
   );
 };

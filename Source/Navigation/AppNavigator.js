@@ -16,6 +16,7 @@ import SignupScreen from '../Screen/SignupScreen';
 import LoginScreen from '../Screen/LoginScreen';
 import MainScreen from '../Screen/MainScreen';
 import StaterScreen from '../Screen/StaterScreen';
+import ModalScreen from '../Screen/ModelScreen';
 
 const Stack = createStackNavigator();
 
@@ -51,25 +52,37 @@ export default function AppNavigator() {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 {/* <Stack.Screen name="Login" component={Login} /> */}
+                {/* <Stack.Screen
+                    name="StaterScreen"
+                    component={StaterScreen}
+                /> */}
+                <Stack.Screen
+                    name="SignupScreen"
+                    component={SignupScreen}
+                />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                />
                 <Stack.Screen
                     name="HomeScreen"
                     options={{ headerShown: false }}
                     component={BottomNavigator}
                 />
                 <Stack.Screen
-    name="Details"
-    options={{
-        headerStyle: {
-            backgroundColor: Colors.dark.colors.backGroundColor,
-        },
-        headerShown: true,
-        title: '',
-        headerTintColor: Colors.dark.colors.mainTextColor, 
-        // headerLeft: () => <CustomBackButton />,
-        headerRight: () => <HeaderRightIcons />
-    }}
-    component={Details}
-/>
+                    name="Details"
+                    options={{
+                        headerStyle: {
+                            backgroundColor: Colors.dark.colors.backGroundColor,
+                        },
+                        headerShown: true,
+                        title: '',
+                        headerTintColor: Colors.dark.colors.mainTextColor,
+                        // headerLeft: () => <CustomBackButton />,
+                        headerRight: () => <HeaderRightIcons />
+                    }}
+                    component={Details}
+                />
                 <Stack.Screen
                     name="SelectAddress"
                     options={{ headerShown: true, title: 'Select Your Location' }}
@@ -84,21 +97,9 @@ export default function AppNavigator() {
                     component={IndiviualCart}
                 />
                 <Stack.Screen
-                    name="SignupScreen"
-                    component={SignupScreen}
+                    name="ModalScreen"
+                    component={ModalScreen}
                 />
-                <Stack.Screen
-                    name="LoginScreen"
-                    component={LoginScreen}
-                />
-                <Stack.Screen
-                    name="StaterScreen"
-                    component={StaterScreen}
-                />
-                {/* <Stack.Screen
-                    name="MainScreen"
-                    component={MainScreen}
-                /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
