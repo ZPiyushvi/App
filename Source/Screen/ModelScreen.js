@@ -16,7 +16,7 @@ export default function ModelScreen() {
 
     const RenderModel = () => (
         <>
-            <StatusBar hidden />
+            {/* <StatusBar hidden /> */}
             <Modal
                 visible={visible}
                 onRequestClose={hide}
