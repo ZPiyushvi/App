@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -24,12 +25,45 @@ const LoginScreen = () => {
   const [email, setemail] = useState('');
   const [password_verify, setpassword_verify] = useState(null);
 
+  // 192.168.110.12
+
+  function handleLogin() {
+    const userData = {
+      name: username,
+      email: email,
+      mobile: phone,
+      password: password,
+    };
+  
+    if (name_verify && email_verify && password_verify) {
+      fetch("http://192.168.110.12:5001/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === "ok") {
+          Alert.alert("Logged In Successful");
+          navigation.navigate("HomeScreen");
+        } else {
+          Alert.alert(data.data || "Login failed");
+        }
+      })
+      // .catch(error => console.log("err", error));
+    } else {
+      Alert.alert("Fill Required Details");
+    }
+  }  
+
   function handle_name(input) {
     const usernameVar = input.nativeEvent.text;
     setusername(usernameVar);
     setname_verify(false);
     if (usernameVar.length >= 3) {
-      console.log("more >3")
       setusername(usernameVar);
       setname_verify(true);
     }
@@ -52,6 +86,16 @@ const LoginScreen = () => {
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
       setemail(emailVar);
       setemail_verify(true);
+    }
+  }
+
+  function handle_password(input) {
+    const passwordVar = input.nativeEvent.text;
+    setpassword(passwordVar);
+    setpassword_verify(false);
+    if (/(?=.*\d.*\d.*\d)(?=.*[^a-zA-Z0-9]).{8,}/.test(passwordVar)) {
+      setpassword(passwordVar);
+      setpassword_verify(true);
     }
   }
 
@@ -111,14 +155,12 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
-
                 setemail_verify(false)
-                setemail_verify(false)
-                // handle_email()
-                // handle_phone(phone)
+                setemail('')
+                setphone_verify(false)
+                setphone('')
               }}
               style={styles.icon}
-
             >
               {EmailPhone ? (
                 <Ionicons
@@ -202,7 +244,7 @@ const LoginScreen = () => {
             <Text className='text-base font-normal mb-10 text-right mt-4' style={{ color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
+          <TouchableOpacity onPress={() => handleLogin()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
             <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
           </TouchableOpacity>
           <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>

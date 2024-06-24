@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -7,6 +8,7 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
+
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +18,41 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 
 const LoginScreen = () => {
+
+  // 192.168.110.12
+
+  function handleSubmit() {
+    const userData = {
+      name: username,
+      email: email,
+      mobile: phone,
+      password: password,
+    };
+
+    if (name_verify && email_verify && password_verify) {
+      fetch("http://192.168.110.12:5001/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.status === "ok") {
+            Alert.alert("Register Successful");
+            navigation.navigate("LoginScreen");
+          } else {
+            Alert.alert(data.data);
+          }
+        })
+        .catch(error => console.log("err", error));
+    } else {
+      Alert.alert("Fill Required Details");
+    }
+  }
+
   const [username, setusername] = useState('');
   const [name_verify, setname_verify] = useState(null);
   const [phone, setphone] = useState('');
@@ -53,6 +90,16 @@ const LoginScreen = () => {
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
       setemail(emailVar);
       setemail_verify(true);
+    }
+  }
+
+  function handle_password(input) {
+    const passwordVar = input.nativeEvent.text;
+    setpassword(passwordVar);
+    setpassword_verify(false);
+    if (/(?=.*\d.*\d.*\d)(?=.*[^a-zA-Z0-9]).{8,}/.test(passwordVar)) {
+      setpassword(passwordVar);
+      setpassword_verify(true);
     }
   }
 
@@ -114,14 +161,12 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
-
                 setemail_verify(false)
-                setemail_verify(false)
-                // handle_email()
-                // handle_phone(phone)
+                setemail('')
+                setphone_verify(false)
+                setphone('')
               }}
               style={styles.icon}
-
             >
               {EmailPhone ? (
                 <Ionicons
@@ -172,17 +217,17 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity>
-            {password_verify ? null : 
-          //   <LinearGradient
-          //   className=' absolute top-0'
-          //   colors={[Colors.dark.colors.componentColor, Colors.dark.colors.backGroundColor]}
-          //   // start={{ x: 0, y: 0 }}
-          //   // end={{ x: 1, y: 0 }}
-          //   style={styles.textInputSub}
-          // >
-            <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
-          // </LinearGradient>
-          }
+            {password_verify ? null :
+              //   <LinearGradient
+              //   className=' absolute top-0'
+              //   colors={[Colors.dark.colors.componentColor, Colors.dark.colors.backGroundColor]}
+              //   // start={{ x: 0, y: 0 }}
+              //   // end={{ x: 1, y: 0 }}
+              //   style={styles.textInputSub}
+              // >
+              <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
+              // </LinearGradient>
+            }
           </View>
 
 
@@ -211,8 +256,8 @@ const LoginScreen = () => {
                 keyboardType="email-address"
               />
             </View> */}
-          <TouchableOpacity className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
+          <TouchableOpacity onPress={() => handleSubmit()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
+            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Register</Text>
           </TouchableOpacity>
           <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
