@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
+import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constants/Constants";
 
 const LoginScreen = () => {
 
@@ -38,7 +39,8 @@ const LoginScreen = () => {
     console.log("User Data:", userData);
 
     if (name_verify && contactinfo_verify && password_verify) {
-      fetch("http://192.168.118.12:5001/register", {
+      // http://192.168.110.12:5001/register
+      fetch(`${API_BASE_URL}:${REGISTER_ENDPOINT}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

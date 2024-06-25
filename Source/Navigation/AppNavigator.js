@@ -75,18 +75,10 @@ export default function AppNavigator() {
                                 options={{ headerShown: false }}
                                 component={BottomNavigator}
                             />
-                            <Stack.Screen
+                            {/* <Stack.Screen
                                 name="StaterScreen"
                                 component={StaterScreen}
-                            />
-                            <Stack.Screen
-                                name="SignupScreen"
-                                component={SignupScreen}
-                            />
-                            <Stack.Screen
-                                name="LoginScreen"
-                                component={LoginScreen}
-                            />
+                            /> */}
                         </>
                     ) : (
                         <>
@@ -95,20 +87,20 @@ export default function AppNavigator() {
                                 component={StaterScreen}
                             />
                             <Stack.Screen
-                                name="SignupScreen"
-                                component={SignupScreen}
-                            />
-                            <Stack.Screen
-                                name="LoginScreen"
-                                component={LoginScreen}
-                            />
-                            <Stack.Screen
                                 name="HomeScreen"
                                 options={{ headerShown: false }}
                                 component={BottomNavigator}
                             />
                         </>
                     )}
+                <Stack.Screen
+                    name="SignupScreen"
+                    component={SignupScreen}
+                />
+                <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                />
                 <Stack.Screen
                     name="Details"
                     options={{

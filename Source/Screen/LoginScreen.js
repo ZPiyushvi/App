@@ -1,5 +1,6 @@
 import {
   Alert,
+  BackHandler,
   Image,
   StyleSheet,
   Text,
@@ -14,13 +15,37 @@ import React, { useState } from "react";
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_BASE_URL, LOGIN_ENDPOINT } from "../Constants/Constants";
 
 const LoginScreen = () => {
 
   // 192.168.110.12
+  const handle_hardwareBackPress = () => {
+    Alert.alert(
+      "Leaving Already?",
+      "Are you sure you want to miss out on the tasty experience ahead?",
+      [{
+        text: "No, Stay",
+        onPress: () => null
+      }, {
+        text: "Yes, Exit",
+        onPress: () => BackHandler.exitApp()
+      }]);
+    return true;
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handle_hardwareBackPress)
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handle_hardwareBackPress)
+      }
+    })
+  );
 
   function handleLogin() {
     const userData = {
@@ -33,26 +58,27 @@ const LoginScreen = () => {
 
     // if (name_verify && email_verify && password_verify) {
 
-    fetch("http://192.168.118.12:5001/login", {
+    // "http://192.168.110.12:5001/login"
+    fetch(`${API_BASE_URL}:${LOGIN_ENDPOINT}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(userData)
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.status === "ok") {
-        Alert.alert("Logged In Successful");
-        AsyncStorage.setItem('token', data.data);
-        AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-        navigation.navigate("HomeScreen");
-      } else {
-        Alert.alert(data.data || "Login failed");
-      }
-    })
-    .catch(error => console.log("err", error));
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.status === "ok") {
+          Alert.alert("Logged In Successful");
+          AsyncStorage.setItem('token', data.data);
+          AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+          navigation.navigate("HomeScreen");
+        } else {
+          Alert.alert(data.data || "Login failed");
+        }
+      })
+      .catch(error => console.log("err", error));
     // } else {
     //   Alert.alert("Fill Required Details");
     // }

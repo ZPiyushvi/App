@@ -12,6 +12,7 @@ import React, { useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -22,8 +23,10 @@ const LoginScreen = () => {
   };
 
   const handleSignup = () => {
-    // navigation.navigate("LoginScreen");
-    navigation.navigate("StaterScreen");
+    AsyncStorage.setItem('token', "");
+    AsyncStorage.setItem('isLoggedIn', "");
+    // navigation.navigate("StaterScreen");
+    navigation.navigate("LoginScreen");
   };
 
   return (

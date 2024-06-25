@@ -1,8 +1,8 @@
 // import { BANNER_H } from "./../Constants/Constants"
 const BANNER_H = Dimensions.get('window').height * 0.86;
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert } from 'react-native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import SlideContainor from "../Components/SlideContainor";
@@ -20,6 +20,7 @@ import { FirstStoreComponent } from '../Components/CartMainContainor';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import ModelScreen from './ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
 
 const Cart = () => {
   const [userData, setUserData] = useState([]);
@@ -39,30 +40,52 @@ const Cart = () => {
     navigation.navigate(page);
   };
 
-  useEffect(() => {
-    fetchFeatures();
-  }, []);
+  const handle_hardwareBackPress = () => {
+    Alert.alert(
+      "Leaving So Soon?",
+      "You're about to exit the app. Are you sure you want to leave all this deliciousness behind?",
+      [{
+        text: "No, Stay",
+        onPress: () => null
+      }, {
+        text: "Yes, Exit",
+        onPress: () => BackHandler.exitApp()
+      }]);
+    return true;
+  }
 
-  useEffect(() => {
-    getData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handle_hardwareBackPress)
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handle_hardwareBackPress)
+      }
+    })
+  ),
+
+    useEffect(() => {
+      fetchFeatures();
+      getData();
+    }, []);
 
   const getData = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-  
-      const response = await fetch('http://192.168.118.12:5001/userdata', {
+
+      // http://192.168.110.12:5001/userdata
+      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ token: token })
       });
-  
+
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
-  
+
       const data = await response.json();
       setUserData(data.data)
       console.log(userData, "home", data.data)
