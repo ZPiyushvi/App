@@ -18,6 +18,7 @@ import MainScreen from '../Screen/MainScreen';
 import StaterScreen from '../Screen/StaterScreen';
 import ModalScreen from '../Screen/ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OrderHistory from '../Screen/OrderHistory';
 
 const Stack = createStackNavigator();
 
@@ -116,6 +117,14 @@ export default function AppNavigator() {
                     component={Details}
                 />
                 <Stack.Screen
+                    name="OrderHistory"
+                    component={OrderHistory}
+                />
+                <Stack.Screen
+                    name="IndiviualCart"
+                    component={IndiviualCart}
+                />
+                <Stack.Screen
                     name="SelectAddress"
                     options={{ headerShown: true, title: 'Select Your Location' }}
                     component={SelectAddress}
@@ -123,10 +132,6 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="Profile"
                     component={Profile}
-                />
-                <Stack.Screen
-                    name="IndiviualCart"
-                    component={IndiviualCart}
                 />
                 <Stack.Screen
                     name="ModalScreen"
