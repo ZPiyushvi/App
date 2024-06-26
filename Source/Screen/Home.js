@@ -1,5 +1,5 @@
 // import { BANNER_H } from "./../Constants/Constants"
-const BANNER_H = Dimensions.get('window').height * 0.86;
+const BANNER_H = Dimensions.get('window').height * 0.87;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert } from 'react-native';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
@@ -22,7 +22,7 @@ import ModelScreen from './ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
 
-const Cart = () => {
+const Home = () => {
   const [userData, setUserData] = useState([]);
 
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
@@ -180,12 +180,26 @@ const Cart = () => {
 
         <View style={styles.verticalScrollContainer}>
 
-          <View style={{ marginTop: Dimensions.get('window').height * 0.01 }}>
-            <Titles title={"All Restaurants"} width={60} />
+          <View>
+            <View style={{ height: Dimensions.get('window').height * 0.08 }}>
+              <Titles title={"All Restaurants"} width={60} />
+            </View>
             <Content data={campusShops} />
-            <View className='px-2 py-3'>
-              <Text className='font-black text-xl text-center' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Exciting Updates Coming Soon!</Text>
-              <Text className='font-light text-sm text-center' style={{ color: Colors.dark.colors.textColor }}>
+            <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
+              <Text
+                className='font-black text-xl text-center'
+                style={{ color: Colors.dark.colors.diffrentColorOrange }}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                Exciting Updates Coming Soon!
+              </Text>
+              <Text
+                className='font-light text-sm text-center'
+                style={{ color: Colors.dark.colors.textColor }}
+                numberOfLines={3}
+                ellipsizeMode='tail'
+              >
                 We're working on bringing you fresh new choices. Meanwhile, explore our current selection and find your perfect match!
               </Text>
             </View>
@@ -195,15 +209,17 @@ const Cart = () => {
 
       </Animated.ScrollView>
 
-      {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
-        null
-        :
-        <LinearGradient
-          className=' absolute p-2 w-full bottom-0'
-          colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} />
-        </LinearGradient>
-      }
+      <View>
+        {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
+          null
+          :
+          <LinearGradient
+            className=' absolute p-2 w-full bottom-0'
+            colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
+            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} />
+          </LinearGradient>
+        }
+      </View>
       {RenderModel()}
     </View>
   );
@@ -325,6 +341,7 @@ const styles = {
   },
   banner: scrollA => ({
     height: BANNER_H,
+    backGroundColor: 'red',
     width: '200%',
     transform: [
       {
@@ -343,4 +360,4 @@ const styles = {
   }),
 };
 
-export default Cart
+export default Home

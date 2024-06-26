@@ -4,7 +4,7 @@ import Colors from './Colors';
 
 export default function Titles({title, width}) {
     return (
-        <View className=' flex-row items-center justify-center w-full relative mt-5 mb-1'>
+        <View className=' flex-row items-center justify-center w-full relative pt-6'>
             <View style={[styles.line, {width: width}]} />
             <Text className=' uppercase text-base font-bold px-3 tracking-[4]' style={{color: Colors.dark.colors.mainTextColor}}>{title}</Text>
             <View style={[styles.line, {width: width}]} />

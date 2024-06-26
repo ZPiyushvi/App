@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import ModelScreen from '../Screen/ModelScreen';
+import { mockCampusShops } from '../Data/mockCampusShops';
 
 export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
@@ -15,13 +16,17 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
   const { storeName, storeDetails, items, totalPrice } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
   const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
 
+  const navToDetails = (item) => {
+    navigation.navigate("Details", { Data: item });
+  };
+
   return (
     <View key={storeName}>
       {updatedCartWithDetailsLength - 1 != 0 ?
         <>
           <TouchableOpacity
             onPress={Modelshow}
-            className=' absolute flex-row rounded-full mt-2 p-1 px-2 items-center z-50'
+            className=' absolute flex-row rounded-full -mt-3 p-1 px-2 items-center z-50'
             style={{
               backgroundColor: Colors.dark.colors.componentColor,
               shadowColor: Colors.dark.colors.secComponentColor, // Replace with your desired glow color
@@ -53,7 +58,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
               borderWidth: 1,
               borderColor: 'rgba(255, 255, 255, 0.3)', // Adjust the color and opacity for a glowing border
             }}
-            className=' rounded-xl p-5 m-3 flex-row'
+            className=' rounded-xl p-4 mx-3 -my-6 flex-row'
           // style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
           />
         </>
@@ -63,6 +68,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
       <View
         // key={storeName}
         style={{
+          height: Dimensions.get('window').height * 0.10,
           backgroundColor: Colors.dark.colors.componentColor,
           shadowColor: Colors.dark.colors.secComponentColor, // Replace with your desired glow color
           shadowOffset: { width: 0, height: 0 },
@@ -71,8 +77,9 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
           elevation: 5,
           borderWidth: 1,
           borderColor: 'rgba(255, 255, 255, 0.3)', // Adjust the color and opacity for a glowing border
+          padding: Dimensions.get('window').width * 0.02,
         }}
-        className=' rounded-xl p-2 -mt-10 flex-row'
+        className=' rounded-xl flex-row items-center'
       // style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
       >
         <Image
@@ -87,21 +94,21 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
           className=' w-12 h-12 rounded-full mr-2'
           alt="Logo"
         />
-        <View>
-          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>
-            {TruncatedTextComponent(storeName, 13)}
+        <View style={{ width: Dimensions.get('window').width * 0.36 }}>
+          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg' numberOfLines={1} ellipsizeMode='tail'>
+            {storeName}
           </Text>
-          <View className=' flex-row items-center'>
-            <Text style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
+          <TouchableOpacity onPress={() => navToDetails(mockCampusShops.find(shop => shop.name === storeName))} className=' flex-row items-center'>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
               View Full Menu
             </Text>
             <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
-          </View>
+          </TouchableOpacity>
         </View>
-        <View className='flex-row gap-x-2 absolute right-2 top-2 h-full'>
+        <View className='flex-row gap-x-1 absolute right-2 top-2 h-full'>
           <TouchableOpacity
-            className='justify-center items-center rounded-lg'
-            style={{ width:Dimensions.get('window').width * 0.3, backgroundColor: Colors.dark.colors.diffrentColorOrange }}
+            className='justify-center items-center rounded-lg m-1'
+            style={{ width: Dimensions.get('window').width * 0.28, backgroundColor: Colors.dark.colors.diffrentColorOrange }}
             onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}
           >
             <View className='flex-row items-center justify-center'>
@@ -123,7 +130,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
               CheckOut
             </Text>
           </TouchableOpacity>
-          <View className=' items-center justify-center'>
+          <View style={{ width: Dimensions.get('window').width * 0.08 }} className=' items-center justify-center'>
             <TouchableOpacity
               className=' rounded-full p-1 items-center justify-center'
               style={{ backgroundColor: Colors.dark.colors.secComponentColor }}

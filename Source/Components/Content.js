@@ -15,7 +15,7 @@ const Content = ({ data }) => {
     const navigation = useNavigation();
 
     const navToDetails = (item) => {
-        navigation.navigate("Details", { data: item });
+        navigation.navigate("Details", { Data: item });
     };
 
     const renderItem = ({ item }) => (

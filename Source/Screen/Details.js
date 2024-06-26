@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
@@ -14,15 +14,16 @@ import { useNavigation } from '@react-navigation/native';
 import ModelScreen from './ModelScreen';
 
 const DetailsScreen = ({ route }) => {
+
     // const [visible, setVisible] = useState(false);
     // const show = () => setVisible(true);
     // const hide = () => setVisible(false);
     const { show, hide, RenderModel } = ModelScreen();
 
-    const { data } = route.params || {};
-    const [menuItems, setMenuItems] = useState(data.menu);
+    const { Data } = route.params || {};
+    const [menuItems, setMenuItems] = useState(Data.menu);
     const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
-    const Shopstatus = useShopStatus(data.openingtime, data.closingtime, data.offdays, data.leaveDay);
+    const Shopstatus = useShopStatus(Data.openingtime, Data.closingtime, Data.offdays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
 
@@ -39,44 +40,51 @@ const DetailsScreen = ({ route }) => {
 
     const [selectedItemData, setSelectedItemData] = useState();
 
-    const handleIncrement = (id, title, itemName, hotelName) => {
-        const updatedMenuItems = [...menuItems];
-        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
-
-        if (categoryIndex !== -1) {
-            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
-
-            if (itemIndex !== -1) {
-                updatedMenuItems[categoryIndex].items[itemIndex] = {
-                    ...updatedMenuItems[categoryIndex].items[itemIndex],
-                    quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) + 1)
-                };
-
-                setMenuItems(updatedMenuItems);
-
-                setCartItems(prevCartItems => {
-                    const hotelCart = prevCartItems[hotelName] || [];
-                    const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
-
-                    if (existingCartItemIndex !== -1) {
-                        hotelCart[existingCartItemIndex] = {
-                            ...hotelCart[existingCartItemIndex],
-                            quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
-                        };
-                    } else {
-                        const menuItemToAdd = updatedMenuItems[categoryIndex].items[itemIndex];
-                        menuItemToAdd.quantity = "1";
-                        hotelCart.push(menuItemToAdd);
-                    }
-
-                    return {
-                        ...prevCartItems,
-                        [hotelName]: hotelCart
+    const handleIncrement = useCallback((id, title, itemName, hotelName) => {
+        setMenuItems(prevMenuItems => {
+            const updatedMenuItems = [...prevMenuItems];
+            const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
+    
+            if (categoryIndex !== -1) {
+                const category = updatedMenuItems[categoryIndex];
+                const itemIndex = category.items.findIndex(item => item.id === id);
+    
+                if (itemIndex !== -1) {
+                    const item = category.items[itemIndex];
+                    category.items[itemIndex] = {
+                        ...item,
+                        quantity: String(parseInt(item.quantity) + 1)
                     };
-                });
+                    console.log(category.items[itemIndex]);
+    
+                    // Update the cart items
+                    setCartItems(prevCartItems => {
+                        const updatedCartItems = { ...prevCartItems };
+                        if (!updatedCartItems[hotelName]) {
+                            // Hotel does not exist in the cart, add it
+                            updatedCartItems[hotelName] = [category.items[itemIndex]];
+                        } else {
+                            // Hotel exists, check for the item
+                            const hotelCart = [...updatedCartItems[hotelName]];
+                            const existingCartItemIndex = hotelCart.findIndex(cartItem => cartItem.id === id);
+    
+                            if (existingCartItemIndex !== -1) {
+                                hotelCart[existingCartItemIndex] = {
+                                    ...hotelCart[existingCartItemIndex],
+                                    quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
+                                };
+                            } else {
+                                hotelCart.push(category.items[itemIndex]);
+                            }
+                            updatedCartItems[hotelName] = hotelCart;
+                        }
+                        return updatedCartItems;
+                    });
+                }
             }
-        }
-    };
+            return updatedMenuItems;
+        });
+    }, [setCartItems, setMenuItems]);
 
     const handleDecrement = (id, title, itemName, hotelName) => {
         const updatedMenuItems = [...menuItems];
@@ -191,17 +199,17 @@ const DetailsScreen = ({ route }) => {
                         {item.quantity > 0 ? (
                             <>
                                 {/* {console.log(item)} */}
-                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, Data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title, item.item, data.name) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title, item.item, Data.name) }} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title, item.item, Data.name) }}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
@@ -253,8 +261,6 @@ const DetailsScreen = ({ route }) => {
                     keyExtractor={item => item.id}
                 />
             )}
-            {/* {console.log(data.name)} */}
-            {/* {renderDropdownItem({ items, title: 'Beverages' })} */}
         </View>
     );
 
@@ -305,26 +311,26 @@ const DetailsScreen = ({ route }) => {
                             alt="Logo"
                         />
                         </View> */}
-                        <Text className=' text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{data.name}</Text>
+                        <Text className=' text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
                         <View className='flex-row gap-2 justify-center items-center mb-3'>
                             <View className='flex-row justify-center items-center'>
-                                {data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
-                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{data.type}</Text>
+                                {Data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
+                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.type}</Text>
                             </View>
                             <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{data.menutype}</Text>
+                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
                         </View>
 
                         <View className='flex-row justify-center items-center gap-1 mb-3'>
                             <View className=' flex-row justify-center items-center rounded-lg px-1 bg-green-500' style={{ paddingVertical: 2 }}>
-                                <Text className='font-semibold text-lg mr-1 text-white' >{data.rating}</Text>
+                                <Text className='font-semibold text-lg mr-1 text-white' >{Data.rating}</Text>
                                 <Ionicons name="star" color={'white'} />
                             </View>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {data.ratingcount} ratings</Text>
+                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
                         </View>
                         <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
                             <Ionicons name="navigate-circle" size={24} color={'red'} />
-                            <Text className='font-semibold text-base mx-1'>{data.locationdetailed}</Text>
+                            <Text className='font-semibold text-base mx-1'>{Data.locationdetailed}</Text>
                         </View>
                     </View>
                     {/* </View> */}
@@ -398,13 +404,13 @@ const DetailsScreen = ({ route }) => {
                         horizontal
                         showsHorizontalScrollIndicator={false}
                     >
-                        {data.menu.map((menu, index) => (
+                        {Data.menu.map((menu, index) => (
                             renderMenuScroll({ typetitle: menu.title, index: index })
                         ))}
                     </ScrollView>
                 </View>
                 {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
-                    storeName === data.name ? (
+                    storeName === Data.name ? (
 
                         <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
                             <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>

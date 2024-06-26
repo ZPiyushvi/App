@@ -17,7 +17,7 @@ export default function BottomNavigator() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: Dimensions.get('window').width * 0.16,
+          height: Dimensions.get('window').height * 0.08,
           backgroundColor: "black",
         },
         tabBarIcon: ({ focused }) => {
