@@ -33,11 +33,11 @@ const PopularMenuContainer = ({ data }) => {
                     >
                         <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                             <View className='absolute bottom-1 p-2'>
-                                <Text className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                    {TruncatedTextComponent(item.name, 6)}
+                                <Text numberOfLines={1} ellipsizeMode='tail' className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {item.name}
                                 </Text>
-                                <Text className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
-                                    {TruncatedTextComponent(item.name, 11)}
+                                <Text numberOfLines={1} ellipsizeMode='tail' className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
+                                    {item.name}
                                 </Text>
                             </View>
                         </LinearGradient>

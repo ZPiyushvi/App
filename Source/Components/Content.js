@@ -187,9 +187,9 @@ const Content = ({ data }) => {
                     colors={['transparent', Colors.dark.colors.backGroundColor]}
                     className=' -ml-1 flex-1 justify-center '
                 >
-                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                    <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
                         {/* {item.name} */}
-                        {TruncatedTextComponent(item.name, 15)}
+                        {item.name}
                     </Text>
                     <View className='flex-row'>
                         <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>

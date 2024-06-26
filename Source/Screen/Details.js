@@ -44,11 +44,11 @@ const DetailsScreen = ({ route }) => {
         setMenuItems(prevMenuItems => {
             const updatedMenuItems = [...prevMenuItems];
             const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
-    
+
             if (categoryIndex !== -1) {
                 const category = updatedMenuItems[categoryIndex];
                 const itemIndex = category.items.findIndex(item => item.id === id);
-    
+
                 if (itemIndex !== -1) {
                     const item = category.items[itemIndex];
                     category.items[itemIndex] = {
@@ -56,7 +56,7 @@ const DetailsScreen = ({ route }) => {
                         quantity: String(parseInt(item.quantity) + 1)
                     };
                     console.log(category.items[itemIndex]);
-    
+
                     // Update the cart items
                     setCartItems(prevCartItems => {
                         const updatedCartItems = { ...prevCartItems };
@@ -67,7 +67,7 @@ const DetailsScreen = ({ route }) => {
                             // Hotel exists, check for the item
                             const hotelCart = [...updatedCartItems[hotelName]];
                             const existingCartItemIndex = hotelCart.findIndex(cartItem => cartItem.id === id);
-    
+
                             if (existingCartItemIndex !== -1) {
                                 hotelCart[existingCartItemIndex] = {
                                     ...hotelCart[existingCartItemIndex],
@@ -160,8 +160,8 @@ const DetailsScreen = ({ route }) => {
                             ))
                         }
                     </View>
-                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
-                        {TruncatedTextComponent(item.item, 30)}
+                    <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        {item.item}
                     </Text>
 
                     <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
@@ -170,7 +170,7 @@ const DetailsScreen = ({ route }) => {
                         <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
                     </View>
 
-                    <Text style={styles.descriptionText}>{TruncatedTextComponent(item.longdescription, 67, true)}</Text>
+                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.longdescription}</Text>
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
                     <ImageBackground
@@ -219,7 +219,7 @@ const DetailsScreen = ({ route }) => {
                 </View>
                 {renderModal({ data: selectedItemData })}
             </View>
-            <Text style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+            <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
         </>
     );
 
@@ -357,10 +357,16 @@ const DetailsScreen = ({ route }) => {
                     </View>
                 </View>
 
-
-                <View style={styles.container}>
+                <FlatList
+                    style={styles.container}
+                    data={menuItems}
+                    renderItem={({ item }) => renderDropdown(item)}
+                    // keyExtractor={(item) => item.}
+                />
+                {console.log(menuItems.items)}
+                {/* <View style={styles.container}>
                     {menuItems.map(menu => renderDropdown(menu))}
-                </View>
+                </View> */}
 
                 <View className='p-3 pb-24 gap-y-10'>
                     <View className=' gap-3'>

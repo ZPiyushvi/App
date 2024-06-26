@@ -144,10 +144,10 @@ const Home = () => {
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
                     {console.log(userData.name)}
-                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 16) : "UserName"} </Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
-                  <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{TruncatedTextComponent("plot number 45, new row house", 27)}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{"plot number 45, new row house"}</Text>
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
@@ -184,7 +184,9 @@ const Home = () => {
             <View style={{ height: Dimensions.get('window').height * 0.08 }}>
               <Titles title={"All Restaurants"} width={60} />
             </View>
+            
             <Content data={campusShops} />
+
             <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
               <Text
                 className='font-black text-xl text-center'
