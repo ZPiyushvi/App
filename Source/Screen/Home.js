@@ -21,6 +21,7 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 import ModelScreen from './ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
+import Popular from '../Components/Popular';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -124,7 +125,7 @@ const Home = () => {
     <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
       <LinearGradient
         // Button Linear Gradient
-        colors={[Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
+        colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
       <Animated.ScrollView
         // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
         onScroll={Animated.event(
@@ -169,9 +170,11 @@ const Home = () => {
               <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
             </View>
 
+            {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
             <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
 
             <Titles title={"What’s on your heart?"} width={30} />
+            
             <PopularMenuContainor data={popularMenu} />
 
           </Animated.View>
@@ -184,7 +187,7 @@ const Home = () => {
             <View style={{ height: Dimensions.get('window').height * 0.08 }}>
               <Titles title={"All Restaurants"} width={60} />
             </View>
-            
+
             <Content data={campusShops} />
 
             <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
