@@ -22,13 +22,15 @@ import ModelScreen from './ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import Popular from '../Components/Popular';
+import Model from './Model';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
 
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
-  const { show, hide, RenderModel } = ModelScreen();
+  // const { show, hide, RenderModel } = ModelScreen();
+  const { show, hide, RenderModel } = Model();
   const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;

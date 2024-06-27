@@ -420,7 +420,7 @@ const DetailsScreen = ({ route }) => {
                     ) : null
                 ))}
             </View>
-            {RenderModel()}
+            {/* {RenderModel()} */}
         </View>
     );
 };
