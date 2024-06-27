@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import ModelScreen from '../Screen/ModelScreen';
 import { mockCampusShops } from '../Data/mockCampusShops';
 
-export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
+export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
@@ -25,7 +25,10 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow }) => {
       {updatedCartWithDetailsLength - 1 != 0 ?
         <>
           <TouchableOpacity
-            onPress={Modelshow}
+            onPress={() => {
+              settype('cart');
+              Modelshow();
+            }}
             className=' absolute flex-row rounded-full -mt-3 p-1 px-2 items-center z-50'
             style={{
               backgroundColor: Colors.dark.colors.componentColor,

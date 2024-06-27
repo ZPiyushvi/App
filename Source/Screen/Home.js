@@ -23,20 +23,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import Popular from '../Components/Popular';
 import Model from './Model';
+import Like from './Like';
+import { avalableLanguages } from '../Data/avalableLanguages';
+import LangContent from '../Components/LangCantent';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
 
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
-  // const { show, hide, RenderModel } = ModelScreen();
-  const { show, hide, RenderModel } = Model();
+  const { show, hide, RenderModel } = ModelScreen();
+  // const { show, hide, RenderModel } = Model();
   const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
+
+  const [type, settype] = useState('');
+
   const flatListRef = useRef(null);
 
   const navToPage = (page) => {
@@ -154,7 +160,7 @@ const Home = () => {
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
-                <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons onPress={() => {settype('lang'), show()}} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
                 <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
             </View>
@@ -223,11 +229,11 @@ const Home = () => {
           <LinearGradient
             className=' absolute p-2 w-full bottom-0'
             colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} />
+            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} settype={settype} />
           </LinearGradient>
         }
       </View>
-      {RenderModel()}
+      {RenderModel({title: "Your Carts", subtitle: "Clear All", type: {type}})}
     </View>
   );
 };
