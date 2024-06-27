@@ -233,7 +233,7 @@ const Home = () => {
           </LinearGradient>
         }
       </View>
-      {RenderModel({title: "Your Carts", subtitle: "Clear All", type: {type}})}
+      {RenderModel({type: {type}})}
     </View>
   );
 };

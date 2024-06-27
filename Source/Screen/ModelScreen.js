@@ -17,8 +17,8 @@ export default function ModelScreen() {
     const hide = () => setVisible(false);
     const [langunage, setlanguage] = useState("");
     const [selected, setSelected] = useState('English');
-    
-    const RenderModel = ({ title, subtitle, type }) => (
+
+    const RenderModel = ({ type }) => (
         <>
             {/* <StatusBar hidden /> */}
             <Modal
@@ -32,11 +32,13 @@ export default function ModelScreen() {
 
                     <View className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='flex-row justify-between p-1 pb-3 items-center'>
-                            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-xl'>{title} ({updatedCartWithDetails.length})</Text>
-                            <Text style={{ color: Colors.dark.colors.textColor }} className='font-black text-base'>{subtitle}</Text>
+                            <Text style={{ color: Colors.dark.colors.mainTextColor, fontWeight: 'bold', fontSize: 20 }}>
+                                {type.type === "lang" ? "Select Language" : `Your Carts ${updatedCartWithDetails.length}`}
+                            </Text>
+                            <Text style={{ color: Colors.dark.colors.textColor }} className='font-black text-base'>{type.type == "lang" ? null : "Clear All"}</Text>
                         </View>
                         {
-                            type === "cart" ? (
+                            type.type == "cart" ? (
                                 <ScrollView
                                     showsVerticalScrollIndicator={false}
                                     style={{ flex: 1, backgroundColor: 'white' }}
