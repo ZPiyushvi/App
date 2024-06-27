@@ -33,7 +33,7 @@ const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
     } else if (current.format('dddd') === offDays) {
       setStatus({ text: `We're closed today. But don't worry and come back tomorrow.`, color: "red", state: "closed" });
     } else if (current.isBetween(opening, closing)) {
-      setStatus({ text: "We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!", color: "#32CD32", state: "open" });
+      setStatus({ text: "We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!", color: "#1E5128", state: "open" });
     } else {
       setStatus({ text: "Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place", color: "red", state: "closed" });
     }
@@ -58,7 +58,7 @@ const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
   // Check for opening and closing soon statuses
   useEffect(() => {
     if (openingDifference > 0 && openingDifference <= 60) {
-      setStatus({ text: `Almost there! Just ${openingDifference} minutes until the kitchen's back in action! Get ready to place your order!`, color: "#FFC300", state: "openingSoon" });
+      setStatus({ text: `Almost there! Just ${openingDifference} minutes until the kitchen's back in action! Get ready to place your order!`, color: "1E5128", state: "openingSoon" });
     } else if (closingDifference > 0 && closingDifference <= 60) {
       setStatus({ text: `Hurry up! Kitchen's closing in ${closingDifference} minutes! Get your order in now before it's too late!`, color: "yellow", state: "closingSoon" });
     }

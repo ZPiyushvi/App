@@ -40,51 +40,44 @@ const DetailsScreen = ({ route }) => {
 
     const [selectedItemData, setSelectedItemData] = useState();
 
-    const handleIncrement = useCallback((id, title, itemName, hotelName) => {
-        setMenuItems(prevMenuItems => {
-            const updatedMenuItems = [...prevMenuItems];
-            const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
+    const handleIncrement = (id, title, itemName, hotelName) => {
+        const updatedMenuItems = [...menuItems];
+        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
 
-            if (categoryIndex !== -1) {
-                const category = updatedMenuItems[categoryIndex];
-                const itemIndex = category.items.findIndex(item => item.id === id);
+        if (categoryIndex !== -1) {
+            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
 
-                if (itemIndex !== -1) {
-                    const item = category.items[itemIndex];
-                    category.items[itemIndex] = {
-                        ...item,
-                        quantity: String(parseInt(item.quantity) + 1)
-                    };
-                    console.log(category.items[itemIndex]);
+            if (itemIndex !== -1) {
+                updatedMenuItems[categoryIndex].items[itemIndex] = {
+                    ...updatedMenuItems[categoryIndex].items[itemIndex],
+                    quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) + 1)
+                };
 
-                    // Update the cart items
-                    setCartItems(prevCartItems => {
-                        const updatedCartItems = { ...prevCartItems };
-                        if (!updatedCartItems[hotelName]) {
-                            // Hotel does not exist in the cart, add it
-                            updatedCartItems[hotelName] = [category.items[itemIndex]];
-                        } else {
-                            // Hotel exists, check for the item
-                            const hotelCart = [...updatedCartItems[hotelName]];
-                            const existingCartItemIndex = hotelCart.findIndex(cartItem => cartItem.id === id);
+                setMenuItems(updatedMenuItems);
 
-                            if (existingCartItemIndex !== -1) {
-                                hotelCart[existingCartItemIndex] = {
-                                    ...hotelCart[existingCartItemIndex],
-                                    quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
-                                };
-                            } else {
-                                hotelCart.push(category.items[itemIndex]);
-                            }
-                            updatedCartItems[hotelName] = hotelCart;
-                        }
-                        return updatedCartItems;
-                    });
-                }
+                setCartItems(prevCartItems => {
+                    const hotelCart = prevCartItems[hotelName] || [];
+                    const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
+
+                    if (existingCartItemIndex !== -1) {
+                        hotelCart[existingCartItemIndex] = {
+                            ...hotelCart[existingCartItemIndex],
+                            quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
+                        };
+                    } else {
+                        const menuItemToAdd = updatedMenuItems[categoryIndex].items[itemIndex];
+                        menuItemToAdd.quantity = "1";
+                        hotelCart.push(menuItemToAdd);
+                    }
+
+                    return {
+                        ...prevCartItems,
+                        [hotelName]: hotelCart
+                    }
+                })
             }
-            return updatedMenuItems;
-        });
-    }, [setCartItems, setMenuItems]);
+        }
+    }
 
     const handleDecrement = (id, title, itemName, hotelName) => {
         const updatedMenuItems = [...menuItems];
@@ -143,7 +136,7 @@ const DetailsScreen = ({ route }) => {
     const renderDropdownItem = ({ item, title }) => (
         <>
             <View
-                className=' flex-row justify-between items-center p-3 pb-6'
+                className=' flex-row p-3 pb-6'
             >
                 <TouchableOpacity
                     className='w-6/12 h-full'
@@ -231,7 +224,7 @@ const DetailsScreen = ({ route }) => {
             <TouchableOpacity
                 key={index}
                 // style={{ padding: 12 }}
-                className=' px-4 py-4'
+                className=' px-4'
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
             >
                 <Text
@@ -249,7 +242,7 @@ const DetailsScreen = ({ route }) => {
     }
 
     const renderDropdown = (menu) => (
-        <View className='gap-3' key={menu.title}>
+        <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
             <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
                 <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                 <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
@@ -285,140 +278,132 @@ const DetailsScreen = ({ route }) => {
 
     return (
         <View key={CartItems.storeName}>
-            <ScrollView
+            <FlatList
+                data={menuItems}
+                renderItem={({ item }) => renderDropdown(item)}
+                keyExtractor={(item, index) => index.toString()}
+                ListHeaderComponent={
+                    <>
+                        <View
+                            showsHorizontalScrollIndicator={false}
+                            style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
+                        >
+                            <LinearGradient
+                                colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
+                                className='overflow-hidden mb-10 p-5 items-center justify-center'
+                                style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}
+                            >
+                                <View className='items-center mb-6 gap-4'>
+                                    <Image
+                                        source={getShopImageSource(Shopstatus.state)}
+                                        className='w-44 h-16'
+                                        alt="Logo"
+                                    />
+                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                        {Shopstatus.text}
+                                    </Text>
+                                </View>
+                                <View className='w-full rounded-3xl items-center justify-center p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                                    <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
+                                    <View className='flex-row gap-2 justify-center items-center mb-3'>
+                                        <View className='flex-row justify-center items-center'>
+                                            {Data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
+                                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.type}</Text>
+                                        </View>
+                                        <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
+                                    </View>
+
+                                    <View className='flex-row justify-center items-center gap-1 mb-3'>
+                                        <View className='flex-row justify-center items-center rounded-lg px-1 bg-green-500' style={{ paddingVertical: 2 }}>
+                                            <Text className='font-semibold text-lg mr-1 text-white'>{Data.rating}</Text>
+                                            <Ionicons name="star" color={'white'} />
+                                        </View>
+                                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
+                                    </View>
+                                    <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
+                                        <Ionicons name="navigate-circle" size={24} color={'red'} />
+                                        <Text className='font-semibold text-base mx-1'>{Data.locationdetailed}</Text>
+                                    </View>
+                                </View>
+                            </LinearGradient>
+
+                            <View className='flex-row justify-between p-4'>
+                                <View className='flex-row gap-3'>
+                                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                                        <View className='absolute z-10 left-3'>
+                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={11} padding={2} />
+                                        </View>
+                                        <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
+                                    </View>
+                                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                                        <View className='absolute z-10 left-3'>
+                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={11} padding={2} />
+                                        </View>
+                                        <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
+                                    </View>
+                                </View>
+                                <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
+                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
+                                    <Ionicons name="barcode-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+                                </View>
+                            </View>
+                        </View>
+                    </>
+                }
+                ListFooterComponent={
+                    <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
+                        <View className='gap-3' >
+                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
+                            </Text>
+                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
+                            </Text>
+                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
+                            </Text>
+                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
+                            </Text>
+                        </View>
+                        <TouchableOpacity className='flex-row justify-between items-center py-8' onPress={show}>
+                            <View className='flex-row items-center'>
+                                <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
+                                <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
+                            </View>
+                            <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
+                        </TouchableOpacity>
+                        <View>
+                            <Image
+                                source={require("./../Data/fssai.png")}
+                                className='w-14 h-11'
+                                alt="Logo"
+                            />
+                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
+                        </View>
+                    </View>
+                }
                 showsHorizontalScrollIndicator={false}
-                style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
-            >
-                {/* <View style={{backgroundColor: Shopstatus.color, borderBottomRightRadius: 30, borderBottomLeftRadius: 30}} className='overflow-hidden mb-10 p-5 items-center justify-center'> */}
-                <LinearGradient colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
-                    // start={{ x: 0.0, y: 0.2 }} end={{ x: 0.0, y: 1.8 }}
-                    className='overflow-hidden mb-10 p-5 items-center justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}>
-                    <View className=' items-center mb-6 gap-4'>
-                        <Image
-                            source={getShopImageSource(Shopstatus.state)}
-                            className='w-44 h-16'
-                            alt="Logo"
-                        />
-                        <Text className=' font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
-                            {Shopstatus.text}
-                        </Text>
-                    </View>
-                    <View className=' w-full rounded-3xl items-center justify-center p-3' style={{ backgroundColor: Colors.dark.colors.componentColor, }}>
-                        {/* <View className=' w-44 h-24 mb-6'>
-                        <Image
-                            source={require("./../Data/Offline.png")}
-                            className=' w-full h-full'
-                            alt="Logo"
-                        />
-                        </View> */}
-                        <Text className=' text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
-                        <View className='flex-row gap-2 justify-center items-center mb-3'>
-                            <View className='flex-row justify-center items-center'>
-                                {Data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
-                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.type}</Text>
-                            </View>
-                            <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
-                        </View>
-
-                        <View className='flex-row justify-center items-center gap-1 mb-3'>
-                            <View className=' flex-row justify-center items-center rounded-lg px-1 bg-green-500' style={{ paddingVertical: 2 }}>
-                                <Text className='font-semibold text-lg mr-1 text-white' >{Data.rating}</Text>
-                                <Ionicons name="star" color={'white'} />
-                            </View>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
-                        </View>
-                        <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
-                            <Ionicons name="navigate-circle" size={24} color={'red'} />
-                            <Text className='font-semibold text-base mx-1'>{Data.locationdetailed}</Text>
-                        </View>
-                    </View>
-                    {/* </View> */}
-                </LinearGradient>
-
-                <View className=' flex-row justify-between p-4'>
-                    <View className=' flex-row gap-3'>
-                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                            <View className=' absolute z-10 left-3'>
-                                <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={11} padding={2} />
-                            </View>
-                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
-                        </View>
-                        <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                            <View className=' absolute z-10 left-3'>
-                                <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={11} padding={2} />
-                            </View>
-                            <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
-                        </View>
-                    </View>
-                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
-                        <Ionicons name="barcode-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-                    </View>
-                </View>
-
-                <FlatList
-                    style={styles.container}
-                    data={menuItems}
-                    renderItem={({ item }) => renderDropdown(item)}
-                    // keyExtractor={(item) => item.}
-                />
-                {console.log(menuItems.items)}
-                {/* <View style={styles.container}>
-                    {menuItems.map(menu => renderDropdown(menu))}
-                </View> */}
-
-                <View className='p-3 pb-24 gap-y-10'>
-                    <View className=' gap-3'>
-                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                            Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
-                        </Text>
-                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                            Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
-                        </Text>
-                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                            The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
-                        </Text>
-                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                            An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
-                        </Text>
-                    </View>
-                    <TouchableOpacity className='flex-row justify-between items-center' onPress={show}>
-                        <View className='flex-row items-center'>
-                            <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
-                            <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
-                        </View>
-                        <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
-                    </TouchableOpacity>
-                    <View>
-                        <Image
-                            source={require("./../Data/fssai.png")}
-                            className=' w-14 h-11'
-                            alt="Logo"
-                        />
-                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
-                    </View>
-                </View>
-
-            </ScrollView>
+            />
 
             {/* MenuScrollView */}
 
             <View className='absolute bottom-0 w-full'>
-                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
-                    <ScrollView
+                <View className='w-full bottom-0 border-t-2 flex-row items-center justify-between' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
+                    <FlatList
+                        data={Data.menu}
+                        renderItem={({ item, index }) => renderMenuScroll({ typetitle: item.title, index })}
+                        keyExtractor={(item, index) => index.toString()}
                         horizontal
                         showsHorizontalScrollIndicator={false}
-                    >
-                        {Data.menu.map((menu, index) => (
-                            renderMenuScroll({ typetitle: menu.title, index: index })
-                        ))}
-                    </ScrollView>
+                    />
+                    
                 </View>
                 {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
                     storeName === Data.name ? (
 
-                        <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                        <TouchableOpacity key={index} onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
                             <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
                                 <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
                                     {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {''}

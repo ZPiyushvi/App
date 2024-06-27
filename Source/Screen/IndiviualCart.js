@@ -12,8 +12,8 @@ const Cart = ({ route }) => {
 
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => (
-    <View className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+  const renderItem = ({ item, index }) => (
+    <View key={index} className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
       <View className='flex-row items-center' >
         {
           item.type &&
@@ -75,11 +75,16 @@ const Cart = ({ route }) => {
       <ScrollView>
         <View className=' p-5 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
           <View className=' rounded-xl overflow-hidden'>
-            <FlatList
+            {/* <FlatList
               data={items}
               renderItem={renderItem}
               keyExtractor={(items) => `${items.id}-${items.item}`}
-            />
+            /> */}
+            {/* {console.log(items.item)} */}
+            {items.map((menu, index) => (
+              renderItem({item: menu, index: index})
+              // console.log(items[index])
+            ))}
           </View>
 
           <View className=' mt-5 rounded-xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -120,13 +125,13 @@ const Cart = ({ route }) => {
 
       </ScrollView>
 
-      <View className=' p-5 rounded-t-2xl flex-row items-center w-full justify-between' style={{backgroundColor: Colors.dark.colors.componentColor}}>
+      <View className=' p-5 rounded-t-2xl flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
         <View>
-        <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
-        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
+          <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
+          <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
-        <TouchableOpacity className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width:Dimensions.get('window').width * 0.53}}>
-          <Text className='text-xl font-black' style={{color: Colors.dark.colors.mainTextColor}}>Proceed to Pay</Text>
+        <TouchableOpacity className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
+          <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>
       </View>
     </View>
