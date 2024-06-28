@@ -46,7 +46,7 @@ const Data_More = [
       },
       {
         "subtitle": "Your Orders",
-        "iconName": "refresh-outline",
+        "iconName": "cart-outline",
       },
       {
         "subtitle": "Order History",
@@ -137,8 +137,8 @@ const LoginScreen = () => {
               </Text>
             </View>
             <View>
-              <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"}</Text>
-              <Text className='font-bold text-xl' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.name : "Contact details"}</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"}</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' className='font-bold text-xl' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.contactinfo : "Contact details"}</Text>
               <View className=' flex-row items-center'>
                 <Text className='font-medium text-base underline' style={{ color: Colors.dark.colors.diffrentColorOrange }}>View activity</Text>
                 <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
@@ -158,7 +158,7 @@ const LoginScreen = () => {
             <View className=' p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
               <Ionicons name='heart-outline' size={24} color={Colors.dark.colors.mainTextColor} />
             </View>
-            <Text className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Favourites</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Favourites</Text>
           </View>
 
           <View className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15, }}>
@@ -185,7 +185,7 @@ const LoginScreen = () => {
           return (
             <View key={sectionIndex} className='mt-3 rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
               <View>
-                <Text className='font-black text-xl mb-3' style={{ color: Colors.dark.colors.mainTextColor }}>{section.title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl mb-3' style={{ color: Colors.dark.colors.mainTextColor }}>{section.title}</Text>
               </View>
 
               {section.data.map((item, itemIndex) => {
@@ -195,7 +195,7 @@ const LoginScreen = () => {
                       <View className='p-1 rounded-full justify-center items-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                         <Ionicons name={item.iconName} size={22} color={Colors.dark.colors.mainTextColor} />
                       </View>
-                      <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.subtitle}</Text>
+                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.subtitle}</Text>
                     </View>
                     <Ionicons name='chevron-forward-outline' size={23} color={Colors.dark.colors.mainTextColor} />
                   </TouchableOpacity>

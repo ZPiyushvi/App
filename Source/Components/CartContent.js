@@ -15,7 +15,7 @@ const CartContent = ({ setVisible }) => {
         <View className='absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.componentColor }}>
             <View className='flex-row justify-between p-1 pb-3 items-center'>
                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-xl'>
-                    Your Carts ({updatedCartWithDetails.length})
+                    Your Carts {`(${updatedCartWithDetails.length})`}
                 </Text>
                 <Text style={{ color: Colors.dark.colors.textColor }} className='font-black text-base'>Clear All</Text>
             </View>
