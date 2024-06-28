@@ -19,6 +19,7 @@ import StaterScreen from '../Screen/StaterScreen';
 import ModalScreen from '../Screen/ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OrderHistory from '../Screen/OrderHistory';
+import YettoUpdate from '../Screen/YettoUpdate';
 
 const Stack = createStackNavigator();
 
@@ -136,6 +137,10 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="ModalScreen"
                     component={ModalScreen}
+                />
+                <Stack.Screen
+                    name="YettoUpdate"
+                    component={YettoUpdate}
                 />
             </Stack.Navigator>
         </NavigationContainer>

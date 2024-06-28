@@ -1,3 +1,50 @@
+// import React, { useState } from 'react';
+// import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+
+// export default function Home() {
+//   const [loading, setLoading] = useState(false);
+//   const navigation = useNavigation();
+  
+//   const navToPage = (page) => {
+//     setLoading(true);
+//     setTimeout(() => {
+//       setLoading(false);
+//     navigation.navigate(page);
+//    }, 2000);
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       {loading && <ActivityIndicator size="large" color="#0000ff" />}
+//       <TouchableOpacity style={styles.button} onPress={() => navToPage('SelectAddress')}>
+//         <Text style={styles.buttonText}>Go to Details</Text>
+//       </TouchableOpacity>
+//     </View>
+//   )
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   button: {
+//     backgroundColor: '#007bff',
+//     padding: 10,
+//     borderRadius: 5,
+//   },
+//   buttonText: {
+//     color: '#fff',
+//     fontSize: 16,
+//   },
+//   text: {
+//     fontSize: 18,
+//   },
+// });
+
+
 // import { BANNER_H } from "./../Constants/Constants"
 const BANNER_H = Dimensions.get('window').height * 0.87;
 import React, { useState, useEffect, useRef, useContext } from 'react';
