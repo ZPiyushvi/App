@@ -49,19 +49,20 @@ const LoginScreen = () => {
 
   const [userDataVisible, setUserDataVisible] = useState(false);
   const [profileNavVisible, setProfileNavVisible] = useState(false);
+
+
   useEffect(() => {
-    // if (userData) {
-    //   setUserDataVisible(true);
-    // }
-    // if (ProfileScreenNav && ProfileScreenNav.length > 0) {
-    //   setProfileNavVisible(true);
-    // }
-    setTimeout(() => {
-      setUserDataVisible(true);
-    }, 1000)
-    setTimeout(() => {
-      setProfileNavVisible(true);
-    }, 2000)
+    if (userData) {
+      setTimeout(() => {
+        setUserDataVisible(true);
+      }, 100);
+    }
+
+    if (ProfileScreenNav && ProfileScreenNav.length > 0) {
+      setTimeout(() => {
+        setProfileNavVisible(true);
+      }, 300);
+    }
   }, [userData, ProfileScreenNav]);
 
   const shimmerColors = [Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor];
