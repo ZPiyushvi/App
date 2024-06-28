@@ -25,7 +25,7 @@ import Popular from '../Components/Popular';
 import Model from './Model';
 import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';
-import LangContent from '../Components/LangCantent';
+import LangContent from '../Components/RenderLangContent';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -161,7 +161,7 @@ const Home = () => {
               </View>
               <View className='address flex-row gap-2 items-center'>
                 <Ionicons onPress={() => {settype('lang'), show()}} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
             </View>
 

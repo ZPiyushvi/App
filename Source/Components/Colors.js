@@ -17,7 +17,7 @@ const light = {
 
 const dark = {
   colors: {
-    backGroundColor: "rgba(5, 6, 8)",
+    // backGroundColor: "rgba(5, 6, 8)",
     componentColor: "#252A32",
     secComponentColor: "#52555A",
     backGroundColor: "#1C1C1E",
@@ -25,7 +25,7 @@ const dark = {
     textColor: "#AEAEAE",
     diffrentColorOrange: "#ff3c00",
     diffrentColorPerple: "#0092ff", 
-    diffrentColorPerpleBG: "#d0c5f6",
+    diffrentColorPerpleBG: "#9dd5ff",
     diffrentColorGreen: '#00e676',
     diffrentColorRed: '#ff0000',
     // backGroundColor: "#1C1C1E",

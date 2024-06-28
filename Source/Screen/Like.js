@@ -113,7 +113,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import LangContent from '../Components/LangCantent';
+import LangContent from '../Components/RenderLangContent';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Colors from '../Components/Colors';
 import { avalableLanguages } from '../Data/avalableLanguages';
