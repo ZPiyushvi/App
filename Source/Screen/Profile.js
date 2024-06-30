@@ -45,8 +45,6 @@ const LoginScreen = () => {
   };
   // onPress={() => navigation.navigate('IndiviualCart',
 
-  const [visible, setVisible] = React.useState(false)
-
   const [userDataVisible, setUserDataVisible] = useState(false);
   const [profileNavVisible, setProfileNavVisible] = useState(false);
 
@@ -161,9 +159,9 @@ const LoginScreen = () => {
 
         {ProfileScreenNav.map((section, sectionIndex) => {
           return (
-            <>
-              {!profileNavVisible && <ShimmerPlaceholder key={sectionIndex} shimmerColors={shimmerColors} className='mt-3 h-14 rounded-xl w-full' />}
-              <ShimmerPlaceholder className='mt-3 rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
+            <View key={sectionIndex}>
+              {!profileNavVisible && <ShimmerPlaceholder shimmerColors={shimmerColors} className='mt-3 h-14 rounded-xl w-full' />}
+              <ShimmerPlaceholder  className='mt-3 rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
 
                 <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                   <View className=' items-center flex-row mb-3'>
@@ -186,7 +184,7 @@ const LoginScreen = () => {
                   })}
                 </View>
               </ShimmerPlaceholder>
-            </>
+            </View>
           );
         })}
       </ScrollView>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
+import Colors from './Colors';
 
 const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
-  const [status, setStatus] = useState({ text: '', color: '', state: '' });
+  const [status, setStatus] = useState({ text: '', color: [], state: '' });
 
   useEffect(() => {
     checkShopStatus(); // Initial check
@@ -27,15 +28,15 @@ const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
     if (leaveDays.includes(current.format('dddd'))) {
       setStatus({
         text: `Today, the shop is under maintenance. It will resume operations on ${moment(leaveDays[leaveDays.length - 1], 'dddd').add(1, 'days').format('dddd, MMMM Do YYYY')} at ${opening.format('h:mm A')}.`,
-        color: "red",
+        color: ["#FF0000", "#6f0000"],
         state: "closedForMaintenance"
       });
     } else if (current.format('dddd') === offDays) {
-      setStatus({ text: `We're closed today. But don't worry and come back tomorrow.`, color: "red", state: "closed" });
+      setStatus({ text: `We're closed today. But don't worry and come back tomorrow.`, color: ["#FF0000", "#6f0000"], state: "closed" });
     } else if (current.isBetween(opening, closing)) {
-      setStatus({ text: "We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!", color: "#1E5128", state: "open" });
+      setStatus({ text: "We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!", color: ['#00FF00', '#1A4314'], state: "open" });
     } else {
-      setStatus({ text: "Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place", color: "red", state: "closed" });
+      setStatus({ text: "Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place", color: ["#FF0000", "#6f0000"], state: "closed" });
     }
   };
 
@@ -58,9 +59,9 @@ const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
   // Check for opening and closing soon statuses
   useEffect(() => {
     if (openingDifference > 0 && openingDifference <= 60) {
-      setStatus({ text: `Almost there! Just ${openingDifference} minutes until the kitchen's back in action! Get ready to place your order!`, color: "1E5128", state: "openingSoon" });
+      setStatus({ text: `Almost there! Just ${openingDifference} minutes until the kitchen's back in action! Get ready to place your order!`, color: ["#f7ff00", '#DCE35B'], state: "openingSoon" });
     } else if (closingDifference > 0 && closingDifference <= 60) {
-      setStatus({ text: `Hurry up! Kitchen's closing in ${closingDifference} minutes! Get your order in now before it's too late!`, color: "yellow", state: "closingSoon" });
+      setStatus({ text: `Hurry up! Kitchen's closing in ${closingDifference} minutes! Get your order in now before it's too late!`, color: ["#f7ff00", '#DCE35B'], state: "closingSoon" });
     }
   }, [openingDifference, closingDifference]);
 

@@ -1,4 +1,6 @@
-import React, { useCallback, useContext, useState } from 'react';
+// ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible}
+
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
@@ -13,9 +15,17 @@ import useShopStatus from '../Components/useShopStatus';
 import { useNavigation } from '@react-navigation/native';
 import ModelScreen from './ModelScreen';
 
+import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
+const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
+
 const DetailsScreen = ({ route }) => {
 
-    // const [visible, setVisible] = useState(false);
+
+
+
+    const [visible, setVisible] = React.useState(false)
+    const shimmerColors = [Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor];
+
     // const show = () => setVisible(true);
     // const hide = () => setVisible(false);
     const { show, hide, RenderModel } = ModelScreen();
@@ -33,12 +43,24 @@ const DetailsScreen = ({ route }) => {
         menuItems.forEach(menu => {
             initialDropdowns[menu.title] = true;
         });
+        // setVisible(true);
         return initialDropdowns;
     });
 
     const { Openmodal, setOpenmodal, renderModal } = PopUp();
 
     const [selectedItemData, setSelectedItemData] = useState();
+    const [vegBottom, setVegBottom] = useState(true);
+    const [nonVegBottom, setNonVegBottom] = useState(true);
+
+    const handleVegBottom = () => {
+        if (nonVegBottom && !vegBottom) {
+            setNonVegBottom(!nonVegBottom)
+            setVegBottom(!vegBottom)
+            return 
+        }
+        setVegBottom(!vegBottom)
+    }
 
     const handleIncrement = (id, title, itemName, hotelName) => {
         const updatedMenuItems = [...menuItems];
@@ -132,6 +154,14 @@ const DetailsScreen = ({ route }) => {
             [title]: !prevState[title],
         }));
     };
+
+    const numbers = [11, 10, 9, 8, 7];
+
+    const getRandomNumber = () => {
+        const randomIndex = Math.floor(Math.random() * numbers.length);
+        return numbers[randomIndex];
+    };
+
 
     const renderDropdownItem = ({ item, title }) => (
         <>
@@ -242,19 +272,21 @@ const DetailsScreen = ({ route }) => {
     }
 
     const renderDropdown = (menu) => (
-        <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
-            <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
-                <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
-            </TouchableOpacity>
-            {openDropdowns[menu.title] && (
-                <FlatList
-                    data={menu.items}
-                    renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
-                    keyExtractor={item => item.id}
-                />
-            )}
-        </View>
+        <>
+            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
+                <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                    <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                    <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
+                </TouchableOpacity>
+                {openDropdowns[menu.title] && (
+                    <FlatList
+                        data={menu.items}
+                        renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
+                        keyExtractor={item => item.id}
+                    />
+                )}
+            </View>
+        </>
     );
 
     const getShopImageSource = (state) => {
@@ -277,76 +309,109 @@ const DetailsScreen = ({ route }) => {
     const navigation = useNavigation();
 
     return (
-        <View key={CartItems.storeName}>
+        <View key={CartItems.storeName} style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+
+            {!visible && <>
+                <View className=' w-full h-full'>
+                    <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className=' h-14 mt-3 w-full' />
+                    <View className=' mt-3 px-2 flex-row'>
+                        <View className='w-6/12 h-full overflow-hidden'>
+                            <View className='flex-row my-1'>
+                                <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-2/12 rounded-md overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.027, }} />
+                                <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-4/12 rounded-md overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.027 }} />
+                            </View>
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-8/12 my-1 rounded-md overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.028 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-2/12 my-1 rounded-md overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.025, }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                        </View>
+                        <View className='w-6/12 p-2'>
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950' style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }} />
+                        </View>
+                    </View>
+                    <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+
+                    <View className=' mt-3 px-2 flex-row'>
+                        <View className='w-6/12 h-full overflow-hidden'>
+                            <View className='flex-row my-1'>
+                                <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-2/12 rounded-md overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.027, }} />
+                                <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-4/12 rounded-md overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.027 }} />
+                            </View>
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-8/12 my-1 rounded-md overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.028 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='w-2/12 my-1 rounded-md overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.025, }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className={`w-${getRandomNumber()}/12 my-1 rounded-md overflow-hidden justify-between`} style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.020 }} />
+                        </View>
+                        <View className='w-6/12 p-2'>
+                            <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950' style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }} />
+                        </View>
+                    </View>
+                    <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+                    <Text className='font-black text-base px-5 text-center' style={{ color: Colors.dark.colors.textColor }}>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                    </Text>
+                </View>
+            </>}
+
             <FlatList
                 data={menuItems}
                 renderItem={({ item }) => renderDropdown(item)}
                 keyExtractor={(item, index) => index.toString()}
                 ListHeaderComponent={
                     <>
-                        <View
-                            showsHorizontalScrollIndicator={false}
-                            style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
-                        >
+                        <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+                            <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
+                            <View className='flex-row gap-2 justify-center items-center mb-3'>
+                                <View className='flex-row justify-center items-center'>
+                                    {Data.type === "Veg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {Data.type}</Text>
+                                </View>
+                                <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
+                            </View>
+
+                            <View className='flex-row justify-center items-center gap-1 mb-3'>
+                                <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
+                                    <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{Data.rating}</Text>
+                                    <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
+                                </View>
+                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
+                            </View>
+
+                            <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
+                                <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
+                                <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.locationdetailed} </Text>
+                            </View>
                             <LinearGradient
-                                colors={[Colors.dark.colors.backGroundColor, Shopstatus.color]}
-                                className='overflow-hidden mb-10 p-5 items-center justify-center'
-                                style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderBottomRightRadius: 30, borderBottomLeftRadius: 30 }}
-                            >
-                                <View className='items-center mb-6 gap-4'>
-                                    <Image
-                                        source={getShopImageSource(Shopstatus.state)}
-                                        className='w-44 h-16'
-                                        alt="Logo"
-                                    />
-                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                        {Shopstatus.text}
-                                    </Text>
-                                </View>
-                                <View className='w-full rounded-3xl items-center justify-center p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-                                    <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
-                                    <View className='flex-row gap-2 justify-center items-center mb-3'>
-                                        <View className='flex-row justify-center items-center'>
-                                            {Data.type === "Veg" && <Ionicons name="leaf" size={18} color={Colors.dark.colors.diffrentColorGreen} />}
-                                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.type}</Text>
-                                        </View>
-                                        <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
-                                    </View>
-
-                                    <View className='flex-row justify-center items-center gap-1 mb-3'>
-                                        <View className='flex-row justify-center items-center rounded-lg px-1 bg-green-500' style={{ paddingVertical: 2 }}>
-                                            <Text className='font-semibold text-lg mr-1 text-white'>{Data.rating}</Text>
-                                            <Ionicons name="star" color={'white'} />
-                                        </View>
-                                        <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
-                                    </View>
-                                    <View className='flex-row justify-center items-center bg-slate-300 rounded-full py-1 px-1'>
-                                        <Ionicons name="navigate-circle" size={24} color={'red'} />
-                                        <Text className='font-semibold text-base mx-1'>{Data.locationdetailed}</Text>
-                                    </View>
-                                </View>
+                                start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
+                                colors={[Shopstatus.color[0], Shopstatus.color[1]]}
+                                className=' rounded-2xl px-5 justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: Dimensions.get('window').height * 0.13 }}>
+                                <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    {Shopstatus.text}
+                                </Text>
                             </LinearGradient>
+                        </View>
+                        <View className='flex-row justify-between p-4'>
+                            <View className='flex-row gap-3'>
+                                <TouchableOpacity onPress={() => handleVegBottom()} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                                    <View className={`absolute z-10 ${vegBottom ? 'right-0' : 'left-2'}`}>
+                                        <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={10} padding={2} />
+                                    </View>
+                                    <View className='h-2 w-11 rounded-full' style={{ backgroundColor: vegBottom ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor }} />
+                                </TouchableOpacity>
 
-                            <View className='flex-row justify-between p-4'>
-                                <View className='flex-row gap-3'>
-                                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                                        <View className='absolute z-10 left-3'>
-                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={11} padding={2} />
-                                        </View>
-                                        <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
+                                <TouchableOpacity onPress={() => {setNonVegBottom(!nonVegBottom)}} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                                    <View className={`absolute z-10 ${nonVegBottom ? 'right-0' : 'left-2'}`}>
+                                        <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={10} padding={2} />
                                     </View>
-                                    <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                                        <View className='absolute z-10 left-3'>
-                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={11} padding={2} />
-                                        </View>
-                                        <View className='h-2 w-11 rounded-full' style={{ backgroundColor: Colors.dark.colors.textColor }} />
-                                    </View>
-                                </View>
-                                <View className='flex-row border-2 justify-center items-center rounded-full py-1 px-3' style={{ borderColor: Colors.dark.colors.textColor }}>
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
-                                    <Ionicons name="barcode-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-                                </View>
+                                    <View className='h-2 w-11 rounded-full' style={{ backgroundColor: nonVegBottom ? '#fca5a5' : Colors.dark.colors.textColor }} />
+                                </TouchableOpacity>
+                            </View>
+                            <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
+                                <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} />
                             </View>
                         </View>
                     </>
@@ -398,7 +463,7 @@ const DetailsScreen = ({ route }) => {
                         horizontal
                         showsHorizontalScrollIndicator={false}
                     />
-                    
+
                 </View>
                 {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
                     storeName === Data.name ? (
