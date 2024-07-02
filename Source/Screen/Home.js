@@ -81,11 +81,11 @@ const Home = () => {
   const navigation = useNavigation();
   const { show, hide, RenderModel } = ModelScreen();
   // const { show, hide, RenderModel } = Model();
-  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+  const { CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
-  const [campusShops, setcampusShops] = useState([]);
+  // const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
 
   const [type, settype] = useState('');
@@ -151,7 +151,7 @@ const Home = () => {
   };
 
   const fetchFeatures = async () => {
-    setcampusShops(mockCampusShops)
+    // setcampusShops(mockCampusShops)
     setcampusMenu(mockCampusMenu)
     // try {
     //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');

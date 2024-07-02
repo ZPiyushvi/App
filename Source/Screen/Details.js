@@ -1,5 +1,3 @@
-// ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible}
-
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -63,6 +61,26 @@ const DetailsScreen = ({ route }) => {
     const [selectedItemData, setSelectedItemData] = useState();
     const [vegBottom, setVegBottom] = useState(true);
     const [nonVegBottom, setNonVegBottom] = useState(true);
+
+    if (vegBottom && nonVegBottom) {
+        // Do not filter, show all items
+        filteredMenuItems = menuItems;
+    } else if (vegBottom) {
+        // Show only veg items
+        filteredMenuItems = menuItems.map(item => ({
+            ...item,
+            items: item.items.filter(shop => shop.type === "Veg")
+        }));
+    } else if (nonVegBottom) {
+        // Show only non-veg items
+        filteredMenuItems = menuItems.map(item => ({
+            ...item,
+            items: item.items.filter(shop => shop.type === "NonVeg")
+        }));
+    } else {
+        // Show no items if both are false
+        filteredMenuItems = [];
+    }
 
     const handleVegBottom = () => {
         if (nonVegBottom && !vegBottom) {
@@ -205,7 +223,7 @@ const DetailsScreen = ({ route }) => {
 
                     <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
                     <View className=' flex-row py-2'>
-                        <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} />
+                        <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />
                         <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
                     </View>
 
@@ -385,7 +403,7 @@ const DetailsScreen = ({ route }) => {
 
             {visible &&
                 <FlatList
-                    data={menuItems}
+                    data={filteredMenuItems}
                     renderItem={({ item }) => renderDropdown(item)}
                     keyExtractor={(item, index) => index.toString()}
                     ListHeaderComponent={
@@ -448,6 +466,9 @@ const DetailsScreen = ({ route }) => {
                     ListFooterComponent={
                         <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                             <View className='gap-3' >
+                                <Text className='font-black text-lg -mb-1' style={{ color: Colors.dark.colors.textColor }}>
+                                    Disclaimer:
+                                </Text>
                                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
                                     Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
                                 </Text>
@@ -461,13 +482,15 @@ const DetailsScreen = ({ route }) => {
                                     An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
                                 </Text>
                             </View>
-                            <TouchableOpacity className='flex-row justify-between items-center py-8' onPress={show}>
+                            <View className='mt-7' style={{ height: 1, backgroundColor: Colors.dark.colors.textColor }} />
+                            <TouchableOpacity className='flex-row justify-between items-center py-3' onPress={show}>
                                 <View className='flex-row items-center'>
                                     <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
                                     <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
                                 </View>
                                 <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
                             </TouchableOpacity>
+                            <View className='mb-7' style={{ height: 1, backgroundColor: Colors.dark.colors.textColor }} />
                             <View>
                                 <Image
                                     source={require("./../Data/fssai.png")}
@@ -493,9 +516,28 @@ const DetailsScreen = ({ route }) => {
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
                             />
-
                         </View>
+                        {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
+                            storeName === Data.name ? (
+
+                                <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                                    <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
+                                        <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                            {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {''}
+                                            {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} added
+                                        </Text>
+                                        <View className=' flex-row items-center'>
+                                            <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>CheckOut </Text>
+                                            <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                                                <Ionicons color={Colors.dark.colors.mainTextColor} name={'caret-forward-circle'} size={22} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            ) : null
+                        ))}
                     </View>
+
                 </>
             }
         </View>

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   Image,
   ScrollView,
@@ -8,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
 
@@ -21,16 +22,49 @@ import { ProfileScreenNav } from "../Data/ProfileScreenNav";
 
 import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
 import { LinearGradient } from 'expo-linear-gradient'
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const LoginScreen = () => {
   const route = useRoute();
   const { userData } = route.params;
+  const { vegMode, setVegMode } = useContext(GlobalStateContext);
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
 
-  const [vegMode, setVegMode] = useState(true);
+  const toggleVegMode = async () => {
+    try {
+      const newVegMode = !vegMode;
+      if (!vegMode) {
+        Alert.alert(
+          "Switch to Veg Mode? 🌿",
+          "You are about to filter the shops to show only those with pure vegetarian options and kitchens. Are you sure?",
+          [
+            {
+              text: "Cancel",
+              onPress: () => null,
+              style: "cancel"
+            },
+            {
+              text: "Yes, Let's Go!",
+              onPress: async () => {
+                setVegMode(newVegMode);
+                await AsyncStorage.setItem('vegMode', JSON.stringify(newVegMode));
+              },
+              style: "default"
+            }
+          ]
+        );
+      } else {
+        setVegMode(newVegMode);
+        await AsyncStorage.setItem('vegMode', JSON.stringify(newVegMode));
+      }
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  };
+  
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -151,7 +185,7 @@ const LoginScreen = () => {
               </View>
               <Text className='font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Veg Mode</Text>
             </View>
-            <TouchableOpacity onPress={() => setVegMode(!vegMode)}>
+            <TouchableOpacity onPress={toggleVegMode}>
               <Ionicons name='toggle' size={38} style={{ transform: [{ rotate: vegMode ? '0deg' : '180deg' }] }} color={vegMode ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.mainTextColor} />
             </TouchableOpacity>
           </View>

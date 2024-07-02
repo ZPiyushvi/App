@@ -138,7 +138,7 @@ const Content = ({ data }) => {
     const renderItem3 = ({ item }) => (
         <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
             <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-                <TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
                         <ImageBackground
                             source={{
