@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Dimensions, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Colors from "./Colors";
 import Icons from "./Icons";
 import { Ionicons } from '@expo/vector-icons';
@@ -88,7 +88,49 @@ const InProgress = ({ item }) => {
     );
 }
 
-export const ListCard_O = ({ item }) => {
+export const ListCard_Self1 = ({ item }) => {
+    const navigation = useNavigation();
+    const navToDetails = (item) => {
+        navigation.navigate("Details", { Data: item });
+    };
+    return (
+        <>
+            {/* <View style={{ backgroundColor: Colors.dark.colors }}> */}
+            <View className=' mt-5 rounded-2xl' style={styles.popularFeatureBodyContainer}>
+                <View className=' flex-row h-full p-2 items-center'>
+                    <Image
+                        source={{
+                            uri: item.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        className=' h-full w-7/12 rounded-xl'
+                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.backGroundColor }}
+                        alt="Logo"
+                    />
+                    <View className='flex-1 px-2'>
+                        <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{item.menutype}</Text>
+                        <Text className='font-light text-xl -mt-1' numberOfLines={2} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name}</Text>
+                        <TouchableOpacity
+                            onPress={() => navToDetails(item)}
+                            className='justify-center items-center rounded-md mt-2 px-3 py-1'
+                            style={{
+                                backgroundColor: Colors.dark.colors.diffrentColorOrange,
+                                alignSelf: 'flex-start',
+                            }}
+                        >
+                            <Text className='text-base font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Buy now</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </>
+    )
+}
+
+export const ListCard_Self2 = ({ item }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
@@ -309,6 +351,15 @@ export const ListCard_S = ({ item }) => {
 }
 
 const styles = StyleSheet.create({
+    popularFeatureBodyContainer: {
+        marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
+        // marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
+        height: Dimensions.get('window').height * 0.21,
+        width: Dimensions.get('window').width * 0.94,
+        backgroundColor: Colors.dark.colors.componentColor, // bg color
+        borderWidth: 2,
+        borderColor: Colors.dark.colors.secComponentColor,
+      },
     CardLinearGradientContainer: {
         overflow: 'hidden',
         width: Dimensions.get('window').width * 0.44,

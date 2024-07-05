@@ -9,6 +9,7 @@ import SearchBox from "../Components/SearchBox";
 import TitlesLeft from '../Components/TitlesLeft';
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { mockCampusShops } from '../Data/mockCampusShops';
+import { ListCard_Z } from '../Components/ListCards';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -22,8 +23,7 @@ export default function ModelScreen() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [campusShops, setCampusShops] = useState();
-
-    const buffer = 3;
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
     const fetchFeatures = async () => {
         setCampusShops(mockCampusShops)
@@ -66,56 +66,59 @@ export default function ModelScreen() {
     }, []);
 
     useEffect(() => {
-        // setCampusMenu(mockCampusMenu.map(item => item.name));
 
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % mockCampusMenu.length);
+    
+          setCurrentIndex((prevIndex) => (prevIndex + 1));
         }, 3000); // Change every 3 seconds (adjust as needed)
-
+    
         return () => clearInterval(interval);
-    }, []);
+      }, []);
 
-    const render = (data) => (
-        <>
-            {/* <View style={{ backgroundColor: Colors.dark.colors }}> */}
-            <View className=' mt-5 rounded-xl' style={styles.popularFeatureBodyContainer}>
-                <View className=' flex-row h-full p-2 items-center'>
-                    <Image
-                        source={{
-                            uri: data.image,
-                            method: 'POST',
-                            headers: {
-                                Pragma: 'no-cache',
-                            },
-                        }}
-                        className=' h-full w-7/12 rounded-lg'
-                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor, }}
-                        alt="Logo"
-                    />
-                    <View className='flex-1 px-2'>
-                        <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{data.menutype}</Text>
-                        <Text className='font-light text-lg -mt-1' numberOfLines={2} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{data.name}</Text>
-                        <TouchableOpacity
-                            className='justify-center items-center rounded-md mt-2 px-3 py-1'
-                            style={{
-                                backgroundColor: Colors.dark.colors.diffrentColorOrange,
-                                alignSelf: 'flex-start',
-                            }}
-                        >
-                            <Text className='text-base font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Buy now</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </>
-    )
-
-    const placeholderText = campusMenu && campusMenu.length > currentIndex
-        ? `Search "${campusMenu[currentIndex].name}"`
-        : 'Search';
-
-    const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
     const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
+    const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
+    const buffer = 3;
+
+    let placeholderText = 'Search';
+
+    if (selectedIndex === 0) {
+        if (campusMenu && campusMenu.length > currentIndex) {
+            if (currentIndex + 1 === campusMenu.length) {
+                setCurrentIndex(0);
+            }
+            placeholderText = `Search "${campusMenu[currentIndex].name}"`;
+        }
+    } else {
+        if (campusShops && campusShops.length > currentIndex) {
+            if (currentIndex + 1 === campusShops.length) {
+                setCurrentIndex(0);
+            }
+            placeholderText = `Search "${campusShops[currentIndex].name}"`;
+        }
+    }
+
+
+    const renderMenuScroll = ({ item, index }) => {
+        const isSelected = selectedIndex === index; // Check if the current item is selected
+
+        return (
+            <TouchableOpacity
+                key={index}
+                // style={{ padding: 12 }}
+                className=' px-4'
+                onPress={() => setSelectedIndex(index)} // Update the selected index on press
+            >
+                <Text
+                    style={{
+                        color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
+                    }}
+                    className='text-lg font-semibold'
+                >
+                    {item}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
 
     const RenderModel_UpModelScreen = () => (
         <>
@@ -158,8 +161,9 @@ export default function ModelScreen() {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardDismissMode='on-drag'
-                            data={featuredMenu} //featuredMenu featuredShop
-                            renderItem={({ item }) => value.length > buffer ? render(item) : null}
+                            data={selectedIndex == 0 ? campusMenu : campusShops} //campusShops
+                            // renderItem={({ item }) => <ListCard_Z item={item} />}
+                            renderItem={({ item }) => value.length > buffer ? <ListCard_Z item={item} /> : null}
                             keyExtractor={(item, index) => index.toString()}
                             ListHeaderComponent={
                                 <>
@@ -167,7 +171,7 @@ export default function ModelScreen() {
                                         <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
                                     </View>
                                     {/* featuredMenu featuredShop */}
-                                    <PopularMenuContainor data={featuredMenu} />
+                                    <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />
                                     {
                                         value.length > buffer ?
                                             <View className=' px-3'>
@@ -180,6 +184,15 @@ export default function ModelScreen() {
                         />
                     </View>
 
+                    <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
+                        <FlatList
+                            data={['Menu', 'Outlets']}
+                            renderItem={({ item, index }) => renderMenuScroll({ item, index })}
+                            keyExtractor={(item, index) => index.toString()}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
                 </View>
             </Modal>
         </>
@@ -189,6 +202,14 @@ export default function ModelScreen() {
 }
 
 const styles = {
+    textInput: {
+        flex: 1,
+        paddingLeft: 60,
+        fontSize: 16,
+        borderRadius: 15,
+        fontWeight: "600",
+        color: Colors.dark.colors.mainTextColor,
+    },
     icon: {
         position: 'absolute',
         left: 15,

@@ -73,7 +73,7 @@ import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import UpModelScreen from './UpModelScreen';
-import { ListCard_O, ListCard_S } from '../Components/ListCards';
+import { ListCard_Self2 } from '../Components/ListCards';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -146,7 +146,7 @@ const Home = () => {
 
       const data = await response.json();
       setUserData(data.data)
-      console.log(userData, "home", data.data)
+      // console.log(userData, "home", data.data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -201,7 +201,7 @@ const Home = () => {
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
-                    {console.log(userData.name)}
+                    {/* {console.log(userData.name)} */}
                     <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
@@ -246,7 +246,7 @@ const Home = () => {
               <Titles title={"All Restaurants"} width={60} />
             </View>
 
-            <View style={styles.renderItem2container}>
+            {/* <View style={styles.renderItem2container}>
               <View>
                 <FlatList
                   data={campusShops}
@@ -261,14 +261,14 @@ const Home = () => {
                   showsHorizontalScrollIndicator={false}
                 />
               </View>
-            </View>
+            </View> */}
 
-            {/* < FlatList
+            < FlatList
               data={campusShops}
-              renderItem={({ item }) => <ListCard_O item={item} />} // ListCard_O && ListCard_Z
+              renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => index.toString()}
               showsHorizontalScrollIndicator={false}
-            /> */}
+            />
 
             <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
               <Text

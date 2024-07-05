@@ -9,10 +9,12 @@ export const mockCampusMenu = [
         "price": "20",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
-        "rating": "4.7",
-        "ratingcount": "400"
+        "rating": "4.5",
+        "ratingcount": "432"
       }
     ],
+    "rating": "4.5",
+    "ratingcount": "432",
     "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
@@ -27,10 +29,12 @@ export const mockCampusMenu = [
         "price": "120",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
-        "rating": "4.5",
-        "ratingcount": "350"
+        "rating": "4.6",
+        "ratingcount": "410"
       }
     ],
+    "rating": "4.1",
+    "ratingcount": "401",
     "menutype": "Food",
     "type": "Veg",
     "featured": "false"
@@ -45,101 +49,73 @@ export const mockCampusMenu = [
         "price": "15",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
-        "rating": "4.8",
-        "ratingcount": "450"
+        "rating": "4.7",
+        "ratingcount": "489"
       }
     ],
+    "rating": "4.3",
+    "ratingcount": "378",
     "menutype": "Food",
     "type": "Veg",
     "featured": "false"
   },
   {
     "name": "Chicken Biryani",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/12/chicken-biryani-recipe.jpg",
+    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/chicken-biryani-recipe.jpg",
     "availability": [
       {
         "location": "Central Plaza",
         "restaurant": "Dawat Foods",
-        "price": "140",
+        "price": "180",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
-        "rating": "4.6",
-        "ratingcount": "380"
+        "rating": "4.8",
+        "ratingcount": "540"
       }
     ],
+    "rating": "4.4",
+    "ratingcount": "412",
     "menutype": "Food",
     "type": "NonVeg",
-    "featured": "false"
-  },
-  {
-    "name": "Biryani",
-    "image": "https://i0.wp.com/smellslikehome.net/wp-content/uploads/2013/07/chicken-biryani6-760x1057.jpg",
-    "availability": [
-      {
-        "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
-        "price": "160",
-        "upiId": "dawatfoods@upi",
-        "shopkeepername": "Mohammed Ali",
-        "rating": "4.4",
-        "ratingcount": "300"
-      }
-    ],
-    "menutype": "Food",
-    "type": "NonVeg",
-    "featured": "false"
-  },
-  {
-    "name": "Tandoori Chicken",
-    "image": "https://sugarspiceneverythingnice.com/wp-content/uploads/2022/10/tandoori-chicken-1.jpg",
-    "availability": [
-      {
-        "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
-        "price": "200",
-        "upiId": "dawatfoods@upi",
-        "shopkeepername": "Mohammed Ali",
-        "rating": "4.7",
-        "ratingcount": "420"
-      }
-    ],
-    "menutype": "Food",
-    "type": "NonVeg",
-    "featured": "false"
+    "featured": "true"
   },
   {
     "name": "Paneer Butter Masala",
-    "image": "https://www.cookwithmanali.com/wp-content/uploads/2014/04/Paneer-Butter-Masala.jpg",
+    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/paneer-butter-masala.jpg",
     "availability": [
       {
         "location": "Central Plaza",
         "restaurant": "Dawat Foods",
-        "price": "140",
-        "upiId": "dawatfoods@upi",
-        "shopkeepername": "Mohammed Ali",
-        "rating": "4.5",
-        "ratingcount": "370"
-      }
-    ],
-    "menutype": "Food",
-    "type": "Veg",
-    "featured": "false"
-  },
-  {
-    "name": "Veg Biryani",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/09/veg-biryani-recipe.jpg",
-    "availability": [
-      {
-        "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
-        "price": "130",
+        "price": "150",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
         "rating": "4.6",
-        "ratingcount": "390"
+        "ratingcount": "475"
       }
     ],
+    "rating": "4.2",
+    "ratingcount": "392",
     "menutype": "Food",
+    "type": "Veg",
+    "featured": "true"
+  },
+  {
+    "name": "Mango Lassi",
+    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/mango-lassi-recipe.jpg",
+    "availability": [
+      {
+        "location": "Central Plaza",
+        "restaurant": "Dawat Foods",
+        "price": "60",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "rating": "4.5",
+        "ratingcount": "430"
+      }
+    ],
+    "rating": "4.3",
+    "ratingcount": "388",
+    "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
   },
@@ -153,10 +129,12 @@ export const mockCampusMenu = [
         "price": "200",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
-        "rating": "4.7",
-        "ratingcount": "400"
+        "rating": "4.4",
+        "ratingcount": "360"
       }
     ],
+    "rating": "4.1",
+    "ratingcount": "390",
     "menutype": "Food",
     "type": "NonVeg",
     "featured": "true"
@@ -172,9 +150,11 @@ export const mockCampusMenu = [
         "upiId": "nutirich@upi",
         "shopkeepername": "Ravi Patel",
         "rating": "4.3",
-        "ratingcount": "360"
+        "ratingcount": "376"
       }
     ],
+    "rating": "4.2",
+    "ratingcount": "340",
     "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
@@ -189,10 +169,12 @@ export const mockCampusMenu = [
         "price": "70",
         "upiId": "nutirich@upi",
         "shopkeepername": "Ravi Patel",
-        "rating": "4.5",
-        "ratingcount": "370"
+        "rating": "4.3",
+        "ratingcount": "376"
       }
     ],
+    "rating": "4.4",
+    "ratingcount": "350",
     "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
@@ -208,10 +190,12 @@ export const mockCampusMenu = [
         "upiId": "jkgrocerystore@upi",
         "shopkeepername": "Jayesh Khanna",
         "rating": "4.1",
-        "ratingcount": "320"
+        "ratingcount": "360"
       }
     ],
-    "menutype": "Food",
+    "rating": "4.2",
+    "ratingcount": "345",
+    "menutype": "Grocery",
     "type": "Veg",
     "featured": "false"
   },
@@ -225,11 +209,13 @@ export const mockCampusMenu = [
         "price": "60",
         "upiId": "jkgrocerystore@upi",
         "shopkeepername": "Jayesh Khanna",
-        "rating": "4.2",
-        "ratingcount": "330"
+        "rating": "4.1",
+        "ratingcount": "360"
       }
     ],
-    "menutype": "Food",
+    "rating": "4.3",
+    "ratingcount": "310",
+    "menutype": "Grocery",
     "type": "Veg",
     "featured": "false"
   },
@@ -242,12 +228,16 @@ export const mockCampusMenu = [
         "restaurant": "JK Grocery Store",
         "price": "120",
         "upiId": "jkgrocerystore@upi",
+
+
         "shopkeepername": "Jayesh Khanna",
-        "rating": "4.3",
-        "ratingcount": "340"
+        "rating": "4.1",
+        "ratingcount": "360"
       }
     ],
-    "menutype": "Food",
+    "rating": "4.3",
+    "ratingcount": "330",
+    "menutype": "Grocery",
     "type": "Veg",
     "featured": "false"
   },
@@ -262,9 +252,11 @@ export const mockCampusMenu = [
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
         "rating": "4.0",
-        "ratingcount": "300"
+        "ratingcount": "345"
       }
     ],
+    "rating": "4.1",
+    "ratingcount": "320",
     "menutype": "Stationery",
     "type": "Veg",
     "featured": "false"
@@ -279,10 +271,12 @@ export const mockCampusMenu = [
         "price": "60",
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
-        "rating": "4.1",
-        "ratingcount": "310"
+        "rating": "4.0",
+        "ratingcount": "345"
       }
     ],
+    "rating": "4.2",
+    "ratingcount": "340",
     "menutype": "Stationery",
     "type": "Veg",
     "featured": "false"
@@ -297,10 +291,12 @@ export const mockCampusMenu = [
         "price": "50",
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
-        "rating": "4.2",
-        "ratingcount": "320"
+        "rating": "4.0",
+        "ratingcount": "345"
       }
     ],
+    "rating": "4.3",
+    "ratingcount": "370",
     "menutype": "Stationery",
     "type": "Veg",
     "featured": "false"
@@ -316,9 +312,11 @@ export const mockCampusMenu = [
         "upiId": "shrisainathcanteen@upi",
         "shopkeepername": "Lakshmi Iyer",
         "rating": "4.3",
-        "ratingcount": "350"
+        "ratingcount": "400"
       }
     ],
+    "rating": "4.2",
+    "ratingcount": "390",
     "menutype": "Food",
     "type": "Veg",
     "featured": "true"
@@ -337,6 +335,8 @@ export const mockCampusMenu = [
         "ratingcount": "360"
       }
     ],
+    "rating": "4.5",
+    "ratingcount": "400",
     "menutype": "Food",
     "type": "Veg",
     "featured": "false"
