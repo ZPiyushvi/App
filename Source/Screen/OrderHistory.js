@@ -1,175 +1,239 @@
-import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react';
-import { View, Text, StyleSheet, Animated, Image, ScrollView, FlatList } from 'react-native';
-const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
+// import { View, Text, Modal, TextInput, TouchableOpacity, Animated, Dimensions } from 'react-native'
+// import React, { useEffect, useRef, useState } from 'react'
+// import Colors from '../Components/Colors';
+// import { Ionicons } from '@expo/vector-icons';
+// import { mockCampusMenu } from "../Data/mockCampusMenu";
+// import SearchBox from "../Components/SearchBox";
+// import Titles from '../Components/Titles';
 
+// export default function OrderHistory() {
+//   const [isFocused, setIsFocused] = useState(false);
+//   const [campusMenu, setCampusMenu] = useState([]);
+//   const [value, setValue] = useState('');
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-const FacebookContent = ({ isReversed, shimmerColors, hasData, hasBorder, randomWidth }) => {
-  // Handle visible
-  const [visible, setVisible] = React.useState(false)
-  const [avatarVisible, setAvatarVisible] = React.useState(false)
-  React.useEffect(() => {
-    setTimeout(() => {
-      hasData && setVisible(true)
-    }, 2000)
-  }, [])
+//   useEffect(() => {
+//     if (!isFocused && value === '') {
+//       Animated.timing(fadeAnim, {
+//         toValue: 1,
+//         duration: 500,
+//         useNativeDriver: true,
+//       }).start();
+//     } else {
+//       Animated.timing(fadeAnim, {
+//         toValue: 0,
+//         duration: 500,
+//         useNativeDriver: true,
+//       }).start();
+//     }
+//   }, [isFocused, value]);
 
-  // Handle animation
-  const avatarRef = React.createRef()
-  const firstLineRef = React.createRef()
-  const secondLineRef = React.createRef()
-  const thirdLineRef = React.createRef()
+//   useEffect(() => {
+//     setCampusMenu(mockCampusMenu.map(item => item.name));
 
-  // React.useEffect(() => {
-  //   const facebookAnimated = Animated.stagger(400, [avatarRef.current.getAnimated(), Animated.parallel([
-  //     firstLineRef.current.getAnimated(),
-  //     secondLineRef.current.getAnimated(),
-  //     thirdLineRef.current.getAnimated()
-  //   ])])
-  //   Animated.loop(facebookAnimated).start();
-  // }, [])
+//     const interval = setInterval(() => {
+//       setCurrentIndex((prevIndex) => (prevIndex + 1) % mockCampusMenu.length);
+//     }, 3000); // Change every 3 seconds (adjust as needed)
 
-  return (
-    <View>
-      <View style={{ flexDirection: "row" }}>
-        <ShimmerPlaceholder
-          width={80} height={80}
-          style={{ marginRight: 10 }}
-          ref={avatarRef}
-          isReversed={isReversed}
-          shimmerColors={shimmerColors}
-          shimmerStyle={[hasBorder && { borderRadius: 40 }]}
-          stopAutoRun
-          visible={avatarVisible}
-        >
-          {hasData && <Image
-            style={{ width: 80, height: 80, borderRadius: 100 }}
-            source={{ uri: 'https://unsplash.it/1000/1000' }}
-            onLoadEnd={() => setAvatarVisible(true)}
-          />}
-        </ShimmerPlaceholder>
-        <View style={{ justifyContent: "space-between" }}>
-          <ShimmerPlaceholder
-            width={randomWidth ? 250 : 200}
-            style={{}}
-            ref={firstLineRef}
-            isReversed={isReversed}
-            shimmerColors={shimmerColors}
-            shimmerStyle={[hasBorder && { borderRadius: 20 }]}
-            stopAutoRun
-            visible={visible}
-          >
-            <Text style={{ flex: 1, flexWrap: 'wrap', width: 200 }}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-             </Text>
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            width={randomWidth ? 150 : 200}
-            ref={secondLineRef}
-            isReversed={isReversed}
-            shimmerColors={shimmerColors}
-            shimmerStyle={[hasBorder && { borderRadius: 20 }]}
-            stopAutoRun
-            visible={visible}
-          />
-          <ShimmerPlaceholder
-            width={200}
-            ref={thirdLineRef}
-            isReversed={isReversed}
-            shimmerColors={shimmerColors}
-            shimmerStyle={[hasBorder && { borderRadius: 20 }]}
-            stopAutoRun
-            visible={visible}
-          />
-        </View>
+//     return () => clearInterval(interval);
+//   }, []);
+
+  // return (
+  //   <Modal
+  //     // visible={visible}
+  //     // onRequestClose={hide_UpModelScreen}
+  //     animationType="fade"
+  //     transparent
+  //   >
+//       <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
+//         <View className=' absolute w-full top-0 p-3 pb-5' style={{ borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+//           <View className='searchBodyContainer flex-row justify-between'>
+//             <View className='searchInputTxt rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, justifyContent: 'center', height: 50 }}>
+//               <Ionicons
+//                 color={Colors.dark.colors.diffrentColorOrange}
+//                 name="search"
+//                 size={24}
+//                 style={styles.icon}
+//               />
+//               <TextInput
+//                 style={[styles.textInput, { numberOfLines: 3, ellipsizeMode: 'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
+//                 onFocus={() => setIsFocused(true)}
+//                 onBlur={() => setIsFocused(false)}
+//                 value={value}
+//                 onChangeText={setValue}
+//                 placeholder={`Search "${campusMenu[currentIndex]}"`}
+//                 placeholderTextColor={Colors.dark.colors.textColor}
+//               />
+//             </View>
+//             <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+//           </View>
+//           <Titles title={"All Restaurants"} width={60} />
+//           <View className=' flex-row items-center justify-center w-full relative pt-6'>
+//             {/* <View style={[styles.line, {width: 60}]} /> */}
+//             <Text className=' uppercase text-base font-bold px-3 tracking-[4]' style={{color: Colors.dark.colors.mainTextColor}}>Populur options</Text>
+//             <View style={[styles.line, {width: 60}]} />
+//         </View>
+//         </View>
+
+//         {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
+//       </View>
+//     </Modal>
+//   )
+// }
+import { useNavigation } from '@react-navigation/native';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
+import { View, Text, Modal, TextInput, TouchableOpacity, Animated, Dimensions, FlatList } from 'react-native'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import Colors from '../Components/Colors';
+import { Ionicons } from '@expo/vector-icons';
+import { mockCampusMenu } from "../Data/mockCampusMenu";
+import SearchBox from "../Components/SearchBox";
+import TitlesLeft from '../Components/TitlesLeft';
+import PopularMenuContainor from "../Components/PopularMenuContainor";
+import { mockCampusShops } from '../Data/mockCampusShops';
+
+export default function OrderHistory() {
+  const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
+  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+  const show_UpModelScreen = () => setVisible(true);
+  const hide_UpModelScreen = () => setVisible(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [campusMenu, setCampusMenu] = useState([]);
+  const [value, setValue] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [campusShops, setCampusShops] = useState();
+
+  const fetchFeatures = async () => {
+    setCampusShops(mockCampusShops)
+    setCampusMenu(mockCampusMenu)
+    // try {
+    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
+    //   if (!response.ok) {
+    //     console.log('Network response was not ok');
+    //   }
+    //   const data = await response.json();
+    //   console.log(data)
+    //   setFeatures(data);
+    //   if (!data) {
+    //     console.log('Failed to parse response as JSON');
+    //   }
+    // } catch (error) {
+    //   console.error("Error loading features:", error);
+    // }
+  };
+  const popularMenu = campusMenu ? campusMenu.filter(item => item.popular === "true") : [];
+
+  useEffect(() => {
+    if (!isFocused && value === '') {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isFocused, value]);
+
+  useEffect(() => {
+    fetchFeatures();
+  }, []);
+
+  useEffect(() => {
+    // setCampusMenu(mockCampusMenu.map(item => item.name));
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % mockCampusMenu.length);
+    }, 3000); // Change every 3 seconds (adjust as needed)
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const render = (data) => (
+    <>
+      <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        {/* <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}> */}
+        <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{data.name}</Text>
+        <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{data.details}</Text>
+        {/* </TouchableOpacity> */}
       </View>
-    </View>
+    </>
   )
+
+  const placeholderText = campusMenu && campusMenu.length > currentIndex
+    ? `Search "${campusMenu[currentIndex].name}"`
+    : 'Search';
+
+    return (
+      <Modal
+        // visible={visible}
+        // onRequestClose={hide_UpModelScreen}
+        animationType="fade"
+        transparent
+      >
+        <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />
+
+          <View className=' absolute w-full top-0 p-3 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+            <View className='searchBodyContainer flex-row justify-between pb-3'>
+              <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
+                <Ionicons
+                  color={Colors.dark.colors.diffrentColorOrange}
+                  name="search"
+                  size={24}
+                  style={styles.icon}
+                />
+                <TextInput
+                  autoFocus={true}
+                  style={[styles.textInput, { numberOfLines: 3, ellipsizeMode: 'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  value={value}
+                  onChangeText={setValue}
+                  placeholder={placeholderText}
+                  placeholderTextColor={Colors.dark.colors.textColor}
+                />
+              </View>
+              <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+            </View>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              keyboardDismissMode='on-drag'
+              data={campusShops}
+              renderItem={({ item }) => render(item)}
+              keyExtractor={(item, index) => index.toString()}
+              ListHeaderComponent={
+                <>
+                  <Text>value: {value}</Text>
+                  <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                  <PopularMenuContainor data={popularMenu} />
+                  <TitlesLeft title="More Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                </>
+              }
+            />
+          </View>
+
+          {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
+        </View>
+      </Modal>
+  );
 }
 
-
-
-export default () => {
-  const [visible, setVisible] = React.useState(false)
-  const [avatarVisible, setAvatarVisible] = React.useState(false)
-  React.useEffect(() => {
-    setTimeout(() => {
-      setVisible(true)
-    }, 2000)
-  }, [])
-  return (
-    <ScrollView style={styles.container} contentInset={{ bottom: 150 }}>
-      <Text style={styles.title}> React Native Shimmer Placeholder </Text>
-      <Text style={styles.sessionTitle}>Simple</Text>
-      <ShimmerPlaceholder
-        shimmerStyle={{ borderRadius: 10 }}
-      />
-      <Text style={styles.sessionTitle}>Avatar</Text>
-      <ShimmerPlaceholder
-        width={150}
-        height={150}
-        shimmerStyle={{ borderRadius: 100 }}
-        visible={avatarVisible}
-      >
-        <Image
-          style={{ width: 150, height: 150, borderRadius: 100 }}
-          source={{ uri: 'https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292' }}
-          onLoadEnd={() => setAvatarVisible(true)}
-        />
-      </ShimmerPlaceholder>
-      <Text style={styles.sessionTitle}>Load text data</Text>
-      <ShimmerPlaceholder
-        shimmerStyle={{ borderRadius: 10 }}
-        visible={visible}
-        width={350}
-      >
-        <Text>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-        </Text>
-      </ShimmerPlaceholder>
-      <ShimmerPlaceholder
-        shimmerStyle={{ borderRadius: 10, marginTop: 2 }}
-        width={150}
-        visible={visible}
-      />
-      <ShimmerPlaceholder
-        shimmerStyle={{ borderRadius: 10, marginTop: 2 }}
-        width={250}
-        visible={visible}
-      />
-      <Text></Text>
-      
-      <Text style={styles.sessionTitle}>Facebook</Text>
-      <FacebookContent randomWidth />
-      <Text style={styles.sessionTitle}>Facebook - color</Text>
-      <FacebookContent shimmerColors={["#FFBDBA", "#FF9C6D", "#FFBDBA"]} />
-      <Text style={styles.sessionTitle}>Facebook - load data</Text>
-      <FacebookContent hasBorder hasData />
-      <Text style={styles.sessionTitle}>Facebook - Reverse</Text>
-      <FacebookContent hasBorder isReversed />
-    </ScrollView>
-
-  )
+const styles = {
+  line: {
+    height: 3,
+    backgroundColor: '#D1D5DB',
+  },
+  icon: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
+  },
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    marginTop: 60,
-
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 12,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  sessionTitle: {
-    fontSize: 16,
-    marginTop: 20,
-    marginBottom: 6,
-    fontWeight: "600"
-  }
-});

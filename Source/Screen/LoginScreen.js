@@ -265,7 +265,7 @@ const LoginScreen = () => {
             <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
           </TouchableOpacity>
           <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>
-          <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
+          <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }} onPress={() => navigation.navigate("HomeScreen")}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}

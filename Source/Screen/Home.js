@@ -5,7 +5,7 @@
 // export default function Home() {
 //   const [loading, setLoading] = useState(false);
 //   const navigation = useNavigation();
-  
+
 //   const navToPage = (page) => {
 //     setLoading(true);
 //     setTimeout(() => {
@@ -73,6 +73,7 @@ import Model from './Model';
 import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
+import UpModelScreen from './UpModelScreen';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -80,7 +81,8 @@ const Home = () => {
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
   const { show, hide, RenderModel } = ModelScreen();
-  // const { show, hide, RenderModel } = Model();
+  const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
+
   const { CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
@@ -207,7 +209,7 @@ const Home = () => {
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
-                <Ionicons onPress={() => {settype('lang'), show()}} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
                 <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
             </View>
@@ -221,7 +223,9 @@ const Home = () => {
             </View>
 
             <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <SearchBox />
+              <TouchableOpacity className='w-[81%]' onPress={() => show_UpModelScreen()}>
+                <SearchBox />
+              </TouchableOpacity>
               <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
             </View>
 
@@ -229,9 +233,8 @@ const Home = () => {
             <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
 
             <Titles title={"What’s on your heart?"} width={30} />
-            
-            <PopularMenuContainor data={popularMenu} />
 
+            <PopularMenuContainor data={popularMenu} />
           </Animated.View>
 
         </View>
@@ -280,7 +283,8 @@ const Home = () => {
           </LinearGradient>
         }
       </View>
-      {RenderModel({type: {type}})}
+      {RenderModel({ type: { type } })}
+      {RenderModel_UpModelScreen()}
     </View>
   );
 };

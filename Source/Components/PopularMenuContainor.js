@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './Colors';
@@ -7,6 +7,8 @@ import TruncatedTextComponent from './TruncatedTextComponent';
 
 const PopularMenuContainer = ({ data }) => {
     const navigation = useNavigation();
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const navToDetails = (item) => {
         navigation.navigate("Details", { data: item });
@@ -25,12 +27,21 @@ const PopularMenuContainer = ({ data }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
+                        onLoadStart={() => setIsLoading(true)}
+                        onLoadEnd={() => setIsLoading(false)}
                         // source={item.image}
                         className=' h-full w-full overflow-hidden'
                         alt="Logo"
                         resizeMode='cover'
                         style={{ flex: 1, justifyContent: 'center', }}
                     >
+                        {isLoading && (
+                            <Image
+                                source={require('./../../assets/favicon.png')}
+                                style={{ flex: 1, justifyContent: 'center' }}
+                                resizeMode='cover'
+                            />
+                        )}
                         <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                             <View className='absolute bottom-1 p-2'>
                                 <Text numberOfLines={1} ellipsizeMode='tail' className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>

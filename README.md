@@ -9,7 +9,7 @@ Fin Education Application React Code.
 Creating a first build for android
 
 1] Install the latest EAS CLI : npm install -g expo-cli // npm i eas-cli // mac : yarn global add eas-cli
-2] Log in to your Expo account : eas login 
+2] Log in to your Expo account : eas login  // eas whoami
 3] Configure the project : eas build:configure
 4] Create apk : eas build --platform android --profile preview
 
