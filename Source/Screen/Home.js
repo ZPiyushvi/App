@@ -56,7 +56,6 @@ import SlideContainor from "../Components/SlideContainor";
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import PopularMenuContainor from "../Components/PopularMenuContainor";
-import Content from "../Components/Content";
 import Titles from "../Components/Titles";
 import Colors from "../Components/Colors";
 import TruncatedTextComponent from "../Components/TruncatedTextComponent";
@@ -74,6 +73,7 @@ import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import UpModelScreen from './UpModelScreen';
+import { ListCard_O, ListCard_S } from '../Components/ListCards';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -246,7 +246,29 @@ const Home = () => {
               <Titles title={"All Restaurants"} width={60} />
             </View>
 
-            <Content data={campusShops} />
+            <View style={styles.renderItem2container}>
+              <View>
+                <FlatList
+                  data={campusShops}
+                  numColumns={2}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
+                  columnWrapperStyle={{
+                    justifyContent: 'space-around'
+                  }}
+                  renderItem={({ item }) => <ListCard_S item={item} />}
+                  keyExtractor={(item, index) => index.toString()}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View>
+
+            {/* < FlatList
+              data={campusShops}
+              renderItem={({ item }) => <ListCard_O item={item} />} // ListCard_O && ListCard_Z
+              keyExtractor={(item, index) => index.toString()}
+              showsHorizontalScrollIndicator={false}
+            /> */}
 
             <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
               <Text

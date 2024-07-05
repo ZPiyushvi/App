@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { View, Text, Modal, TextInput, TouchableOpacity, Animated, Dimensions, FlatList } from 'react-native'
+import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList } from 'react-native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +23,8 @@ export default function ModelScreen() {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [campusShops, setCampusShops] = useState();
 
+    const buffer = 3;
+
     const fetchFeatures = async () => {
         setCampusShops(mockCampusShops)
         setCampusMenu(mockCampusMenu)
@@ -41,7 +43,7 @@ export default function ModelScreen() {
         //   console.error("Error loading features:", error);
         // }
     };
-    const popularMenu = campusMenu ? campusMenu.filter(item => item.popular === "true") : [];
+
 
     useEffect(() => {
         if (!isFocused && value === '') {
@@ -75,11 +77,35 @@ export default function ModelScreen() {
 
     const render = (data) => (
         <>
-            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-                {/* <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}> */}
-                <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{data.name}</Text>
-                <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{data.details}</Text>
-                {/* </TouchableOpacity> */}
+            {/* <View style={{ backgroundColor: Colors.dark.colors }}> */}
+            <View className=' mt-5 rounded-xl' style={styles.popularFeatureBodyContainer}>
+                <View className=' flex-row h-full p-2 items-center'>
+                    <Image
+                        source={{
+                            uri: data.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        className=' h-full w-7/12 rounded-lg'
+                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor, }}
+                        alt="Logo"
+                    />
+                    <View className='flex-1 px-2'>
+                        <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{data.menutype}</Text>
+                        <Text className='font-light text-lg -mt-1' numberOfLines={2} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{data.name}</Text>
+                        <TouchableOpacity
+                            className='justify-center items-center rounded-md mt-2 px-3 py-1'
+                            style={{
+                                backgroundColor: Colors.dark.colors.diffrentColorOrange,
+                                alignSelf: 'flex-start',
+                            }}
+                        >
+                            <Text className='text-base font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Buy now</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
         </>
     )
@@ -87,6 +113,9 @@ export default function ModelScreen() {
     const placeholderText = campusMenu && campusMenu.length > currentIndex
         ? `Search "${campusMenu[currentIndex].name}"`
         : 'Search';
+
+    const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
+    const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
 
     const RenderModel_UpModelScreen = () => (
         <>
@@ -100,8 +129,8 @@ export default function ModelScreen() {
                 <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />
 
-                    <View className=' absolute w-full top-0 p-3 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
-                        <View className='searchBodyContainer flex-row justify-between pb-3'>
+                    <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
                             <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
                                 <Ionicons
                                     color={Colors.dark.colors.diffrentColorOrange}
@@ -122,24 +151,35 @@ export default function ModelScreen() {
                             </View>
                             <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
                         </View>
+
+                        {/* <SlideContainor flatListRef={flatListRef} data={featuredShop//featuredMenu} viewabilityConfig={viewabilityMenuConfig} /> */}
+
+
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardDismissMode='on-drag'
-                            data={campusShops}
-                            renderItem={({ item }) => render(item)}
+                            data={featuredMenu} //featuredMenu featuredShop
+                            renderItem={({ item }) => value.length > buffer ? render(item) : null}
                             keyExtractor={(item, index) => index.toString()}
                             ListHeaderComponent={
                                 <>
-                                    <Text>value: {value}</Text>
-                                    <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
-                                    <PopularMenuContainor data={popularMenu} />
-                                    <TitlesLeft title="More Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                                    <View className=' px-3'>
+                                        <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                                    </View>
+                                    {/* featuredMenu featuredShop */}
+                                    <PopularMenuContainor data={featuredMenu} />
+                                    {
+                                        value.length > buffer ?
+                                            <View className=' px-3'>
+                                                <TitlesLeft title="Search Results" height={2} color={Colors.dark.colors.mainTextColor} />
+                                            </View>
+                                            : null
+                                    }
                                 </>
                             }
                         />
                     </View>
 
-                    {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
                 </View>
             </Modal>
         </>
@@ -154,12 +194,27 @@ const styles = {
         left: 15,
         zIndex: 1,
     },
-    textInput: {
+    popularFeatureBodyContainer: {
+        marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
+        // marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
+        height: Dimensions.get('window').height * 0.18,
+        width: Dimensions.get('window').width * 0.94,
+        backgroundColor: Colors.dark.colors.componentColor, // bg color
+        borderWidth: 2,
+        borderColor: Colors.dark.colors.secComponentColor,
+    },
+    popularFeatureSplitContainer: {
         flex: 1,
-        paddingLeft: 60,
-        fontSize: 16,
-        borderRadius: 15,
-        fontWeight: "600",
-        color: Colors.dark.colors.mainTextColor,
+        height: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    popularFeaturesContent: {
+        // flex: 1,
+        // padding: 7,
+    },
+    text: {
+        margin: 24,
+        fontSize: 60,
     },
 }
