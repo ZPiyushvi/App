@@ -107,7 +107,7 @@ export default function OrderHistory() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [campusShops, setCampusShops] = useState();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const fetchFeatures = async () => {
     setCampusShops(mockCampusShops)
@@ -160,7 +160,7 @@ export default function OrderHistory() {
 
   const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
   const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
-  const buffer = 3;
+  const buffer = 1;
 
   let placeholderText = 'Search';
 
@@ -203,6 +203,17 @@ export default function OrderHistory() {
     );
   }
 
+  const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
+
+  const handleSearch = (text) => {
+    setValue(text);
+    const filtered = selectedIndex === 0
+      ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
+      : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
+    
+    setFilteredData(filtered);
+  };
+
   return (
     <Modal
       // visible={visible}
@@ -228,7 +239,7 @@ export default function OrderHistory() {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 value={value}
-                onChangeText={setValue}
+                onChangeText={handleSearch}
                 placeholder={placeholderText}
                 placeholderTextColor={Colors.dark.colors.textColor}
               />
@@ -242,7 +253,7 @@ export default function OrderHistory() {
           <FlatList
             showsVerticalScrollIndicator={false}
             keyboardDismissMode='on-drag'
-            data={selectedIndex == 0 ? campusMenu : campusShops} //campusShops
+            data={filteredData} //campusShops
             // renderItem={({ item }) => <ListCard_Z item={item} />}
             renderItem={({ item }) => value.length > buffer ? <ListCard_Z item={item} /> : null}
             keyExtractor={(item, index) => index.toString()}

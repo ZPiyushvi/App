@@ -9,7 +9,7 @@ import SearchBox from "../Components/SearchBox";
 import TitlesLeft from '../Components/TitlesLeft';
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { mockCampusShops } from '../Data/mockCampusShops';
-import { ListCard_Z } from '../Components/ListCards';
+import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -24,6 +24,7 @@ export default function ModelScreen() {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [campusShops, setCampusShops] = useState();
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
 
     const fetchFeatures = async () => {
         setCampusShops(mockCampusShops)
@@ -68,16 +69,25 @@ export default function ModelScreen() {
     useEffect(() => {
 
         const interval = setInterval(() => {
-    
-          setCurrentIndex((prevIndex) => (prevIndex + 1));
+
+            setCurrentIndex((prevIndex) => (prevIndex + 1));
         }, 3000); // Change every 3 seconds (adjust as needed)
-    
+
         return () => clearInterval(interval);
-      }, []);
+    }, []);
 
     const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
     const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
-    const buffer = 3;
+    const buffer = 0;
+
+    const handleSearch = (text) => {
+        setValue(text);
+        const filtered = selectedIndex === 0
+            ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
+            : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
+
+        setFilteredData(filtered);
+    };
 
     let placeholderText = 'Search';
 
@@ -97,6 +107,14 @@ export default function ModelScreen() {
         }
     }
 
+    const handleMenuPress = (index) => {
+        setSelectedIndex(index);
+        const filtered = index === 0
+            ? campusMenu.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
+            : campusShops.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+
+        setFilteredData(filtered);
+    };
 
     const renderMenuScroll = ({ item, index }) => {
         const isSelected = selectedIndex === index; // Check if the current item is selected
@@ -106,7 +124,7 @@ export default function ModelScreen() {
                 key={index}
                 // style={{ padding: 12 }}
                 className=' px-4'
-                onPress={() => setSelectedIndex(index)} // Update the selected index on press
+                onPress={() => handleMenuPress(index)} // Update the selected index on press
             >
                 <Text
                     style={{
@@ -147,7 +165,7 @@ export default function ModelScreen() {
                                     onFocus={() => setIsFocused(true)}
                                     onBlur={() => setIsFocused(false)}
                                     value={value}
-                                    onChangeText={setValue}
+                                    onChangeText={handleSearch}
                                     placeholder={placeholderText}
                                     placeholderTextColor={Colors.dark.colors.textColor}
                                 />
@@ -161,9 +179,9 @@ export default function ModelScreen() {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardDismissMode='on-drag'
-                            data={selectedIndex == 0 ? campusMenu : campusShops} //campusShops
+                            data={filteredData} //campusShops
                             // renderItem={({ item }) => <ListCard_Z item={item} />}
-                            renderItem={({ item }) => value.length > buffer ? <ListCard_Z item={item} /> : null}
+                            renderItem={({ item }) => value.length > buffer ? <ListCard_Self2 item={item} hide_Model={hide_UpModelScreen}/> : null}
                             keyExtractor={(item, index) => index.toString()}
                             ListHeaderComponent={
                                 <>

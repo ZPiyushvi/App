@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
@@ -10,7 +10,7 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import LongStarIcon from '../Components/LongStarIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 import useShopStatus from '../Components/useShopStatus';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ModelScreen from './ModelScreen';
 
 import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
@@ -18,6 +18,18 @@ import { loadingScreenTxt } from '../Data/loadingScreenTxt';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
+    useFocusEffect(
+        React.useCallback(() => {
+          const onBackPress = () => {
+            navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
+            return true; // Prevent default behavior
+          };
+    
+          BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    
+          return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        }, [navigation])
+      );
 
     const [data, setData] = useState(null);
 
@@ -49,9 +61,11 @@ const DetailsScreen = ({ route }) => {
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
         // Initialize all dropdowns to be open
-        menuItems.forEach(menu => {
-            initialDropdowns[menu.title] = true;
-        });
+        if (Array.isArray(menuItems)) {
+            menuItems.forEach(menu => {
+                initialDropdowns[menu.title] = true;
+            })
+        };
         // setVisible(true);
         return initialDropdowns;
     });

@@ -172,7 +172,7 @@ const Home = () => {
   };
 
   const featuredData = campusShops ? campusShops.filter(item => item.featured === "true") : [];
-  const popularMenu = campusMenu ? campusMenu.filter(item => item.popular === "true") : [];
+  const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
 
   const viewabilityMenuConfig = {
     itemVisiblePercentThreshold: 50

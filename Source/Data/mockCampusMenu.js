@@ -1,7 +1,7 @@
 export const mockCampusMenu = [
   {
     "name": "Masala Chai",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/02/masala-tea-recipe.jpg",
+    "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292",
     "availability": [
       {
         "location": "Central Plaza",
@@ -20,8 +20,8 @@ export const mockCampusMenu = [
     "featured": "false"
   },
   {
-    "name": "Chole Bhature",
-    "image": "https://www.cookwithmanali.com/wp-content/uploads/2014/01/Chole-Bhature.jpg",
+    "name": "Chold Coffee",
+    "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg",
     "availability": [
       {
         "location": "Central Plaza",
@@ -35,12 +35,12 @@ export const mockCampusMenu = [
     ],
     "rating": "4.1",
     "ratingcount": "401",
-    "menutype": "Food",
+    "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
   },
   {
-    "name": "Samosa",
+    "name": "Cold Coco",
     "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/07/samosa-recipe.jpg",
     "availability": [
       {
@@ -55,13 +55,13 @@ export const mockCampusMenu = [
     ],
     "rating": "4.3",
     "ratingcount": "378",
-    "menutype": "Food",
+    "menutype": "Beverage",
     "type": "Veg",
     "featured": "false"
   },
   {
-    "name": "Chicken Biryani",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/chicken-biryani-recipe.jpg",
+    "name": "Iced Tea",
+    "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
     "availability": [
       {
         "location": "Central Plaza",
@@ -75,13 +75,13 @@ export const mockCampusMenu = [
     ],
     "rating": "4.4",
     "ratingcount": "412",
-    "menutype": "Food",
+    "menutype": "Beverage",
     "type": "NonVeg",
     "featured": "true"
   },
   {
-    "name": "Paneer Butter Masala",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/paneer-butter-masala.jpg",
+    "name": "Chicken Curry",
+    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/09/kolhapuri-chicken-recipe.jpg",
     "availability": [
       {
         "location": "Central Plaza",
@@ -96,12 +96,12 @@ export const mockCampusMenu = [
     "rating": "4.2",
     "ratingcount": "392",
     "menutype": "Food",
-    "type": "Veg",
+    "type": "NonVeg",
     "featured": "true"
   },
   {
-    "name": "Mango Lassi",
-    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/10/mango-lassi-recipe.jpg",
+    "name": "Chicken Rice",
+    "image": "https://www.kannammacooks.com/wp-content/uploads/street-style-chicken-rice-recipe-1-3.jpg",
     "availability": [
       {
         "location": "Central Plaza",
@@ -115,8 +115,8 @@ export const mockCampusMenu = [
     ],
     "rating": "4.3",
     "ratingcount": "388",
-    "menutype": "Beverage",
-    "type": "Veg",
+    "menutype": "Food",
+    "type": "NonVeg",
     "featured": "false"
   },
   {
