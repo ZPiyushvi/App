@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import ModelScreen from '../Screen/ModelScreen';
 import { mockCampusShops } from '../Data/mockCampusShops';
+import { removeStoreFromCart } from './removeStoreFromCart';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
+  const { setCartItems, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const updatedCartWithDetailsLength = updatedCartWithDetails.length;
   const { storeName, storeDetails, items, totalPrice } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
@@ -101,7 +103,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
           <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg' numberOfLines={1} ellipsizeMode='tail'>
             {storeName}
           </Text>
-          <TouchableOpacity onPress={() => navToDetails(mockCampusShops.find(shop => shop.name === storeName))} className=' flex-row items-center'>
+          <TouchableOpacity onPress={() => {navToDetails(mockCampusShops.find(shop => shop.name === storeName))}} className=' flex-row items-center'>
             <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
               View Full Menu
             </Text>
@@ -135,6 +137,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
           </TouchableOpacity>
           <View style={{ width: Dimensions.get('window').width * 0.08 }} className=' items-center justify-center'>
             <TouchableOpacity
+              onPress={() => removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops)}
               className=' rounded-full p-1 items-center justify-center'
               style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
             >

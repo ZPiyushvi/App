@@ -227,7 +227,7 @@ const Home = () => {
                 <SearchBox />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
-              <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
               </TouchableOpacity>
             </View>
 
@@ -265,9 +265,9 @@ const Home = () => {
               </View>
             </View> */}
 
-            < FlatList
+            <FlatList
               data={campusShops}
-              renderItem={({ item }) => <ListCard_Z item={item} />} // ListCard_O && ListCard_Z
+              renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => index.toString()}
               showsHorizontalScrollIndicator={false}
             />

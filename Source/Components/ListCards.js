@@ -39,7 +39,7 @@ const { StarIcon, CarIcon } = Icons();
 const InProgress = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
-        navigation.navigate("Details", { Data: item });
+        navigation.navigate("Details", { Data: item }); 
     };
     return (
         <View className='mb-2 drop-shadow-2xl' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>

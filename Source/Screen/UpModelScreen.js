@@ -15,15 +15,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function ModelScreen() {
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
-    const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const { CartItems, campusMenu, campusShops, updatedCartWithDetails } = useContext(GlobalStateContext);
     const show_UpModelScreen = () => setVisible(true);
     const hide_UpModelScreen = () => setVisible(false);
     const [isFocused, setIsFocused] = useState(false);
-    const [campusMenu, setCampusMenu] = useState([]);
+    // const [campusMenu, setCampusMenu] = useState([]);
     const [value, setValue] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
-    const [campusShops, setCampusShops] = useState();
+    // const [campusShops, setCampusShops] = useState();
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
     const [ShowingOptions, setShowingOptions] = useState(true);
@@ -70,9 +70,9 @@ export default function ModelScreen() {
         }, [navigation])
     );
 
-    const fetchFeatures = async () => {
-        setCampusShops(mockCampusShops)
-        setCampusMenu(mockCampusMenu)
+    // const fetchFeatures = async () => {
+    //     setCampusShops(mockCampusShops)
+    //     setCampusMenu(mockCampusMenu)
         // try {
         //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
         //   if (!response.ok) {
@@ -87,7 +87,7 @@ export default function ModelScreen() {
         // } catch (error) {
         //   console.error("Error loading features:", error);
         // }
-    };
+    // };
 
 
     useEffect(() => {
@@ -106,9 +106,9 @@ export default function ModelScreen() {
         }
     }, [isFocused, value]);
 
-    useEffect(() => {
-        fetchFeatures();
-    }, []);
+    // useEffect(() => {
+    //     fetchFeatures();
+    // }, []);
 
     useEffect(() => {
 

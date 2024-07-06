@@ -54,7 +54,7 @@ export const GlobalStateProvider = ({ children }) => {
 
   useEffect(() => {
     setcampusShops(vegMode ? mockCampusShops.filter(shop => shop.type === "Veg") : mockCampusShops);
-    setcampusMenu(mockCampusMenu);
+    setcampusMenu(vegMode ? mockCampusMenu.filter(shop => shop.type === "Veg") : mockCampusMenu);
   }, [vegMode]);
 
   const updateQuantity = (id, newQuantity) => {
@@ -84,7 +84,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );
