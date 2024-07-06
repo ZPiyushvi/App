@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList, KeyboardAvoidingView, Platform, BackHandler } from 'react-native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import TitlesLeft from '../Components/TitlesLeft';
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { mockCampusShops } from '../Data/mockCampusShops';
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -25,7 +26,49 @@ export default function ModelScreen() {
     const [campusShops, setCampusShops] = useState();
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
-    const [ShowingOptions, setShowingOptions] = useState(false);
+    const [ShowingOptions, setShowingOptions] = useState(true);
+    const [searches, setSearches] = useState({ menu: [], outlet: [] });
+
+    // Load searches from AsyncStorage when the component mounts
+    useEffect(() => {
+        const loadSearches = async () => {
+            try {
+                const savedSearches = await AsyncStorage.getItem('searches');
+                if (savedSearches !== null) {
+                    setSearches(JSON.parse(savedSearches));
+                }
+            } catch (error) {
+                console.error('Failed to load searches from storage:', error);
+            }
+        };
+        loadSearches();
+    }, []);
+
+    // Save searches to AsyncStorage whenever it changes
+    useEffect(() => {
+        const saveSearches = async () => {
+            try {
+                await AsyncStorage.setItem('searches', JSON.stringify(searches));
+            } catch (error) {
+                console.error('Failed to save searches to storage:', error);
+            }
+        };
+        saveSearches();
+    }, [searches]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                handleSearch('')
+                navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
+                return true; // Prevent default behavior
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        }, [navigation])
+    );
 
     const fetchFeatures = async () => {
         setCampusShops(mockCampusShops)
@@ -82,12 +125,12 @@ export default function ModelScreen() {
     const buffer = 0;
 
     const handleSearch = (text) => {
-        if (text == 0) {
-            setShowingOptions(false);
-        }
-        else {
-            setShowingOptions(true);
-        }
+        // if (text == 0) {
+        //     setShowingOptions(false);
+        // }
+        // else {
+        setShowingOptions(true);
+        // }
 
         setValue(text);
         const filtered = selectedIndex === 0
@@ -146,6 +189,22 @@ export default function ModelScreen() {
         );
     }
 
+    const handleYourSerchers = (searchItem) => {
+        const category = selectedIndex === 0 ? 'menu' : 'outlet';
+        if (!searches[category].includes(searchItem)) {
+            const newSearches = [searchItem, ...searches[category]];
+            if (newSearches.length > 3) {
+                newSearches.pop();
+            }
+            setSearches((prevSearches) => ({
+                ...prevSearches,
+                [category]: newSearches,
+            }));
+        }
+    };
+
+    const recentSearches = selectedIndex === 0 ? searches.menu : searches.outlet;
+
     const RenderModel_UpModelScreen = () => (
         <>
             {/* <StatusBar hidden /> */}
@@ -161,7 +220,7 @@ export default function ModelScreen() {
                     <View className={`${value.length > 0 ? 'h-full' : 'absolute'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
                         {/* <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
                         <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
-                            <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
+                            <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[83%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
                                 <Ionicons
                                     color={Colors.dark.colors.diffrentColorOrange}
                                     name="search"
@@ -209,9 +268,19 @@ export default function ModelScreen() {
                                 showsHorizontalScrollIndicator={false}
                             />
                         </View>
-                        <View className=' px-3'>
-                            <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
-                        </View>
+                        {value.length == 0 && (
+                            <View className=' px-3'>
+                                <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
+                                <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
+                                    {recentSearches.map((search, index) => (
+                                        <TouchableOpacity onPress={() => { handleSearch(search), setShowingOptions(false) }} key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                                            <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> {search}  </Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </View>
+                        )}
                         {/* <SlideContainor flatListRef={flatListRef} data={featuredShop//featuredMenu} viewabilityConfig={viewabilityMenuConfig} /> */}
                         {ShowingOptions ? (
                             value.length > 0 && (
@@ -223,7 +292,7 @@ export default function ModelScreen() {
                                         keyboardDismissMode='none'
                                         keyExtractor={(item, index) => index.toString()}
                                         renderItem={({ item }) => (
-                                            <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
+                                            <TouchableOpacity onPress={() => { handleSearch(item.name), handleYourSerchers(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
                                                 <Image
                                                     source={{
                                                         uri: item.image,

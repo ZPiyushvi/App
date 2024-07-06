@@ -232,7 +232,7 @@ export default function OrderHistory() {
       <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
         {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
 
-        <View className=' h-full w-full top-0 pb-5' style={{flex: 1, maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <View className=' h-full w-full top-0 pb-5' style={{ flex: 1, maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
           {/* <View className=' w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
           <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
             <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
@@ -314,6 +314,31 @@ export default function OrderHistory() {
                 <>
                   <View className=' px-3'>
                     <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                  </View>
+                  <View className=' px-3'>
+                    <TitlesLeft title="Your Searchers" height={2} color={Colors.dark.colors.mainTextColor} />
+                  </View>
+                  <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
+                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> Hello  </Text>
+                    </View>
+                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHello  </Text>
+                    </View>
+                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHelloHello  </Text>
+                    </View>
+                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> Hello  </Text>
+                    </View>
+                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHelloHelloHello  </Text>
+                    </View>
                   </View>
                   {/* featuredMenu featuredShop */}
                   <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />

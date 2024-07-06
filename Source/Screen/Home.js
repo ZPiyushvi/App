@@ -223,7 +223,7 @@ const Home = () => {
             </View>
 
             <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <TouchableOpacity className='w-[81%]' onPress={() => show_UpModelScreen()}>
+              <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
                 <SearchBox />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
