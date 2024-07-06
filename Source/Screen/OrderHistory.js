@@ -244,7 +244,7 @@ export default function OrderHistory() {
               />
               <TextInput
                 autoFocus={true}
-                style={[styles.textInput, { numberOfLines: 3, ellipsizeMode: 'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
+                style={[styles.textInput, {backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 value={value}
@@ -284,7 +284,20 @@ export default function OrderHistory() {
                   keyboardDismissMode='none'
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (selectedIndex == 1) {
+                          // console.log('hu');
+                          navigation.navigate("Details", { Data: item });
+                        } else {
+                          handleSearch(item.name);
+                          // handleYourSerchers(item.name);
+                          setShowingOptions(false);
+                        }
+                      }}
+                      key={item.id} className='p-2 mt-3 flex-row items-center'
+                    >
+                      {/* // <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'> */}
                       <Image
                         source={{
                           uri: item.image,
