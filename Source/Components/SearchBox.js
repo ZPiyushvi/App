@@ -46,13 +46,13 @@ const SearchInput = ({ }) => {
         style={styles.icon}
       />
       {!isFocused && (
-        <View style={styles.placeholderContainer}>
-          <Text style={[{ color: Colors.dark.colors.textColor }]}>
+        <View className='w-10/12' style={styles.placeholderContainer}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={[{ color: Colors.dark.colors.textColor}]}>
             Search "{campusMenu.length > 0 ? campusMenu[currentIndex] : ''}"
           </Text>
         </View>
       )}
-      {/* <TextInput
+      {/* <TextInput 
         style={[styles.textInput, { numberOfLines:3, ellipsizeMode:'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

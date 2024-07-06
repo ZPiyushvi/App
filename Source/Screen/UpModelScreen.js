@@ -160,8 +160,9 @@ export default function ModelScreen() {
                                     style={styles.icon}
                                 />
                                 <TextInput
+                                    maxLength={50} ellipsizeMode='middle'
                                     autoFocus={true}
-                                    style={[styles.textInput, { numberOfLines: 3, ellipsizeMode: 'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
+                                    style={[styles.textInput, { backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
                                     onFocus={() => setIsFocused(true)}
                                     onBlur={() => setIsFocused(false)}
                                     value={value}
@@ -169,19 +170,36 @@ export default function ModelScreen() {
                                     placeholder={placeholderText}
                                     placeholderTextColor={Colors.dark.colors.textColor}
                                 />
+                                {value.length > 0 &&
+                                    <View className=' absolute h-full right-3 items-center justify-center'>
+                                        <TouchableOpacity
+                                            onPress={() => handleSearch('')}
+                                            className='rounded-full p-1 items-center justify-center'
+                                            style={{ backgroundColor: Colors.dark.colors.componentColor }}
+                                        >
+                                            <Ionicons
+                                                name="add-outline"
+                                                style={{ transform: [{ rotate: '45deg' }] }}
+                                                size={18}
+                                                color={Colors.dark.colors.mainTextColor}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                }
                             </View>
-                            <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                            <TouchableOpacity onPress={() => {hide_UpModelScreen(), navigation.navigate('YettoUpdate')}}>
+                                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                            </TouchableOpacity>
                         </View>
 
                         {/* <SlideContainor flatListRef={flatListRef} data={featuredShop//featuredMenu} viewabilityConfig={viewabilityMenuConfig} /> */}
-
 
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             keyboardDismissMode='on-drag'
                             data={filteredData} //campusShops
                             // renderItem={({ item }) => <ListCard_Z item={item} />}
-                            renderItem={({ item }) => value.length > buffer ? <ListCard_Self2 item={item} hide_Model={hide_UpModelScreen}/> : null}
+                            renderItem={({ item }) => value.length > buffer ? <ListCard_Self2 item={item} hide_Model={hide_UpModelScreen} /> : null}
                             keyExtractor={(item, index) => index.toString()}
                             ListHeaderComponent={
                                 <>

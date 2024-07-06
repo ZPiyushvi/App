@@ -13,7 +13,7 @@ const Cart = ({ route }) => {
   const navigation = useNavigation();
 
   const renderItem = ({ item, index }) => (
-    <View key={index} className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+    <View key={`${index}-${item.name}`} className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
       <View className='flex-row items-center' >
         {
           item.type &&

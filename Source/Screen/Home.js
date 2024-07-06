@@ -226,7 +226,9 @@ const Home = () => {
               <TouchableOpacity className='w-[81%]' onPress={() => show_UpModelScreen()}>
                 <SearchBox />
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
               <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+              </TouchableOpacity>
             </View>
 
             {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}

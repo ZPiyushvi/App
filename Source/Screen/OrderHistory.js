@@ -210,7 +210,7 @@ export default function OrderHistory() {
     const filtered = selectedIndex === 0
       ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
       : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
-    
+
     setFilteredData(filtered);
   };
 
@@ -243,6 +243,22 @@ export default function OrderHistory() {
                 placeholder={placeholderText}
                 placeholderTextColor={Colors.dark.colors.textColor}
               />
+              { value.length > 0 &&
+                <View className=' absolute h-full right-3 items-center justify-center'>
+                <TouchableOpacity
+                onPress={() => handleSearch('')}
+                  className='rounded-full p-1 items-center justify-center'
+                  style={{ backgroundColor: Colors.dark.colors.componentColor }}
+                >
+                  <Ionicons
+                    name="add-outline"
+                    style={{ transform: [{ rotate: '45deg' }] }}
+                    size={18}
+                    color={Colors.dark.colors.mainTextColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              }
             </View>
             <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
           </View>
@@ -329,5 +345,5 @@ const styles = {
     borderRadius: 15,
     fontWeight: "600",
     color: Colors.dark.colors.mainTextColor,
-},
+  },
 }

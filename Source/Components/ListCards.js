@@ -35,14 +35,14 @@ const { StarIcon, CarIcon } = Icons();
 
 // --------------------------- HOW TO USE ----------------------------- //
 
-const InProgress = ({ item }) => {
+const InProgress = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
         <View className='mb-2 drop-shadow-2xl' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-            <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
+            <TouchableOpacity activeOpacity={1} onPress={() => {hide_Model?.(), navToDetails(item)}}>
                 <View style={styles.foodItemContainer}>
                     <View className=' w-full h-44'>
                         <Image
@@ -88,7 +88,7 @@ const InProgress = ({ item }) => {
     );
 }
 
-export const ListCard_Self1 = ({ item }) => {
+export const ListCard_Self1 = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
@@ -114,7 +114,7 @@ export const ListCard_Self1 = ({ item }) => {
                         <Text className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{item.menutype}</Text>
                         <Text className='font-light text-xl -mt-1' numberOfLines={2} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name}</Text>
                         <TouchableOpacity
-                            onPress={() => navToDetails(item)}
+                            onPress={() => {hide_Model?.(), navToDetails(item)}}
                             className='justify-center items-center rounded-md mt-2 px-3 py-1'
                             style={{
                                 backgroundColor: Colors.dark.colors.diffrentColorOrange,
@@ -136,7 +136,7 @@ export const ListCard_Self2 = ({ item, hide_Model }) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
-        <TouchableOpacity activeOpacity={1} onPress={() => {navToDetails(item), hide_Model?.()}}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {hide_Model?.(), navToDetails(item)}}>
             <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
                 <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
@@ -217,13 +217,13 @@ export const ListCard_Self2 = ({ item, hide_Model }) => {
     );
 }
 
-export const ListCard_Z = ({ item }) => {
+export const ListCard_Z = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
-        <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {hide_Model?.(), navToDetails(item)}}>
             <LinearGradient
                 className='mb-2 drop-shadow-2xl overflow-hidden p-2'
                 colors={[Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor]}
@@ -284,14 +284,14 @@ export const ListCard_Z = ({ item }) => {
     );
 }
 
-export const ListCard_S = ({ item }) => {
+export const ListCard_S = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
         // <Text>{item.type}</Text>
-        <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {hide_Model?.(), navToDetails(item)}}>
             <View style={styles.renderItem2itemContainer}>
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
