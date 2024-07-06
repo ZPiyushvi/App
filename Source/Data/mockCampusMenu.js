@@ -5,10 +5,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "20",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.5",
         "ratingcount": "432"
       }
@@ -25,10 +28,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "120",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.6",
         "ratingcount": "410"
       }
@@ -45,10 +51,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "15",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.7",
         "ratingcount": "489"
       }
@@ -65,10 +74,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "180",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.8",
         "ratingcount": "540"
       }
@@ -84,11 +96,38 @@ export const mockCampusMenu = [
     "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/09/kolhapuri-chicken-recipe.jpg",
     "availability": [
       {
-        "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "location": "Central Plaza1",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "150",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
+        "rating": "4.6",
+        "ratingcount": "475"
+      },
+      {
+        "location": "Central Plaza2",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "150",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
+        "rating": "4.6",
+        "ratingcount": "475"
+      },
+      {
+        "location": "Central Plaza3",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Samyak Juice",
+        "price": "150",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
         "rating": "4.6",
         "ratingcount": "475"
       }
@@ -105,10 +144,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "60",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.5",
         "ratingcount": "430"
       }
@@ -125,10 +167,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "200",
         "upiId": "dawatfoods@upi",
         "shopkeepername": "Mohammed Ali",
+        "image":"",
         "rating": "4.4",
         "ratingcount": "360"
       }
@@ -145,10 +190,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Near the Gym",
-        "restaurant": "Nutirich - The Real Taste",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Nutirich - The Real Taste",
         "price": "50",
         "upiId": "nutirich@upi",
         "shopkeepername": "Ravi Patel",
+        "image":"",
         "rating": "4.3",
         "ratingcount": "376"
       }
@@ -165,10 +213,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Near the Gym",
-        "restaurant": "Nutirich - The Real Taste",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Nutirich - The Real Taste",
         "price": "70",
         "upiId": "nutirich@upi",
         "shopkeepername": "Ravi Patel",
+        "image":"",
         "rating": "4.3",
         "ratingcount": "376"
       }
@@ -185,10 +236,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "100",
         "upiId": "jkgrocerystore@upi",
         "shopkeepername": "Jayesh Khanna",
+        "image":"",
         "rating": "4.1",
         "ratingcount": "360"
       }
@@ -205,10 +259,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "60",
         "upiId": "jkgrocerystore@upi",
         "shopkeepername": "Jayesh Khanna",
+        "image":"",
         "rating": "4.1",
         "ratingcount": "360"
       }
@@ -225,12 +282,15 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "120",
         "upiId": "jkgrocerystore@upi",
 
 
         "shopkeepername": "Jayesh Khanna",
+        "image":"",
         "rating": "4.1",
         "ratingcount": "360"
       }
@@ -247,10 +307,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "5",
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
+        "image":"",
         "rating": "4.0",
         "ratingcount": "345"
       }
@@ -267,10 +330,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "60",
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
+        "image":"",
         "rating": "4.0",
         "ratingcount": "345"
       }
@@ -287,10 +353,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "50",
         "upiId": "krupastore@upi",
         "shopkeepername": "Suresh Kumar",
+        "image":"",
         "rating": "4.0",
         "ratingcount": "345"
       }
@@ -307,10 +376,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Hostel Premises",
-        "restaurant": "Shri Sainath Canteen (A)",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Shri Sainath Canteen (A)",
         "price": "100",
         "upiId": "shrisainathcanteen@upi",
         "shopkeepername": "Lakshmi Iyer",
+        "image":"",
         "rating": "4.3",
         "ratingcount": "400"
       }
@@ -327,10 +399,13 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Hostel Premises",
-        "restaurant": "Shri Sainath Canteen (A)",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Shri Sainath Canteen (A)",
         "price": "80",
         "upiId": "shrisainathcanteen@upi",
         "shopkeepername": "Lakshmi Iyer",
+        "image":"",
         "rating": "4.4",
         "ratingcount": "360"
       }

@@ -9,7 +9,7 @@ import SearchBox from "../Components/SearchBox";
 import TitlesLeft from '../Components/TitlesLeft';
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { mockCampusShops } from '../Data/mockCampusShops';
-import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
+import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ModelScreen() {
@@ -335,7 +335,7 @@ export default function ModelScreen() {
                                     keyboardDismissMode='on-drag'
                                     data={filteredData} //campusShops
                                     // renderItem={({ item }) => <ListCard_Z item={item} />}
-                                    renderItem={({ item }) => value.length > buffer ? <ListCard_Self2 item={item} hide_Model={hide_UpModelScreen} /> : null}
+                                    renderItem={({ item }) => value.length > buffer ? <ListCard_Menu_Self2 item={item} hide_Model={hide_UpModelScreen} /> : null}
                                     keyExtractor={(item, index) => index.toString()}
                                     ListHeaderComponent={
                                         <>

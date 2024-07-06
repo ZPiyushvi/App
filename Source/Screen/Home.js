@@ -73,7 +73,7 @@ import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import UpModelScreen from './UpModelScreen';
-import { ListCard_Self2 } from '../Components/ListCards';
+import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 
 const Home = () => {
   const [userData, setUserData] = useState([]);
@@ -267,7 +267,7 @@ const Home = () => {
 
             < FlatList
               data={campusShops}
-              renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
+              renderItem={({ item }) => <ListCard_Z item={item} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => index.toString()}
               showsHorizontalScrollIndicator={false}
             />
