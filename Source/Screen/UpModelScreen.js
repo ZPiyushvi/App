@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList } from 'react-native'
+import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -156,9 +156,10 @@ export default function ModelScreen() {
                 transparent
             >
                 <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
-                    <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />
+                    {value.length > 0 ? null : <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />}
 
-                    <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                    <View className={`${value.length > 0 ? 'h-full' : 'absolute'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        {/* <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
                         <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
                             <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
                                 <Ionicons
@@ -199,30 +200,46 @@ export default function ModelScreen() {
                                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
                             </TouchableOpacity>
                         </View>
-
+                        <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
+                            <FlatList
+                                data={['Menu', 'Outlets']}
+                                renderItem={({ item, index }) => renderMenuScroll({ item, index })}
+                                keyExtractor={(item, index) => index.toString()}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </View>
+                        <View className=' px-3'>
+                            <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
+                        </View>
                         {/* <SlideContainor flatListRef={flatListRef} data={featuredShop//featuredMenu} viewabilityConfig={viewabilityMenuConfig} /> */}
                         {ShowingOptions ? (
                             value.length > 0 && (
-                                <FlatList
-                                    data={filteredData}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item }) => (
-                                        <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
-                                            <Image
-                                                source={{
-                                                    uri: item.image,
-                                                    method: 'POST',
-                                                    headers: {
-                                                        Pragma: 'no-cache',
-                                                    },
-                                                }}
-                                                className='w-12 h-12 rounded-full mr-2'
-                                                alt="Logo"
-                                            />
-                                            <Text className='text-gray-50 justify-center text-lg font-semibold'>{item.name}</Text>
-                                        </TouchableOpacity>
-                                    )}
-                                />
+                                <KeyboardAvoidingView
+                                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                                    style={{ flex: 1 }}>
+                                    <FlatList
+                                        data={filteredData}
+                                        keyboardDismissMode='none'
+                                        keyExtractor={(item, index) => index.toString()}
+                                        renderItem={({ item }) => (
+                                            <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
+                                                <Image
+                                                    source={{
+                                                        uri: item.image,
+                                                        method: 'POST',
+                                                        headers: {
+                                                            Pragma: 'no-cache',
+                                                        },
+                                                    }}
+                                                    className='w-12 h-12 rounded-full mr-2'
+                                                    alt="Logo"
+                                                />
+                                                <Text className='text-gray-50 justify-center text-lg font-semibold'>{item.name}</Text>
+                                            </TouchableOpacity>
+                                        )}
+                                    />
+                                </KeyboardAvoidingView>
                             )
                         ) : (
                             <FlatList
@@ -253,7 +270,7 @@ export default function ModelScreen() {
 
 
                     </View>
-                    <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
+                    {/* <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
                         <FlatList
                             data={['Menu', 'Outlets']}
                             renderItem={({ item, index }) => renderMenuScroll({ item, index })}
@@ -261,7 +278,7 @@ export default function ModelScreen() {
                             horizontal
                             showsHorizontalScrollIndicator={false}
                         />
-                    </View>
+                    </View> */}
                 </View>
             </Modal>
         </>
