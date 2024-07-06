@@ -109,6 +109,7 @@ export default function OrderHistory() {
   const [campusShops, setCampusShops] = useState();
   const [selectedIndex, setSelectedIndex] = useState(1);
 
+  const [ShowingOptions, setShowingOptions] = useState(false);
   const fetchFeatures = async () => {
     setCampusShops(mockCampusShops)
     setCampusMenu(mockCampusMenu)
@@ -206,6 +207,13 @@ export default function OrderHistory() {
   const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
 
   const handleSearch = (text) => {
+    if (text == 0) {
+      setShowingOptions(false);
+    }
+    else {
+      setShowingOptions(true);
+    }
+
     setValue(text);
     const filtered = selectedIndex === 0
       ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
@@ -243,52 +251,77 @@ export default function OrderHistory() {
                 placeholder={placeholderText}
                 placeholderTextColor={Colors.dark.colors.textColor}
               />
-              { value.length > 0 &&
+              {value.length > 0 &&
                 <View className=' absolute h-full right-3 items-center justify-center'>
-                <TouchableOpacity
-                onPress={() => handleSearch('')}
-                  className='rounded-full p-1 items-center justify-center'
-                  style={{ backgroundColor: Colors.dark.colors.componentColor }}
-                >
-                  <Ionicons
-                    name="add-outline"
-                    style={{ transform: [{ rotate: '45deg' }] }}
-                    size={18}
-                    color={Colors.dark.colors.mainTextColor}
-                  />
-                </TouchableOpacity>
-              </View>
+                  <TouchableOpacity
+                    onPress={() => handleSearch('')}
+                    className='rounded-full p-1 items-center justify-center'
+                    style={{ backgroundColor: Colors.dark.colors.componentColor }}
+                  >
+                    <Ionicons
+                      name="add-outline"
+                      style={{ transform: [{ rotate: '45deg' }] }}
+                      size={18}
+                      color={Colors.dark.colors.mainTextColor}
+                    />
+                  </TouchableOpacity>
+                </View>
               }
             </View>
             <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
           </View>
 
           {/* <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
+          {ShowingOptions ? (
+            value.length > 0 && (
+              <FlatList
+                data={filteredData}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'>
+                    <Image
+                      source={{
+                        uri: item.image,
+                        method: 'POST',
+                        headers: {
+                          Pragma: 'no-cache',
+                        },
+                      }}
+                      className='w-12 h-12 rounded-full mr-2'
+                      alt="Logo"
+                    />
+                    <Text className='text-gray-50 justify-center text-lg font-semibold'>{item.name}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            )
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              keyboardDismissMode='on-drag'
+              data={filteredData} //campusShops
+              // renderItem={({ item }) => <ListCard_Z item={item} />}
+              renderItem={({ item }) => value.length > buffer ? <ListCard_Self2 item={item} hide_Model={hide_UpModelScreen} /> : null}
+              keyExtractor={(item, index) => index.toString()}
+              ListHeaderComponent={
+                <>
+                  <View className=' px-3'>
+                    <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                  </View>
+                  {/* featuredMenu featuredShop */}
+                  <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />
+                  {
+                    value.length > buffer ?
+                      <View className=' px-3'>
+                        <TitlesLeft title="Search Results" height={2} color={Colors.dark.colors.mainTextColor} />
+                      </View>
+                      : null
+                  }
+                </>
+              }
+            />
+          )}
 
-
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            keyboardDismissMode='on-drag'
-            data={filteredData} //campusShops
-            // renderItem={({ item }) => <ListCard_Z item={item} />}
-            renderItem={({ item }) => value.length > buffer ? <ListCard_Z item={item} /> : null}
-            keyExtractor={(item, index) => index.toString()}
-            ListHeaderComponent={
-              <>
-                <View className=' px-3'>
-                  <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
-                </View>
-                <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />
-                {
-                  value.length > buffer ?
-                    <View className=' px-3'>
-                      <TitlesLeft title="Search Results" height={2} color={Colors.dark.colors.mainTextColor} />
-                    </View>
-                    : null
-                }
-              </>
-            }
-          />
         </View>
         <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
           <FlatList
