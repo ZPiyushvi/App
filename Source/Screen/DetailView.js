@@ -43,7 +43,7 @@ export default DetailView = ({ route }) => {
     const text = data?.item;
 
     return (
-        <View className=' w-full h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <View key={`${data?.item}`} className=' w-full h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
             {!visible && <>
                 <View className=' w-full h-full'>
                     <View className='h-96 w-full'>

@@ -91,7 +91,7 @@ export default function AppNavigator() {
                             />
                             <Stack.Screen
                                 name="HomeScreen"
-                                options={{ headerShown: false }}
+                                options={{ headerShown: true }}
                                 component={BottomNavigator}
                             />
                         </>

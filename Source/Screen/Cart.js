@@ -12,7 +12,7 @@ export default function Cart() {
   const navigation = useNavigation();
 
   return (
-    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+    <View key={`${index}-${item.name}`} className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <TouchableOpacity style={{ flex: 1}} />
 
       <View className='p-3 rounded-3xl' style={{ flex: 1, backgroundColor: Colors.dark.colors.backGroundColor }}>

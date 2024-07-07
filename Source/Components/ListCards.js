@@ -39,7 +39,7 @@ const { StarIcon, CarIcon } = Icons();
 const InProgress = ({ item, hide_Model }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
-        navigation.navigate("Details", { Data: item }); 
+        navigation.navigate("Details", { Data: item });
     };
     return (
         <View className='mb-2 drop-shadow-2xl' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
@@ -129,6 +129,70 @@ export const ListCard_Self1 = ({ item, hide_Model }) => {
             </View>
         </>
     )
+}
+
+export const ListCard_Self3 = ({ item, hide_Model }) => {
+    const navigation = useNavigation();
+    const navToDetails = (item) => {
+        navigation.navigate("Details", { Data: item });
+    };
+    return (
+        <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(item) }}>
+            <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+                <LinearGradient
+                    start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
+                    colors={['transparent', Colors.dark.colors.backGroundColor]}
+                    className=' -ml-1 flex-1 flex-row px-3 py-2 items-center'
+                >
+                    <View className=' w-2/5 h-36 rounded-xl overflow-hidden'>
+                        <ImageBackground
+                            // source={require('./../Data/banner.jpg')}
+                            source={{
+                                uri: item.image,
+                                method: 'POST',
+                                headers: {
+                                    Pragma: 'no-cache',
+                                },
+                            }}
+                            className=' w-full h-full mr-2'
+                            alt="Logo"
+                        >
+                            <LinearGradient
+                                start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                                className='overflow-hidden h-full w-full'
+                                colors={['transparent', Colors.dark.colors.backGroundColor]}
+                            ></LinearGradient>
+                        </ImageBackground>
+                    </View>
+                    <View className=' ml-2'>
+                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                            {item.name}
+                        </Text>
+                        <View className='flex-row'>
+                            <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
+                                {StarIcon()}
+                                <Text className=' text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}> {item.rating} ({item.ratingcount}+)</Text>
+                            </View>
+                        </View>
+                        <View className='font-extralight text-sm flex-row items-center' >
+                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text>
+                            <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
+                        </View>
+                        <LinearGradient
+                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
+                            colors={[Colors.dark.colors.backGroundColor, 'transparent']}
+                            className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
+                        >
+                            {CarIcon()}
+                            <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location}</Text>
+                        </LinearGradient>
+                    </View>
+
+                </LinearGradient>
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 export const ListCard_Self2 = ({ item, hide_Model }) => {
@@ -231,7 +295,7 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
                 showsVerticalScrollIndicator={false}
                 keyboardDismissMode='on-drag'
                 data={item.availability} //campusShops
-                renderItem={({ item }) => <ListCard_Z item={item} navigationMenu={true} hide_Model={hide_Model}/>}
+                renderItem={({ item }) => <ListCard_Z item={item} navigationMenu={true} hide_Model={hide_Model} />}
                 // renderItem={({ item }) => {console.log(item.location)}}
                 keyExtractor={(item, index) => index.toString()}
             />

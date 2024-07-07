@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../Screen/Home';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 // import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { Ionicons } from '@expo/vector-icons';
 import Likes from '../Screen/Like';
@@ -60,10 +60,38 @@ export default function BottomNavigator() {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Likes" component={Likes} />
-      <Tab.Screen name="Orders" component={OrderHistory} />
+      <Tab.Screen
+        // options={{
+        //   headerShown: true,
+        //   headerTitle: 'Your Orders',
+        //   headerTitleAlign: 'center',
+        //   headerStyle: {
+        //     backgroundColor: 'black', // Colors.dark.colors.backGroundColor,
+        //   },
+        //   headerTitleStyle: {
+        //     fontWeight: '900',
+        //     fontSize: 24,
+        //   },
+        //   headerTintColor: Colors.dark.colors.diffrentColorOrange, //Colors.dark.colors.mainTextColor,
+        // }}
+        name="Orders"
+        component={OrderHistory}
+      />
     </Tab.Navigator>
   );
 }
+
+const HeaderComponent = () => (
+  <View className=' p-3 pt-8 flex-row items-center w-full justify-between' style={{ backgroundColor: 'black' }}>
+    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
+      <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+    </TouchableOpacity>
+    <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Your Orders</Text>
+    <TouchableOpacity className='p-2'>
+      <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+    </TouchableOpacity>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

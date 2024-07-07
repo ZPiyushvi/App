@@ -13,6 +13,7 @@ export const GlobalStateProvider = ({ children }) => {
   const [campusMenu, setcampusMenu] = useState([]);
   const [quantity, setQuantity] = useState(0);
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
+  const [History, setHistory] = useState([]);
 
   useEffect(() => {
     const getVegData = async () => {
@@ -84,7 +85,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

@@ -1,355 +1,239 @@
-// import { View, Text } from 'react-native'
-// import React from 'react'
+import { View, Text, TouchableOpacity, StatusBar, ImageBackground, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import React, { useContext, useState } from 'react'
+import Colors from '../Components/Colors'
+import { Ionicons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+// import { StatusBar } from 'expo-status-bar'
+import { LinearGradient } from "expo-linear-gradient";
+import Icons from '../Components/Icons'
+import { GlobalStateContext } from '../Context/GlobalStateContext'
+const { StarIcon, CarIcon } = Icons();
 
-// export default function OrderHistory() {
-//   return (
-//     <View>
-//       <Text>OrderHistory</Text>
-//     </View>
-//   )
-// }
-
-
-import { useNavigation } from '@react-navigation/native';
-import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { View, Text, Modal, TextInput, TouchableOpacity, Animated, Dimensions, FlatList, Image, KeyboardAvoidingView, Platform } from 'react-native'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import Colors from '../Components/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import { mockCampusMenu } from "../Data/mockCampusMenu";
-import SearchBox from "../Components/SearchBox";
-import TitlesLeft from '../Components/TitlesLeft';
-import PopularMenuContainor from "../Components/PopularMenuContainor";
-import { mockCampusShops } from '../Data/mockCampusShops';
-import SlideContainor from '../Components/SlideContainor';
-import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/ListCards';
-
-export default function OrderHistory() {
+const ListCard_Self1 = ({ item, onShowDetails }) => {
   const navigation = useNavigation();
-  const [visible, setVisible] = useState(false);
-  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
-  const show_UpModelScreen = () => setVisible(true);
-  const hide_UpModelScreen = () => setVisible(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [campusMenu, setCampusMenu] = useState([]);
-  const [value, setValue] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [campusShops, setCampusShops] = useState();
-  const [selectedIndex, setSelectedIndex] = useState(1);
-
-  const [ShowingOptions, setShowingOptions] = useState(false);
-  const fetchFeatures = async () => {
-    setCampusShops(mockCampusShops)
-    setCampusMenu(mockCampusMenu)
-    // try {
-    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-    //   if (!response.ok) {
-    //     console.log('Network response was not ok');
-    //   }
-    //   const data = await response.json();
-    //   console.log(data)
-    //   setFeatures(data);
-    //   if (!data) {
-    //     console.log('Failed to parse response as JSON');
-    //   }
-    // } catch (error) {
-    //   console.error("Error loading features:", error);
-    // }
+  const navToDetails = (item) => {
+    navigation.navigate("Details", { Data: item });
   };
-
-  useEffect(() => {
-    if (!isFocused && value === '') {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [isFocused, value]);
-
-  useEffect(() => {
-    fetchFeatures();
-  }, []);
-
-  useEffect(() => {
-
-    const interval = setInterval(() => {
-
-      setCurrentIndex((prevIndex) => (prevIndex + 1));
-    }, 3000); // Change every 3 seconds (adjust as needed)
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
-  const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
-  const buffer = 1;
-
-  let placeholderText = 'Search';
-
-  if (selectedIndex === 0) {
-    if (campusMenu && campusMenu.length > currentIndex) {
-      if (currentIndex + 1 === campusMenu.length) {
-        setCurrentIndex(0);
-      }
-      placeholderText = `Search "${campusMenu[currentIndex].name}"`;
-    }
-  } else {
-    if (campusShops && campusShops.length > currentIndex) {
-      if (currentIndex + 1 === campusShops.length) {
-        setCurrentIndex(0);
-      }
-      placeholderText = `Search "${campusShops[currentIndex].name}"`;
-    }
-  }
-
-
-  const renderMenuScroll = ({ item, index }) => {
-    const isSelected = selectedIndex === index; // Check if the current item is selected
-
-    return (
-      <TouchableOpacity
-        key={index}
-        // style={{ padding: 12 }}
-        className=' px-4'
-        onPress={() => setSelectedIndex(index)} // Update the selected index on press
-      >
-        <Text
-          style={{
-            color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
-          }}
-          className='text-lg font-semibold'
-        >
-          {item}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-
-  const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
-
-  const handleSearch = (text) => {
-    if (text == 0) {
-      setShowingOptions(false);
-    }
-    else {
-      setShowingOptions(true);
-    }
-
-    setValue(text);
-    const filtered = selectedIndex === 0
-      ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
-      : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
-
-    setFilteredData(filtered);
-  };
-
   return (
-    <Modal
-      // visible={visible}
-      // onRequestClose={hide_UpModelScreen}
-      animationType="fade"
-      transparent
-    >
-      <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
-        {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
-
-        <View className=' h-full w-full top-0 pb-5' style={{ flex: 1, maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
-          {/* <View className=' w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
-          <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
-            <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[81%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
-              <Ionicons
-                color={Colors.dark.colors.diffrentColorOrange}
-                name="search"
-                size={24}
-                style={styles.icon}
+    <TouchableOpacity activeOpacity={1}>
+      <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+        <LinearGradient
+          start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
+          colors={['transparent', Colors.dark.colors.backGroundColor]}
+          className=' -ml-1 flex-1 flex-row px-3 py-2 items-center'
+        >
+          <View className=' w-2/5 h-32 rounded-xl overflow-hidden'>
+            <ImageBackground
+              // source={require('./../Data/banner.jpg')}
+              source={{
+                uri: item.storeDetails.image,
+                method: 'POST',
+                headers: {
+                  Pragma: 'no-cache',
+                },
+              }}
+              className=' w-full h-full mr-2'
+              alt="Logo"
+            >
+              <LinearGradient
+                start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                className='overflow-hidden h-full w-full'
+                colors={['transparent', Colors.dark.colors.backGroundColor]}
               />
-              <TextInput
-                autoFocus={true}
-                style={[styles.textInput, { backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                value={value}
-                onChangeText={handleSearch}
-                placeholder={placeholderText}
-                placeholderTextColor={Colors.dark.colors.textColor}
-              />
-              {value.length > 0 &&
-                <View className=' absolute h-full right-3 items-center justify-center'>
-                  <TouchableOpacity
-                    onPress={() => handleSearch('')}
-                    className='rounded-full p-1 items-center justify-center'
-                    style={{ backgroundColor: Colors.dark.colors.componentColor }}
-                  >
-                    <Ionicons
-                      name="add-outline"
-                      style={{ transform: [{ rotate: '45deg' }] }}
-                      size={18}
-                      color={Colors.dark.colors.mainTextColor}
-                    />
-                  </TouchableOpacity>
-                </View>
-              }
-            </View>
-            <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+            </ImageBackground>
           </View>
-          {/* </View> */}
+          <View className=' ml-2'>
+            <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+              {item.storeDetails.name}
+            </Text>
+            <View className='flex-row items-center' >
+              <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
+              {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+              <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm'>{item.storeDetails.menutype}</Text> */}
+              <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+              <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm'>{item.storeDetails.location}</Text>
+            </View>
+            <View className='flex-row py-2'>
+              <View className=' px-4 rounded-md bg-black' style={{ paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
+                <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}>
+                  <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
+                    {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
+                  </Text>
+                </Text>
+              </View>
 
-          {/* <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
-          {ShowingOptions ? (
-            value.length > 0 && (
-              <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{ flex: 1 }}>
-                <FlatList
-                  data={filteredData}
-                  keyboardDismissMode='none'
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (selectedIndex == 1) {
-                          // console.log('hu');
-                          navigation.navigate("Details", { Data: item });
-                        } else {
-                          handleSearch(item.name);
-                          // handleYourSerchers(item.name);
-                          setShowingOptions(false);
-                        }
-                      }}
-                      key={item.id} className='p-2 mt-3 flex-row items-center'
-                    >
-                      {/* // <TouchableOpacity onPress={() => { handleSearch(item.name), setShowingOptions(false) }} key={item.id} className='p-2 mt-3 flex-row items-center'> */}
-                      <Image
-                        source={{
-                          uri: item.image,
-                          method: 'POST',
-                          headers: {
-                            Pragma: 'no-cache',
-                          },
-                        }}
-                        className='w-12 h-12 rounded-full mr-2'
-                        alt="Logo"
-                      />
-                      <Text className='text-gray-50 justify-center text-lg font-semibold'>{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </KeyboardAvoidingView>
-            )
-          ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              keyboardDismissMode='on-drag'
-              data={filteredData} //campusShops
-              // renderItem={({ item }) => <ListCard_Z item={item} />}
-              renderItem={({ item }) => value.length > buffer ? <ListCard_Menu_Self2 item={item} hide_Model={hide_UpModelScreen} /> : null}
-              keyExtractor={(item, index) => index.toString()}
-              ListHeaderComponent={
-                <>
-                  <View className=' px-3'>
-                    <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
-                  </View>
-                  <View className=' px-3'>
-                    <TitlesLeft title="Your Searchers" height={2} color={Colors.dark.colors.mainTextColor} />
-                  </View>
-                  <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
-                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> Hello  </Text>
-                    </View>
-                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHello  </Text>
-                    </View>
-                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHelloHello  </Text>
-                    </View>
-                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> Hello  </Text>
-                    </View>
-                    <View className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                      <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                      <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> HelloHelloHelloHelloHello  </Text>
-                    </View>
-                  </View>
-                  {/* featuredMenu featuredShop */}
-                  <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />
-                  {
-                    value.length > buffer ?
-                      <View className=' px-3'>
-                        <TitlesLeft title="Search Results" height={2} color={Colors.dark.colors.mainTextColor} />
-                      </View>
-                      : null
-                  }
-                </>
-              }
-            />
-          )}
-        </View>
-        <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
-          <FlatList
-            data={['Menu', 'Outlets']}
-            renderItem={({ item, index }) => renderMenuScroll({ item, index })}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} /> */}
+              <View className='flex-row ml-2 items-center'>
+                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹</Text>
+                <Text className='font-light text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> {item.totalPrice}</Text>
+              </View>
+            </View>
+          </View>
+        </LinearGradient>
+
+        <TouchableOpacity className=' items-center justify-center' onPress={onShowDetails}>
+          <Ionicons name="chevron-forward-outline" size={28} color={Colors.dark.colors.textColor} />
+        </TouchableOpacity>
+
       </View>
-    </Modal>
+    </TouchableOpacity>
   );
 }
 
-const styles = {
-  line: {
-    height: 3,
-    backgroundColor: '#D1D5DB',
-  },
-  icon: {
-    position: 'absolute',
-    left: 15,
-    zIndex: 1,
-  },
-  popularFeatureBodyContainer: {
-    marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
-    // marginTop: Dimensions.get('window').height * 0.04, // should be applyed to all fixed items
-    height: Dimensions.get('window').height * 0.18,
-    width: Dimensions.get('window').width * 0.94,
-    backgroundColor: Colors.dark.colors.componentColor, // bg color
-    borderWidth: 2,
-    borderColor: Colors.dark.colors.secComponentColor,
-  },
-  popularFeatureSplitContainer: {
-    flex: 1,
-    height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  popularFeaturesContent: {
-    // flex: 1,
-    // padding: 7,
-  },
-  text: {
-    margin: 24,
-    fontSize: 60,
-  },
-  textInput: {
-    flex: 1,
-    paddingLeft: 60,
-    fontSize: 16,
-    borderRadius: 15,
-    fontWeight: "600",
-    color: Colors.dark.colors.mainTextColor,
-  },
+const ListCard_Self2 = ({ item }) => {
+  const navigation = useNavigation();
+  const navToDetails = (item) => {
+    navigation.navigate("Details", { Data: item });
+  };
+  return (
+    <TouchableOpacity activeOpacity={1}>
+      <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+        <LinearGradient
+          start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
+          colors={['transparent', Colors.dark.colors.backGroundColor]}
+          className=' -ml-1 flex-1'
+        >
+          <View className='p-3 flex-row'>
+            <View className=' w-14 h-14 rounded-xl overflow-hidden'>
+              <ImageBackground
+                source={{
+                  uri: item.storeDetails.image, //"https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", // item.image,
+                  method: 'POST',
+                  headers: {
+                    Pragma: 'no-cache',
+                  },
+                }}
+                className=' w-full h-full mr-2'
+                alt="Logo"
+              >
+                {/* <LinearGradient
+                start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                className='overflow-hidden h-full w-full'
+                colors={['transparent', Colors.dark.colors.backGroundColor]}
+              ></LinearGradient> */}
+              </ImageBackground>
+            </View>
+            <View className=' flex-row ml-2'>
+              <View >
+                <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                  {item.storeDetails.name}
+                </Text>
+                <View className='flex-row items-center' >
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
+                  <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm'>{item.storeDetails.menutype}</Text>
+                  <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                  <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm'>{item.storeDetails.location}</Text>
+                </View>
+              </View>
+            </View>
+            <View className=' absolute right-0 flex-row m-3 items-center'>
+              <Text className='font-black text-2xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹</Text>
+              <Text className='font-black text-2xl' style={{ color: Colors.dark.colors.mainTextColor }}> {item.totalPrice}</Text>
+            </View>
+          </View>
+          {item.items.map((cartItem, index) => (
+            <TouchableOpacity key={index}>
+              <View className='px-3 flex-row justify-between items-center'>
+                <View className='flex-row py-2'>
+                  <View className=' w-14 h-12 rounded-l-xl overflow-hidden'>
+                    <ImageBackground
+                      source={{
+                        uri: cartItem.image, // item.image,
+                        method: 'POST',
+                        headers: {
+                          Pragma: 'no-cache',
+                        },
+                      }}
+                      className=' w-full h-full mr-2'
+                      alt="Logo"
+                    >
+                      {/* <LinearGradient
+                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                    className='overflow-hidden h-full w-full'
+                    colors={['transparent', 'black']}
+                  /> */}
+                    </ImageBackground>
+                  </View>
+                  <View className=' bg-black w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
+                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹</Text>
+                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>  {cartItem.price}</Text>
+                  </View>
+                </View>
+                <View className='h-14 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
+                  <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>X</Text>
+                  <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>  {cartItem.quantity}</Text>
+                </View>
+                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>{cartItem.price * cartItem.quantity}</Text>
+              </View>
+              {console.log(cartItem)}
+            </TouchableOpacity>
+          ))}
+
+        </LinearGradient>
+      </View>
+    </TouchableOpacity>
+  );
 }
+
+
+export default function OrderHistory() {
+  const navigation = useNavigation();
+  const { History, setHistory } = useContext(GlobalStateContext);
+  const totalHistoryPrice = History.reduce((sum, item) => sum + parseFloat(item?.totalPrice), 0);
+  const [showDetails, setShowDetails] = useState(null);
+  const handleShowDetails = (index) => {
+    setShowDetails(showDetails === index ? null : index);
+  };
+
+  return (
+    <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+      <StatusBar backgroundColor='black' />
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View className='py-4 px-4 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+          </TouchableOpacity>
+          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Your Orders</Text>
+          <TouchableOpacity>
+            <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+          </TouchableOpacity>
+        </View>
+
+        <View className='my-6 px-4'>
+          <View className='flex-row justify-between -mb-2'>
+            <View>
+              <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
+              <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>20th March 16:21</Text>
+            </View>
+            <View className='items-end'>
+              <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
+              <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {totalHistoryPrice}</Text>
+            </View>
+          </View>
+          <View>
+            {History.map((item, index) =>
+            (
+              <View key={index}>
+                <ListCard_Self1 item={item} onShowDetails={() => handleShowDetails(index)} />
+                {showDetails === index && <ListCard_Self2 item={item} />}
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  foodItemCollectionContainer: {
+    marginTop: Dimensions.get('window').height * 0.02,
+    gap: Dimensions.get('window').width * 0.04,
+    borderRadius: 18,
+  },
+  shadowProp: {
+    backgroundColor: 'rgba(180, 180, 180, 0.1)',
+    elevation: 30,
+  },
+})
