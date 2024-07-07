@@ -61,19 +61,22 @@ export default function BottomNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Likes" component={Likes} />
       <Tab.Screen
-        // options={{
-        //   headerShown: true,
-        //   headerTitle: 'Your Orders',
-        //   headerTitleAlign: 'center',
-        //   headerStyle: {
-        //     backgroundColor: 'black', // Colors.dark.colors.backGroundColor,
-        //   },
-        //   headerTitleStyle: {
-        //     fontWeight: '900',
-        //     fontSize: 24,
-        //   },
-        //   headerTintColor: Colors.dark.colors.diffrentColorOrange, //Colors.dark.colors.mainTextColor,
-        // }}
+        options={{
+          headerLeft: () => <View className='px-4'><Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
+          headerRight: () => <View className='px-4'><Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
+          headerShown: true,
+          headerTitle: 'Your Orders',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            height: 65,
+            backgroundColor: Colors.dark.colors.backGroundColor, //'black'
+          },
+          headerTitleStyle: {
+            fontWeight: '900',
+            fontSize: 24,
+          },
+          headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
+        }}
         name="Orders"
         component={OrderHistory}
       />

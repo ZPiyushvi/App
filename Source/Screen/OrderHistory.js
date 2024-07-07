@@ -223,16 +223,16 @@ const ListCard_Self1 = ({ item }) => {
                   colors={['transparent', Colors.dark.colors.backGroundColor]}
                 />
                 <View className='absolute bottom-2 right-2'>
-                <View className='flex-row justify-center items-center'>
-                  {
-                    item.storeDetails.type === "Veg" &&
-                    <>
-                      <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
-                      <Ionicons name="leaf" size={16} color={'#00e676'} />
-                    </>
-                  }
+                  <View className='flex-row justify-center items-center'>
+                    {
+                      item.storeDetails.type === "Veg" &&
+                      <>
+                        <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
+                        <Ionicons name="leaf" size={16} color={'#00e676'} />
+                      </>
+                    }
+                  </View>
                 </View>
-              </View>
               </ImageBackground>
             </View>
             <View className=' ml-2'>
@@ -242,7 +242,7 @@ const ListCard_Self1 = ({ item }) => {
               <View className='flex-row items-center' >
                 {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-              <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm'>{item.storeDetails.menutype}</Text>
+                <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm'>{item.storeDetails.menutype}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
                 <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm'>{item.storeDetails.location}</Text>
               </View>
@@ -324,49 +324,63 @@ export default function OrderHistory() {
   const handleShowDetails = (index) => {
     setShowDetails(showDetails === index ? null : index);
   };
-
+  const groupOrdersByDate = (orders) => {
+    const groupedOrders = orders.reduce((acc, order) => {
+      const { date, totalPrice } = order;
+      if (!acc[date]) {
+        acc[date] = { total: 0, orders: [] };
+      }
+      acc[date].total += totalPrice;
+      acc[date].orders.push(order);
+      return acc;
+    }, {});
+    
+    return Object.keys(groupedOrders).map(date => ({
+      date,
+      total: groupedOrders[date].total,
+      orders: groupedOrders[date].orders
+    }));
+  };
+  const groupedHistory = groupOrdersByDate(History);
+  
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor='black' />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View className='py-4 px-4 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-          </TouchableOpacity>
-          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Your Orders</Text>
-          <TouchableOpacity>
-            <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-          </TouchableOpacity>
-        </View>
-
-        <View className='my-6 px-4'>
-          <View className='flex-row justify-between -mb-2'>
-            <View>
-              <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
-              <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>20th March 16:21</Text>
-            </View>
-            <View className='items-end'>
-              <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>
-              <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {totalHistoryPrice}</Text>
-            </View>
-          </View>
-          <View>
-            {History.map((item, index) => (
-              <View key={index}>
-                <ListCard_Self1 item={item} />
+        <View >
+          {groupedHistory.map((group, index) => (
+            <View className='my-6 px-4' key={index}>
+              <View className='flex-row justify-between -mb-2'>
+                <View>
+                  <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
+                  <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{group.date}</Text>
+                </View>
+                <View className='items-end'>
+                  <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>
+                  <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {group.total}</Text>
+                </View>
               </View>
-            ))}
-            {/* {History.map((item, index) => (
+
+              <View>
+                {group.orders.map((order, index) => (
+                  <View key={index}>
+                    <ListCard_Self1 item={order} />
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))}
+        </View>
+        {/* {History.map((item, index) => (
               <View key={index}>
                 <ListCard_Self2 item={item} onShowDetails={() => handleShowDetails(index)} showDetails={showDetails === index} />
                 {showDetails === index && <ListCard_Self3 item={item} />}
               </View>
             ))} */}
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+
+      </ScrollView >
+    </View >
   )
 }
 

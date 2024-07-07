@@ -13,6 +13,29 @@ const Cart = ({ route }) => {
   const { storeName, items, totalPrice, storeDetails } = route.params;
   const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
+  const today = new Date();
+  const formattedDate = getFormattedDate(today);
+
+  function getFormattedDate(dateObj) {
+    const day = dateObj.getDate();
+    const month = dateObj.toLocaleString('default', { month: 'long' });
+    const year = dateObj.getFullYear();
+
+    // Function to add ordinal suffix to day
+    function ordinalSuffix(day) {
+      if (day > 3 && day < 21) return `${day}th`;
+      switch (day % 10) {
+        case 1: return `${day}st`;
+        case 2: return `${day}nd`;
+        case 3: return `${day}rd`;
+        default: return `${day}th`;
+      }
+    }
+
+    const formattedDate = `${ordinalSuffix(day)} ${month} ${year}`;
+    return formattedDate;
+  }
+
   // console.log(storeName, items, totalPrice, storeDetails)
   const navigation = useNavigation();
 
@@ -216,7 +239,7 @@ const Cart = ({ route }) => {
           <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
         <TouchableOpacity
-          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [...prevHistory, { items: items, storeDetails: storeDetails, totalPrice: totalPrice }]), navigation.navigate("HomeScreen") }}
+          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [...prevHistory, { items: items, storeDetails: storeDetails, totalPrice: totalPrice, date: formattedDate }]), navigation.navigate("HomeScreen") }}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>
