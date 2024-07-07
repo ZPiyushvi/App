@@ -30,21 +30,23 @@ const PopularMenuContainer = ({ data }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            onLoadStart={() => setIsLoading(true)}
-                            onLoadEnd={() => setIsLoading(false)}
+                            defaultSource={require('./../../assets/favicon.png')}
+                            // onLoadStart={() => setIsLoading(true)}
+                            // onLoadEnd={() => setIsLoading(false)}
                             // source={item.image}
                             className=' h-full w-full overflow-hidden'
                             alt="Logo"
                             resizeMode='cover'
                             style={{ flex: 1, justifyContent: 'center', }}
                         >
-                            {isLoading && (
+                            {/* {isLoading && (
                                 <Image
                                     source={require('./../../assets/favicon.png')}
                                     style={{ flex: 1, justifyContent: 'center' }}
                                     resizeMode='cover'
+                                    defaultSource={require('./../../assets/favicon.png')}
                                 />
-                            )}
+                            )} */}
                             <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                                 <View className='absolute bottom-1 p-2'>
                                     <Text numberOfLines={1} ellipsizeMode='tail' className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>

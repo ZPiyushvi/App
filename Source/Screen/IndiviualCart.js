@@ -104,6 +104,7 @@ const Cart = ({ route }) => {
                 Pragma: 'no-cache',
               },
             }}
+            defaultSource={require('./../../assets/favicon.png')}
             resizeMode="cover"
             alt="Logo"
             className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'

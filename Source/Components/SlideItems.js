@@ -17,6 +17,7 @@ const SlideItems = ({ item }) => {
                             Pragma: 'no-cache',
                         },
                     }}
+                    defaultSource={require('./../../assets/favicon.png')}
                     style={styles.popularFeatureImage}
                     alt="Logo"
                 />

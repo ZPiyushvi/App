@@ -46,6 +46,7 @@ const App = ({ flatListRef, data, viewabilityConfig }) => {
                                             Pragma: 'no-cache',
                                         },
                                     }}
+                                    defaultSource={require('./../../assets/favicon.png')}
                                     style={styles.card}
                                     >
                                     <View style={styles.textContainer}>

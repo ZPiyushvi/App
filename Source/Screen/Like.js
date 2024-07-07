@@ -31,6 +31,7 @@ export default function Like() {
               Pragma: 'no-cache',
             },
           }}
+          defaultSource={require('./../../assets/favicon.png')}
           alt="Logo"
           className='h-full overflow-hidden'
           style={{ borderBottomRightRadius: 100 }}

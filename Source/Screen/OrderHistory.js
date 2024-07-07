@@ -33,6 +33,7 @@ const ListCard_Self2 = ({ item, onShowDetails, showDetails }) => {
                   Pragma: 'no-cache',
                 },
               }}
+              defaultSource={require('./../../assets/favicon.png')}
               className=' w-full h-full mr-2'
               alt="Logo"
             >
@@ -115,6 +116,7 @@ const ListCard_Self3 = ({ item }) => {
                     Pragma: 'no-cache',
                   },
                 }}
+                defaultSource={require('./../../assets/favicon.png')}
                 className=' w-full h-full mr-2'
                 alt="Logo"
               >
@@ -150,6 +152,7 @@ const ListCard_Self3 = ({ item }) => {
                 <View className='flex-row py-2'>
                   <View className=' w-14 h-12 rounded-l-xl overflow-hidden'>
                     <ImageBackground
+
                       source={{
                         uri: cartItem.image, // item.image,
                         method: 'POST',
@@ -157,6 +160,7 @@ const ListCard_Self3 = ({ item }) => {
                           Pragma: 'no-cache',
                         },
                       }}
+                      defaultSource={require('./../../assets/favicon.png')}
                       className=' w-full h-full mr-2'
                       alt="Logo"
                     >
@@ -214,6 +218,7 @@ const ListCard_Self1 = ({ item }) => {
                     Pragma: 'no-cache',
                   },
                 }}
+                defaultSource={require('./../../assets/favicon.png')}
                 className=' w-full h-full mr-2'
                 alt="Logo"
               >

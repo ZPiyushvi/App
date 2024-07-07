@@ -71,6 +71,7 @@ const PopUp = () => {
                                         Pragma: 'no-cache',
                                     },
                                 }}
+                                defaultSource={require('./../../assets/favicon.png')}
                                 className=' h-full w-full'
                                 // style={styles.popularFeatureImage}
                                 alt="Logo"

@@ -54,6 +54,7 @@ const InProgress = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
+                            defaultSource={require('./../../assets/favicon.png')}
                             className=' w-full h-44'
                             alt="Logo"
                         />
@@ -107,6 +108,7 @@ export const ListCard_Self1 = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
+                        defaultSource={require('./../../assets/favicon.png')}
                         className=' h-full w-7/12 rounded-xl'
                         style={{ borderWidth: 2, borderColor: Colors.dark.colors.backGroundColor }}
                         alt="Logo"
@@ -154,6 +156,7 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
+                            defaultSource={require('./../../assets/favicon.png')}
                             className=' w-full h-full mr-2'
                             alt="Logo"
                         >
@@ -213,6 +216,7 @@ export const ListCard_Self2 = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
+                            defaultSource={require('./../../assets/favicon.png')}
                             className=' h-full w-full overflow-hidden'
                             alt="Logo"
                             resizeMode='cover'
@@ -394,6 +398,7 @@ export const ListCard_S = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
+                        defaultSource={require('./../../assets/favicon.png')}
                         style={styles.CardImageBG}
                         resizeMode="cover">
                         <View style={styles.CardRatingContainer}>

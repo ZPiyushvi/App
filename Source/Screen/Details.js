@@ -433,6 +433,7 @@ const DetailsScreen = ({ route }) => {
                             <View>
                                 <Image
                                     source={require("./../Data/fssai.png")}
+                                    defaultSource={require('./../../assets/favicon.png')}
                                     className='w-14 h-11'
                                     alt="Logo"
                                 />

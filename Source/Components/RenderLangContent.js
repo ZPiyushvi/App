@@ -15,6 +15,7 @@ const LangContent = ({ item, selected, setSelected }) => (
       className={`absolute right-0 mr-2 ${item.style}`}
       style={[{ position: 'absolute', right: 0, marginRight: 8 }, selected === item.name ? null : { tintColor: '#000000' }, item.style]}
       alt="Logo"
+      defaultSource={require('./../../assets/favicon.png')}
     />
     <Text className="font-black text-xl" style={{ color: selected === item.name ? Colors.dark.colors.backGroundColor : Colors.dark.colors.mainTextColor }}>
       {` ${item.name}`}

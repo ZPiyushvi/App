@@ -40,6 +40,7 @@ export default function Cart() {
                       Pragma: 'no-cache',
                     },
                   }}
+                  defaultSource={require('./../../assets/favicon.png')}
                   className=' w-12 h-12 rounded-full mr-2'
                   alt="Logo"
                 />
