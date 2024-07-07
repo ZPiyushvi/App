@@ -20,16 +20,16 @@ const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 const DetailsScreen = ({ route }) => {
     useFocusEffect(
         React.useCallback(() => {
-          const onBackPress = () => {
-            navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
-            return true; // Prevent default behavior
-          };
-    
-          BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    
-          return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            const onBackPress = () => {
+                navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
+                return true; // Prevent default behavior
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
         }, [navigation])
-      );
+    );
 
     const [data, setData] = useState(null);
 
@@ -70,7 +70,7 @@ const DetailsScreen = ({ route }) => {
         return initialDropdowns;
     });
 
-    const { Openmodal, setOpenmodal, renderModal } = PopUp();
+    // const { Openmodal, setOpenmodal, renderModal } = PopUp();
 
     const [selectedItemData, setSelectedItemData] = useState();
     const [vegBottom, setVegBottom] = useState(true);
@@ -218,7 +218,8 @@ const DetailsScreen = ({ route }) => {
             >
                 <TouchableOpacity
                     className='w-6/12 h-full'
-                    onPress={() => { setOpenmodal(true), setSelectedItemData(item) }}
+                    // activeOpacity={1}
+                    onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                 >
                     <View className='flex-row'>
                         {
@@ -244,25 +245,31 @@ const DetailsScreen = ({ route }) => {
                     <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.longdescription}</Text>
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
-                    <ImageBackground
-                        source={{
-                            uri: item.image,
-                            method: 'POST',
-                            headers: {
-                                Pragma: 'no-cache',
-                            },
-                        }}
-                        alt="Logo"
-                        className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
-                        style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                     >
-                        {/* <LinearGradient
+                        <ImageBackground
+                            source={{
+                                uri: item.image,
+                                method: 'POST',
+                                headers: {
+                                    Pragma: 'no-cache',
+                                },
+                            }}
+                            resizeMode="cover"
+                            alt="Logo"
+                            className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
+                            style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+                        >
+                            {/* <LinearGradient
                             start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
                             className='overflow-hidden h-full w-full'
                             colors={['transparent', Colors.dark.colors.backGroundColor]}
                         >
                         </LinearGradient> */}
-                    </ImageBackground>
+                        </ImageBackground>
+                    </TouchableOpacity>
                     <View
                         style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                         className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
@@ -288,7 +295,7 @@ const DetailsScreen = ({ route }) => {
                         )}
                     </View>
                 </View>
-                {renderModal({ data: selectedItemData })}
+                {/* {renderModal({ data: selectedItemData })} */}
             </View>
             <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
         </>

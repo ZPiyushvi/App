@@ -20,6 +20,7 @@ import ModalScreen from '../Screen/ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OrderHistory from '../Screen/OrderHistory';
 import YettoUpdate from '../Screen/YettoUpdate';
+import DetailView from '../Screen/DetailView';
 
 const Stack = createStackNavigator();
 
@@ -116,6 +117,10 @@ export default function AppNavigator() {
                         headerRight: () => <HeaderRightIcons />
                     }}
                     component={Details}
+                />
+                <Stack.Screen
+                    name="DetailView"
+                    component={DetailView}
                 />
                 <Stack.Screen
                     name="OrderHistory"

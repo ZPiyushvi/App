@@ -23,7 +23,7 @@ const LoginScreen = () => {
   // 192.168.110.12
 
   function handleSubmit() {
-    console.log("Contact Info:", contactinfo);
+    // console.log("Contact Info:", contactinfo);
 
     if (!contactinfo) {
       Alert.alert("Contact info is required");
@@ -49,7 +49,7 @@ const LoginScreen = () => {
       })
         .then(response => response.json())
         .then(data => {
-          console.log("Response Data:", data);
+          // console.log("Response Data:", data);
           if (data.status === "ok") {
             Alert.alert("Register Successful");
             navigation.navigate("LoginScreen");
@@ -95,7 +95,7 @@ const LoginScreen = () => {
     setusername(usernameVar);
     setname_verify(false);
     if (usernameVar.length >= 3) {
-      console.log("more >3")
+      // console.log("more >3")
       setusername(usernameVar);
       setname_verify(true);
     }
@@ -169,10 +169,10 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
-                console.log(contactinfo)
+                // console.log(contactinfo)
                 setcontactinfo_verify(false)
                 setcontactinfo('')
-                console.log(contactinfo)
+                // console.log(contactinfo)
               }}
               style={styles.icon}
             >

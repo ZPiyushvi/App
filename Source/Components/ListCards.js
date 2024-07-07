@@ -225,7 +225,7 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
     };
     return (
         <>
-            {console.log(item.availability)}
+            {/* {console.log(item.availability)} */}
             {/* navToDetails(mockCampusShops.find(shop => shop.name === avail.name))} */}
             <FlatList
                 showsVerticalScrollIndicator={false}

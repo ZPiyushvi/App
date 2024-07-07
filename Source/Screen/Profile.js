@@ -1,3 +1,5 @@
+// make a profile stats screen on app
+
 import {
   Alert,
   Dimensions,

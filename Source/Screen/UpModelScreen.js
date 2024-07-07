@@ -73,20 +73,20 @@ export default function ModelScreen() {
     // const fetchFeatures = async () => {
     //     setCampusShops(mockCampusShops)
     //     setCampusMenu(mockCampusMenu)
-        // try {
-        //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-        //   if (!response.ok) {
-        //     console.log('Network response was not ok');
-        //   }
-        //   const data = await response.json();
-        //   console.log(data)
-        //   setFeatures(data);
-        //   if (!data) {
-        //     console.log('Failed to parse response as JSON');
-        //   }
-        // } catch (error) {
-        //   console.error("Error loading features:", error);
-        // }
+    // try {
+    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
+    //   if (!response.ok) {
+    //     console.log('Network response was not ok');
+    //   }
+    //   const data = await response.json();
+    //   console.log(data)
+    //   setFeatures(data);
+    //   if (!data) {
+    //     console.log('Failed to parse response as JSON');
+    //   }
+    // } catch (error) {
+    //   console.error("Error loading features:", error);
+    // }
     // };
 
 
@@ -220,7 +220,7 @@ export default function ModelScreen() {
                     <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
                         {value.length > 0 ? null : <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />}
 
-                        <View className={`${value.length > 0 ? 'h-full' : 'absolute'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <View className={`${value.length > 0 ? 'h-full' : 'absolute rounded-b-3xl'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
                             {/* <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
                             <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
                                 <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[83%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
@@ -262,7 +262,7 @@ export default function ModelScreen() {
                                     <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
                                 </TouchableOpacity>
                             </View>
-                            <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
+                            {/* <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
                                 <FlatList
                                     data={['Menu', 'Outlets']}
                                     renderItem={({ item, index }) => renderMenuScroll({ item, index })}
@@ -270,19 +270,47 @@ export default function ModelScreen() {
                                     horizontal
                                     showsHorizontalScrollIndicator={false}
                                 />
-                            </View>
+                            </View> */}
                             {value.length == 0 && (
-                                <View className=' px-3'>
-                                    <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
-                                    <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
-                                        {recentSearches.map((search, index) => (
-                                            <TouchableOpacity onPress={() => { handleSearch(search), setShowingOptions(false) }} key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                                                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> {search}  </Text>
-                                            </TouchableOpacity>
-                                        ))}
+                                <>
+                                    <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
+                                        <FlatList
+                                            data={['Menu', 'Outlets']}
+                                            renderItem={({ item, index }) => renderMenuScroll({ item, index })}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            horizontal
+                                            showsHorizontalScrollIndicator={false}
+                                        />
                                     </View>
-                                </View>
+                                    <View className=' px-3'>
+                                        <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
+                                        <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
+                                            {recentSearches.map((search, index) => (
+                                                <TouchableOpacity 
+                                                onPress={() => {
+                                                    Keyboard.dismiss();
+                                                    if (selectedIndex == 1) {
+                                                        hide_UpModelScreen();
+                                                        // handleYourSerchers(item.name);
+                                                        // console.log(search);
+                                                        // mockCampusShops.find(shop => shop.name === search)
+                                                        navigation.navigate("Details", { Data: mockCampusShops.find(shop => shop.name === search) });
+                                                    } else {
+                                                        handleSearch(search);
+                                                        // handleYourSerchers(item.name);
+                                                        setShowingOptions(false);
+                                                    }
+                                                }}
+                                                // onPress={() => { handleSearch(search), setShowingOptions(false) }} 
+                                                key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
+                                                >
+                                                    <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
+                                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> {search}  </Text>
+                                                </TouchableOpacity>
+                                            ))}
+                                        </View>
+                                    </View>
+                                </>
                             )}
                             {/* <SlideContainor flatListRef={flatListRef} data={featuredShop//featuredMenu} viewabilityConfig={viewabilityMenuConfig} /> */}
                             {ShowingOptions ? (
@@ -295,11 +323,21 @@ export default function ModelScreen() {
                                         // keyboardDismissMode='none'
                                         keyboardShouldPersistTaps='handled'
                                         keyExtractor={(item, index) => index.toString()}
+                                        ListHeaderComponent={
+                                            <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
+                                                <FlatList
+                                                    data={['Menu', 'Outlets']}
+                                                    renderItem={({ item, index }) => renderMenuScroll({ item, index })}
+                                                    keyExtractor={(item, index) => index.toString()}
+                                                    horizontal
+                                                    showsHorizontalScrollIndicator={false}
+                                                />
+                                            </View>
+                                        }
                                         renderItem={({ item }) => (
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     Keyboard.dismiss();
-
                                                     if (selectedIndex == 1) {
                                                         hide_UpModelScreen();
                                                         handleYourSerchers(item.name);
