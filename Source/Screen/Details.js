@@ -15,6 +15,7 @@ import ModelScreen from './ModelScreen';
 
 import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
 import { loadingScreenTxt } from '../Data/loadingScreenTxt';
+import useIncrementHandler, { handleIncrement } from '../Components/handleIncrement';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
@@ -53,6 +54,7 @@ const DetailsScreen = ({ route }) => {
 
     const { Data } = route.params || {};
     const [menuItems, setMenuItems] = useState(Data.menu);
+    console.log(menuItems)
     const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(Data.openingtime, Data.closingtime, Data.offdays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
@@ -105,92 +107,8 @@ const DetailsScreen = ({ route }) => {
         setVegBottom(!vegBottom)
     }
 
-    const handleIncrement = (id, title, itemName, hotelName) => {
-        const updatedMenuItems = [...menuItems];
-        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
-
-        if (categoryIndex !== -1) {
-            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
-
-            if (itemIndex !== -1) {
-                updatedMenuItems[categoryIndex].items[itemIndex] = {
-                    ...updatedMenuItems[categoryIndex].items[itemIndex],
-                    quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) + 1)
-                };
-
-                setMenuItems(updatedMenuItems);
-
-                setCartItems(prevCartItems => {
-                    const hotelCart = prevCartItems[hotelName] || [];
-                    const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
-
-                    if (existingCartItemIndex !== -1) {
-                        hotelCart[existingCartItemIndex] = {
-                            ...hotelCart[existingCartItemIndex],
-                            quantity: String(parseInt(hotelCart[existingCartItemIndex].quantity) + 1)
-                        };
-                    } else {
-                        const menuItemToAdd = updatedMenuItems[categoryIndex].items[itemIndex];
-                        menuItemToAdd.quantity = "1";
-                        hotelCart.push(menuItemToAdd);
-                    }
-
-                    return {
-                        ...prevCartItems,
-                        [hotelName]: hotelCart
-                    }
-                })
-            }
-        }
-    }
-
-    const handleDecrement = (id, title, itemName, hotelName) => {
-        const updatedMenuItems = [...menuItems];
-        const categoryIndex = updatedMenuItems.findIndex(category => category.title === title);
-
-        if (categoryIndex !== -1) {
-            const itemIndex = updatedMenuItems[categoryIndex].items.findIndex(item => item.id === id);
-
-            if (itemIndex !== -1) {
-                if (parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) > 0) {
-                    updatedMenuItems[categoryIndex].items[itemIndex] = {
-                        ...updatedMenuItems[categoryIndex].items[itemIndex],
-                        quantity: String(parseInt(updatedMenuItems[categoryIndex].items[itemIndex].quantity) - 1)
-                    };
-
-                    setMenuItems(updatedMenuItems);
-
-                    setCartItems(prevCartItems => {
-                        const hotelCart = prevCartItems[hotelName] || [];
-                        const existingCartItemIndex = hotelCart.findIndex(item => item.item === itemName);
-
-                        if (existingCartItemIndex !== -1) {
-                            const updatedCartItems = [...hotelCart];
-                            const newQuantity = String(parseInt(updatedCartItems[existingCartItemIndex].quantity) - 1);
-
-                            if (parseInt(newQuantity) > 0) {
-                                updatedCartItems[existingCartItemIndex] = {
-                                    ...updatedCartItems[existingCartItemIndex],
-                                    quantity: newQuantity
-                                };
-                            } else {
-                                updatedCartItems.splice(existingCartItemIndex, 1);
-                            }
-
-                            return {
-                                ...prevCartItems,
-                                [hotelName]: updatedCartItems
-                            };
-                        }
-
-                        return prevCartItems;  // If item is not found, return the current state
-                    });
-                }
-            }
-        }
-    };
-
-
+    const { handleIncrement } = useIncrementHandler(menuItems);
+    const { handleDecrement } = useIncrementHandler(menuItems);
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -281,13 +199,13 @@ const DetailsScreen = ({ route }) => {
                                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                 </TouchableOpacity>
                                 <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => { handleIncrement(item.id, title, item.item, Data.name) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                                <TouchableOpacity onPress={() => handleIncrement(item.id, title, item.item, Data.name)} className='z-10 right-0 absolute w-6/12 items-center'>
                                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                 </TouchableOpacity>
                             </>
                         ) : (
                             <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => { handleIncrement(item.id, title, item.item, Data.name) }}>
+                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item.item, Data.name)}>
                                     <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                                 </TouchableOpacity>
                                 <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
