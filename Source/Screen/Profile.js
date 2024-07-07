@@ -5,6 +5,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -66,7 +67,7 @@ const LoginScreen = () => {
       console.error('Error saving data:', error);
     }
   };
-  
+
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -103,7 +104,10 @@ const LoginScreen = () => {
 
   return (
     <>
-      <View className=' px-3 pt-8 w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+      {/* mt-7 // marginextra */}
+      <View className=' px-3 w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+
         {userDataVisible && <View className='flex-row items-center pb-4'>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
@@ -197,7 +201,8 @@ const LoginScreen = () => {
           return (
             <View key={sectionIndex}>
               {!profileNavVisible && <ShimmerPlaceholder shimmerColors={shimmerColors} className='mt-3 h-14 rounded-xl w-full' />}
-              <ShimmerPlaceholder  className='mt-3 rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
+              {/* mt-3 // marginextra */}
+              <ShimmerPlaceholder className='rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
 
                 <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                   <View className=' items-center flex-row mb-3'>

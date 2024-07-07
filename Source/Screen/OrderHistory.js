@@ -349,7 +349,7 @@ export default function OrderHistory() {
 
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-      <StatusBar backgroundColor='black' />
+      <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>

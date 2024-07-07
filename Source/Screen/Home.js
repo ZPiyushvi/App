@@ -196,8 +196,8 @@ const Home = () => {
       >
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
-
-            <View className='searchBodyContainer mt-7 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+          {/* mt-7 // marginextra */}
+            <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
               <View className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>

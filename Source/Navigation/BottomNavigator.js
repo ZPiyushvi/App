@@ -68,7 +68,7 @@ export default function BottomNavigator() {
           headerTitle: 'Your Orders',
           headerTitleAlign: 'center',
           headerStyle: {
-            height: 65,
+            // height: 65,
             backgroundColor: Colors.dark.colors.backGroundColor, //'black'
           },
           headerTitleStyle: {

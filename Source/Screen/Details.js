@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import PopUp from '../Components/PopUp';
@@ -284,7 +284,8 @@ const DetailsScreen = ({ route }) => {
 
     return (
         <View key={CartItems.storeName} style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-
+            <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+            
             {!visible && <>
                 <View className=' w-full h-full'>
                     <View className='items-center'>
