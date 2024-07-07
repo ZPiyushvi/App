@@ -3,7 +3,6 @@ import React, { useContext, useState } from 'react'
 import Colors from '../Components/Colors'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-// import { StatusBar } from 'expo-status-bar'
 import { LinearGradient } from "expo-linear-gradient";
 import Icons from '../Components/Icons'
 import { GlobalStateContext } from '../Context/GlobalStateContext'
@@ -339,7 +338,7 @@ export default function OrderHistory() {
       acc[date].orders.push(order);
       return acc;
     }, {});
-    
+
     return Object.keys(groupedOrders).map(date => ({
       date,
       total: groupedOrders[date].total,
@@ -347,13 +346,22 @@ export default function OrderHistory() {
     }));
   };
   const groupedHistory = groupOrdersByDate(History);
-  
+
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor='black' />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View >
+        <View>
+          {groupedHistory.length == 0 &&
+            <View className=' flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>
+              <Ionicons name={'thumbs-down'} size={42} color={Colors.dark.colors.mainTextColor} />
+              <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>No Orders Yet? Seriously?</Text>
+              <Text className='font-normal text-base text-center' style={{ color: Colors.dark.colors.textColor }}>
+                You haven't placed any orders yet. Don't miss out on our amazing items! Go ahead and fill up this space with delicious memories!
+              </Text>
+            </View>
+          }
           {groupedHistory.map((group, index) => (
             <View className='my-6 px-4' key={index}>
               <View className='flex-row justify-between -mb-2'>

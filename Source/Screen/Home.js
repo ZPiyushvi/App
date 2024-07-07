@@ -48,7 +48,7 @@
 // import { BANNER_H } from "./../Constants/Constants"
 const BANNER_H = Dimensions.get('window').height * 0.87;
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -180,6 +180,8 @@ const Home = () => {
 
   return (
     <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+      <StatusBar backgroundColor='black' />
+
       <LinearGradient
         // Button Linear Gradient
         colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
@@ -192,7 +194,6 @@ const Home = () => {
         scrollEventThrottle={16}
         keyboardDismissMode='on-drag'
       >
-
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
 

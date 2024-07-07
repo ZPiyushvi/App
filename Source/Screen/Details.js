@@ -175,6 +175,7 @@ const DetailsScreen = ({ route }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
+                            defaultSource={require('./../../assets/favicon.png')}
                             resizeMode="cover"
                             alt="Logo"
                             className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
