@@ -20,7 +20,7 @@ import YettoUpdate from '../Screen/YettoUpdate';
 import DetailView from '../Screen/ItemDetails';
 import BottomNavigator from './BottomNavigator';
 import Insights from '../Screen/Insights';
- 
+
 const Stack = createStackNavigator();
 
 const HeaderRightIcons = () => (
@@ -42,10 +42,9 @@ const HeaderRightIcons = () => (
 
 const CustomBackButton = () => {
     const navigation = useNavigation();
-
     return (
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
-            <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+        <TouchableOpacity className='px-4' onPress={() => navigation.goBack()} >
+            <Ionicons name="arrow-back" size={24} color={Colors.dark.colors.mainTextColor} />
         </TouchableOpacity>
     );
 };
@@ -153,6 +152,26 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="Insights"
                     component={Insights}
+                    options={{
+                        headerLeft: () => <CustomBackButton />,
+                        headerRight: () =>
+                            <TouchableOpacity className='px-4'>
+                                <Ionicons name="ellipsis-vertical-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+                            </TouchableOpacity>
+                        ,
+                        headerShown: true,
+                        headerTitle: 'Insights',
+                        headerTitleAlign: 'center',
+                        headerStyle: {
+                            // height: 65,
+                            backgroundColor: Colors.dark.colors.backGroundColor, //'black'
+                        },
+                        headerTitleStyle: {
+                            fontWeight: '900',
+                            fontSize: 24,
+                        },
+                        headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
