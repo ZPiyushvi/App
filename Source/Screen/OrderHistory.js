@@ -322,38 +322,41 @@ const ListCard_Self1 = ({ item }) => {
 
 export default function OrderHistory() {
   const navigation = useNavigation();
-  const { History, setHistory } = useContext(GlobalStateContext);
-  const totalHistoryPrice = History.reduce((sum, item) => sum + parseFloat(item?.totalPrice), 0);
+  const { dateGroup } = useContext(GlobalStateContext);
   const [showDetails, setShowDetails] = useState(null);
   const handleShowDetails = (index) => {
     setShowDetails(showDetails === index ? null : index);
   };
-  const groupOrdersByDate = (orders) => {
-    const groupedOrders = orders.reduce((acc, order) => {
-      const { date, totalPrice } = order;
-      if (!acc[date]) {
-        acc[date] = { total: 0, orders: [] };
+
+  function getFormattedDate(dateObj) {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const dayName = days[dateObj.getDay()];
+    const monthName = months[dateObj.getMonth()];
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const suffix = (day) => {
+      if (day > 3 && day < 21) return 'th';
+      switch (day % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
       }
-      acc[date].total += totalPrice;
-      acc[date].orders.push(order);
-      return acc;
-    }, {});
+    }
 
-    return Object.keys(groupedOrders).map(date => ({
-      date,
-      total: groupedOrders[date].total,
-      orders: groupedOrders[date].orders
-    }));
-  };
-  const groupedHistory = groupOrdersByDate(History);
+    return `${dayName}, ${monthName} ${day}${suffix(day)} ${year}`;
+  }
 
+  console.log(dateGroup)
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          {groupedHistory.length == 0 &&
+          {dateGroup.length == 0 &&
             <View className=' flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>
               <Ionicons name={'thumbs-down'} size={42} color={Colors.dark.colors.mainTextColor} />
               <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>No Orders Yet? Seriously?</Text>
@@ -362,28 +365,34 @@ export default function OrderHistory() {
               </Text>
             </View>
           }
-          {groupedHistory.map((group, index) => (
-            <View className='my-6 px-4' key={index}>
-              <View className='flex-row justify-between -mb-2'>
-                <View>
-                  <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
-                  <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{group.date}</Text>
-                </View>
-                <View className='items-end'>
-                  <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>
-                  <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {group.total}</Text>
-                </View>
-              </View>
-
-              <View>
-                {group.orders.map((order, index) => (
-                  <View key={index}>
-                    <ListCard_Self1 item={order} />
+          {dateGroup.map((group, index) => {
+            const dateStr = group.date;
+            const today = new Date(dateStr);
+            const formattedDate = getFormattedDate(today);
+            return (
+              <View className='my-6 px-4' key={index}>
+                <View className='flex-row justify-between -mb-2'>
+                  <View>
+                    <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
+                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{formattedDate}</Text>
                   </View>
-                ))}
+                  <View className='items-end'>
+                    <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>
+                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {group.total}</Text>
+                  </View>
+                </View>
+
+                <View>
+                  {group.orders.map((order, index) => (
+                    <View key={index}>
+                      <ListCard_Self1 item={order} />
+                    </View>
+                  ))}
+                </View>
               </View>
-            </View>
-          ))}
+            )
+          }
+          )}
         </View>
         {/* {History.map((item, index) => (
               <View key={index}>

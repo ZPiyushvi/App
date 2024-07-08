@@ -13,7 +13,35 @@ export const GlobalStateProvider = ({ children }) => {
   const [campusMenu, setcampusMenu] = useState([]);
   const [quantity, setQuantity] = useState(0);
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
+  const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
+
+  useEffect(() => {
+    const groupOrdersByDate = (orders) => {
+      const groupedOrders = orders.reduce((acc, order) => {
+        const { date, totalPrice } = order;
+        if (!acc[date]) {
+          acc[date] = { total: 0, orders: [] };
+        }
+        acc[date].total += totalPrice;
+        acc[date].orders.push(order);
+        return acc;
+      }, {});
+      return groupedOrders;
+    }
+
+    const groupedOrders = groupOrdersByDate(History);
+
+    const DateGroup = Object.keys(groupedOrders).map(date => ({
+      date,
+      total: groupedOrders[date].total,
+      orders: groupedOrders[date].orders
+    }));
+
+    setDateGroup(DateGroup);
+
+  }, [History]);
+
 
   useEffect(() => {
     const getVegData = async () => {
@@ -85,7 +113,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );
