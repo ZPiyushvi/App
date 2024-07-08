@@ -19,12 +19,13 @@ export const GlobalStateProvider = ({ children }) => {
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
       const groupedOrders = orders.reduce((acc, order) => {
-        const { date, totalPrice } = order;
+        const { date, totalPrice, Noformatdate } = order;
         if (!acc[date]) {
-          acc[date] = { total: 0, orders: [] };
+          acc[date] = { total: 0, orders: [], Noformatdate: ''};
         }
         acc[date].total += totalPrice;
         acc[date].orders.push(order);
+        acc[date].Noformatdate = Noformatdate;
         return acc;
       }, {});
       return groupedOrders;
@@ -35,7 +36,8 @@ export const GlobalStateProvider = ({ children }) => {
     const DateGroup = Object.keys(groupedOrders).map(date => ({
       date,
       total: groupedOrders[date].total,
-      orders: groupedOrders[date].orders
+      orders: groupedOrders[date].orders,
+      Noformatdate: groupedOrders[date].Noformatdate
     }));
 
     setDateGroup(DateGroup);

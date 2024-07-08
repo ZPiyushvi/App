@@ -1,7 +1,8 @@
 import { View, Text, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { BarChart, PieChart } from 'react-native-gifted-charts';
 import { LinearGradient } from 'expo-linear-gradient';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const pieData1 = [
   { value: 70, color: '#177AD5' },
@@ -70,75 +71,112 @@ const stackData = [
   },
 ];
 
-const barData = [
-  { value: 230, label: 'Jan', frontColor: '#4ABFF4' },
-  { value: 180, label: 'Feb', frontColor: '#79C3DB' },
-  { value: 195, label: 'Mar', frontColor: '#28B2B3' },
-  { value: 250, label: 'Apr', frontColor: '#4ADDBA' },
-  { value: 320, label: 'May', frontColor: '#91E3E3' },
-];
-
 export default function Insights() {
+  const { dateGroup } = useContext(GlobalStateContext);
 
-  const renderDot = color => {
-    return (
-      <View
-        style={{
-          height: 10,
-          width: 10,
-          borderRadius: 5,
-          backgroundColor: color,
-          marginRight: 10,
-        }}
-      />
-    );
-  };
+  console.log(dateGroup)
+  
+  function getLast7DaysLabels() {
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const today = new Date();
+    const last7Days = [];
+    for (let i = 6; i >= 0; i--) {
+      const day = new Date(today);
+      day.setDate(today.getDate() - i);
+      last7Days.push(days[day.getDay()]);
+    }
+    return last7Days;
+  }
+  
+  function formatDataForBarPlot(data) {
+    const today = new Date();
+    const last7DaysTotals = new Array(7).fill(0);
+  
+    // Iterate over each entry in the data
+    data.forEach(entry => {
+      const entryDate = new Date(entry.Noformatdate); //entry.date => Monday, July 8th 2024
+      console.log(entry)
+      const diffDays = Math.floor((today - entryDate) / (1000 * 60 * 60 * 24));
+      
+      if (diffDays >= 0 && diffDays < 7) {
+        const dayIndex = 6 - diffDays;
+        last7DaysTotals[dayIndex] += entry.total;
+      }
+    });
+  
+    // Prepare the bar data
+    const last7DaysLabels = getLast7DaysLabels();
+    const barData = last7DaysTotals.map((total, index) => ({
+      value: total,
+      label: last7DaysLabels[index],
+      frontColor: '#4ABFF4' // Default color for bar data
+    }));
+  
+    return barData;
+  }
+  
+  const barData = formatDataForBarPlot(dateGroup);
+  console.log(dateGroup);
 
-  const renderLegendComponent = () => {
-    return (
-      <>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            marginBottom: 10,
-          }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: 120,
-              marginRight: 20,
-            }}>
-            {renderDot('#006DFF')}
-            <Text style={{ color: 'white' }}>Excellent: 47%</Text>
-          </View>
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
-            {renderDot('#8F80F3')}
-            <Text style={{ color: 'white' }}>Okay: 16%</Text>
-          </View>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: 120,
-              marginRight: 20,
-            }}>
-            {renderDot('#3BE9DE')}
-            <Text style={{ color: 'white' }}>Good: 40%</Text>
-          </View>
-          <View
-            style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
-            {renderDot('#FF7F97')}
-            <Text style={{ color: 'white' }}>Poor: 3%</Text>
-          </View>
-        </View>
-      </>
-    );
-  };
+  // const renderDot = color => {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: 10,
+  //         width: 10,
+  //         borderRadius: 5,
+  //         backgroundColor: color,
+  //         marginRight: 10,
+  //       }}
+  //     />
+  //   );
+  // };
+
+  // const renderLegendComponent = () => {
+  //   return (
+  //     <>
+  //       <View
+  //         style={{
+  //           flexDirection: 'row',
+  //           justifyContent: 'center',
+  //           marginBottom: 10,
+  //         }}>
+  //         <View
+  //           style={{
+  //             flexDirection: 'row',
+  //             alignItems: 'center',
+  //             width: 120,
+  //             marginRight: 20,
+  //           }}>
+  //           {renderDot('#006DFF')}
+  //           <Text style={{ color: 'white' }}>Excellent: 47%</Text>
+  //         </View>
+  //         <View
+  //           style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
+  //           {renderDot('#8F80F3')}
+  //           <Text style={{ color: 'white' }}>Okay: 16%</Text>
+  //         </View>
+  //       </View>
+  //       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+  //         <View
+  //           style={{
+  //             flexDirection: 'row',
+  //             alignItems: 'center',
+  //             width: 120,
+  //             marginRight: 20,
+  //           }}>
+  //           {renderDot('#3BE9DE')}
+  //           <Text style={{ color: 'white' }}>Good: 40%</Text>
+  //         </View>
+  //         <View
+  //           style={{ flexDirection: 'row', alignItems: 'center', width: 120 }}>
+  //           {renderDot('#FF7F97')}
+  //           <Text style={{ color: 'white' }}>Poor: 3%</Text>
+  //         </View>
+  //       </View>
+  //     </>
+  //   );
+  // };
 
   return (
     <ScrollView>
@@ -263,7 +301,7 @@ export default function Insights() {
               }}
             />
           </View>
-          {renderLegendComponent()}
+          {/* {renderLegendComponent()} */}
         </View>
       </View>
     </ScrollView>
