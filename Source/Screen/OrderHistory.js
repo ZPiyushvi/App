@@ -328,28 +328,6 @@ export default function OrderHistory() {
     setShowDetails(showDetails === index ? null : index);
   };
 
-  function getFormattedDate(dateObj) {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    const dayName = days[dateObj.getDay()];
-    const monthName = months[dateObj.getMonth()];
-    const day = dateObj.getDate();
-    const year = dateObj.getFullYear();
-
-    const suffix = (day) => {
-      if (day > 3 && day < 21) return 'th';
-      switch (day % 10) {
-        case 1: return "st";
-        case 2: return "nd";
-        case 3: return "rd";
-        default: return "th";
-      }
-    }
-
-    return `${dayName}, ${monthName} ${day}${suffix(day)} ${year}`;
-  }
-
   console.log(dateGroup)
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -366,15 +344,12 @@ export default function OrderHistory() {
             </View>
           }
           {dateGroup.map((group, index) => {
-            const dateStr = group.date;
-            const today = new Date(dateStr);
-            const formattedDate = getFormattedDate(today);
             return (
               <View className='my-6 px-4' key={index}>
                 <View className='flex-row justify-between -mb-2'>
                   <View>
                     <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
-                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{formattedDate}</Text>
+                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{group.date}</Text>
                   </View>
                   <View className='items-end'>
                     <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>

@@ -14,6 +14,27 @@ const Cart = ({ route }) => {
   const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   const today = new Date();
+  function getFormattedDate(dateObj) {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const dayName = days[dateObj.getDay()];
+    const monthName = months[dateObj.getMonth()];
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    const suffix = (day) => {
+      if (day > 3 && day < 21) return 'th';
+      switch (day % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
+      }
+    }
+
+    return `${dayName}, ${monthName} ${day}${suffix(day)} ${year}`;
+  }
 
   // console.log(storeName, items, totalPrice, storeDetails)
   const navigation = useNavigation();
@@ -219,7 +240,7 @@ const Cart = ({ route }) => {
           <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
         <TouchableOpacity
-          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [...prevHistory, { items: items, storeDetails: storeDetails, totalPrice: totalPrice, date: today }]), navigation.navigate("HomeScreen") }}
+          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [...prevHistory, { items: items, storeDetails: storeDetails, totalPrice: totalPrice, date: getFormattedDate(today) }]), navigation.navigate("HomeScreen") }}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>
