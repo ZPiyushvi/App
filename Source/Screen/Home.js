@@ -46,7 +46,7 @@
 
 
 // import { BANNER_H } from "./../Constants/Constants"
-const BANNER_H = Dimensions.get('window').height * 0.87;
+const BANNER_H = Dimensions.get('window').height * 0.82;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';

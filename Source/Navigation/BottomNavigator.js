@@ -1,15 +1,16 @@
+// Commented code is for designing of bottom Navigatior like insIIT
+
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../Screen/Home';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-// import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { Dimensions, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Likes from '../Screen/Like';
 import Colors from '../Components/Colors';
+
+import Home from '../Screen/Home';
+import Likes from '../Screen/Like';
 import OrderHistory from '../Screen/OrderHistory';
 
 const Tab = createBottomTabNavigator();
-
 export default function BottomNavigator() {
   return (
     <Tab.Navigator
@@ -65,7 +66,7 @@ export default function BottomNavigator() {
           headerLeft: () => <View className='px-4'><Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
           headerRight: () => <View className='px-4'><Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
           headerShown: true,
-          headerTitle: 'Your Orders',
+          headerTitle: 'Your Purchases',
           headerTitleAlign: 'center',
           headerStyle: {
             // height: 65,
@@ -84,24 +85,12 @@ export default function BottomNavigator() {
   );
 }
 
-const HeaderComponent = () => (
-  <View className=' p-3 pt-8 flex-row items-center w-full justify-between' style={{ backgroundColor: 'black' }}>
-    <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
-      <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-    </TouchableOpacity>
-    <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Your Orders</Text>
-    <TouchableOpacity className='p-2'>
-      <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-    </TouchableOpacity>
-  </View>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 5,
-    paddingHorizontal: 25,
-    borderRadius: 99,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     padding: 5,
+//     paddingHorizontal: 25,
+//     borderRadius: 99,
+//   },
+// });

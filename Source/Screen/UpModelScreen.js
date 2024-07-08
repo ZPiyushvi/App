@@ -14,20 +14,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
+
     const [visible, setVisible] = useState(false);
-    const { CartItems, campusMenu, campusShops, updatedCartWithDetails } = useContext(GlobalStateContext);
-    const show_UpModelScreen = () => setVisible(true);
-    const hide_UpModelScreen = () => setVisible(false);
-    const [isFocused, setIsFocused] = useState(false);
-    // const [campusMenu, setCampusMenu] = useState([]);
     const [value, setValue] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     // const [campusShops, setCampusShops] = useState();
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [filteredData, setFilteredData] = useState(selectedIndex == 0 ? campusMenu : campusShops);
+    const [selectedCategory, setSelectedCategory] = useState(0);
+    const [filteredData, setFilteredData] = useState(selectedCategory == 0 ? campusMenu : campusShops);
     const [ShowingOptions, setShowingOptions] = useState(true);
     const [searches, setSearches] = useState({ menu: [], outlet: [] });
+    // const [campusMenu, setCampusMenu] = useState([]);
+
+    const { CartItems, campusMenu, campusShops, updatedCartWithDetails } = useContext(GlobalStateContext);
+
+    const show_UpModelScreen = () => setVisible(true);
+    const hide_UpModelScreen = () => {setValue(''), setVisible(false)};
 
     // Load searches from AsyncStorage when the component mounts
     useEffect(() => {
@@ -69,26 +72,6 @@ export default function ModelScreen() {
             return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
         }, [navigation])
     );
-
-    // const fetchFeatures = async () => {
-    //     setCampusShops(mockCampusShops)
-    //     setCampusMenu(mockCampusMenu)
-    // try {
-    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-    //   if (!response.ok) {
-    //     console.log('Network response was not ok');
-    //   }
-    //   const data = await response.json();
-    //   console.log(data)
-    //   setFeatures(data);
-    //   if (!data) {
-    //     console.log('Failed to parse response as JSON');
-    //   }
-    // } catch (error) {
-    //   console.error("Error loading features:", error);
-    // }
-    // };
-
 
     useEffect(() => {
         if (!isFocused && value === '') {
@@ -133,7 +116,7 @@ export default function ModelScreen() {
         // }
 
         setValue(text);
-        const filtered = selectedIndex === 0
+        const filtered = selectedCategory === 0
             ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
             : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
 
@@ -142,7 +125,7 @@ export default function ModelScreen() {
 
     let placeholderText = 'Search';
 
-    if (selectedIndex === 0) {
+    if (selectedCategory === 0) {
         if (campusMenu && campusMenu.length > currentIndex) {
             if (currentIndex + 1 === campusMenu.length) {
                 setCurrentIndex(0);
@@ -159,7 +142,8 @@ export default function ModelScreen() {
     }
 
     const handleMenuPress = (index) => {
-        setSelectedIndex(index);
+        setValue('')
+        setSelectedCategory(index);
         const filtered = index === 0
             ? campusMenu.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
             : campusShops.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
@@ -168,7 +152,7 @@ export default function ModelScreen() {
     };
 
     const renderMenuScroll = ({ item, index }) => {
-        const isSelected = selectedIndex === index; // Check if the current item is selected
+        const isSelected = selectedCategory === index; // Check if the current item is selected
 
         return (
             <TouchableOpacity
@@ -189,8 +173,8 @@ export default function ModelScreen() {
         );
     }
 
-    const handleYourSerchers = (searchItem) => {
-        const category = selectedIndex === 0 ? 'menu' : 'outlet';
+    const storeYourSerchers = (searchItem) => {
+        const category = selectedCategory === 0 ? 'menu' : 'outlet';
         if (!searches[category].includes(searchItem)) {
             const newSearches = [searchItem, ...searches[category]];
             if (newSearches.length > 3) {
@@ -203,7 +187,7 @@ export default function ModelScreen() {
         }
     };
 
-    const recentSearches = selectedIndex === 0 ? searches.menu : searches.outlet;
+    const recentSearches = selectedCategory === 0 ? searches.menu : searches.outlet;
 
     const RenderModel_UpModelScreen = () => (
         <>
@@ -238,7 +222,7 @@ export default function ModelScreen() {
                                         onBlur={() => setIsFocused(false)}
                                         value={value}
                                         onChangeText={handleSearch}
-                                        placeholder={"placeholderText"}
+                                        placeholder={placeholderText}
                                         placeholderTextColor={Colors.dark.colors.textColor}
                                     />
                                     {value.length > 0 &&
@@ -289,15 +273,15 @@ export default function ModelScreen() {
                                                 <TouchableOpacity 
                                                 onPress={() => {
                                                     Keyboard.dismiss();
-                                                    if (selectedIndex == 1) {
+                                                    if (selectedCategory == 1) {
                                                         hide_UpModelScreen();
-                                                        // handleYourSerchers(item.name);
+                                                        // storeYourSerchers(item.name);
                                                         // console.log(search);
                                                         // mockCampusShops.find(shop => shop.name === search)
                                                         navigation.navigate("Details", { Data: mockCampusShops.find(shop => shop.name === search) });
                                                     } else {
                                                         handleSearch(search);
-                                                        // handleYourSerchers(item.name);
+                                                        // storeYourSerchers(item.name);
                                                         setShowingOptions(false);
                                                     }
                                                 }}
@@ -338,13 +322,13 @@ export default function ModelScreen() {
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     Keyboard.dismiss();
-                                                    if (selectedIndex == 1) {
+                                                    if (selectedCategory == 1) {
                                                         hide_UpModelScreen();
-                                                        handleYourSerchers(item.name);
+                                                        storeYourSerchers(item.name);
                                                         navigation.navigate("Details", { Data: item });
                                                     } else {
                                                         handleSearch(item.name);
-                                                        handleYourSerchers(item.name);
+                                                        storeYourSerchers(item.name);
                                                         setShowingOptions(false);
                                                     }
                                                 }}
@@ -382,7 +366,7 @@ export default function ModelScreen() {
                                                 <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
                                             </View>
                                             {/* featuredMenu featuredShop */}
-                                            <PopularMenuContainor data={selectedIndex == 0 ? featuredMenu : featuredShop} />
+                                            <PopularMenuContainor data={selectedCategory == 0 ? featuredMenu : featuredShop} />
                                             {
                                                 value.length > buffer ?
                                                     <View className=' px-3'>

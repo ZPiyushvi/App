@@ -1,9 +1,6 @@
 import React, { Profiler, useEffect, useState } from 'react'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../Screen/Home';
-import CartScreen from '../Screen/Cart';
-import BottomNavigator from './BottomNavigator';
 import Login from '../Screen/Login';
 import Details from '../Screen/Details';
 import { TouchableOpacity, View } from 'react-native';
@@ -14,14 +11,16 @@ import Colors from '../Components/Colors';
 import IndiviualCart from '../Screen/IndiviualCart';
 import SignupScreen from '../Screen/SignupScreen';
 import LoginScreen from '../Screen/LoginScreen';
-import MainScreen from '../Screen/MainScreen';
+import RoleSelection from '../Screen/RoleSelection';
 import StaterScreen from '../Screen/StaterScreen';
 import ModalScreen from '../Screen/ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OrderHistory from '../Screen/OrderHistory';
 import YettoUpdate from '../Screen/YettoUpdate';
-import DetailView from '../Screen/DetailView';
-
+import DetailView from '../Screen/ItemDetails';
+import BottomNavigator from './BottomNavigator';
+import Insights from '../Screen/Insights';
+ 
 const Stack = createStackNavigator();
 
 const HeaderRightIcons = () => (
@@ -95,6 +94,11 @@ export default function AppNavigator() {
                             />
                         </>
                     )}
+
+                <Stack.Screen
+                    name="RoleSelection"
+                    component={RoleSelection}
+                />
                 <Stack.Screen
                     name="SignupScreen"
                     component={SignupScreen}
@@ -145,6 +149,10 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="YettoUpdate"
                     component={YettoUpdate}
+                />
+                <Stack.Screen
+                    name="Insights"
+                    component={Insights}
                 />
             </Stack.Navigator>
         </NavigationContainer>

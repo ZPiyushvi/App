@@ -5,7 +5,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 
-const MainScreen = () => {
+const RoleSelection = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
@@ -15,6 +15,7 @@ const MainScreen = () => {
   const handleSignup = () => {
     navigation.navigate("SIGNUP");
   };
+  
   return (
     <View style={styles.container}>
       {/* <Image source={require("../assets/logo.png")} style={styles.logo} /> */}
@@ -22,7 +23,7 @@ const MainScreen = () => {
       <Text style={styles.title}>Lorem ipsum dolor.</Text>
       <Text style={styles.subTitle}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore 
+        tempor incididunt ut labore et dolore
       </Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -45,7 +46,7 @@ const MainScreen = () => {
   );
 };
 
-export default MainScreen;
+export default RoleSelection;
 
 const styles = StyleSheet.create({
   container: {

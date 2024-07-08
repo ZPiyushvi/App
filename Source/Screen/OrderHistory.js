@@ -267,7 +267,7 @@ const ListCard_Self1 = ({ item }) => {
             </View>
 
             <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className=' pt-8 pl-4 flex-row items-center absolute right-4 bottom-2'>
-              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-sm underline mr-1'>View Full Menu</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-sm underline mr-1'>View Full Order</Text>
               <Ionicons name={showDetails ? 'caret-up' : 'caret-down'} size={16} color={Colors.dark.colors.diffrentColorOrange} />
             </TouchableOpacity>
           </View>

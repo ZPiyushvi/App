@@ -8,9 +8,9 @@ export const ProfileScreenNav = [
           "navScreen": "YettoUpdate",
         },
         {
-          "subtitle": "Your Stats",
+          "subtitle": "Your Insights",
           "iconName": "stats-chart-outline",
-          "navScreen": "YettoUpdate",
+          "navScreen": "Insights",
         }
       ]
     },

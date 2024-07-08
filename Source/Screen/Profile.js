@@ -201,8 +201,7 @@ const LoginScreen = () => {
           return (
             <View key={sectionIndex}>
               {!profileNavVisible && <ShimmerPlaceholder shimmerColors={shimmerColors} className='mt-3 h-14 rounded-xl w-full' />}
-              {/* mt-3 // marginextra */}
-              <ShimmerPlaceholder className='rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
+              <ShimmerPlaceholder className='mt-3 rounded-xl' shimmerColors={shimmerColors} visible={profileNavVisible}>
 
                 <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                   <View className=' items-center flex-row mb-3'>
