@@ -54,7 +54,7 @@ const DetailsScreen = ({ route }) => {
 
     const { Data } = route.params || {};
     const [menuItems, setMenuItems] = useState(Data.menu);
-    console.log(menuItems)
+    // console.log(menuItems)
     const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(Data.openingtime, Data.closingtime, Data.offdays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);

@@ -181,7 +181,7 @@ const ListCard_Self3 = ({ item }) => {
                 </View>
                 <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>{cartItem.price * cartItem.quantity}</Text>
               </View>
-              {console.log(cartItem)}
+              {/* {console.log(cartItem)} */}
             </TouchableOpacity>
           ))}
 
@@ -306,7 +306,6 @@ const ListCard_Self1 = ({ item }) => {
                 </View>
                 <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>{cartItem.price * cartItem.quantity}</Text>
               </View>
-              {console.log(cartItem)}
             </TouchableOpacity>
           ))}
         </LinearGradient>
@@ -328,7 +327,7 @@ export default function OrderHistory() {
     setShowDetails(showDetails === index ? null : index);
   };
 
-  console.log(dateGroup)
+  // console.log(dateGroup)
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />

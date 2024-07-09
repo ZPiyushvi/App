@@ -35,11 +35,10 @@ export default DetailView = ({ route }) => {
             setVisible(true);
         }, 200); // Adjust timing as necessary
     }, [Data]);
-    console.log(data)
 
     const [visible, setVisible] = React.useState(false)
 
-    console.log(data)
+    // console.log(data)
     const text = data?.item;
 
     return (

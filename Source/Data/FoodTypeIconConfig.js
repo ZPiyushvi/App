@@ -35,6 +35,27 @@ export const FoodTypeIconConfig = [
     'gradientCenterColor': '#CC8499', // Darker color
   },
   {
+    'catagory': 'Cold_Dessert',
+    'iconName': 'ice-cream',
+    'bgColor': '#FFA5BA',
+    'iconColor': '#EC4899',
+    'gradientCenterColor': '#CC8499', // Darker color
+  },
+  {
+    'catagory': 'Bakery_Dessert',
+    'iconName': 'ice-cream',
+    'bgColor': '#EC4899',
+    'iconColor': '#FFA5BA',
+    'gradientCenterColor': '#CC8499', // Darker color
+  },
+  {
+    'catagory': 'Bakery_Bread',
+    'iconName': 'ice-cream',
+    'bgColor': '#efa14b',
+    'iconColor': '#efa14b',
+    'gradientCenterColor': '#efa14b'
+  },
+  {
     'catagory': 'Fresh',
     'iconName': 'nutrition',
     'bgColor': 'green',

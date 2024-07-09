@@ -188,10 +188,10 @@ const LoginScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
-                console.log(contactinfo)
+                // console.log(contactinfo)
                 // setcontactinfo_verify(false)
                 setcontactinfo('')
-                console.log(contactinfo)
+                // console.log(contactinfo)
               }}
               style={styles.icon}
             >
