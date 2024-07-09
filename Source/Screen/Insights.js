@@ -1,12 +1,14 @@
-import { View, Text, ScrollView, TouchableOpacity, ImageBackground, Dimensions } from 'react-native'
-import React, { useContext, useState } from 'react'
-import { BarChart, PieChart } from 'react-native-gifted-charts';
-import { LinearGradient } from 'expo-linear-gradient';
+const BANNER_H = Dimensions.get('window').height * 0.82;
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, ScrollView, Animated, } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Colors from "../Components/Colors";
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import Colors from '../Components/Colors';
-import { Ionicons } from "@expo/vector-icons";
 import { FoodTypeIconConfig } from '../Data/FoodTypeIconConfig';
 import { formatDate } from '../Components/formatDate';
+import { BarChart, PieChart } from 'react-native-gifted-charts';
+import { LinearGradient } from 'expo-linear-gradient';
+import Titles from '../Components/Titles';
 
 const pieDataDemo = [
   { value: 40, color: '#009FFF', gradientCenterColor: '#006DFF', },
@@ -30,7 +32,8 @@ const categoryData = [
   { 'type': 'Bakery_Bread', 'color': '#efa14b' },
 ];
 
-export default function Insights() {
+const Home = () => {
+  const scrollA = useRef(new Animated.Value(0)).current;
   const { dateGroup } = useContext(GlobalStateContext);
 
   function getLast7DaysLabels() {
@@ -45,6 +48,9 @@ export default function Insights() {
     return last7Days;
   }
 
+  var highestTotal;
+  var averageTotal;
+
   function formatDataForBarPlot(data) {
     const today = new Date();
     const last7DaysTotals = new Array(7).fill(0);
@@ -53,6 +59,7 @@ export default function Insights() {
       const entryDate = new Date(entry.Noformatdate); //entry.date => Monday, July 8th 2024
       const diffDays = Math.floor((today - entryDate) / (1000 * 60 * 60 * 24));
 
+      console.log(entryDate)
       if (diffDays >= 0 && diffDays < 7) {
         const dayIndex = 6 - diffDays;
         last7DaysTotals[dayIndex] += entry.total;
@@ -64,11 +71,14 @@ export default function Insights() {
     indicesWithValues.sort((a, b) => b.value - a.value);
     const top3Indices = indicesWithValues.slice(0, 3).map(item => item.index);
 
+    highestTotal = indicesWithValues[0];
+    averageTotal = last7DaysTotals.reduce((acc, val) => acc + val, 0) / last7DaysTotals.length;
+
     const last7DaysLabels = getLast7DaysLabels();
     const barData = last7DaysTotals.map((total, index) => ({
       value: total,
       label: last7DaysLabels[index],
-      frontColor: top3Indices.includes(index) ? '#177AD5' : 'black'
+      frontColor: top3Indices.includes(index) ? Colors.dark.colors.diffrentColorOrange : 'black'
     }));
 
     return barData;
@@ -207,313 +217,422 @@ export default function Insights() {
     }));
   };
 
+  const pieWeekData = [
+    { value: averageTotal, color: Colors.dark.colors.diffrentColorOrange, gradientCenterColor: 'orange' },
+    { value: highestTotal.value - averageTotal, color: 'black', gradientCenterColor: 'black' },
+  ];
+
+  const [activeButton, setActiveButton] = useState('Months');
+
+  const handleSelectionPress = (button) => {
+    setActiveButton(button);
+  };
+
   return (
-    <>
-      {dateGroup.length == 0 &&
-        <View className=' h-full justify-center items-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.8 }}>
-          <Ionicons name={'thumbs-down'} size={42} color={Colors.dark.colors.mainTextColor} />
-          <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>No Orders Yet? Seriously?</Text>
-          <Text className='font-normal text-base text-center' style={{ color: Colors.dark.colors.textColor }}>
-            You haven't placed any orders yet. Don't miss out on our amazing items! Go ahead and fill up this space with delicious memories!
-          </Text>
-        </View>
-      }
-      <ScrollView style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-        <View className='items-center py-8'>
-          <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='flex-row w-2/5 rounded-full justify-center'>
-            <TouchableOpacity activeOpacity={1} onPress={() => setSelectedOption('menu')}>
-              <Text style={{ color: Colors.dark.colors.mainTextColor, backgroundColor: selectedOption === 'menu' ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.componentColor }} className={`font-black text-base px-5 py-2 rounded-full`}>
-                MenuWise
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} onPress={() => setSelectedOption('outlets')}>
-              <Text style={{ color: Colors.dark.colors.mainTextColor, backgroundColor: selectedOption === 'outlets' ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.componentColor }} className={`font-black text-base px-5 py-2 rounded-full`}>
-                OutletsWise
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* -------------------------- Bar Chart -------------------------- */}
-        <View className='ml-5 mr-6 overflow-hidden'>
-          <View className='mb-8 flex-row justify-between'>
-            <View>
-              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>This Week Details</Text>
-              <Text style={{ color: Colors.dark.colors.textColor }} className='font-normal text-base'>Total expenditure</Text>
+    <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+      {/* <StatusBar backgroundColor='black' /> */}
+      {/* <LinearGradient
+        // Button Linear Gradient
+        colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }}
+      /> */}
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollA } } }],
+          { useNativeDriver: true },
+        )}
+        scrollEventThrottle={16}
+        keyboardDismissMode='on-drag'
+      >
+        <View className='staticContainer flex w-1/2 ' >
+          <Animated.View style={[styles.banner(scrollA)]}>
+            <View className='items-center py-8'>
+              <View style={{ backgroundColor: Colors.dark.colors.secComponentColor }} className='flex-row w-2/5 rounded-full justify-center'>
+                <TouchableOpacity activeOpacity={1} onPress={() => setSelectedOption('menu')}>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor, backgroundColor: selectedOption === 'menu' ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.secComponentColor }} className={`font-black text-base px-5 py-2 rounded-full`}>
+                    MenuWise
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} onPress={() => setSelectedOption('outlets')}>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor, backgroundColor: selectedOption === 'outlets' ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.secComponentColor }} className={`font-black text-base px-5 py-2 rounded-full`}>
+                    OutletsWise
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <TouchableOpacity onPress={() => { setSelectedStackBark(!selectedStackBar) }}>
-              <Ionicons name="calendar" size={24} color={Colors.dark.colors.mainTextColor} />
-            </TouchableOpacity>
-          </View>
-          {selectedStackBar ?
-            <BarChart
-              data={barFormatData}
 
-              disableScroll
-              adjustToWidth
-              isAnimated
-              barWidth={16}
-              spacing={25}
-              noOfSections={5}
-              initialSpacing={16}
-              rulesColor={Colors.dark.colors.secComponentColor}
-              yAxisThickness={0}
-              xAxisThickness={0}
-              // hideRules
-              // autoShiftLabels
-              yAxisTextStyle={{ color: Colors.dark.colors.mainTextColor, fontSize: 14, fontWeight: 100 }}
-              xAxisLabelTextStyle={{ color: Colors.dark.colors.textColor, fontSize: 14, fontWeight: 100 }}
-              roundedBottom
-              roundedTop
-            // showReferenceLine1
-            // referenceLine1Position={barFormatData.reduce((sum, item) => sum + item.value / 2, 0) / barFormatData.length}
-            // referenceLine1Config={{
-            //   color: 'gray',
-            //   dashWidth: 2,
-            //   dashGap: 3,
-            // }}
-            />
-            :
-            <BarChart
-
-              stackData={stackedBarFormatData}
-
-              disableScroll
-              adjustToWidth
-              isAnimated
-              barWidth={16}
-              spacing={25}
-              noOfSections={5}
-              initialSpacing={16}
-              rulesColor={Colors.dark.colors.secComponentColor}
-              yAxisThickness={0}
-              xAxisThickness={0}
-              // hideRules
-              // autoShiftLabels
-              yAxisTextStyle={{ color: Colors.dark.colors.mainTextColor, fontSize: 14, fontWeight: 100 }}
-              xAxisLabelTextStyle={{ color: Colors.dark.colors.textColor, fontSize: 14, fontWeight: 100 }}
-              stackBorderRadius={14}
-              // barBorderTopLeftRadius={12}
-              roundedTop
-              roundedBottom
-            // roundedTop
-            // showReferenceLine1
-            // referenceLine1Position={barFormatData.reduce((sum, item) => sum + item.value / 2, 0) / barFormatData.length}
-            // referenceLine1Config={{
-            //   color: 'gray',
-            //   dashWidth: 2,
-            //   dashGap: 3,
-            // }}
-
-            // showLine
-            // lineConfig={{
-            //   color: Colors.dark.colors.diffrentColorOrange,
-            //   thickness: 3
-            // }}
-            />
-          }
-        </View>
-        {/* -------------------------- Bar Chart -------------------------- */}
-
-        <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='m-4 flex-row px-6 py-4 rounded-3xl justify-between'>
-          <View className='items-center justify-center'>
-            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>Weeky {'\n'}Performance</Text>
-            <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base mt-2'>Average Expenditure</Text>
-          </View>
-          <PieChart
-            data={pieDataDemo}
-            donut
-            showGradient
-            sectionAutoFocus
-            radius={45}
-            innerRadius={30}
-            innerCircleColor={Colors.dark.colors.componentColor}
-            centerLabelComponent={() => {
-              return (
-                <View className=' flex-row justify-between items-end'>
-                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>60</Text>
-                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-light text-xs'>%</Text>
+            {/* -------------------------- Bar Chart -------------------------- */}
+            <View className='ml-5 mr-6 overflow-hidden'>
+              <View className='mb-8 flex-row justify-between'>
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>This Week Details</Text>
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='font-normal text-base'>Total expenditure</Text>
                 </View>
-              );
-            }}
-          />
-        </View>
-
-        <View className=' m-4 flex-row justify-between'>
-            <View>
-              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>This Month Details</Text>
-              <Text style={{ color: Colors.dark.colors.textColor }} className='font-normal text-base'>Total expenditure</Text>
-            </View>
-            <TouchableOpacity onPress={() => { setSelectedStackBark(!selectedStackBar) }}>
-              <Ionicons name="calendar" size={24} color={Colors.dark.colors.mainTextColor} />
-            </TouchableOpacity>
-          </View>
-
-        <View className='flex-row mx-4 justify-between'>
-          <View className='w-[56%] gap-3'>
-            <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='flex-row rounded-2xl px-3 py-5 items-center justify-center'>
-              <View className=' items-center mr-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
-                <Ionicons name="cart" size={24} color={Colors.dark.colors.mainTextColor} />
+                <TouchableOpacity onPress={() => { setSelectedStackBark(!selectedStackBar) }}>
+                  <Ionicons name="calendar" size={24} color={Colors.dark.colors.mainTextColor} />
+                </TouchableOpacity>
               </View>
-              <View>
-                <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalOrders}</Text>
-                <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Orders Placed</Text>
+              {selectedStackBar ?
+                <BarChart
+                  data={barFormatData}
+
+                  disableScroll
+                  adjustToWidth
+                  isAnimated
+                  barWidth={16}
+                  spacing={25}
+                  noOfSections={5}
+                  initialSpacing={16}
+                  rulesColor={Colors.dark.colors.secComponentColor}
+                  yAxisThickness={0}
+                  xAxisThickness={0}
+                  // hideRules
+                  // autoShiftLabels
+                  yAxisTextStyle={{ color: Colors.dark.colors.mainTextColor, fontSize: 14, fontWeight: 100 }}
+                  xAxisLabelTextStyle={{ color: Colors.dark.colors.textColor, fontSize: 14, fontWeight: 100 }}
+                  roundedBottom
+                  roundedTop
+                // showReferenceLine1
+                // referenceLine1Position={barFormatData.reduce((sum, item) => sum + item.value / 2, 0) / barFormatData.length}
+                // referenceLine1Config={{
+                //   color: 'gray',
+                //   dashWidth: 2,
+                //   dashGap: 3,
+                // }}
+                />
+                :
+                <BarChart
+
+                  stackData={stackedBarFormatData}
+
+                  disableScroll
+                  adjustToWidth
+                  isAnimated
+                  barWidth={16}
+                  spacing={25}
+                  noOfSections={5}
+                  initialSpacing={16}
+                  rulesColor={Colors.dark.colors.secComponentColor}
+                  yAxisThickness={0}
+                  xAxisThickness={0}
+                  // hideRules
+                  // autoShiftLabels
+                  yAxisTextStyle={{ color: Colors.dark.colors.mainTextColor, fontSize: 14, fontWeight: 100 }}
+                  xAxisLabelTextStyle={{ color: Colors.dark.colors.textColor, fontSize: 14, fontWeight: 100 }}
+                  stackBorderRadius={14}
+                  // barBorderTopLeftRadius={12}
+                  roundedTop
+                  roundedBottom
+                // roundedTop
+                // showReferenceLine1
+                // referenceLine1Position={barFormatData.reduce((sum, item) => sum + item.value / 2, 0) / barFormatData.length}
+                // referenceLine1Config={{
+                //   color: 'gray',
+                //   dashWidth: 2,
+                //   dashGap: 3,
+                // }}
+
+                // showLine
+                // lineConfig={{
+                //   color: Colors.dark.colors.diffrentColorOrange,
+                //   thickness: 3
+                // }}
+                />
+              }
+            </View>
+            {/* -------------------------- Bar Chart -------------------------- */}
+
+            <View style={{ backgroundColor: Colors.dark.colors.secComponentColor }} className='m-4 mt-7 flex-row px-5 py-4 rounded-3xl justify-between'>
+              <View className='justify-center'>
+                <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>Weeky {'\n'}Performance</Text>
+                <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base mt-2'>Maximum Expenses: ₹{highestTotal.value}</Text>
               </View>
-            </View>
-            <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='flex-row rounded-2xl px-3 py-5 items-center justify-center'>
-              <View className=' items-center mr-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
-                <Ionicons name="archive" size={24} color={Colors.dark.colors.mainTextColor} />
-              </View>
-              <View>
-                <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalQuantity}</Text>
-                <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Items Bought</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='w-[44%] items-center justify-center rounded-2xl'>
-            <View className=' items-center mb-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorRed }}>
-              <Ionicons name="wallet" size={24} color={Colors.dark.colors.mainTextColor} />
-            </View>
-            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalSpend}</Text>
-            <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Money Spent</Text>
-          </View>
-        </View>
-
-
-        <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className='mt-4 mx-4 flex-row px-6 py-4 rounded-3xl justify-between'>
-          <View className='items-center justify-center'>
-            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>Weeky {'\n'}Performance</Text>
-            <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base mt-2'>Total money spend</Text>
-          </View>
-          <PieChart
-            data={pieDataDemo}
-            donut
-            showGradient
-            sectionAutoFocus
-            radius={45}
-            innerRadius={30}
-            innerCircleColor={Colors.dark.colors.componentColor}
-            centerLabelComponent={() => {
-              return (
-                <View className=' flex-row justify-between items-end'>
-                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>60</Text>
-                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-light text-xs'>%</Text>
-                </View>
-              );
-            }}
-          />
-        </View>
-
-        <View className=' m-4 flex-row justify-between'>
-            <View>
-              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>This Week Details</Text>
-              <Text style={{ color: Colors.dark.colors.textColor }} className='font-normal text-base'>Total expenditure</Text>
-            </View>
-            <TouchableOpacity onPress={() => { setSelectedStackBark(!selectedStackBar) }}>
-              <Ionicons name="calendar" size={24} color={Colors.dark.colors.mainTextColor} />
-            </TouchableOpacity>
-          </View>
-
-        {/* -------------------------- Pie Chart -------------------------- */}
-        {pieFormatData.length == 0 ?
-          <View className='p-2' />
-          :
-          <View className=' flex-row m-4 justify-between'>
-            <View style={{ height: 232 }}>
-              <View
-                className='h-full w-36 rounded-2xl' style={{ backgroundColor: Colors.dark.colors.componentColor }}
-              />
-            </View>
-            <View className='absolute -ml-4' style={{ top: 16 }}>
               <PieChart
-                data={pieFormatData}
+                data={pieWeekData}
                 donut
-                focusOnPress
-                extraRadiusForFocused={7}
                 showGradient
                 sectionAutoFocus
-                radius={90}
-                innerRadius={60}
-                innerCircleColor={Colors.dark.colors.componentColor}
+                radius={45}
+                innerRadius={30}
+                innerCircleColor={Colors.dark.colors.secComponentColor}
                 centerLabelComponent={() => {
                   return (
-                    <View className='items-center'>
-                      <View className=' flex-row items-center'>
-                        <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-4xl'>
-                          {Object.values(pieData).reduce((acc, category) => acc + category.totalPrice, 0)}
-                        </Text>
-                        <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-lg'> Rs</Text>
-                      </View>
-                      <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-sm -mt-2'> Total Spend</Text>
+                    <View className=' flex-row justify-between items-center'>
+                      <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{averageTotal.toFixed(0)}</Text>
+                      <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-light text-xs pt-2'> Rs</Text>
                     </View>
                   );
                 }}
               />
             </View>
 
-            <View className='w-[52%] -z-10'>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={170} /* Set the width + margin between items */
-                decelerationRate='fast'
+          </Animated.View>
+
+        </View>
+
+        <View style={styles.verticalScrollContainer}>
+          {/* style={{ height: Dimensions.get('window').height * 0.1 }} */}
+          <View className='w-full' >
+            <Titles title={"Insight Timer"} width={60} />
+            {/* <Text style={{ color: Colors.dark.colors.mainTextColor }} className=' text-center p-2 pb-5 font-black text-3xl'>Weeky Performance</Text> */}
+          </View>
+
+          <View className='items-center py-8'>
+            <View style={{ backgroundColor: Colors.dark.colors.secComponentColor }} className='flex-row rounded-full justify-center'>
+              <TouchableOpacity
+                activeOpacity={1}
+                className='rounded-full'
+                onPress={() => handleSelectionPress('Todays')}
+                style={{ backgroundColor: activeButton === 'Todays' ? Colors.dark.colors.diffrentColorOrange : 'transparent' }}
               >
-                {Object.keys(pieData).map((categoryKey, index) => {
-                  const categoryData = pieData[categoryKey];
-                  const showDetails = false || detailsVisibility[categoryKey];
-
-                  return (
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      key={index}
-                      className="-z-10"
-                      style={{ width: 170 }}
-                      onPress={() => handlePress(categoryKey)}
-                    >
-                      <View key={index} className="rounded-2xl" style={{ height: 232, backgroundColor: Colors.dark.colors.componentColor }}>
-                        {showDetails ? (
-                          // <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className="flex-row rounded-2xl pt-5 pb-2 items-center justify-center">
-                          //   <View className="items-center mr-2 justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
-                          //     <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
-                          //   </View>
-                          //   <View>
-                          //     <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl">{categoryKey}</Text>
-                          //     <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Total: {categoryData.totalPrice} Rs</Text>
-                          //   </View>
-                          // </View>
-                          categoryData.items.map((item, itemIndex) => (
-                            <View className='pt-2 px-2 justify-center items-center'>
-
-                              <View className='flex-row justify-between'>
-                                <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-light text-xl">{item.item}</Text>
-                              </View>
-                              <View className='flex-row'>
-                                <Text className='font-black text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity X {item.quantity} = </Text>
-                                <Text className='font-black text-sm' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{item.price * item.quantity}</Text>
-                              </View>
-                            </View>
-                          ))
-                        ) : (
-                          <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className="h-full items-center justify-center rounded-2xl">
-                            <View className="items-center mr-2 justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
-                              <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
-                            </View>
-                            <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl">{categoryKey}</Text>
-                            <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Your Total: {categoryData.totalPrice} Rs</Text>
-                            <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-sm absolute bottom-2 underline right-3">Click to see Details</Text>
-                          </View>
-                        )}
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
+                <Text
+                  style={{ color: Colors.dark.colors.mainTextColor }}
+                  className={`font-black text-base px-5 py-2 rounded-full`}
+                >
+                  Today's
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={1}
+                className='rounded-full'
+                onPress={() => handleSelectionPress('Weeks')}
+                style={{ backgroundColor: activeButton === 'Weeks' ? Colors.dark.colors.diffrentColorOrange : 'transparent' }}
+              >
+                <Text
+                  style={{ color: Colors.dark.colors.mainTextColor }}
+                  className={`font-black text-base px-5 py-2 rounded-full`}
+                >
+                  Week's
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={1}
+                className='rounded-full'
+                onPress={() => handleSelectionPress('Months')}
+                style={{ backgroundColor: activeButton === 'Months' ? Colors.dark.colors.diffrentColorOrange : 'transparent' }}
+              >
+                <Text
+                  style={{ color: Colors.dark.colors.mainTextColor }}
+                  className={`font-black text-base px-5 py-2 rounded-full`}
+                >
+                  Month's
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
-        }
 
-      </ScrollView>
-    </>
+          <View className='flex-row mx-4 justify-between'>
+            <View className='w-[56%] gap-3'>
+              <View style={{ elevation: 30, backgroundColor: Colors.dark.colors.componentColor }} className='flex-row rounded-2xl px-3 py-5 items-center justify-center'>
+                <View className=' items-center mr-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
+                  <Ionicons name="cart" size={24} color={Colors.dark.colors.mainTextColor} />
+                </View>
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalOrders}</Text>
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Orders Placed</Text>
+                </View>
+              </View>
+              <View style={{ elevation: 30, backgroundColor: Colors.dark.colors.componentColor }} className='flex-row rounded-2xl px-3 py-5 items-center justify-center'>
+                <View className=' items-center mr-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
+                  <Ionicons name="archive" size={24} color={Colors.dark.colors.mainTextColor} />
+                </View>
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalQuantity}</Text>
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Items Bought</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ elevation: 30, backgroundColor: Colors.dark.colors.componentColor }} className='w-[44%] items-center justify-center rounded-2xl'>
+              <View className=' items-center mb-2 justify-center h-10 w-10 rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorRed }}>
+                <Ionicons name="wallet" size={24} color={Colors.dark.colors.mainTextColor} />
+              </View>
+              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>{totalSpend}</Text>
+              <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base'>Money Spent</Text>
+            </View>
+          </View>
+
+
+          <View style={{ elevation: 30, backgroundColor: Colors.dark.colors.componentColor }} className='mt-4 mx-4 flex-row px-6 py-4 rounded-3xl justify-between'>
+            <View className='items-center justify-center'>
+              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>Weeky {'\n'}Performance</Text>
+              <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-base mt-2'>Total money spend</Text>
+            </View>
+            <PieChart
+              data={pieDataDemo}
+              donut
+              showGradient
+              sectionAutoFocus
+              radius={45}
+              innerRadius={30}
+              innerCircleColor={Colors.dark.colors.componentColor}
+              centerLabelComponent={() => {
+                return (
+                  <View className=' flex-row justify-between items-end'>
+                    <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>60</Text>
+                    <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-light text-xs'>%</Text>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
+          {/* <View className=' m-4 flex-row justify-between'>
+            <View>
+              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-2xl'>This Week Details</Text>
+              <Text style={{ color: Colors.dark.colors.textColor }} className='font-normal text-base'>Total expenditure</Text>
+            </View>
+            <TouchableOpacity onPress={() => { setSelectedStackBark(!selectedStackBar) }}>
+              <Ionicons name="calendar" size={24} color={Colors.dark.colors.mainTextColor} />
+            </TouchableOpacity>
+          </View> */}
+
+          {/* -------------------------- Pie Chart -------------------------- */}
+          {pieFormatData.length == 0 ?
+            <View className='p-2' />
+            :
+            <View className=' flex-row m-4 justify-between'>
+              <View style={{ height: 232 }}>
+                <View
+                  className='h-full w-36 rounded-2xl' style={{ elevation: 30, backgroundColor: Colors.dark.colors.componentColor }}
+                />
+              </View>
+              <View className='absolute -ml-4' style={{ top: 16 }}>
+                <PieChart
+                  data={pieFormatData}
+                  donut
+                  focusOnPress
+                  extraRadiusForFocused={7}
+                  showGradient
+                  sectionAutoFocus
+                  radius={90}
+                  innerRadius={60}
+                  innerCircleColor={Colors.dark.colors.componentColor}
+                  centerLabelComponent={() => {
+                    return (
+                      <View className='items-center'>
+                        <View className=' flex-row items-center'>
+                          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-4xl'>
+                            {Object.values(pieData).reduce((acc, category) => acc + category.totalPrice, 0)}
+                          </Text>
+                          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-lg'> Rs</Text>
+                        </View>
+                        <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-sm -mt-2'> Total Spend</Text>
+                      </View>
+                    );
+                  }}
+                />
+              </View>
+
+              <View className='w-[52%] -z-10'>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  snapToInterval={170} /* Set the width + margin between items */
+                  decelerationRate='fast'
+                >
+                  {Object.keys(pieData).map((categoryKey, index) => {
+                    const categoryData = pieData[categoryKey];
+                    const showDetails = false || detailsVisibility[categoryKey];
+
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        key={index}
+                        className="-z-10"
+                        style={{elevation: 30,  width: 170 }}
+                        onPress={() => handlePress(categoryKey)}
+                      >
+                        <View key={index} className="rounded-2xl" style={{ height: 232, backgroundColor: Colors.dark.colors.componentColor }}>
+                          {showDetails ? (
+                            // <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className="flex-row rounded-2xl pt-5 pb-2 items-center justify-center">
+                            //   <View className="items-center mr-2 justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
+                            //     <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
+                            //   </View>
+                            //   <View>
+                            //     <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl">{categoryKey}</Text>
+                            //     <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Total: {categoryData.totalPrice} Rs</Text>
+                            //   </View>
+                            // </View>
+                            categoryData.items.map((item, itemIndex) => (
+                              <View className='pt-2 px-2 justify-center items-center'>
+
+                                <View className='flex-row justify-between'>
+                                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-light text-xl">{item.item}</Text>
+                                </View>
+                                <View className='flex-row'>
+                                  <Text className='font-black text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity X {item.quantity} = </Text>
+                                  <Text className='font-black text-sm' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{item.price * item.quantity}</Text>
+                                </View>
+                              </View>
+                            ))
+                          ) : (
+                            <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className="h-full items-center justify-center rounded-2xl">
+                              <View className="items-center justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
+                                <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
+                              </View>
+                              <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl text-center">{categoryKey.split('_').join('\n')}</Text>
+                              <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Your Total: {categoryData.totalPrice} Rs</Text>
+                              <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-sm absolute bottom-2 underline right-3">Click to see Details</Text>
+                            </View>
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </View>
+          }
+
+        </View>
+
+      </Animated.ScrollView>
+
+    </View>
   );
-}
+};
+
+const styles = {
+  shadowProp: {
+    // backgroundColor: 'rgba(180, 180, 180, 0.1)',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 12,
+    // },
+    // shadowOpacity: 0.58,
+    // shadowRadius: 16.00,
+    elevation: 30,
+
+  },
+  verticalScrollContainer: {
+    // marginTop: Dimensions.get('window').height * 0.1,
+    // minHeight: Dimensions.get('window').height * 3,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    flex: 1,
+    // backgroundColor: 'white',
+    backgroundColor: Colors.dark.colors.backGroundColor, // bg color
+  },
+
+  banner: scrollA => ({
+    height: BANNER_H,
+    backGroundColor: 'red',
+    width: '200%',
+    transform: [
+      {
+        translateY: scrollA.interpolate({
+          inputRange: [-BANNER_H, 0, BANNER_H, BANNER_H],
+          outputRange: [-0, 0, BANNER_H * 0.99, -BANNER_H * 0.5], // Adjust to bring back into view
+        }),
+      },
+      // {
+      //   scale: scrollA.interpolate({
+      //     inputRange: [-BANNER_H, 0, BANNER_H, BANNER_H + 1],
+      //     outputRange: [2, 1, 0.5, 0.5],
+      //   }),
+      // },
+    ],
+  }),
+};
+
+export default Home
