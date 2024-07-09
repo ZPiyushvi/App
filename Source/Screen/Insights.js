@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { BarChart, PieChart } from 'react-native-gifted-charts';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,12 +7,7 @@ import Colors from '../Components/Colors';
 import { Ionicons } from "@expo/vector-icons";
 import { FoodTypeIconConfig } from '../Data/FoodTypeIconConfig';
 
-const pieData1 = [
-  { value: 70, color: '#177AD5' },
-  { value: 30, color: 'lightgray' }
-];
-
-const pieData = [
+const pieBigDataDemo = [
   {
     value: 47,
     color: '#009FFF',
@@ -20,7 +15,7 @@ const pieData = [
     // focused: true,
   },
   { value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
-  { value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
+  { value: 116, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
   { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
 ];
 
@@ -55,7 +50,7 @@ export default function Insights() {
   const { dateGroup } = useContext(GlobalStateContext);
 
   function getLast7DaysLabels() {
-    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const today = new Date();
     const last7Days = [];
     for (let i = 6; i >= 0; i--) {
@@ -81,19 +76,112 @@ export default function Insights() {
       }
     });
 
+    // Get the top 3 indices
+    const indicesWithValues = last7DaysTotals.map((value, index) => ({ value, index }));
+    indicesWithValues.sort((a, b) => b.value - a.value); // Sort in descending order by value
+    const top3Indices = indicesWithValues.slice(0, 3).map(item => item.index);
+
+
     // Prepare the bar data
     const last7DaysLabels = getLast7DaysLabels();
     const barData = last7DaysTotals.map((total, index) => ({
       value: total,
       label: last7DaysLabels[index],
-      frontColor: '#4ABFF4' // Default color for bar data
+      frontColor: top3Indices.includes(index) ? '#177AD5' : 'black' // Color based on top 3
     }));
 
     return barData;
   }
 
+  function formatDate(date) {
+    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+    // Add 'th', 'st', 'nd', 'rd' to the day
+    const day = date.getDate();
+    let daySuffix;
+    if (day >= 11 && day <= 13) {
+      daySuffix = 'th';
+    } else {
+      switch (day % 10) {
+        case 1: daySuffix = 'st'; break;
+        case 2: daySuffix = 'nd'; break;
+        case 3: daySuffix = 'rd'; break;
+        default: daySuffix = 'th';
+      }
+    }
+
+    return formattedDate.replace(/(\d+)(,)/, `$1${daySuffix}`);
+  }
+
+
+  // Function to process the data and calculate totals by item type
+  function processOrderData(data) {
+    // Get today's date in the desired format
+    const today = new Date();
+    const todayFormatted = formatDate(today);
+
+    // Initialize a result object to store item type totals
+    const result = {};
+
+    // Iterate over each entry in the data array
+    data.forEach(entry => {
+      // Check if the entry's date matches today's date
+      if (entry.date === todayFormatted) {
+        // Iterate over each order in the entry
+        entry.orders.forEach(order => {
+          // Iterate over each item in the order
+          order.items.forEach(item => {
+            console.log('item', item)
+            const itemType = item.category;
+            const itemPrice = parseFloat(item.price) * parseFloat(item.quantity);
+            const iconConfig = FoodTypeIconConfig.find(config => config.catagory === itemType);
+
+            // If the item type is already in the result, add to the existing total
+            // If not, initialize it in the result with the current item's price and icon config
+            if (result[itemType]) {
+              result[itemType].totalPrice += itemPrice;
+              result[itemType].items.push(item);
+            } else {
+              result[itemType] = {
+                totalPrice: itemPrice,
+                items: [item],
+                iconConfig: iconConfig || {}
+              };
+            }
+          });
+        });
+      }
+    });
+
+    return result;
+  }
+
+  // Process the sample data and log the result
+  const processedData = processOrderData(dateGroup);
+  console.log('processedData', processedData);
+
+  const transformData = (processedData) => {
+    return Object.keys(processedData).map(categoryKey => {
+      const categoryData = processedData[categoryKey];
+      const totalValue = categoryData.totalPrice;
+      const color = categoryData.iconConfig.bgColor;
+      const gradientCenterColor = categoryData.iconConfig.gradientCenterColor || color;
+
+      return {
+        value: totalValue,
+        color: color,
+        gradientCenterColor: gradientCenterColor
+      };
+    });
+  };
+
+  const pieBigDatatransformedData = transformData(processedData);
+  console.log('pieBigDatatransformedData', pieBigDatatransformedData);
+
   const barData = formatDataForBarPlot(dateGroup);
   console.log(dateGroup);
+
   const categoryData = [
     { 'type': 'Veg', 'color': '#00e676' },
     { 'type': 'NonVeg', 'color': '#ff0000' },
@@ -128,7 +216,6 @@ export default function Insights() {
           order.items.forEach(item => {
             const itemType = item.category;
             const itemPrice = parseFloat(item.price) * parseFloat(item.quantity); // Assuming price is a string, convert to float
-
             // Check if itemType exists in categoryData
             let categoryInfo = categoryData.find(category => category.type === itemType);
 
@@ -300,6 +387,7 @@ export default function Insights() {
   //     </>
   //   );
   // };
+
   const pieDataDemo = [
     { value: 40, color: '#009FFF', gradientCenterColor: '#006DFF', },
     { value: 60, color: 'rgba(147, 252, 248, 10)', gradientCenterColor: '#3BE9DE' },
@@ -307,6 +395,14 @@ export default function Insights() {
 
   const [selectedOption, setSelectedOption] = useState('menu');
 
+  const [detailsVisibility, setDetailsVisibility] = useState({});
+
+  const handlePress = (categoryKey) => {
+    setDetailsVisibility((prevState) => ({
+      ...prevState,
+      [categoryKey]: !prevState[categoryKey],
+    }));
+  };
   return (
     <ScrollView style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
 
@@ -347,7 +443,7 @@ export default function Insights() {
           xAxisThickness={0}
           // hideRules
           // autoShiftLabels
-          data={barDataDemo}
+          data={barData}
           yAxisTextStyle={{ color: Colors.dark.colors.mainTextColor, fontSize: 14, fontWeight: 100 }}
           xAxisLabelTextStyle={{ color: Colors.dark.colors.textColor, fontSize: 14, fontWeight: 100 }}
           roundedBottom
@@ -418,15 +514,15 @@ export default function Insights() {
         </View>
       </View>
 
-      <View className=' flex-row mt-5'>
-        <View className='w-6/12 ml-4' style={{ height: 232 }}>
+      <View className=' flex-row m-4 justify-between'>
+        <View style={{ height: 232 }}>
           <View
-            className='h-full w-40 rounded-2xl' style={{ backgroundColor: Colors.dark.colors.componentColor }}
+            className='h-full w-36 rounded-2xl' style={{ backgroundColor: Colors.dark.colors.componentColor }}
           />
         </View>
-        <View className='absolute' style={{ top: 16 }}>
+        <View className='absolute -ml-4' style={{ top: 16 }}>
           <PieChart
-            data={pieData}
+            data={pieBigDatatransformedData}
             donut
             focusOnPress
             extraRadiusForFocused={7}
@@ -434,40 +530,99 @@ export default function Insights() {
             sectionAutoFocus
             radius={90}
             innerRadius={60}
-            innerCircleColor={'#232B5D'}
-            centerLabelComponent={() => {
-              return (
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Text
-                    style={{ fontSxize: 22, color: 'white', fontWeight: 'bold' }}>
-                    47%
-                  </Text>
-                  <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
-                </View>
-              );
-            }}
+            innerCircleColor={Colors.dark.colors.componentColor}
+          // centerLabelComponent={() => {
+          //   return (
+          //     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          //       <Text
+          //         style={{ fontSxize: 22, color: 'white', fontWeight: 'bold' }}>
+          //         47%
+          //       </Text>
+          //       <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
+          //     </View>
+          //   );
+          // }}
           />
         </View>
 
-        <View className='w-5/12'>
-        {Object.keys(FoodTypeIconConfig).map((key) => {
-        const { label, iconName, bgColor, iconColor } = FoodTypeIconConfig[key];
-        return (
-          <View key={label} className='flex-row items-center mb-2'>
-            <View className='items-center mr-2 justify-center h-8 w-8 rounded-full' style={{ backgroundColor: bgColor }}>
-              <Ionicons name={iconName} size={24} color={iconColor} />
-            </View>
-            <View>
-              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>10</Text>
-              <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-sm'>{label}</Text>
-            </View>
-          </View>
-        );
-      })}
+        <View className='w-[52%] -z-10'>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={170} /* Set the width + margin between items */
+            decelerationRate='fast'
+          // sti
+          >
+            {Object.keys(processedData).map((categoryKey, index) => {
+              const categoryData = processedData[categoryKey];
+              const showDetails = false || detailsVisibility[categoryKey];
 
+              return (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  key={index}
+                  className="-z-10"
+                  style={{ width: 170 }}
+                  onPress={() => handlePress(categoryKey)}
+                >
+                  <View className="rounded-2xl" style={{ height: 232, backgroundColor: Colors.dark.colors.componentColor }}>
+                    {showDetails ? (
+                      // <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className="flex-row rounded-2xl pt-5 pb-2 items-center justify-center">
+                      //   <View className="items-center mr-2 justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
+                      //     <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
+                      //   </View>
+                      //   <View>
+                      //     <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl">{categoryKey}</Text>
+                      //     <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Total: {categoryData.totalPrice} Rs</Text>
+                      //   </View>
+                      // </View>
+                      categoryData.items.map((item, itemIndex) => (
+                        <View className='pt-2 px-2 justify-center items-center'>
+
+                          <View className='flex-row justify-between'>
+                            <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-light text-xl">{item.item}</Text>
+                          </View>
+                          <View className='flex-row'>
+                            <Text className='font-black text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity X {item.quantity} = </Text>
+                            <Text className='font-black text-sm' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{item.price * item.quantity}</Text>
+                          </View>
+                        </View>
+                      ))
+                    ) : (
+                      <View key={index} style={{ backgroundColor: Colors.dark.colors.componentColor }} className="h-full items-center justify-center rounded-2xl">
+                        <View className="items-center mr-2 justify-center h-10 w-10 rounded-full" style={{ backgroundColor: categoryData.iconConfig.bgColor }}>
+                          <Ionicons name={categoryData.iconConfig.iconName} size={24} color={categoryData.iconConfig.iconColor} />
+                        </View>
+                        <Text style={{ color: Colors.dark.colors.mainTextColor }} className="font-black text-2xl">{categoryKey}</Text>
+                        <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-base">Your Total: {categoryData.totalPrice} Rs</Text>
+                        <Text style={{ color: Colors.dark.colors.textColor }} className="font-light text-sm absolute bottom-2 right-3">Click to see Details</Text>
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </View>
 
+        {/* {Object.keys(FoodTypeIconConfig).map((key) => {
+            const { catagory, iconName, bgColor, iconColor } = FoodTypeIconConfig[key];
+            return (
+              <View key={catagory} className='flex-row items-center mb-2'>
+                <View className='items-center mr-2 justify-center h-8 w-8 rounded-full' style={{ backgroundColor: bgColor }}>
+                  <Ionicons name={iconName} size={24} color={iconColor} />
+                </View>
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>10</Text>
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-sm'>{catagory}</Text>
+                </View>
+              </View>
+            );
+          })} */}
       </View>
+
+
+
 
 
       {console.log('barData', barData)}
@@ -537,44 +692,60 @@ export default function Insights() {
           //   thickness: 3
           // }}
           />
-
-        </View>
-
-        <View
-          style={{
-            margin: 100,
-            // padding: 106,
-            borderRadius: 20,
-            backgroundColor: Colors.dark.colors.componentColor,
-          }}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-            Performance
-          </Text>
-          <View style={{ padding: 20, alignItems: 'center' }}>
-            <PieChart
-              data={pieData}
-              donut
-              showGradient
-              sectionAutoFocus
-              radius={90}
-              innerRadius={60}
-              innerCircleColor={'#232B5D'}
-              centerLabelComponent={() => {
-                return (
-                  <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Text
-                      style={{ fontSxize: 22, color: 'white', fontWeight: 'bold' }}>
-                      47%
-                    </Text>
-                    <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
-          {/* {renderLegendComponent()} */}
         </View>
       </View>
     </ScrollView>
   );
 }
+
+
+
+{/* <View
+          className='h-full w-[7%] rounded-2xl' style={{ backgroundColor: Colors.dark.colors.componentColor }}
+        />
+        <View
+          className='h-full mx-3 w-5/12 rounded-2xl' style={{ backgroundColor: Colors.dark.colors.componentColor }}
+        />
+        <View className='w-[44%] -z-10'>
+          <View className='rounded-2xl' style={{ height: 232, backgroundColor: Colors.dark.colors.componentColor }}>
+
+          </View>
+          {Object.keys(FoodTypeIconConfig).map((key) => {
+            const { catagory, iconName, bgColor, iconColor } = FoodTypeIconConfig[key];
+            return (
+              <View key={catagory} className='flex-row items-center mb-2'>
+                <View className='items-center mr-2 justify-center h-8 w-8 rounded-full' style={{ backgroundColor: bgColor }}>
+                  <Ionicons name={iconName} size={24} color={iconColor} />
+                </View>
+                <View>
+                  <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>10</Text>
+                  <Text style={{ color: Colors.dark.colors.textColor }} className='font-light text-sm'>{catagory}</Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+        <View className='absolute -ml-4' style={{ top: 16 }}>
+          <PieChart
+            data={pieBigDataDemo}
+            donut
+            focusOnPress
+            extraRadiusForFocused={7}
+            showGradient
+            sectionAutoFocus
+            radius={90}
+            innerRadius={60}
+            innerCircleColor={'#232B5D'}
+            centerLabelComponent={() => {
+              return (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text
+                    style={{ fontSxize: 22, color: 'white', fontWeight: 'bold' }}>
+                    47%
+                  </Text>
+                  <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
+                </View>
+              );
+            }}
+          />
+        </View> */}

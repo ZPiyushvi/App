@@ -1,53 +1,72 @@
-export const FoodTypeIconConfig = {
-  Hot_Cafe: {
-    label: 'Hot_Cafe',
-    iconName: 'cafe',
-    bgColor: '#F59E0B', // Converted to hex color for simplicity
-    iconColor: '#923c01',
+export const FoodTypeIconConfig = [
+  {
+    'catagory': 'Hot_Cafe',
+    'iconName': 'cafe',
+    'bgColor': '#923c01',
+    'iconColor': '#F59E0B',
+    'gradientCenterColor': '#F59E0B', // Darker color
   },
-  Cold_Beverage: {
-    label: 'Cold_Beverage',
-    iconName: 'wine',
-    bgColor: '#0092ff', //this
-    iconColor: '#93FCF8',
-    gradientCenterColor: '#006DFF', //this
+  {
+    'catagory': 'Cold_Beverage',
+    'iconName': 'wine',
+    'bgColor': '#0092ff',
+    'iconColor': '#93FCF8',
+    'gradientCenterColor': '#007ACC', // Darker color
   },
-  Stationery: {
-    label: 'Stationery',
-    iconName: 'library',
-    bgColor: '#3BE9DE',
-    iconColor: '#006DFF',
-    gradientCenterColor: '#93FCF8',
+  {
+    'catagory': 'Beverage',
+    'iconName': 'wine',
+    'bgColor': '#0092ff',
+    'iconColor': '#93FCF8',
+    'gradientCenterColor': '#007ACC', // Darker color
   },
-  Dessert: {
-    label: 'Cold_Dessert',
-    iconName: 'ice-cream',
-    bgColor: '#FFA5BA',
-    iconColor: '#EC4899',
-    gradientCenterColor: '#FF7F97'
+  {
+    'catagory': 'Stationery',
+    'iconName': 'library',
+    'bgColor': '#3BE9DE',
+    'iconColor': '#006DFF',
+    'gradientCenterColor': '#33C2B6', // Darker color
   },
-  Fresh: {
-    label: 'Fresh',
-    iconName: 'nutrition',
-    bgColor: '#6EE7B7',
-    iconColor: 'green',
+  {
+    'catagory': 'Dessert',
+    'iconName': 'ice-cream',
+    'bgColor': '#FFA5BA',
+    'iconColor': '#EC4899',
+    'gradientCenterColor': '#CC8499', // Darker color
   },
-  Cold_Cafe: {
-    label: 'Cold_Cafe',
-    iconName: 'snow',
-    bgColor: '#FDE68A',
-    iconColor: '#c37960',
+  {
+    'catagory': 'Fresh',
+    'iconName': 'nutrition',
+    'bgColor': 'green',
+    'iconColor': 'lightgreen',
+    'gradientCenterColor': '#5ABB97', // Darker color
   },
-  Hot_Snacks: {
-    label: 'Hot_Snacks',
-    iconName: 'fast-food',
-    bgColor: '#FBBF24',
-    iconColor: '#ff611d',
+  {
+    'catagory': 'Cold_Cafe',
+    'iconName': 'snow',
+    'bgColor': '#c37960',
+    'iconColor': '#FDE68A',
+    'gradientCenterColor': '#E5CB72', // Darker color
   },
-  Hot_Meal: {
-    label: 'Hot_Meal',
-    iconName: 'restaurant',
-    bgColor: '#ff611d',
-    iconColor: '#ffb80e',
+  {
+    'catagory': 'Hot_Snacks',
+    'iconName': 'fast-food',
+    'bgColor': '#FBBF24',
+    'iconColor': '#ff611d',
+    'gradientCenterColor': '#D99E1F', // Darker color
   },
-};
+  {
+    'catagory': 'Snacks',
+    'iconName': 'fast-food',
+    'bgColor': '#FBBF24',
+    'iconColor': '#ff611d',
+    'gradientCenterColor': '#D99E1F', // Darker color
+  },
+  {
+    'catagory': 'Hot_Meal',
+    'iconName': 'restaurant',
+    'bgColor': '#ff611d',
+    'iconColor': '#ffb80e',
+    'gradientCenterColor': '#CC4D19', // Darker color
+  },
+];

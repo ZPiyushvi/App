@@ -14,6 +14,9 @@ const Cart = ({ route }) => {
   const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 6);
+
   function getFormattedDate(dateObj) {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
