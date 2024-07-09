@@ -5,6 +5,13 @@ import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const filterRecentHistory = (history) => {
+  const currentDate = new Date();
+  const sixtyDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 3));
+
+  return history.filter(entry => new Date(entry.Noformatdate) >= sixtyDaysAgo);
+};
+
 export const GlobalStateProvider = ({ children }) => {
 
   const [vegMode, setVegMode] = useState(false);
@@ -15,6 +22,8 @@ export const GlobalStateProvider = ({ children }) => {
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
+
+  console.log(History)
 
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
@@ -94,6 +103,38 @@ export const GlobalStateProvider = ({ children }) => {
       [id]: newQuantity
     }));
   };
+
+
+  const saveHistory = async (history) => {
+    try {
+      const filteredHistory = filterRecentHistory(history);
+      const jsonValue = JSON.stringify(filteredHistory);
+      await AsyncStorage.setItem('@history', jsonValue);
+    } catch (e) {
+      console.error("Error saving history", e);
+    }
+  };
+
+  const loadHistory = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@history');
+      return jsonValue != null ? JSON.parse(jsonValue) : [];
+    } catch (e) {
+      console.error("Error loading history", e);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      const loadedHistory = await loadHistory();
+      setHistory(filterRecentHistory(loadedHistory));
+    })();
+  }, []);
+
+  useEffect(() => {
+    saveHistory(History);
+  }, [History]);
 
   // const fetchFeatures = async () => {
   // setcampusShops(mockCampusShops)
