@@ -14,8 +14,8 @@ const Cart = ({ route }) => {
   const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   const today = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 6);
+  // const yesterday = new Date();
+  // yesterday.setDate(today.getDate() - 6);
 
   function getFormattedDate(dateObj) {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -249,8 +249,9 @@ const Cart = ({ route }) => {
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
           <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
+        {console.log(today, getFormattedDate(today))}
         <TouchableOpacity
-          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [...prevHistory, { items: filteredItems, storeDetails: storeDetails, totalPrice: totalPrice, Noformatdate: today, date: getFormattedDate(today)}]), navigation.navigate("HomeScreen") }}
+          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [ { items: filteredItems, storeDetails: storeDetails, totalPrice: totalPrice, Noformatdate: today, date: getFormattedDate(today)}, ...prevHistory]), navigation.navigate("HomeScreen") }}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>

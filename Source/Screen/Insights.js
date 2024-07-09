@@ -59,7 +59,9 @@ const Home = () => {
       const entryDate = new Date(entry.Noformatdate); //entry.date => Monday, July 8th 2024
       const diffDays = Math.floor((today - entryDate) / (1000 * 60 * 60 * 24));
 
-      console.log(entryDate)
+      // console.log(entryDate.getDate())
+      // console.log(diffDays)
+
       if (diffDays >= 0 && diffDays < 7) {
         const dayIndex = 6 - diffDays;
         last7DaysTotals[dayIndex] += entry.total;

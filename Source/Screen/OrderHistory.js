@@ -246,9 +246,9 @@ const ListCard_Self1 = ({ item }) => {
               <View className='flex-row items-center' >
                 {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm'>{item.storeDetails.menutype}</Text>
+                <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm font-black'>{item.storeDetails.menutype}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm'>{item.storeDetails.location}</Text>
+                <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm font-black'>{item.storeDetails.location}</Text>
               </View>
               <View className='flex-row py-2'>
                 <View className=' px-4 rounded-md bg-black' style={{ paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
@@ -267,7 +267,7 @@ const ListCard_Self1 = ({ item }) => {
             </View>
 
             <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className=' pt-8 pl-4 flex-row items-center absolute right-4 bottom-2'>
-              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-sm underline mr-1'>View Full Order</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-thin text-sm underline mr-1'>View Full Order</Text>
               <Ionicons name={showDetails ? 'caret-up' : 'caret-down'} size={16} color={Colors.dark.colors.diffrentColorOrange} />
             </TouchableOpacity>
           </View>
