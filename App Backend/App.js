@@ -37,7 +37,7 @@ app.post("/register", async (req, res) => {
     }
 
     try {
-        
+
         // Check if user with the same contactinfo and role already exists
         const oldUser = await User.findOne({ contactinfo: contactinfo, role: role });
         if (oldUser) {
@@ -53,7 +53,7 @@ app.post("/register", async (req, res) => {
         });
 
         await user.save();
-        
+
         res.status(201).send({ status: "ok", data: "User Created" });
 
     } catch (err) {
