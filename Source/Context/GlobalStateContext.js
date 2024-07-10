@@ -13,6 +13,8 @@ const filterRecentHistory = (history) => {
 };
 
 export const GlobalStateProvider = ({ children }) => {
+  // const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   const [vegMode, setVegMode] = useState(false);
   const [CartItems, setCartItems] = useState([]);
@@ -156,7 +158,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

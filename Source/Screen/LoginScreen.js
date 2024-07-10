@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
@@ -19,33 +19,12 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL, LOGIN_ENDPOINT } from "../Constants/Constants";
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 
 const LoginScreen = () => {
 
   // 192.168.110.12
-  const handle_hardwareBackPress = () => {
-    Alert.alert(
-      "Leaving Already?",
-      "Are you sure you want to miss out on the tasty experience ahead?",
-      [{
-        text: "No, Stay",
-        onPress: () => null
-      }, {
-        text: "Yes, Exit",
-        onPress: () => BackHandler.exitApp()
-      }]);
-    return true;
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      BackHandler.addEventListener('hardwareBackPress', handle_hardwareBackPress)
-
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', handle_hardwareBackPress)
-      }
-    })
-  );
+  const { userRole, setUserRole } = useContext(GlobalStateContext);
 
   function handleLogin() {
     const userData = {
@@ -171,7 +150,6 @@ const LoginScreen = () => {
             />
           </View>
           {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -9 }]}>Name must be 3+ characters.</Text>} */}
-
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.componentColor }}>
             <Ionicons name={EmailPhone ? contactinfo.length > 1 ? "mail" : "mail-outline" : contactinfo.length ? "phone-portrait" : "phone-portrait-outline"} size={22} color={contactinfo.length ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput

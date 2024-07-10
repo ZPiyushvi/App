@@ -309,6 +309,7 @@ export const mockCampusShops = [
         "menutype": "Coffee",
         "menu": [
             {
+                'id':'1',
                 "title": "Beverages",
                 "items": [
                     { "id": "1", "item": "Masala Chai", "price": "50", "description": "Traditional Indian spiced tea.", "type": "Veg", "category": "Hot_Cafe", "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292", "quantity": "0", "rating": "4.2", "ratingcount": "128", "longdescription": "Aromatic tea blend infused with Indian spices, served hot." },
