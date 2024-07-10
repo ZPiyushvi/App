@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
@@ -17,9 +17,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constants/Constants";
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 
 const LoginScreen = () => {
 
+  const { userRole } = useContext(GlobalStateContext);
   // 192.168.110.12
 
   function handleSubmit() {
@@ -34,9 +36,10 @@ const LoginScreen = () => {
       name: username,
       contactinfo: String(contactinfo),
       password: password,
+      role: userRole,
     };
 
-    console.log("User Data:", userData);
+    // console.log("User Data:", userData);
 
     if (name_verify && contactinfo_verify && password_verify) {
       // http://192.168.110.12:5001/register

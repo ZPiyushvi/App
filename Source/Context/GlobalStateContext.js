@@ -12,6 +12,7 @@ const filterRecentHistory = (history) => {
   return history.filter(entry => new Date(entry.Noformatdate) >= sixtyDaysAgo);
 };
 
+
 export const GlobalStateProvider = ({ children }) => {
   // const [userRole, setUserRole] = useState(null);
   const [userRole, setUserRole] = useState(null);
@@ -24,8 +25,6 @@ export const GlobalStateProvider = ({ children }) => {
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
-
-  console.log(History)
 
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
@@ -55,17 +54,26 @@ export const GlobalStateProvider = ({ children }) => {
 
   }, [History]);
 
-
+  // ------------------------ getUserRole && getVegData ----------------------------------------//
   useEffect(() => {
+    const getUserRole = async () => {
+      try {
+        const storedUserRole = await AsyncStorage.getItem('userRole');
+        if (storedUserRole !== null) setVegMode(JSON.parse(storedUserRole));
+      } catch (error) {
+        console.error('Error fetching storedUserRole:', error);
+      }
+    };
+    getUserRole();
+
     const getVegData = async () => {
       try {
         const storedVegMode = await AsyncStorage.getItem('vegMode');
         if (storedVegMode !== null) setVegMode(JSON.parse(storedVegMode));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching storedVegMode:', error);
       }
     };
-
     getVegData();
   }, []);
 

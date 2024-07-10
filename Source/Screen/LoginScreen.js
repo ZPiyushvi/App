@@ -33,6 +33,7 @@ const LoginScreen = () => {
       // email: email,
       // mobile: phone,
       password: password,
+      role: userRole,
     };
 
     // if (name_verify && email_verify && password_verify) {

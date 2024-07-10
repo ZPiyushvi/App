@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Button, BackHandler, Alert } 
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Colors from '../Components/Colors';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SelectionScreen = () => {
   const handle_hardwareBackPress = () => {
@@ -34,8 +35,9 @@ const SelectionScreen = () => {
   const { userRole, setUserRole } = useContext(GlobalStateContext);
   const navigation = useNavigation();
 
-  const handleSelectItem = (item) => {
+  const handleSelectItem = async (item) => {
     setUserRole(item);
+    await AsyncStorage.setItem('userRole', JSON.stringify(item));
   };
 
   const handleNavigate = () => {

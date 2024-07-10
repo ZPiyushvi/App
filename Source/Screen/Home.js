@@ -146,7 +146,7 @@ const Home = () => {
 
       const data = await response.json();
       setUserData(data.data)
-      // console.log(userData, "home", data.data)
+      console.log("userData", "home", data.data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
