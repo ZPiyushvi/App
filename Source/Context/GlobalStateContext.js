@@ -59,7 +59,7 @@ export const GlobalStateProvider = ({ children }) => {
     const getUserRole = async () => {
       try {
         const storedUserRole = await AsyncStorage.getItem('userRole');
-        if (storedUserRole !== null) setVegMode(JSON.parse(storedUserRole));
+        if (storedUserRole !== null) setUserRole(JSON.parse(storedUserRole));
       } catch (error) {
         console.error('Error fetching storedUserRole:', error);
       }

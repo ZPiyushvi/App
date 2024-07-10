@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Outlets = require("./Schema/Outlets");
 
 const app = express();
 app.use(express.json());
@@ -20,10 +21,14 @@ mongoose.connect(mongoUrl).then(() => {
 require('./UseDetails');
 const User = mongoose.model("UserInfo");
 
+require('./Schema/Outlets');
+const OutletInfo = mongoose.model("OutletInfo");
+
 app.get("/", (req, res) => {
     res.send({ status: "started" });
 });
 
+// ----------------------------- register ----------------------------- //
 app.post("/register", async (req, res) => {
     const { name, contactinfo, password, role } = req.body;
 
@@ -59,7 +64,7 @@ app.post("/register", async (req, res) => {
     }
 });
 
-
+// ----------------------------- login ----------------------------- //
 app.post("/login", async (req, res) => {
     const { contactinfo, password, role } = req.body;
     if (!contactinfo || !password || !role) {
@@ -89,6 +94,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
+// ----------------------------- userdata ----------------------------- //
 app.post('/userdata', async (req, res) => {
     const { token } = req.body;
     try {
@@ -102,6 +108,33 @@ app.post('/userdata', async (req, res) => {
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 })
+
+// ----------------------------- outletseller ----------------------------- //
+app.post("/outletseller", async (req, res) => {
+    // const { name, contactinfo, password, role } = req.body;
+
+    // if (!name || !contactinfo || !password || !role) {
+    //     return res.status(400).send({ status: "error", data: "All fields are required" });
+    // }
+
+    try {
+        // Check if user has outlet
+        const oldUser = await OutletInfo.findOne({ contactinfo: req.contactinfo });
+        
+        if (oldUser) {
+            return res.status(400).send({ status: "error", data: "this User Alrady have Outlet" });
+        }
+        const outlet = new OutletInfo(req.body);
+
+        await outlet.save();
+        
+        res.status(201).send({ status: "ok", data: "User Created" });
+
+    } catch (err) {
+        console(err)
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
 
 app.listen(5001, () => {
     console.log("Server started on port 5001");
