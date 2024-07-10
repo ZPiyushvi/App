@@ -4,7 +4,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Outlets = require("./Schema/Outlets");
 
 const app = express();
 app.use(express.json());
@@ -94,7 +93,7 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// ----------------------------- userdata ----------------------------- //
+// ----------------------------- user_getdata ----------------------------- //
 app.post('/userdata', async (req, res) => {
     const { token } = req.body;
     try {
@@ -109,6 +108,7 @@ app.post('/userdata', async (req, res) => {
     }
 })
 
+// ----------------------------- outletseller ----------------------------- //
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
     const { name, location, cuisine } = req.body;
@@ -129,6 +129,7 @@ app.post('/addoutlet', async (req, res) => {
         res.status(201).send({ status: "ok", data: "Outlet Created" });
 
     } catch (err) {
+        console.log(err)
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });

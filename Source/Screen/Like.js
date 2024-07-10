@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import Colors from '../Components/Colors'; // Adjust path as needed
@@ -22,11 +23,9 @@ export default function Like({ navigation }) {
             cuisine: String(cuisine),
         };
 
-        // console.log("User Data:", userData);
-
         if (name && location && cuisine) {
             // http://192.168.1.6:5001/register
-            fetch(`http://192.168.1.6:5001/addoutlet`, {
+            fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -35,7 +34,6 @@ export default function Like({ navigation }) {
             })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log("Response Data:", data);
                     if (data.status === "ok") {
                         Alert.alert("Added Successful");
                     } else {
@@ -105,63 +103,3 @@ const styles = StyleSheet.create({
         color: Colors.dark.colors.mainTextColor,
     },
 });
-
-
-// import React from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-// import Colors from "../Components/Colors";
-
-// const categoryData = [
-//   { 'type': 'Veg', 'color': '#00e676' },             
-//   { 'type': 'NonVeg', 'color': '#ff0000' },          
-//   { 'type': 'Stationery', 'color': 'blue' },     
-//   { 'type': 'Beverage', 'color': '#4ABFF4' },        
-//   { 'type': 'Hot_Cafe', 'color': '#923c01' },       
-//   { 'type': 'Cold_Cafe', 'color': '#c37960' },       
-//   { 'type': 'Snacks', 'color': '#ff611d' },        
-//   { 'type': 'Hot_Meal', 'color': '#ffb80e' },   
-//   { 'type': 'Cold_Dessert', 'color': '#FF4191' },  
-//   { 'type': 'Cold_Beverage', 'color': '#4ABFF4' },  
-//   { 'type': 'Fresh', 'color': 'green' },         
-//   { 'type': 'Hot_Snacks', 'color': '#ff611d' },    
-//   { 'type': 'Bakery_Dessert', 'color': '#FF4191' },  
-//   { 'type': 'Bakery_Bread', 'color': '#efa14b' },   
-// ];
-
-// const Like = () => {
-//   return (
-//     <View className='h-full' style={styles.container}>
-//       {categoryData.map((category, index) => (
-//         <View key={index} style={[styles.categoryBox, { backgroundColor: category.color }]}>
-//           <Text style={styles.categoryText}>{category.type}</Text>
-//         </View>
-//       ))}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: Colors.dark.colors.backGroundColor,
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 10,
-//   },
-//   categoryBox: {
-//     width: 100,
-//     height: 100,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     margin: 5,
-//     borderRadius: 10,
-//   },
-//   categoryText: {
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//     color: '#ffffff', // White text color
-//   },
-// });
-
-// export default Like;
