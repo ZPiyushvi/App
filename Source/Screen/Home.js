@@ -131,8 +131,8 @@ const Home = () => {
     try {
       const token = await AsyncStorage.getItem("token");
 
-      // http://192.168.110.12:5001/userdata
-      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
+      // http://192.168.1.6:5001/userdata
+      const response = await fetch(`http://192.168.1.6:5001/userdata`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

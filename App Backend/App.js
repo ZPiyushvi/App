@@ -78,7 +78,7 @@ app.post("/login", async (req, res) => {
         }
 
         if (oldUser.role !== role) {
-            return res.status(400).send({ status: "error", data: `Incorrect role. The appropriate role is ${oldUser.role}` });
+            return res.status(400).send({ status: "error", data: 'Incorrect role. The appropriate role is ${oldUser.role}' });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, oldUser.password);
@@ -110,28 +110,25 @@ app.post('/userdata', async (req, res) => {
 })
 
 // ----------------------------- outletseller ----------------------------- //
-app.post("/outletseller", async (req, res) => {
-    // const { name, contactinfo, password, role } = req.body;
+app.post('/addoutlet', async (req, res) => {
+    const { name, location, cuisine } = req.body;
 
-    // if (!name || !contactinfo || !password || !role) {
-    //     return res.status(400).send({ status: "error", data: "All fields are required" });
-    // }
+    if (!name || !location || !cuisine) {
+        return res.status(400).send({ status: "error", data: "All fields are required" });
+    }
 
     try {
-        // Check if user has outlet
-        const oldUser = await OutletInfo.findOne({ contactinfo: req.contactinfo });
-        
-        if (oldUser) {
-            return res.status(400).send({ status: "error", data: "this User Alrady have Outlet" });
-        }
-        const outlet = new OutletInfo(req.body);
+        const outlet = new OutletInfo({
+            name: name,
+            location: location,
+            cuisine: cuisine,
+        });
 
         await outlet.save();
-        
-        res.status(201).send({ status: "ok", data: "User Created" });
+
+        res.status(201).send({ status: "ok", data: "Outlet Created" });
 
     } catch (err) {
-        console(err)
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });

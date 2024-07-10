@@ -42,7 +42,7 @@ const LoginScreen = () => {
     // console.log("User Data:", userData);
 
     if (name_verify && contactinfo_verify && password_verify) {
-      // http://192.168.110.12:5001/register
+      // http://192.168.1.6:5001/register
       fetch(`${API_BASE_URL}:${REGISTER_ENDPOINT}`, {
         method: "POST",
         headers: {
