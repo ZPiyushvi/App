@@ -1,80 +1,96 @@
+// Commented code is for designing of bottom Navigatior like insIIT
+
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../Screen/Home';
-import Cart from '../Screen/Cart';
-import { StyleSheet, Text, View } from 'react-native';
-// import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { Dimensions, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Likes from '../Screen/Like';
-import Profile from '../Screen/Profile';
 import Colors from '../Components/Colors';
 
-const Tab = createBottomTabNavigator();
+import Home from '../Screen/Home';
+import Likes from '../Screen/Like';
+import OrderHistory from '../Screen/OrderHistory';
 
+const Tab = createBottomTabNavigator();
 export default function BottomNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
-          height: 75,
-          backgroundColor: "#29272D",
+          height: Dimensions.get('window').height * 0.08,
+          backgroundColor: "black",
         },
         tabBarIcon: ({ focused }) => {
           let iconName;
-          let backgroundColor = focused ? "#4A4356" : "transparent";
-          let IconColor = focused ? "#E8DDF7" : "#CBC3CE";
+          // let backgroundColor = focused ? "#4A4356" : "transparent";
+          let IconColor = focused ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.secComponentColor;
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Likes') {
             iconName = focused ? 'heart-sharp' : 'heart-outline';
-          } else if (route.name === 'Cart') {
+          } else if (route.name === 'Orders') {
             iconName = focused ? 'bag-handle-sharp' : 'bag-handle-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'ellipsis-horizontal-sharp' : 'ellipsis-horizontal-sharp';
           }
 
           return (
-            <View style={[styles.container, { backgroundColor }]}>
+            // style={[styles.container, { backgroundColor }]}
+            <View >
               <Ionicons name={iconName} size={24} style={{ color: IconColor }} />
             </View>
           );
         },
-        tabBarLabel: ({ focused }) => {
-          let label;
-          if (route.name === 'Home') {
-            label = 'Home';
-          } else if (route.name === 'Likes') {
-            label = 'Wants';
-          } else if (route.name === 'Cart') {
-            label = 'Cart';
-          } else if (route.name === 'Profile') {
-            label = 'More';
-          }
+        // tabBarLabel: ({ focused }) => {
+        //   let label;
+        //   if (route.name === 'Home') {
+        //     label = 'Home';
+        //   } else if (route.name === 'Likes') {
+        //     label = 'Wants';
+        //   } else if (route.name === 'Orders') {
+        //     label = 'Orders';
+        //   } 
 
-          return (
-            <Text style={{ color: focused ? "#E4DFE5" : "#CBC3CF", fontSize: 12, marginTop: -9, marginBottom: 9 }}>
-              {label}
-            </Text>
-          );
-        },
+        //   return (
+        //     <Text style={{ color: focused ? "#E4DFE5" : "#CBC3CF", fontSize: 12, marginTop: -2, marginBottom: 2 }}>
+        //       {label}
+        //     </Text>
+        //   );
+        // },
       })}
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Likes" component={Likes} />
-      <Tab.Screen name="Cart" component={Cart} />
-      {/* <Tab.Screen name="Profile" component={Profile} /> */}
+      <Tab.Screen
+        options={{
+          headerLeft: () => <View className='px-4'><Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
+          headerRight: () => <View className='px-4'><Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} /></View>,
+          headerShown: true,
+          headerTitle: 'Your Purchases',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            // height: 65,
+            backgroundColor: Colors.dark.colors.backGroundColor, //'black'
+          },
+          headerTitleStyle: {
+            fontWeight: '900',
+            fontSize: 24,
+          },
+          headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
+        }}
+        name="Orders"
+        component={OrderHistory}
+      />
     </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 5,
-    paddingHorizontal: 25,
-    borderRadius: 99,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     padding: 5,
+//     paddingHorizontal: 25,
+//     borderRadius: 99,
+//   },
+// });

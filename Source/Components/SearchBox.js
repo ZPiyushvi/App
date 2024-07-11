@@ -4,72 +4,81 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Components/Colors';
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 
-const SearchBox = () => {
-  const [campusMenu, setCampusMenu] = useState([]);
+const SearchInput = ({ }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [value, setValue] = useState('');
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const currentIndex = useRef(0);
+  const [campusMenu, setCampusMenu] = useState([]);
+  const [value, setValue] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Initialize campusMenu with mock data
-    setCampusMenu(mockCampusMenu.map(item => item.name));
-
-    // Animate the opacity of the placeholder text
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-
-    // Schedule text change at intervals
-    const interval = setInterval(() => {
-      currentIndex.current = (currentIndex.current + 1) % campusMenu.length;
+    if (!isFocused && value === '') {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 500,
         useNativeDriver: true,
-      }).start(() => {
-        // Update placeholder text after fade out animation completes
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
-      });
+      }).start();
+    }
+  }, [isFocused, value]);
+
+  useEffect(() => {
+    setCampusMenu(mockCampusMenu.map(item => item.name));
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % mockCampusMenu.length);
     }, 3000); // Change every 3 seconds (adjust as needed)
 
     return () => clearInterval(interval);
   }, []);
-
+  
   return (
-    <View className='searchInputTxt rounded-xl w-[83%] text-base pl-3' style={{ backgroundColor: Colors.dark.colors.secComponentColor, justifyContent:'center', height: 50}}>
+    <View className='searchInputTxt rounded-xl w-full text-base px-3' style={{ backgroundColor: Colors.dark.colors.secComponentColor, justifyContent:'center', height: 50}}>
       <Ionicons
         color={Colors.dark.colors.diffrentColorOrange}
         name="search"
         size={24}
         style={styles.icon}
       />
-      {!isFocused && value === '' && (
-        <View style={styles.placeholderContainer}>
-          <Text className=' text-lg font-medium' style={{color: Colors.dark.colors.textColor}}>Search </Text>
-          <Animated.Text className=' text-lg font-medium' style={{ color: Colors.dark.colors.textColor, opacity: fadeAnim }}>
-            "{campusMenu.length > 0 && campusMenu[1]}"
-          </Animated.Text>
+      {!isFocused && (
+        <View className='w-10/12' style={styles.placeholderContainer}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={[{ color: Colors.dark.colors.textColor}]}>
+            Search "{campusMenu.length > 0 ? campusMenu[currentIndex] : ''}"
+          </Text>
         </View>
       )}
-      <TextInput
-        style={[styles.textInput, { backgroundColor: Colors.dark.colors.secComponentColor }]}
+      {/* <TextInput 
+        style={[styles.textInput, { numberOfLines:3, ellipsizeMode:'tail', backgroundColor: Colors.dark.colors.secComponentColor, paddingLeft: 40 }]}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         value={value}
         onChangeText={setValue}
-      />
+        placeholder={`Search "${campusMenu[currentIndex]}"`}
+        placeholderTextColor={Colors.dark.colors.textColor}
+      /> */}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
+  textInput: {
+    flex: 1,
+    height: '100%',
+    fontSize: 16,
+    color: Colors.dark.colors.textColor,
+  },
+  placeholderContainer: {
+    position: 'absolute',
+    left: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: '100%',
+  },
   container: {
     position: 'relative',
     width: '83%',
@@ -101,6 +110,6 @@ const styles = StyleSheet.create({
     // fontSize: 18,
     // color: 'grey',
   },
-});
+};
 
-export default SearchBox;
+export default SearchInput;

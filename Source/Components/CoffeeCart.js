@@ -35,6 +35,7 @@ const CoffeeCard = ({ data }) => {
                         Pragma: 'no-cache',
                     },
                 }}
+                defaultSource={require('./../../assets/favicon.png')}
                 style={styles.CardImageBG}
                 resizeMode="cover">
                 <View style={styles.CardRatingContainer}>

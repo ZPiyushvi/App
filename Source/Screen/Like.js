@@ -1,111 +1,105 @@
-import React, { useContext } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { GlobalStateContext } from '../Context/GlobalStateContext';
-import Colors from '../Components/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import TruncatedTextComponent from '../Components/TruncatedTextComponent';
-import { useNavigation } from '@react-navigation/native';
-import { FirstStoreComponent } from '../Components/CartMainContainor';
 
-const Like = () => {
-  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
-  const navigation = useNavigation();
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import Colors from '../Components/Colors'; // Adjust path as needed
+import { ADDOUTLET_ENDPOINT, API_BASE_URL } from '../Constants/Constants'; // Adjust paths/constants
 
-  
+export default function Like({ navigation }) {
+    const [name, setName] = useState('');
+    const [location, setLocation] = useState('');
+    const [cuisine, setCuisine] = useState('');
 
-  return (
-    <View className='justify-center p-3' style={[styles.container, { backgroundColor: Colors.dark.colors.backGroundColor }]}>
-      <FirstStoreComponent />
-    </View>
-  );
-};
+    function handleSubmit() {
+        // console.log("Contact Info:", contactinfo);
+
+        if (!name) {
+            Alert.alert("name info is required");
+            return;
+        }
+
+        const OutletData = {
+            name: String(name),
+            location: String(location),
+            cuisine: String(cuisine),
+        };
+
+        if (name && location && cuisine) {
+            // http://192.168.1.6:5001/register
+            fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(OutletData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "ok") {
+                        Alert.alert("Added Successful");
+                    } else {
+                        Alert.alert(data.data);
+                    }
+                })
+                .catch(error => console.log("Error:", error));
+        } else {
+            Alert.alert("Fill Required Details");
+        }
+    }
+
+    return (
+        <View style={styles.container}>
+            <TextInput
+                style={styles.textInput}
+                placeholder="Enter Outlet Name"
+                placeholderTextColor={Colors.dark.colors.textColor}
+                value={name}
+                onChangeText={setName}
+            />
+            <TextInput
+                style={styles.textInput}
+                placeholder="Enter Location"
+                placeholderTextColor={Colors.dark.colors.textColor}
+                value={location}
+                onChangeText={setLocation}
+            />
+            <TextInput
+                style={styles.textInput}
+                placeholder="Enter Cuisine"
+                placeholderTextColor={Colors.dark.colors.textColor}
+                value={cuisine}
+                onChangeText={setCuisine}
+            />
+            <TouchableOpacity onPress={() => handleSubmit()} style={styles.addButton}>
+                <Text style={styles.addButtonText}>ADD</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // padding: 10,
-    // backgroundColor: '#fff',
-  },
-  storeTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
+    container: {
+        flex: 1,
+        backgroundColor: 'black',
+        padding: 20,
+    },
+    textInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        color: 'white',
+    },
+    addButton: {
+        backgroundColor: Colors.dark.colors.diffrentColorOrange,
+        borderRadius: 10,
+        paddingVertical: 15,
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: Colors.dark.colors.mainTextColor,
+    },
 });
-
-export default Like;
-
-// {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }) => (
-//   <View
-//     key={storeName}
-//     className=' rounded-xl p-2 mt-3 flex-row'
-//     style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
-//   >
-//     {console.log("Like", storeDetails)}
-//     <Image
-//       // source={require('./../Data/banner.jpg')}
-//       source={{
-//         uri: storeDetails.image,
-//         method: 'POST',
-//         headers: {
-//           Pragma: 'no-cache',
-//         },
-//       }}
-//       className=' w-12 h-12 rounded-full mr-2'
-//       alt="Logo"
-//     />
-//     <View>
-//       <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>
-//         {TruncatedTextComponent(storeName, 13)}
-//       </Text>
-//       <View className=' flex-row items-center'>
-//         <Text style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
-//           View Full Menu
-//         </Text>
-//         <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
-//       </View>
-//     </View>
-//     <View className='flex-row gap-x-3 absolute right-2 top-2 h-full'>
-//       <TouchableOpacity
-//         className='px-2 justify-center items-center rounded-lg'
-//         style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}
-//         onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}
-//       >
-//         <View className='flex-row items-center justify-center'>
-//           {/* <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
-//             {items.length} items
-//           </Text> */}
-//           <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.mainTextColor }}>
-//             {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
-//             {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'}
-//           </Text>
-//           <Ionicons
-//             style={{ transform: [{ rotate: '90deg' }], margin: -3 }}
-//             name="remove-outline"
-//             size={16}
-//             color={Colors.dark.colors.mainTextColor}
-//           />
-//           <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
-//             ₹{totalPrice}
-//           </Text>
-//         </View>
-//         <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base'>
-//           CheckOut
-//         </Text>
-//       </TouchableOpacity>
-//       <View className=' items-center justify-center'>
-//         <TouchableOpacity
-//           className=' rounded-full p-1 items-center justify-center'
-//           style={{ backgroundColor: Colors.dark.colors.componentColor }}
-//         >
-//           <Ionicons
-//             name="add-outline"
-//             style={{ transform: [{ rotate: '45deg' }] }}
-//             size={18}
-//             color={Colors.dark.colors.mainTextColor}
-//           />
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   </View>
-// ))}

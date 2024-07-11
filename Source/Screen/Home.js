@@ -1,15 +1,61 @@
+// import React, { useState } from 'react';
+// import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+// import { useNavigation } from '@react-navigation/native';
+
+// export default function Home() {
+//   const [loading, setLoading] = useState(false);
+//   const navigation = useNavigation();
+
+//   const navToPage = (page) => {
+//     setLoading(true);
+//     setTimeout(() => {
+//       setLoading(false);
+//     navigation.navigate(page);
+//    }, 2000);
+//   };
+
+//   return (
+//     <View style={styles.container}>
+//       {loading && <ActivityIndicator size="large" color="#0000ff" />}
+//       <TouchableOpacity style={styles.button} onPress={() => navToPage('SelectAddress')}>
+//         <Text style={styles.buttonText}>Go to Details</Text>
+//       </TouchableOpacity>
+//     </View>
+//   )
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   button: {
+//     backgroundColor: '#007bff',
+//     padding: 10,
+//     borderRadius: 5,
+//   },
+//   buttonText: {
+//     color: '#fff',
+//     fontSize: 16,
+//   },
+//   text: {
+//     fontSize: 18,
+//   },
+// });
+
+
 // import { BANNER_H } from "./../Constants/Constants"
-const BANNER_H = Dimensions.get('window').height * 0.86;
+const BANNER_H = Dimensions.get('window').height * 0.82;
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated } from 'react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import SlideContainor from "../Components/SlideContainor";
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import PopularMenuContainor from "../Components/PopularMenuContainor";
-import Content from "../Components/Content";
 import Titles from "../Components/Titles";
 import Colors from "../Components/Colors";
 import TruncatedTextComponent from "../Components/TruncatedTextComponent";
@@ -18,28 +64,96 @@ import SearchBox from "../Components/SearchBox";
 import { LinearGradient } from 'expo-linear-gradient';
 import { FirstStoreComponent } from '../Components/CartMainContainor';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
+import ModelScreen from './ModelScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
+import Popular from '../Components/Popular';
+import Model from './Model';
+import Like from './Like';
+import { avalableLanguages } from '../Data/avalableLanguages';
+import LangContent from '../Components/RenderLangContent';
+import UpModelScreen from './UpModelScreen';
+import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 
-const Cart = () => {
+const Home = () => {
+  const [userData, setUserData] = useState([]);
+
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
-  const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+  const { show, hide, RenderModel } = ModelScreen();
+  const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
+
+  const { CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
-  const [campusShops, setcampusShops] = useState([]);
+  // const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
+
+  const [type, settype] = useState('');
+
   const flatListRef = useRef(null);
 
   const navToPage = (page) => {
     navigation.navigate(page);
   };
 
-  useEffect(() => {
-    fetchFeatures();
-  }, []);
+  const handle_hardwareBackPress = () => {
+    Alert.alert(
+      "Leaving So Soon?",
+      "You're about to exit the app. Are you sure you want to leave all this deliciousness behind?",
+      [{
+        text: "No, Stay",
+        onPress: () => null
+      }, {
+        text: "Yes, Exit",
+        onPress: () => BackHandler.exitApp()
+      }]);
+    return true;
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', handle_hardwareBackPress)
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', handle_hardwareBackPress)
+      }
+    })
+  ),
+
+    useEffect(() => {
+      fetchFeatures();
+      getData();
+    }, []);
+
+  const getData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      // http://192.168.1.6:5001/userdata
+      const response = await fetch(`http://192.168.1.6:5001/userdata`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: token })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      setUserData(data.data)
+      console.log("userData", "home", data.data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetchFeatures = async () => {
-    setcampusShops(mockCampusShops)
+    // setcampusShops(mockCampusShops)
     setcampusMenu(mockCampusMenu)
     // try {
     //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
@@ -58,7 +172,7 @@ const Cart = () => {
   };
 
   const featuredData = campusShops ? campusShops.filter(item => item.featured === "true") : [];
-  const popularMenu = campusMenu ? campusMenu.filter(item => item.popular === "true") : [];
+  const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
 
   const viewabilityMenuConfig = {
     itemVisiblePercentThreshold: 50
@@ -66,9 +180,11 @@ const Cart = () => {
 
   return (
     <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+      <StatusBar backgroundColor='black' />
+
       <LinearGradient
         // Button Linear Gradient
-        colors={[Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
+        colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
       <Animated.ScrollView
         // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
         onScroll={Animated.event(
@@ -78,24 +194,24 @@ const Cart = () => {
         scrollEventThrottle={16}
         keyboardDismissMode='on-drag'
       >
-
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
-
-            <View className='searchBodyContainer mt-11 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+          {/* mt-7 // marginextra */}
+            <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
               <View className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>
-                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row '>
-                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent("Owner Full UserName", 16)} </Text>
+                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
+                    {/* {console.log(userData.name)} */}
+                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
-                  <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{TruncatedTextComponent("plot number 45, new row house", 27)}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{"plot number 45, new row house"}</Text>
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
-                <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navToPage('Profile')} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
+                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
             </View>
 
@@ -108,27 +224,70 @@ const Cart = () => {
             </View>
 
             <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <SearchBox />
-              <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+              <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
+                <SearchBox />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
+                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+              </TouchableOpacity>
             </View>
 
+            {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
             <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
 
             <Titles title={"What’s on your heart?"} width={30} />
-            <PopularMenuContainor data={popularMenu} />
 
+            <PopularMenuContainor data={popularMenu} />
           </Animated.View>
 
         </View>
 
         <View style={styles.verticalScrollContainer}>
 
-          <View style={{ marginTop: Dimensions.get('window').height * 0.01 }}>
-            <Titles title={"All Restaurants"} width={60} />
-            <Content data={campusShops} />
-            <View className='px-2 py-5'>
-              <Text className='font-black text-xl text-center' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Exciting Updates Coming Soon!</Text>
-              <Text className='font-light text-sm text-center' style={{ color: Colors.dark.colors.textColor }}>
+          <View>
+            <View style={{ height: Dimensions.get('window').height * 0.08 }}>
+              <Titles title={"All Restaurants"} width={60} />
+            </View>
+
+            {/* <View style={styles.renderItem2container}>
+              <View>
+                <FlatList
+                  data={campusShops}
+                  numColumns={2}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 50, paddingTop: 20 }}
+                  columnWrapperStyle={{
+                    justifyContent: 'space-around'
+                  }}
+                  renderItem={({ item }) => <ListCard_S item={item} />}
+                  keyExtractor={(item, index) => index.toString()}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            </View> */}
+
+            <FlatList
+              data={campusShops}
+              renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
+              keyExtractor={(item, index) => index.toString()}
+              showsHorizontalScrollIndicator={false}
+            />
+
+            <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
+              <Text
+                className='font-black text-xl text-center'
+                style={{ color: Colors.dark.colors.diffrentColorOrange }}
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                Exciting Updates Coming Soon!
+              </Text>
+              <Text
+                className='font-light text-sm text-center'
+                style={{ color: Colors.dark.colors.textColor }}
+                numberOfLines={3}
+                ellipsizeMode='tail'
+              >
                 We're working on bringing you fresh new choices. Meanwhile, explore our current selection and find your perfect match!
               </Text>
             </View>
@@ -138,16 +297,19 @@ const Cart = () => {
 
       </Animated.ScrollView>
 
-      {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
-        null
-        :
-        <LinearGradient
-          className=' absolute p-2 w-full bottom-0'
-          colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-          <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} />
-        </LinearGradient>
-      }
-
+      <View>
+        {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
+          null
+          :
+          <LinearGradient
+            className=' absolute p-2 w-full bottom-0'
+            colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
+            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} settype={settype} />
+          </LinearGradient>
+        }
+      </View>
+      {RenderModel({ type: { type } })}
+      {RenderModel_UpModelScreen()}
     </View>
   );
 };
@@ -268,6 +430,7 @@ const styles = {
   },
   banner: scrollA => ({
     height: BANNER_H,
+    backGroundColor: 'red',
     width: '200%',
     transform: [
       {
@@ -286,4 +449,4 @@ const styles = {
   }),
 };
 
-export default Cart
+export default Home

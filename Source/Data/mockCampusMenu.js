@@ -4,225 +4,139 @@ export const mockCampusMenu = [
     "image": "https://www.teacupsfull.com/cdn/shop/articles/Screenshot_2023-10-20_at_11.07.13_AM.png?v=1697780292",
     "availability": [
       {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "50",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
+        "location": "Central Plaza",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "20",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.5",
+        "ratingcount": "432"
       }
     ],
-    "popular": "true"
+    "rating": "4.5",
+    "ratingcount": "432",
+    "menutype": "Beverage",
+    "type": "Veg",
+    "featured": "false"
   },
   {
-    "name": "Cold Coffee",
+    "name": "Chold Coffee",
     "image": "https://www.funfoodfrolic.com/wp-content/uploads/2020/09/Cold-Coffee-Thumbnail.jpg",
     "availability": [
       {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "70",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
+        "location": "Central Plaza",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "120",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.6",
+        "ratingcount": "410"
       }
     ],
-    "popular": "true"
+    "rating": "4.1",
+    "ratingcount": "401",
+    "menutype": "Beverage",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Cold Coco",
-    "image": "https://media-assets.swiggy.com/swiggy/image/upload/f_auto,q_auto,fl_lossy/cre8krdqeeuyq74gbpsy",
+    "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/07/samosa-recipe.jpg",
     "availability": [
       {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "60",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
+        "location": "Central Plaza",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "15",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.7",
+        "ratingcount": "489"
       }
     ],
-    "popular": "false"
+    "rating": "4.3",
+    "ratingcount": "378",
+    "menutype": "Beverage",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Iced Tea",
     "image": "https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
     "availability": [
       {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "65",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
+        "location": "Central Plaza",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "180",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.8",
+        "ratingcount": "540"
       }
     ],
-    "popular": "false"
-  },
-  {
-    "name": "Sandwich",
-    "image": "https://www.vegrecipesofindia.com/wp-content/uploads/2014/01/grilled-sandwich-4.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "100",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Maggi",
-    "image": "https://www.honeywhatscooking.com/wp-content/uploads/2022/02/Pav-Bhaji-Maggi-Noodles4-e1672251408882.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "80",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "true"
-  },
-  {
-    "name": "Puff",
-    "image": "https://theobroma.in/cdn/shop/files/Chicken_CheesePuff-Square.jpg?v=1711609351",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "40",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Noodles",
-    "image": "https://recipetineats.com/wp-content/uploads/2019/11/Lo-Mein_3.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "90",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Thepla",
-    "image": "https://pipingpotcurry.com/wp-content/uploads/2023/03/methi-thepla-recipe.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "30",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Poha",
-    "image": "https://media.vogue.in/wp-content/uploads/2020/10/poha-recipe-1920x1080.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "35",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "true"
-  },
-  {
-    "name": "Upma",
-    "image": "https://www.dwarakaorganic.com/wp-content/uploads/2022/04/Upma-870x470.jpg",
-    "availability": [
-      {
-        "location": "Library Cafe",
-        "restaurant": "Tea Post",
-        "price": "35",
-        "upiId": "teapost@upi",
-        "shopkippername": "Pooja Gupta",
-        "rating": "4.5"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Amul TriCone",
-    "image": "https://i.pinimg.com/736x/33/e6/ff/33e6ff011d887758fa255ea000d3be4c.jpg",
-    "availability": [
-      {
-        "location": "Outside the Mess",
-        "restaurant": "Amul Store",
-        "price": "50",
-        "upiId": "amulstore@upi",
-        "shopkippername": "Anil Mehta",
-        "rating": "4.2"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Amul Chocominis",
-    "image": "https://www.shutterstock.com/shutterstock/photos/1878842344/display_1500/stock-photo-india-april-chocolate-brand-amul-chocominis-1878842344.jpg",
-    "availability": [
-      {
-        "location": "Outside the Mess",
-        "restaurant": "Amul Store",
-        "price": "40",
-        "upiId": "amulstore@upi",
-        "shopkippername": "Anil Mehta",
-        "rating": "4.2"
-      }
-    ],
-    "popular": "false"
-  },
-  {
-    "name": "Amul Kool", // https://www.orchidsandsweettea.com/wp-content/uploads/2022/07/Oreo-Milkshake-3-of-5-e1657521028832.jpg
-    "image": "https://d161wrq7muokn7.cloudfront.net/images/product/600.600/Summer-Drinks-Amul.jpg", 
-    "availability": [
-      {
-        "location": "Outside the Mess",
-        "restaurant": "Amul Store",
-        "price": "70",
-        "upiId": "amulstore@upi",
-        "shopkippername": "Anil Mehta",
-        "rating": "4.2"
-      }
-    ],
-    "popular": "false"
+    "rating": "4.4",
+    "ratingcount": "412",
+    "menutype": "Beverage",
+    "type": "NonVeg",
+    "featured": "true"
   },
   {
     "name": "Chicken Curry",
     "image": "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/09/kolhapuri-chicken-recipe.jpg",
     "availability": [
       {
-        "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "location": "Central Plaza1",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "150",
         "upiId": "dawatfoods@upi",
-        "shopkippername": "Mohammed Ali",
-        "rating": "4.4"
+        "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
+        "rating": "4.6",
+        "ratingcount": "475"
+      },
+      {
+        "location": "Central Plaza2",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "150",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
+        "rating": "4.6",
+        "ratingcount": "475"
+      },
+      {
+        "location": "Central Plaza3",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Samyak Juice",
+        "price": "150",
+        "upiId": "dawatfoods@upi",
+        "shopkeepername": "Mohammed Ali",
+        "image":"https://www.funfoodfrolic.com/wp-content/uploads/2017/05/Iced-Tea-3.jpg",
+        "rating": "4.6",
+        "ratingcount": "475"
       }
     ],
-    "popular": "true"
+    "rating": "4.2",
+    "ratingcount": "392",
+    "menutype": "Food",
+    "type": "NonVeg",
+    "featured": "true"
   },
   {
     "name": "Chicken Rice",
@@ -230,14 +144,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
-        "price": "200",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
+        "price": "60",
         "upiId": "dawatfoods@upi",
-        "shopkippername": "Mohammed Ali",
-        "rating": "4.4"
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.5",
+        "ratingcount": "430"
       }
     ],
-    "popular": "true"
+    "rating": "4.3",
+    "ratingcount": "388",
+    "menutype": "Food",
+    "type": "NonVeg",
+    "featured": "false"
   },
   {
     "name": "Egg Roll",
@@ -245,14 +167,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Central Plaza",
-        "restaurant": "Dawat Foods",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Dawat Foods",
         "price": "200",
         "upiId": "dawatfoods@upi",
-        "shopkippername": "Mohammed Ali",
-        "rating": "4.4"
+        "shopkeepername": "Mohammed Ali",
+        "image":"",
+        "rating": "4.4",
+        "ratingcount": "360"
       }
     ],
-    "popular": "true"
+    "rating": "4.1",
+    "ratingcount": "390",
+    "menutype": "Food",
+    "type": "NonVeg",
+    "featured": "true"
   },
   {
     "name": "Orange Juice",
@@ -260,14 +190,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Near the Gym",
-        "restaurant": "Nutirich - The Real Taste",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Nutirich - The Real Taste",
         "price": "50",
         "upiId": "nutirich@upi",
-        "shopkippername": "Ravi Patel",
-        "rating": "4.3"
+        "shopkeepername": "Ravi Patel",
+        "image":"",
+        "rating": "4.3",
+        "ratingcount": "376"
       }
     ],
-    "popular": "false"
+    "rating": "4.2",
+    "ratingcount": "340",
+    "menutype": "Beverage",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Mango Shake",
@@ -275,14 +213,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Near the Gym",
-        "restaurant": "Nutirich - The Real Taste",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Nutirich - The Real Taste",
         "price": "70",
         "upiId": "nutirich@upi",
-        "shopkippername": "Ravi Patel",
-        "rating": "4.3"
+        "shopkeepername": "Ravi Patel",
+        "image":"",
+        "rating": "4.3",
+        "ratingcount": "376"
       }
     ],
-    "popular": "false"
+    "rating": "4.4",
+    "ratingcount": "350",
+    "menutype": "Beverage",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Apple",
@@ -290,14 +236,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "100",
         "upiId": "jkgrocerystore@upi",
-        "shopkippername": "Jayesh Khanna",
-        "rating": "4.1"
+        "shopkeepername": "Jayesh Khanna",
+        "image":"",
+        "rating": "4.1",
+        "ratingcount": "360"
       }
     ],
-    "popular": "false"
+    "rating": "4.2",
+    "ratingcount": "345",
+    "menutype": "Grocery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Kiwi",
@@ -305,14 +259,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "60",
         "upiId": "jkgrocerystore@upi",
-        "shopkippername": "Jayesh Khanna",
-        "rating": "4.1"
+        "shopkeepername": "Jayesh Khanna",
+        "image":"",
+        "rating": "4.1",
+        "ratingcount": "360"
       }
     ],
-    "popular": "false"
+    "rating": "4.3",
+    "ratingcount": "310",
+    "menutype": "Grocery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Banana",
@@ -320,14 +282,24 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "East Wing, Block C",
-        "restaurant": "JK Grocery Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "JK Grocery Store",
         "price": "120",
         "upiId": "jkgrocerystore@upi",
-        "shopkippername": "Jayesh Khanna",
-        "rating": "4.1"
+
+
+        "shopkeepername": "Jayesh Khanna",
+        "image":"",
+        "rating": "4.1",
+        "ratingcount": "360"
       }
     ],
-    "popular": "false"
+    "rating": "4.3",
+    "ratingcount": "330",
+    "menutype": "Grocery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Doms Pencil Sets",
@@ -335,14 +307,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "5",
         "upiId": "krupastore@upi",
-        "shopkippername": "Suresh Kumar",
-        "rating": "4.0"
+        "shopkeepername": "Suresh Kumar",
+        "image":"",
+        "rating": "4.0",
+        "ratingcount": "345"
       }
     ],
-    "popular": "false"
+    "rating": "4.1",
+    "ratingcount": "320",
+    "menutype": "Stationery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Classmate Pulse Subject Notebook",
@@ -350,14 +330,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "60",
         "upiId": "krupastore@upi",
-        "shopkippername": "Suresh Kumar",
-        "rating": "4.0"
+        "shopkeepername": "Suresh Kumar",
+        "image":"",
+        "rating": "4.0",
+        "ratingcount": "345"
       }
     ],
-    "popular": "false"
+    "rating": "4.2",
+    "ratingcount": "340",
+    "menutype": "Stationery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Parker Pen",
@@ -365,14 +353,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "West Wing, Block B",
-        "restaurant": "Krupa General Store",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Krupa General Store",
         "price": "50",
         "upiId": "krupastore@upi",
-        "shopkippername": "Suresh Kumar",
-        "rating": "4.0"
+        "shopkeepername": "Suresh Kumar",
+        "image":"",
+        "rating": "4.0",
+        "ratingcount": "345"
       }
     ],
-    "popular": "false"
+    "rating": "4.3",
+    "ratingcount": "370",
+    "menutype": "Stationery",
+    "type": "Veg",
+    "featured": "false"
   },
   {
     "name": "Thali",
@@ -380,14 +376,22 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Hostel Premises",
-        "restaurant": "Shri Sainath Canteen (A)",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Shri Sainath Canteen (A)",
         "price": "100",
         "upiId": "shrisainathcanteen@upi",
-        "shopkippername": "Lakshmi Iyer",
-        "rating": "4.3"
+        "shopkeepername": "Lakshmi Iyer",
+        "image":"",
+        "rating": "4.3",
+        "ratingcount": "400"
       }
     ],
-    "popular": "true"
+    "rating": "4.2",
+    "ratingcount": "390",
+    "menutype": "Food",
+    "type": "Veg",
+    "featured": "true"
   },
   {
     "name": "Masala Dosa",
@@ -395,13 +399,21 @@ export const mockCampusMenu = [
     "availability": [
       {
         "location": "Hostel Premises",
-        "restaurant": "Shri Sainath Canteen (A)",
+        "menutype": "Beverage",
+        "type": "NonVeg",
+        "name": "Shri Sainath Canteen (A)",
         "price": "80",
         "upiId": "shrisainathcanteen@upi",
-        "shopkippername": "Lakshmi Iyer",
-        "rating": "4.3"
+        "shopkeepername": "Lakshmi Iyer",
+        "image":"",
+        "rating": "4.4",
+        "ratingcount": "360"
       }
     ],
-    "popular": "false"
+    "rating": "4.5",
+    "ratingcount": "400",
+    "menutype": "Food",
+    "type": "Veg",
+    "featured": "false"
   }
 ]

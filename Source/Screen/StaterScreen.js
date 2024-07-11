@@ -30,7 +30,7 @@ const colors = [
     nextBgColor: Colors.dark.colors.backGroundColor,
   },
   {
-    initialBgColor: Colors.dark.colors.secComponentColor,
+    initialBgColor: Colors.dark.colors.diffrentColorOrange,
     bgColor: Colors.dark.colors.backGroundColor,
     nextBgColor: Colors.dark.colors.secComponentColor,
   },
@@ -180,7 +180,7 @@ export default function StaterScreen() {
 
   const onPress = () => {
     if (index === quotes.length - 1) {
-      navigation.navigate("LoginScreen");
+      navigation.navigate("RoleSelection");
     } else {
       animatedValue.setValue(0);
       animatedValue2.setValue(0);
@@ -191,7 +191,7 @@ export default function StaterScreen() {
 
   return (
     <View className='w-full h-full pt-32'>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <Circle
         index={index}
         onPress={onPress}
