@@ -109,19 +109,28 @@ app.post('/userdata', async (req, res) => {
 })
 
 // ----------------------------- outletseller ----------------------------- //
-// ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
-    const { name, location, cuisine } = req.body;
+    const { name, location, cuisine, token } = req.body;
 
-    if (!name || !location || !cuisine) {
+    if (!name || !location || !cuisine || !token) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
 
     try {
+        const user = jwt.verify(token, jwtSecret);
+
+        const usercontactinfo = user.contactinfo;
+
+        const oldoutlet = await OutletInfo.findOne({ userId: usercontactinfo });
+        if (oldoutlet) {
+            return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
+        }
+
         const outlet = new OutletInfo({
             name: name,
             location: location,
             cuisine: cuisine,
+            userId: usercontactinfo // Associate outlet with user
         });
 
         await outlet.save();
@@ -130,6 +139,24 @@ app.post('/addoutlet', async (req, res) => {
 
     } catch (err) {
         console.log(err)
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- user outlets ----------------------------- //
+app.post('/useroutlets', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const user = jwt.verify(token, jwtSecret);
+        const usercontactinfo = user.contactinfo;
+
+        const outlets = await OutletInfo.find({ userId: usercontactinfo });
+
+        res.status(200).send({ status: "ok", data: outlets });
+
+    } catch (err) {
+        console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });

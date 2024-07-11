@@ -11,3 +11,4 @@ export const LOGIN_ENDPOINT = '5001/login';
 export const REGISTER_ENDPOINT = '5001/register';
 export const USERSDATA_ENDPOINT = '5001/userdata';
 export const ADDOUTLET_ENDPOINT = '5001/addoutlet';
+export const USEROUTLETS_ENDPOINT = '5001/useroutlets';

@@ -1,50 +1,71 @@
-
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Components/Colors'; // Adjust path as needed
-import { ADDOUTLET_ENDPOINT, API_BASE_URL } from '../Constants/Constants'; // Adjust paths/constants
+import { API_BASE_URL, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT  } from '../Constants/Constants';
+// import { ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT, API_BASE_URL // Adjust paths/constants
 
 export default function Like({ navigation }) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [cuisine, setCuisine] = useState('');
+    const [outlets, setOutlets] = useState([]);
 
-    function handleSubmit() {
-        // console.log("Contact Info:", contactinfo);
+    useEffect(() => {
+        getUserOutlets();
+    }, []);
 
-        if (!name) {
-            Alert.alert("name info is required");
+    const getUserOutlets = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: token })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+
+            const data = await response.json();
+            setOutlets(data.data);
+        } catch (error) {
+            console.error('Error fetching user outlets:', error);
+        }
+    };
+
+    const handleSubmit = async () => {
+        if (!name || !location || !cuisine) {
+            Alert.alert("All fields are required");
             return;
         }
 
-        const OutletData = {
-            name: String(name),
-            location: String(location),
-            cuisine: String(cuisine),
-        };
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const OutletData = { name, location, cuisine, token };
 
-        if (name && location && cuisine) {
-            // http://192.168.1.6:5001/register
-            fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
+            const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(OutletData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "ok") {
-                        Alert.alert("Added Successful");
-                    } else {
-                        Alert.alert(data.data);
-                    }
-                })
-                .catch(error => console.log("Error:", error));
-        } else {
-            Alert.alert("Fill Required Details");
+            });
+
+            const data = await response.json();
+            if (data.status === "ok") {
+                Alert.alert("Outlet added successfully");
+                getUserOutlets(); // Refresh the outlets list
+            } else {
+                Alert.alert(data.data);
+            }
+        } catch (error) {
+            console.error("Error adding outlet:", error);
         }
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -69,9 +90,18 @@ export default function Like({ navigation }) {
                 value={cuisine}
                 onChangeText={setCuisine}
             />
-            <TouchableOpacity onPress={() => handleSubmit()} style={styles.addButton}>
+            <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
                 <Text style={styles.addButtonText}>ADD</Text>
             </TouchableOpacity>
+            <FlatList
+                data={outlets}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => (
+                    <View style={styles.outletItem}>
+                        <Text style={styles.outletText}>{item.name} - {item.location} - {item.cuisine}</Text>
+                    </View>
+                )}
+            />
         </View>
     );
 }
@@ -101,5 +131,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         color: Colors.dark.colors.mainTextColor,
+    },
+    outletItem: {
+        backgroundColor: 'grey',
+        padding: 10,
+        marginVertical: 5,
+        borderRadius: 5,
+    },
+    outletText: {
+        color: 'white',
     },
 });

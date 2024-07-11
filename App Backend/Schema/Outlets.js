@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const outletSchema = {
-    // user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true  },
+const outletSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    location: {type: String, required: true}, 
+    location: { type: String, required: true },
     cuisine: { type: String, required: true },
-  }
+    userId: { type: String, ref: 'User', required: true },
+});
 
 
 // const itemSchema = new mongoose.Schema({
