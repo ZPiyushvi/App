@@ -541,7 +541,7 @@ const Home = () => {
                         activeOpacity={0.6}
                         key={index}
                         className="-z-10"
-                        style={{elevation: 30,  width: 170 }}
+                        style={{ elevation: 30, width: 170 }}
                         onPress={() => handlePress(categoryKey)}
                       >
                         <View key={index} className="rounded-2xl" style={{ height: 232, backgroundColor: Colors.dark.colors.componentColor }}>

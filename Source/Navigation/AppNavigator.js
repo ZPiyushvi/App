@@ -20,6 +20,7 @@ import YettoUpdate from '../Screen/YettoUpdate';
 import DetailView from '../Screen/ItemDetails';
 import BottomNavigator from './BottomNavigator';
 import Insights from '../Screen/Insights';
+import EditRestorent from '../Screen/EditRestorent';
 
 const Stack = createStackNavigator();
 
@@ -148,6 +149,10 @@ export default function AppNavigator() {
                 <Stack.Screen
                     name="YettoUpdate"
                     component={YettoUpdate}
+                />
+                <Stack.Screen
+                    name="EditRestorent"
+                    component={EditRestorent}
                 />
                 <Stack.Screen
                     name="Insights"

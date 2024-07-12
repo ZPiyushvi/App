@@ -11,7 +11,7 @@ import useIncrementHandler from '../Components/handleIncrement';
 
 
 
-export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, Items) => {
+export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, onPressFuction) => {
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -24,14 +24,14 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, Item
     return (
         <>
             <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
-                <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                <TouchableOpacity className=' mb-6 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
                     <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
                 </TouchableOpacity>
                 {openDropdowns[menu.title] && (
                     <FlatList
                         data={menu.items}
-                        renderItem={({ item }) => renderDropdownItem({ item, title: menu.title, navigation, Items })}
+                        renderItem={({ item }) => renderDropdownItem({ item, title: menu.title, navigation, onPressFuction })}
                         keyExtractor={item => item.id}
                     />
                 )}
@@ -40,7 +40,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, Item
     )
 };
 
-const renderDropdownItem = ({ item, title, navigation, Items }) => {
+const renderDropdownItem = ({ item, title, navigation, onPressFuction }) => {
 
     return (
         <>
@@ -103,28 +103,13 @@ const renderDropdownItem = ({ item, title, navigation, Items }) => {
                         </ImageBackground>
                     </TouchableOpacity>
                     <View
-                        style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                        style={[styles.button, {  backgroundColor: Colors.dark.colors.componentColor, borderColor: item.stutus == 'true' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed, borderWidth: 1 }]}
                         className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                     >
-                        {item.quantity > 0 ? (
-                            <>
-                                {/* {console.log(item)} */}
-                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, Data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
-                                    <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
-                                </TouchableOpacity>
-                                <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => handleIncrement(item.id, title, item.item, Data.name)} className='z-10 right-0 absolute w-6/12 items-center'>
-                                    <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
-                                </TouchableOpacity>
-                            </>
-                        ) : (
-                            <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item.item, Data.name)}>
-                                    <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                                </TouchableOpacity>
-                                <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
-                            </>
-                        )}
+                        <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={onPressFuction}>
+                            <Text className=' text-xl font-black' style={{ color: item.stutus == 'true' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.stutus == 'true' ? 'In Stock' : 'Sold Out'}</Text>
+                        </TouchableOpacity>
+                        <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>{item.stutus == 'true' ? '+' : '-'}</Text>
                     </View>
                 </View>
                 {/* {renderModal({ data: selectedItemData })} */}

@@ -198,13 +198,18 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
     );
 }
 
-export const ListCard_Self2 = ({ item, hide_Model }) => {
+export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
-        <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(item) }}>
+        <TouchableOpacity activeOpacity={1} 
+        onPress={() => { 
+            hide_Model?.(); 
+            onPress ? onPress() : navToDetails(item);
+        }}
+        >
             <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
                 <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>

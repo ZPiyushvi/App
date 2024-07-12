@@ -131,8 +131,8 @@ const Home = () => {
     try {
       const token = await AsyncStorage.getItem("token");
       console.log(token)
-      // http://192.168.1.6:5001/userdata
-      const response = await fetch(`http://192.168.1.6:5001/userdata`, {
+      // http://192.168.1.3:5001/userdata
+      const response = await fetch(`http://192.168.1.3/:5001/userdata`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -145,6 +145,7 @@ const Home = () => {
       }
 
       const data = await response.json();
+      console.log('data', data)
       setUserData(data.data)
       console.log("userData", "home", data.data)
     } catch (error) {

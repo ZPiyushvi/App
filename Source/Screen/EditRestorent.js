@@ -1,199 +1,5 @@
-₹
-
-# App
-npx expo start
-npm error npm config set legacy-peer-deps true
-
-# FinEdu
-
-Fin Education Application React Code.
-
-Creating a first build for android
-
-1] Install the latest EAS CLI : npm install -g expo-cli // npm i eas-cli // mac : yarn global add eas-cli
-2] Log in to your Expo account : eas login  // eas whoami
-3] Configure the project : eas build:configure
-4] Create apk : eas build --platform android --profile preview
-
-
-    in local machine 
-
-    clean the project directory :=> cd android && ./gradlew clean
-    create abb file :=> npx react-native build-android --mode=release run this command in root directory 
-
-    clean the project directory :=> cd android && ./gradlew clean
-    create an apk file :=> cd android && ./gradlew assembleRelease
-
-
-5] Run a build aab file : eas build --platform android
-
-deep links 
-To test deep links : npx uri-scheme open https://fili.hibudgeting.com/app/home --android
-1]Home Screen : https://fili.hibudgeting.com/app/home
-2]Quiz Screen : https://fili.hibudgeting.com/app/quiz
-3]Video Screen : https://fili.hibudgeting.com/app/videos
-4]community screen : https://fili.hibudgeting.com/app/community-screen
-5]Forgot Password Verify Otp Screen :https://fili.hibudgeting.com/app/verify-otp
-6]Verify otp during registration : https://fili.hibudgeting.com/app/verify-register-otp
-7)Registeration Screen: https://fili.hibudgeting.com/app/registration-screen
-
-
-Release App On Production 
-Before Building Production Build First change Versions in the following Files 
-1]Profile.js => Version : _._._
-2]app.json i] "version": "_._._"
-           ii] "versionCode": _
-3]package.json =>  "version": "_._._"
-4]Screen/Modules.js => curVersion: '_._._'
-Steps 
-1] Run This Command in terminal and download kea alis : npx eas credentials
-2] Copy and Place the  @spgiradkar2002__fili.jks file from root directory to under the android/app directory in your project folder
-3] Edit the file ~/.gradle/gradle.properties or android/gradle.properties, and add the following (replace *****    with the correct keystore password, alias and key password), 
-
-MYAPP_UPLOAD_STORE_FILE=@spgiradkar2002__fili.jks
-MYAPP_UPLOAD_KEY_ALIAS=22e761f18f423516dd9c82602b58ba33
-MYAPP_UPLOAD_STORE_PASSWORD=8953decd2b788b7ab9e4e23d386c8a43
-MYAPP_UPLOAD_KEY_PASSWORD=c478dcddca0a4d7917dd7329bb47e9b7
-
-4] Edit the file android/app/build.gradle in your project folder, and add the signing config,
-
-android {
-
-    defaultConfig { ... }
-    signingConfigs { // remove debug signing and add release 
-        release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-        }
-    }
-    buildTypes {  // remove debug signing and add release 
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-}
-
-5]  clean the project directory :=> cd android && ./gradlew clean
-    create an apk file :=> cd android && ./gradlew assembleRelease
-
-
-6]  Generating the release AAB For PlayStore
-    clean the project directory :=> cd android && ./gradlew clean
-    run this command in root directory 
-    npx react-native build-android --mode=release 
-
-
-
-
-
-
-
-
-
-      
-      <Text style={styles.label}>Menu Type</Text>
-      <View style={styles.grid}>
-        {menuTypes.map(type => (
-          <TouchableOpacity
-            key={type}
-            style={[styles.gridItem, storeDetails.menuType.includes(type) && styles.gridItemSelected]}
-            onPress={() => handleMenuTypeToggle(type)}
-          >
-            <Text style={styles.gridItemText}>{type}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* <View style={styles.container}> */}
-          <Text style={styles.label}>Off Days</Text>
-          <View style={styles.dropdownContainer}>
-            <TouchableOpacity
-              style={styles.dropdownHeader}
-              onPress={toggleDropdown}
-            >
-              <Text style={styles.dropdownHeaderText}>
-                {storeDetailsOffDays.offDays.length > 0 ? storeDetailsOffDays.offDays.map(day => weekDays.find(wd => wd.value === day).label).join(', ') : 'Select Off Days'}
-              </Text>
-              <Ionicons
-                name={openDropdown ? "caret-up-outline" : "caret-down-outline"}
-                size={20}
-                color="#000"
-              />
-            </TouchableOpacity>
-            {openDropdown && (
-              <>
-                <FlatList
-                  data={weekDays}
-                  renderItem={renderDropdownItem}
-                  keyExtractor={item => item.value}
-                  style={styles.dropdownList}
-                />
-                <TouchableOpacity
-                  style={styles.doneButton}
-                  onPress={toggleDropdown}
-                >
-                  <Text style={styles.doneButtonText}>Done</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-        {/* </View> */}
-
-      <Text style={styles.label}>Opening Time</Text>
-      <TouchableOpacity onPress={() => showDatePicker('openingTime')}>
-        <TextInput
-          style={styles.input}
-          value={storeDetails.openingTime}
-          editable={false}
-        />
-      </TouchableOpacity>
-
-      <Text style={styles.label}>Closing Time</Text>
-      <TouchableOpacity onPress={() => showDatePicker('closingTime')}>
-        <TextInput
-          style={styles.input}
-          value={storeDetails.closingTime}
-          editable={false}
-        />
-      </TouchableOpacity>
-
-      <Text style={styles.label}>Leave Day</Text>
-      <TouchableOpacity onPress={showDateSelector}>
-        <TextInput
-          style={styles.input}
-          value={storeDetails.leaveDay}
-          editable={false}
-        />
-      </TouchableOpacity>
-
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="time"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-
-      <DateTimePickerModal
-        isVisible={isDateSelectorVisible}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={hideDateSelector}
-      />
-
-
-
-
-
-
-
-
-
-      import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Dimensions, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, StatusBar, Dimensions } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -307,15 +113,56 @@ const EditStoreDetails = () => {
 
     const renderDropdownItem = ({ item }) => (
         <TouchableOpacity
-            style={styles.dropdownItem}
+            style={{
+                padding: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                overflow: 'hidden',
+                backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
+                // borderBottomWidth: 1,
+                // borderBottomColor: '#ccc',
+            }}
             onPress={() => handleOffDaysToggle(item.value)}
         >
-            <Text style={styles.dropdownItemText}>{item.label}</Text>
+            <Text
+                className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
+                style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
+            >{item.label}
+            </Text>
             {storeDetailsOffDays.offDays.includes(item.value) && (
-                <Ionicons name="checkmark-outline" size={20} color="#000" />
+                <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
             )}
         </TouchableOpacity>
     );
+
+    const scrollViewRef = useRef(null);
+
+    const handleDropdownPress = () => {
+        toggleDropdown();
+        setTimeout(() => {
+            if (scrollViewRef.current) {
+                scrollViewRef.current.scrollTo({ y: 1200, animated: true });
+            }
+        }, 10); // Adjust the timeout as needed
+    };
+
+    const inputRefs = useRef({});
+    const [focusedInput, setFocusedInput] = useState(null);
+
+    const focusInput = (fieldName) => {
+        if (inputRefs.current[fieldName]) {
+            inputRefs.current[fieldName].focus();
+        }
+    };
+
+    const handleBlur = (fieldName) => {
+        setFocusedInput(null);
+    };
+
+    const handleFocus = (fieldName) => {
+        setFocusedInput(fieldName);
+    };
 
     return (
         // <View className=' px-3 w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -372,6 +219,7 @@ const EditStoreDetails = () => {
             </View>
 
             <ScrollView
+                ref={scrollViewRef}
                 className='px-3 h-full w-full'
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
                 keyboardShouldPersistTaps='handled'
@@ -410,10 +258,6 @@ const EditStoreDetails = () => {
 
                 <View className='mt-3 rounded-xl'>
                     <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-                        {/* <View className='items-center flex-row mb-3'>
-                            <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Type</Text>
-                        </View> */}
                         <View className=' flex-row items-center justify-between'>
                             <View className=' flex-row justify-between'>
                                 <TouchableOpacity
@@ -448,41 +292,70 @@ const EditStoreDetails = () => {
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Shopkeeper Information</Text>
                         </View>
-                        {/* <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Store Name</Text>
-                            <View className='flex-row'>
-                                <TextInput
-                                    style={{ color: Colors.dark.colors.mainTextColor }}
-                                    className='font-black text-base underline mr-2'
-                                    value={storeDetails.name}
-                                    onChangeText={(value) => handleChange('name', value)}
-                                />
-                                <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
-                            </View> */}
                         <View className='my-2 flex-row items-center justify-between'>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Shopkeeper Name</Text>
                             <View className='flex-row'>
                                 <TextInput
+                                    ref={ref => inputRefs.current['shopkeeperName'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
                                     className='font-black text-base underline mr-2'
                                     value={storeDetails.shopkeeperName}
                                     onChangeText={(value) => handleChange('shopkeeperName', value)}
+                                    onFocus={() => handleFocus('shopkeeperName')}
+                                    onBlur={() => handleBlur('shopkeeperName')}
                                 />
-                                <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+
+                                {focusedInput === 'shopkeeperName' ? (
+                                    <TouchableOpacity onPress={() => inputRefs.current['shopkeeperName'].blur()}>
+                                        <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity onPress={() => focusInput('shopkeeperName')}>
+                                        <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                )}
                             </View>
                         </View>
                         <View className='my-2 flex-row items-center justify-between'>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>UPI ID</Text>
                             <View className='flex-row'>
                                 <TextInput
+                                    ref={ref => inputRefs.current['upiId'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
                                     className='font-black text-base underline mr-2'
                                     value={storeDetails.upiId}
                                     onChangeText={(value) => handleChange('upiId', value)}
+                                    onFocus={() => handleFocus('upiId')}
+                                    onBlur={() => handleBlur('upiId')}
                                 />
-                                <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+
+                                {focusedInput === 'upiId' ? (
+                                    <TouchableOpacity onPress={() => inputRefs.current['upiId'].blur()}>
+                                        <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity onPress={() => focusInput('upiId')}>
+                                        <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                )}
                             </View>
                         </View>
-                        <View className='my-2 flex-row items-center justify-between'>
+                        {/* <View className='flex-row'>
+                        <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Shopkeeper Name</Text>
+                        <View className='flex-row'>
+                            <TextInput
+                                ref={upiIdInputRef}
+                                style={{ color: Colors.dark.colors.mainTextColor }}
+                                className='font-black text-base underline mr-2'
+                                value={storeDetails.upiId}
+                                onChangeText={(value) => handleChange('upiId', value)}
+                            />
+                            <TouchableOpacity onPress={() => upiIdInputRef.current.focus()}>
+                                <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                            </TouchableOpacity>
+                            </View>
+                        </View> */}
+                        {/* <View className='my-2 flex-row items-center justify-between'>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Store Name</Text>
                             <View className='flex-row'>
                                 <TextInput
@@ -493,7 +366,7 @@ const EditStoreDetails = () => {
                                 />
                                 <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
 
@@ -501,15 +374,132 @@ const EditStoreDetails = () => {
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Operating Hours</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Store Information</Text>
                         </View>
 
                         <View className='my-2 flex-row items-center justify-between'>
-                            <View className='w-[45%]'>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Store Name</Text>
+                            <View className='flex-row'>
+                                <TextInput
+                                    ref={ref => inputRefs.current['name'] = ref}
+                                    style={{ color: Colors.dark.colors.mainTextColor }}
+                                    className='font-black text-base underline mr-2'
+                                    value={storeDetails.name}
+                                    onChangeText={(value) => handleChange('name', value)}
+                                    onFocus={() => handleFocus('name')}
+                                    onBlur={() => handleBlur('name')}
+                                />
+
+                                {focusedInput === 'name' ? (
+                                    <TouchableOpacity onPress={() => inputRefs.current['name'].blur()}>
+                                        <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity onPress={() => focusInput('name')}>
+                                        <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        </View>
+                        <View className='my-2 flex-row items-center justify-between'>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Location</Text>
+                            <View className='flex-row'>
+                                <TextInput
+                                    ref={ref => inputRefs.current['location'] = ref}
+                                    style={{ color: Colors.dark.colors.mainTextColor }}
+                                    className='font-black text-base underline mr-2'
+                                    value={storeDetails.location}
+                                    onChangeText={(value) => handleChange('location', value)}
+                                    onFocus={() => handleFocus('name')}
+                                    onBlur={() => handleBlur('name')}
+                                />
+
+                                {focusedInput === 'name' ? (
+                                    <TouchableOpacity onPress={() => inputRefs.current['name'].blur()}>
+                                        <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity onPress={() => focusInput('name')}>
+                                        <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+                        </View>
+
+                        <View className='my-2'>
+                            <View className='flex-row justify-between'>
+                                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-2' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    Additional Details
+                                </Text>
+                                {focusedInput === 'details' ? (
+                                <TouchableOpacity onPress={() => inputRefs.current['details'].blur()}>
+                                    <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity onPress={() => focusInput('details')}>
+                                    <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                </TouchableOpacity>
+                            )}
+                            </View>
+                            <TextInput
+                                ref={ref => inputRefs.current['details'] = ref}
+                                style={{ color: Colors.dark.colors.mainTextColor, flex: 1 }}
+                                className='font-black text-base underline mr-2'
+                                value={storeDetails.details}
+                                onChangeText={(value) => handleChange('details', value)}
+                                multiline={true}
+                                numberOfLines={4}
+                                onFocus={() => handleFocus('details')}
+                                onBlur={() => handleBlur('details')}
+                            />
+
+                            
+                        </View>
+                        <View className='my-2'>
+                            <View className='flex-row justify-between'>
+                                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base ' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    Image
+                                </Text>
+                                {focusedInput === 'image' ? (
+                                <TouchableOpacity onPress={() => inputRefs.current['image'].blur()}>
+                                    <Ionicons name="checkmark-done" size={22} color={Colors.dark.colors.mainTextColor} />
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity onPress={() => focusInput('image')}>
+                                    <Ionicons name="pencil-sharp" size={22} color={Colors.dark.colors.mainTextColor} />
+                                </TouchableOpacity>
+                            )}
+                            </View>
+                            <TextInput
+                                ref={ref => inputRefs.current['image'] = ref}
+                                style={{ color: Colors.dark.colors.mainTextColor, flex: 1 }}
+                                className='font-black text-base underline mr-2'
+                                value={storeDetails.image}
+                                onChangeText={(value) => handleChange('image', value)}
+                                multiline={true}
+                            // numberOfLines={3}
+                            onFocus={() => handleFocus('image')}
+                            onBlur={() => handleBlur('image')}
+                        />
+
+                        
+                        </View>
+                    </View>
+                </View>
+
+                <View className='my-3 rounded-xl'>
+                    <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                        <View className='items-center flex-row mb-3'>
+                            <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Operating Period</Text>
+                        </View>
+
+                        <View className='my-1 flex-row items-center justify-between'>
+                            <View className='w-[43%]'>
                                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Opening Time</Text>
                                 <TouchableOpacity onPress={() => showDatePicker('openingTime')}>
                                     <TextInput
-                                        className='font-black text-base rounded-md p-3' 
+                                        className='font-black text-base rounded-md p-2'
                                         style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
                                         value={storeDetails.openingTime}
                                         editable={false}
@@ -517,11 +507,11 @@ const EditStoreDetails = () => {
                                 </TouchableOpacity>
                             </View>
                             <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black top-3 text-xl'>to</Text>
-                            <View className='w-[45%]'>
-                            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Closing Time</Text>
+                            <View className='w-[43%]'>
+                                <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Closing Time</Text>
                                 <TouchableOpacity onPress={() => showDatePicker('closingTime')}>
                                     <TextInput
-                                        className='font-black text-base rounded-md p-3' 
+                                        className='font-black text-base rounded-md p-2'
                                         style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
                                         value={storeDetails.closingTime}
                                         editable={false}
@@ -530,29 +520,102 @@ const EditStoreDetails = () => {
                             </View>
                         </View>
 
-                        <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Opening Time</Text>
-                        <TouchableOpacity onPress={() => showDatePicker('openingTime')}>
-                            <TextInput
-                                style={styles.input}
-                                value={storeDetails.openingTime}
-                                editable={false}
-                            />
-                        </TouchableOpacity>
+                        <View className='my-1 flex-1'>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>Leave Days</Text>
+                            <TouchableOpacity onPress={showDateSelector}>
+                                <TextInput
+                                    className='font-black text-base rounded-md p-2'
+                                    style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
+                                    value={storeDetails.leaveDay}
+                                    editable={false}
+                                />
+                            </TouchableOpacity>
+                        </View>
 
-                        <Text style={styles.label}>Closing Time</Text>
-                        <TouchableOpacity onPress={() => showDatePicker('closingTime')}>
-                            <TextInput
-                                style={styles.input}
-                                value={storeDetails.closingTime}
-                                editable={false}
-                            />
-                        </TouchableOpacity>
+                        <View className='my-1 flex-1'>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>Off Days</Text>
+                            <TouchableOpacity
+                                className='p-3 font-black flex-row items-center justify-between text-base rounded-md'
+                                style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
+                                onPress={handleDropdownPress}
+                            >
+                                <Text
+                                    className='font-black flex-row justify-between text-base rounded-md'
+                                    style={{ color: Colors.dark.colors.mainTextColor }}
+                                >
+                                    {storeDetailsOffDays.offDays.length > 0 ? storeDetailsOffDays.offDays.map(day => weekDays.find(wd => wd.value === day).value).join(', ') : 'Select Off Days'}
+                                </Text>
+                                <Ionicons
+                                    name={openDropdown ? "close" : "chevron-down"}
+                                    size={20}
+                                    color={Colors.dark.colors.mainTextColor}
+                                />
+                            </TouchableOpacity>
+                            {openDropdown && (
+                                <View className='overflow-hidden font-black mt-2 text-base rounded-md' style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}>
+                                    {weekDays.map((item) => (
+                                        <TouchableOpacity
+                                            style={{
+                                                padding: 10,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                overflow: 'hidden',
+                                                backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
+                                                // borderBottomWidth: 1,
+                                                // borderBottomColor: '#ccc',
+                                            }}
 
+                                            onPress={() => {
+                                                console.log(item.value);
+                                                handleOffDaysToggle(item.value);
+                                                if (item.value === 'None') {
+                                                    toggleDropdown(); // If not want to close on None
+                                                }
+                                            }}
+                                        >
+                                            <Text
+                                                className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
+                                                style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
+                                            >{item.label}
+                                                {/* {console.log(item.label)} */}
+                                            </Text>
+                                            {storeDetailsOffDays.offDays.includes(item.value) && (
+                                                <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
+                                            )}
+                                        </TouchableOpacity>
+                                    ))}
+                                    <TouchableOpacity
+                                        style={styles.doneButton}
+                                        onPress={toggleDropdown}
+                                    >
+                                        <Text style={styles.doneButtonText}>Done</Text>
+                                    </TouchableOpacity>
+                                    {/* <TouchableOpacity
+                                        style={styles.doneButton}
+                                        onPress={toggleDropdown}
+                                    >
+                                        <Text style={styles.doneButtonText}>Done</Text>
+                                    </TouchableOpacity> */}
+                                </View>
+                            )}
+                        </View>
                     </View>
                 </View>
 
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="time"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
 
-
+                <DateTimePickerModal
+                    isVisible={isDateSelectorVisible}
+                    mode="date"
+                    onConfirm={handleDateConfirm}
+                    onCancel={hideDateSelector}
+                />
             </ScrollView>
         </KeyboardAvoidingView>
     );
