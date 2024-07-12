@@ -23,7 +23,8 @@ const weekDays = [
 export default function EditScreen({ route, navigation }) {
     const { outlet } = route.params;
     const [editingOutlet, setEditingOutlet] = useState(outlet || {
-        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both', featured: false,
+        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both', 
+        featured: false,
         openingTime: '',
         closingTime: '',
         offDays: [],
@@ -35,8 +36,18 @@ export default function EditScreen({ route, navigation }) {
         setEditingOutlet({ ...editingOutlet, [field]: value });
     };
 
+    // -------------------- For Auto Submit/ without save button use this ---------------------
+
+    // const handleChange = async (field, value) => {
+    //     const updatedOutlet = { ...editingOutlet, [field]: value };
+    //     setEditingOutlet(updatedOutlet);
+    
+    //     // Automatically save the outlet whenever a field is updated
+    //     await handleSaveOutlet(updatedOutlet);
+    // };
+
     const handleSaveOutlet = async () => {
-        if (!editingOutlet.name || !editingOutlet.shopkeeperName || !editingOutlet.upiId || !editingOutlet.image || !editingOutlet.details || !editingOutlet.location || !editingOutlet.featured
+        if (!editingOutlet.name || !editingOutlet.shopkeeperName || !editingOutlet.upiId || !editingOutlet.image || !editingOutlet.details || !editingOutlet.location || editingOutlet.featured === undefined
             || !editingOutlet.openingTime || !editingOutlet.closingTime
             || !editingOutlet.offDays
             || !editingOutlet.leaveDay
@@ -50,6 +61,7 @@ export default function EditScreen({ route, navigation }) {
         try {
             const token = await AsyncStorage.getItem("token");
             const outletData = { ...editingOutlet, token };
+// console.log(token)
 
             const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
                 method: "POST",
@@ -369,7 +381,7 @@ export default function EditScreen({ route, navigation }) {
                         </View>
                     </View>
                 </View>
-
+                
                 <View className='mt-3 rounded-xl'>
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
@@ -608,31 +620,11 @@ export default function EditScreen({ route, navigation }) {
                     onCancel={hideDateSelector}
                 />
 
-
-
-                <View style={styles.container}>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter Outlet Name"
-                        value={editingOutlet.name}
-                        onChangeText={(value) => handleChange('name', value)}
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter Shopkeeper Name"
-                        value={editingOutlet.shopkeeperName}
-                        onChangeText={(value) => handleChange('shopkeeperName', value)}
-                    />
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Enter UPI ID"
-                        value={editingOutlet.upiId}
-                        onChangeText={(value) => handleChange('upiId', value)}
-                    />
+                {/* <View style={styles.container}> */}
                     <TouchableOpacity onPress={handleSaveOutlet} style={styles.saveButton}>
                         <Text style={styles.saveButtonText}>SAVE</Text>
                     </TouchableOpacity>
-                </View>
+                {/* </View> */}
 
 
             </ScrollView>

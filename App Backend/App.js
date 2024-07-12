@@ -117,7 +117,7 @@ app.post('/addoutlet', async (req, res) => {
         offDays,
     } = req.body;
 
-    if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || !featured
+    if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
         || !openingTime || !closingTime || !leaveDay || !offDays
     ) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
@@ -144,11 +144,9 @@ app.post('/addoutlet', async (req, res) => {
             // }
 
             outlet = new OutletInfo({
-                id: Date.now().toString(), name, shopkeeperName, upiId, image, details, token, location, type, featured,
-                openingTime,
-                closingTime,
-                leaveDay,
-                offDays,
+                id: Date.now().toString(),
+                name, shopkeeperName, upiId, details, image, location, type,
+                openingTime, closingTime, leaveDay, featured, offDays, userId
             });
             await outlet.save();
         }

@@ -1,6 +1,3 @@
-
-    
-
 # App
 npx expo start
 npm error npm config set legacy-peer-deps true
