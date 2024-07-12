@@ -107,40 +107,40 @@ app.post('/userdata', async (req, res) => {
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 })
-
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
     const {
-        name, shopkeeperName, upiId, featured, type, menuType, location, locationDetailed,
-        rating, ratingCount, image, details, openingTime, closingTime, offDays, leaveDay, token
+        id, name, shopkeeperName, upiId, token
     } = req.body;
 
-    if (!name || !location || !menuType || !token) {
+    if (!name || !shopkeeperName || !upiId || !token) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
 
     try {
         const user = jwt.verify(token, jwtSecret);
-
         const userId = user.contactinfo;
 
-        // const oldoutlet = await OutletInfo.findOne({ userId: userId });
-        // if (oldoutlet) {
-        //     return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
-        // }
+        let outlet;
+        if (id) {
+            outlet = await OutletInfo.findOneAndUpdate({ id, userId }, { name, shopkeeperName, upiId }, { new: true });
+            if (!outlet) {
+                return res.status(404).send({ status: "error", data: "Outlet not found" });
+            }
+        } else {
+            // No user with more than 1 store 
+            const oldoutlet = await OutletInfo.findOne({ userId: userId });
+            if (oldoutlet) {
+                return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
+            }
 
+            outlet = new OutletInfo({ id: Date.now().toString(), name, shopkeeperName, upiId, userId });
+            await outlet.save();
+        }
 
-        const outlet = new OutletInfo({ //featured, rating, ratingCount,
-            name, shopkeeperName, upiId, type, menuType, location, locationDetailed,
-            image, details, openingTime, closingTime, offDays, leaveDay, userId
-        });
-
-        await outlet.save();
-
-        res.status(201).send({ status: "ok", data: "Outlet Created" });
-
+        res.status(201).send({ status: "ok", data: "Outlet saved successfully" });
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });

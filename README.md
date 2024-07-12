@@ -1,4 +1,13 @@
-₹
+ const [outlets, setOutlets] = useState([]);
+
+const handleAddStore = () => {
+        // Add a store with placeholder values
+        const newOutlet = { name: 'New Outlet', shopkeeperName: 'Shopkeeper', upiId: 'UPI123' };
+        setOutlets([...outlets, newOutlet]);
+        setEditingOutlet(newOutlet); // Set the newly added outlet to be edited
+        handleSaveOutlet
+    };
+    
 
 # App
 npx expo start
