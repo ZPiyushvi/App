@@ -110,10 +110,16 @@ app.post('/userdata', async (req, res) => {
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
     const {
-        id, name, shopkeeperName, upiId, token
+        id, name, shopkeeperName, upiId, image, details, token, location, type, featured,
+        openingTime,
+        closingTime,
+        leaveDay,
+        offDays,
     } = req.body;
 
-    if (!name || !shopkeeperName || !upiId || !token) {
+    if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || !featured
+        || !openingTime || !closingTime || !leaveDay || !offDays
+    ) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
 
@@ -123,7 +129,10 @@ app.post('/addoutlet', async (req, res) => {
 
         let outlet;
         if (id) {
-            outlet = await OutletInfo.findOneAndUpdate({ id, userId }, { name, shopkeeperName, upiId }, { new: true });
+            outlet = await OutletInfo.findOneAndUpdate({ id, userId }, {
+                name, shopkeeperName, upiId, details, image, location, type,
+                openingTime, closingTime, leaveDay, featured, offDays
+            }, { new: true });
             if (!outlet) {
                 return res.status(404).send({ status: "error", data: "Outlet not found" });
             }
@@ -134,7 +143,13 @@ app.post('/addoutlet', async (req, res) => {
             //     return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
             // }
 
-            outlet = new OutletInfo({ id: Date.now().toString(), name, shopkeeperName, upiId, userId });
+            outlet = new OutletInfo({
+                id: Date.now().toString(), name, shopkeeperName, upiId, image, details, token, location, type, featured,
+                openingTime,
+                closingTime,
+                leaveDay,
+                offDays,
+            });
             await outlet.save();
         }
 
