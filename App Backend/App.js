@@ -110,27 +110,29 @@ app.post('/userdata', async (req, res) => {
 
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
-    const { name, location, cuisine, token } = req.body;
+    const {
+        name, shopkeeperName, upiId, featured, type, menuType, location, locationDetailed,
+        rating, ratingCount, image, details, openingTime, closingTime, offDays, leaveDay, token
+    } = req.body;
 
-    if (!name || !location || !cuisine || !token) {
+    if (!name || !location || !menuType || !token) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
 
     try {
         const user = jwt.verify(token, jwtSecret);
 
-        const usercontactinfo = user.contactinfo;
+        const userId = user.contactinfo;
 
-        const oldoutlet = await OutletInfo.findOne({ userId: usercontactinfo });
-        if (oldoutlet) {
-            return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
-        }
+        // const oldoutlet = await OutletInfo.findOne({ userId: userId });
+        // if (oldoutlet) {
+        //     return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
+        // }
 
-        const outlet = new OutletInfo({
-            name: name,
-            location: location,
-            cuisine: cuisine,
-            userId: usercontactinfo // Associate outlet with user
+
+        const outlet = new OutletInfo({ //featured, rating, ratingCount,
+            name, shopkeeperName, upiId, type, menuType, location, locationDetailed,
+            image, details, openingTime, closingTime, offDays, leaveDay, userId
         });
 
         await outlet.save();

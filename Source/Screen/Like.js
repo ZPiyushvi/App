@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, FlatList } from 'react-native';
-import Colors from '../Components/Colors'; // Adjust path as needed
-import { API_BASE_URL, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, TouchableOpacity, Text, FlatList, Alert, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { API_BASE_URL, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
 
 export default function Like({ navigation }) {
     const [name, setName] = useState('');
+    const [shopkeeperName, setShopkeeperName] = useState('');
+    const [upiId, setUpiId] = useState('');
+    const [featured, setFeatured] = useState(false);
+    const [type, setType] = useState('');
+    const [menuType, setMenuType] = useState('');
     const [location, setLocation] = useState('');
-    const [cuisine, setCuisine] = useState('');
+    const [locationDetailed, setLocationDetailed] = useState('');
+    const [rating, setRating] = useState('');
+    const [ratingCount, setRatingCount] = useState('');
+    const [image, setImage] = useState('');
+    const [details, setDetails] = useState('');
+    const [openingTime, setOpeningTime] = useState('');
+    const [closingTime, setClosingTime] = useState('');
+    const [offDays, setOffDays] = useState('');
+    const [leaveDay, setLeaveDay] = useState('');
     const [outlets, setOutlets] = useState([]);
 
     useEffect(() => {
@@ -38,21 +49,24 @@ export default function Like({ navigation }) {
     };
 
     const handleSubmit = async () => {
-        if (!name || !location || !cuisine) {
+        if (!name || !location || !menuType) {
             Alert.alert("All fields are required");
             return;
         }
 
         try {
             const token = await AsyncStorage.getItem("token");
-            const OutletData = { name, location, cuisine, token };
+            const outletData = { //rating, ratingCount,
+                name, shopkeeperName, upiId, type, menuType, location, locationDetailed,
+                 image, details, openingTime, closingTime, offDays, leaveDay, token
+            };
 
             const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(OutletData)
+                body: JSON.stringify(outletData)
             });
 
             const data = await response.json();
@@ -68,29 +82,23 @@ export default function Like({ navigation }) {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter Outlet Name"
-                placeholderTextColor={Colors.dark.colors.textColor}
-                value={name}
-                onChangeText={setName}
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter Location"
-                placeholderTextColor={Colors.dark.colors.textColor}
-                value={location}
-                onChangeText={setLocation}
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="Enter Cuisine"
-                placeholderTextColor={Colors.dark.colors.textColor}
-                value={cuisine}
-                onChangeText={setCuisine}
-            />
-            <TouchableOpacity onPress={() => handleSubmit()} style={styles.addButton}>
+        <ScrollView style={styles.container}>
+            <TextInput style={styles.textInput} placeholder="Enter Outlet Name" value={name} onChangeText={setName} />
+            <TextInput style={styles.textInput} placeholder="Enter Shopkeeper Name" value={shopkeeperName} onChangeText={setShopkeeperName} />
+            <TextInput style={styles.textInput} placeholder="Enter UPI ID" value={upiId} onChangeText={setUpiId} />
+            <TextInput style={styles.textInput} placeholder="Enter Type" value={type} onChangeText={setType} />
+            <TextInput style={styles.textInput} placeholder="Enter Menu Type" value={menuType} onChangeText={setMenuType} />
+            <TextInput style={styles.textInput} placeholder="Enter Location" value={location} onChangeText={setLocation} />
+            <TextInput style={styles.textInput} placeholder="Enter Detailed Location" value={locationDetailed} onChangeText={setLocationDetailed} />
+            {/* <TextInput style={styles.textInput} placeholder="Enter Rating" value={rating} onChangeText={setRating} /> */}
+            {/* <TextInput style={styles.textInput} placeholder="Enter Rating Count" value={ratingCount} onChangeText={setRatingCount} /> */}
+            <TextInput style={styles.textInput} placeholder="Enter Image URL" value={image} onChangeText={setImage} />
+            <TextInput style={styles.textInput} placeholder="Enter Details" value={details} onChangeText={setDetails} />
+            <TextInput style={styles.textInput} placeholder="Enter Opening Time" value={openingTime} onChangeText={setOpeningTime} />
+            <TextInput style={styles.textInput} placeholder="Enter Closing Time" value={closingTime} onChangeText={setClosingTime} />
+            <TextInput style={styles.textInput} placeholder="Enter Off Days" value={offDays} onChangeText={setOffDays} />
+            <TextInput style={styles.textInput} placeholder="Enter Leave Day" value={leaveDay} onChangeText={setLeaveDay} />
+            <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
                 <Text style={styles.addButtonText}>ADD</Text>
             </TouchableOpacity>
             <FlatList
@@ -98,50 +106,23 @@ export default function Like({ navigation }) {
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                     <View style={styles.outletItem}>
-                        <Text style={styles.outletText}>{item.name} - {item.location} - {item.cuisine}</Text>
+                        <Text style={styles.outletText}>{item.name} - {item.location} - {item.menuType}</Text>
                     </View>
                 )}
             />
-        </View>
+        </ScrollView>
     );
 }
 
-const styles = StyleSheet.create({
-    outletItem: {
-        backgroundColor: 'grey',
-        padding: 10,
-        marginVertical: 5,
-        borderRadius: 5,
-    },
-    outletText: {
-        color: 'white',
-    },
-    container: {
-        flex: 1,
-        backgroundColor: 'black',
-        padding: 20,
-    },
-    textInput: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: 'white',
-    },
-    addButton: {
-        backgroundColor: Colors.dark.colors.diffrentColorOrange,
-        borderRadius: 10,
-        paddingVertical: 15,
-        alignItems: 'center',
-    },
-    addButtonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: Colors.dark.colors.mainTextColor,
-    },
-})
+const styles = {
+    container: { flex: 1, padding: 20 },
+    textInput: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 },
+    addButton: { backgroundColor: 'blue', padding: 10, alignItems: 'center' },
+    addButtonText: { color: 'white', fontWeight: 'bold' },
+    outletItem: { padding: 10, borderBottomWidth: 1, borderBottomColor: 'gray' },
+    outletText: { fontSize: 16 }
+};
+
 
 // const BANNER_H = Dimensions.get('window').height * 0.50;
 // const Gradient_H = Dimensions.get('window').height * 0.5;
