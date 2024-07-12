@@ -129,10 +129,10 @@ app.post('/addoutlet', async (req, res) => {
             }
         } else {
             // No user with more than 1 store 
-            const oldoutlet = await OutletInfo.findOne({ userId: userId });
-            if (oldoutlet) {
-                return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
-            }
+            // const oldoutlet = await OutletInfo.findOne({ userId: userId });
+            // if (oldoutlet) {
+            //     return res.status(400).send({ status: "error", data: "User with this contact info oldoutlet already exists" });
+            // }
 
             outlet = new OutletInfo({ id: Date.now().toString(), name, shopkeeperName, upiId, userId });
             await outlet.save();
