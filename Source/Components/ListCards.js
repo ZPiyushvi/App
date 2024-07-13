@@ -204,35 +204,62 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
-        <TouchableOpacity activeOpacity={1} 
-        onPress={() => { 
-            hide_Model?.(); 
-            onPress ? onPress() : navToDetails(item);
-        }}
-        >
-            <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-                <TouchableOpacity activeOpacity={1} onPress={() => navToDetails(item)}>
-                    <View className='overflow-hidden' style={styles.foodItemContainer}>
-                        <ImageBackground
-                            source={{
-                                uri: item.image,
-                                method: 'POST',
-                                headers: {
-                                    Pragma: 'no-cache',
-                                },
-                            }}
-                            defaultSource={require('./../../assets/favicon.png')}
-                            className=' h-full w-full overflow-hidden'
-                            alt="Logo"
-                            resizeMode='cover'
-                            style={{ flex: 1, justifyContent: 'center', }}
-                        >
-                            <LinearGradient
-                                start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
-                                className='overflow-hidden h-full w-full'
-                                colors={['transparent', Colors.dark.colors.backGroundColor]}
+        item == 'null' ?
+            <TouchableOpacity activeOpacity={1}
+                onPress={() => {
+                    hide_Model?.();
+                    onPress ? onPress() : navToDetails(item);
+                }}
+            >
+                <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+                    <View style={{ flex: 1, height: Dimensions.get('window').height * 0.22 }}>
+
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <Text className=' text-2xl font-black' style={{ color: Colors.dark.colors.textColor }}>You don't have store?</Text>
+                            <Text className=' text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add Now!</Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity activeOpacity={1}
+                onPress={() => {
+                    hide_Model?.();
+                    onPress ? onPress() : navToDetails(item);
+                }}
+            >
+                <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+                    <TouchableOpacity activeOpacity={1} 
+                    onPress={() => {
+                        // hide_Model?.();
+                        onPress ? onPress() : navToDetails(item);
+                    }}
+                    >
+                        <View className='overflow-hidden' style={styles.foodItemContainer}>
+                            <ImageBackground
+                                source={{
+                                    uri: item.image,
+                                    method: 'POST',
+                                    headers: {
+                                        Pragma: 'no-cache',
+                                    },
+                                }}
+                                defaultSource={require('./../../assets/favicon.png')}
+                                className=' h-full w-full overflow-hidden'
+                                alt="Logo"
+                                resizeMode='cover'
+                                style={{ flex: 1, justifyContent: 'center', }}
                             >
-                                {/* <View className='absolute bottom-1 p-2'>
+                                <LinearGradient
+                                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                                    className='overflow-hidden h-full w-full'
+                                    colors={['transparent', Colors.dark.colors.backGroundColor]}
+                                >
+                                    {/* <View className='absolute bottom-1 p-2'>
                                 <Text className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
                                     {TruncatedTextComponent(item.name, 6)}
                                 </Text>
@@ -240,54 +267,54 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                                     {TruncatedTextComponent(item.name, 11)}
                                 </Text>
                             </View> */}
-                            </LinearGradient>
-                            <View className='absolute bottom-2 right-2'>
-                                <View className='flex-row justify-center items-center'>
-                                    {
-                                        item.type === "Veg" &&
-                                        <>
-                                            <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
-                                            <Ionicons name="leaf" size={18} color={'#00e676'} />
-                                        </>
-                                    }
+                                </LinearGradient>
+                                <View className='absolute bottom-2 right-2'>
+                                    <View className='flex-row justify-center items-center'>
+                                        {
+                                            item.type === "Veg" &&
+                                            <>
+                                                <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
+                                                <Ionicons name="leaf" size={18} color={'#00e676'} />
+                                            </>
+                                        }
+                                    </View>
                                 </View>
-                            </View>
-                        </ImageBackground>
-                    </View>
-                </TouchableOpacity>
-
-                <LinearGradient
-                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.8, y: 1 }}
-                    colors={['transparent', Colors.dark.colors.backGroundColor]}
-                    className=' -ml-1 flex-1 justify-center '
-                >
-                    <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
-                        {/* {item.name} */}
-                        {item.name}
-                    </Text>
-                    <View className='flex-row'>
-                        <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
-                            {StarIcon()}
-                            <Text className=' text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}> {item.rating} ({item.ratingcount}+)</Text>
+                            </ImageBackground>
                         </View>
-                    </View>
-                    <View className='font-extralight text-sm flex-row items-center' >
-                        <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text>
-                        <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                        <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
-                    </View>
-                    <LinearGradient
-                        start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
-                        colors={[Colors.dark.colors.backGroundColor, 'transparent']}
-                        className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
-                    >
-                        {CarIcon()}
-                        <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location}</Text>
-                    </LinearGradient>
+                    </TouchableOpacity>
 
-                </LinearGradient>
-            </View>
-        </TouchableOpacity>
+                    <LinearGradient
+                        start={{ x: 0.0, y: 0.25 }} end={{ x: 0.8, y: 1 }}
+                        colors={['transparent', Colors.dark.colors.backGroundColor]}
+                        className=' -ml-1 flex-1 justify-center '
+                    >
+                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                            {/* {item.name} */}
+                            {item.name}
+                        </Text>
+                        <View className='flex-row'>
+                            <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
+                                {StarIcon()}
+                                <Text className=' text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}> {item.rating} ({item.ratingcount}+)</Text>
+                            </View>
+                        </View>
+                        <View className='font-extralight text-sm flex-row items-center' >
+                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text>
+                            <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
+                        </View>
+                        <LinearGradient
+                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
+                            colors={[Colors.dark.colors.backGroundColor, 'transparent']}
+                            className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
+                        >
+                            {CarIcon()}
+                            <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location}</Text>
+                        </LinearGradient>
+
+                    </LinearGradient>
+                </View>
+            </TouchableOpacity>
     );
 }
 

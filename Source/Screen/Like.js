@@ -17,6 +17,7 @@ import FoodIcon from '../Components/FoodIcon';
 import FoodTypeIcon from '../Components/FoodTypeIcon';
 import LongStarIcon from '../Components/LongStarIcon';
 import { dropDown } from '../Components/dropDown';
+import { useFocusEffect } from '@react-navigation/native';
 
 const YouRestorent = {
     "name": "Amul Store",
@@ -70,11 +71,41 @@ export default function Like({ navigation }) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [cuisine, setCuisine] = useState('');
+    // const [outlets, setOutlets] = useState([]);
+
+    // useEffect(() => {
+    //     getUserOutlets();
+    // }, []);
+
+    // const getUserOutlets = async () => {
+    //     try {
+    //         const token = await AsyncStorage.getItem("token");
+    //         const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({ token: token })
+    //         });
+
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok ' + response.statusText);
+    //         }
+
+    //         const data = await response.json();
+    //         setOutlets(data.data);
+    //     } catch (error) {
+    //         console.error('Error fetching user outlets:', error);
+    //     }
+    // };
+
     const [outlets, setOutlets] = useState([]);
 
-    useEffect(() => {
-        getUserOutlets();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            getUserOutlets();
+        }, [])
+    );
 
     const getUserOutlets = async () => {
         try {
@@ -97,6 +128,8 @@ export default function Like({ navigation }) {
             console.error('Error fetching user outlets:', error);
         }
     };
+
+    console.log('outlets', outlets[0])
 
     const handleSubmit = async () => {
         if (!name || !location || !cuisine) {
@@ -151,7 +184,12 @@ export default function Like({ navigation }) {
     });
 
     const navToEditRestorent = () => {
-        navigation.navigate('EditRestorent')
+        navigation.navigate('EditMain', { outlet: outlets[0] })
+        // navigation.navigate('EditRestorent')
+    }
+
+    const navToEditMain = () => {
+        navigation.navigate('EditMain', { outlet: null })
     }
 
     return (
@@ -205,7 +243,11 @@ export default function Like({ navigation }) {
 
                         </View>
                         <View className=' mt-5' >
-                            <ListCard_Self2 item={YouRestorent} onPress={navToEditRestorent}/>
+                            {outlets[0] ? 
+                            <ListCard_Self2 item={outlets[0]} onPress={navToEditRestorent}/>
+                            :
+                            <ListCard_Self2 item={'null'} onPress={navToEditMain}/>
+                            }
                         </View>
                         {/* ---------------------- Added ---------------------- */}
                     </Animated.View>

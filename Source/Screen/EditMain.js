@@ -1,11 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, StatusBar, Dimensions, FlatList, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, StatusBar, Dimensions, FlatList, Alert, Keyboard } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Colors from '../Components/Colors';
+import { ImageBackground } from 'react-native';
+
+
+import { LinearGradient } from "expo-linear-gradient";
 
 const menuTypes = ['Dessert', 'Beverage', 'Snack', 'Meal', 'Appetizer', 'Salad'];
 
@@ -23,7 +27,7 @@ const weekDays = [
 export default function EditScreen({ route, navigation }) {
     const { outlet } = route.params;
     const [editingOutlet, setEditingOutlet] = useState(outlet || {
-        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both', 
+        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both',
         featured: false,
         openingTime: '',
         closingTime: '',
@@ -41,7 +45,7 @@ export default function EditScreen({ route, navigation }) {
     // const handleChange = async (field, value) => {
     //     const updatedOutlet = { ...editingOutlet, [field]: value };
     //     setEditingOutlet(updatedOutlet);
-    
+
     //     // Automatically save the outlet whenever a field is updated
     //     await handleSaveOutlet(updatedOutlet);
     // };
@@ -52,7 +56,7 @@ export default function EditScreen({ route, navigation }) {
             || !editingOutlet.offDays
             || !editingOutlet.leaveDay
         ) {
-            Alert.alert("zzz All fields are required");
+            Alert.alert("All fields are required");
             return;
         }
 
@@ -61,7 +65,7 @@ export default function EditScreen({ route, navigation }) {
         try {
             const token = await AsyncStorage.getItem("token");
             const outletData = { ...editingOutlet, token };
-// console.log(token)
+            // console.log(token)
 
             const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
                 method: "POST",
@@ -74,7 +78,7 @@ export default function EditScreen({ route, navigation }) {
             const data = await response.json();
             if (data.status === "ok") {
                 Alert.alert("Outlet saved successfully");
-                // navigation.goBack(); // Go back to the home screen
+                navigation.goBack(); // Go back to the home screen
             } else {
                 Alert.alert(data.data);
             }
@@ -138,8 +142,8 @@ export default function EditScreen({ route, navigation }) {
     const [storeDetailsOffDays, setStoreDetailsOffDays] = useState({
         offDays: [],
     });
-    console.log(storeDetailsOffDays.offDays)
-    console.log(editingOutlet.offDays)
+    // console.log(storeDetailsOffDays.offDays)
+    // console.log(editingOutlet.offDays)
 
     const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -218,42 +222,68 @@ export default function EditScreen({ route, navigation }) {
         >
             {console.log(editingOutlet.closingTime)}
             <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
-            <View className='px-3 w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-                <View className='flex-row items-center pb-4'>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Ionicons name="arrow-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-                    </TouchableOpacity>
-                </View>
+            <View className=' w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+                <ImageBackground
+                    source={{
+                        uri: editingOutlet.image,
+                        method: 'POST',
+                        headers: {
+                            Pragma: 'no-cache',
+                        },
+                    }}
+                    defaultSource={require('./../../assets/favicon.png')}
+                    // className=''
 
-                <View className='w-full rounded-2xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.25 }}>
-                    <View className='h-3/5 flex-row items-center'>
-                        <View className='w-16 h-16 mx-3 pt-1 rounded-full items-center justify-center' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerpleBG }}>
-                            <Text className='text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorPerple }}>U</Text>
+                    alt="Logo"
+                >
+                    <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+                        <View 
+                        // style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} 
+                        className='flex-row items-center pb-4 px-3'>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <Ionicons name="arrow-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+                            </TouchableOpacity>
                         </View>
-                        <View>
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>UserName</Text>
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-bold text-lg' style={{ color: Colors.dark.colors.textColor }}>Contact details</Text>
-                            <View className='-mt-1 flex-row items-center'>
-                                <Text className='font-medium text-base underline' style={{ color: Colors.dark.colors.diffrentColorOrange }}>View activity</Text>
-                                <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
-                            </View>
-                        </View>
-                    </View>
-                    <View className=' h-2/5 flex-row p-3 items-center justify-between bg-black'>
-                        <View className='flex-row items-center'>
-                            <View className=' p-2 rounded-full' style={{ backgroundColor: 'rgba(244,230,83,0.3)' }}>
-                                {/* <LinearGradient className=' p-1 rounded-full' colors={['#D79C08', '#F4E653', '#D79C08']}> */}
-                                <Ionicons name='ribbon' size={24} color={'black'} />
+
+                        <View className='w-full px-3 items-center rounded-2xl overflow-hidden' style={{ height: Dimensions.get('window').height * 0.25 }}>
+                            {/* <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}> */}
+                                <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.name}</Text>
+                                <View className='flex-row gap-2 justify-center items-center mb-3'>
+                                    <View className='flex-row justify-center items-center'>
+                                        {editingOutlet.type === "Veg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {editingOutlet.type}</Text>
+                                    </View>
+                                    <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{'Data.menutype'}</Text>
+                                </View>
+
+                                {/* <View className='flex-row justify-center items-center gap-1 mb-3'>
+                                    <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
+                                        <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{'Data.rating'}</Text>
+                                        <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
+                                    </View>
+                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {'Data.ratingcount'} ratings</Text>
+                                </View> */}
+
+                                <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
+                                    <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
+                                    <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.location} </Text>
+                                </View>
+                                {/* <LinearGradient
+                                    start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
+                                    // colors={[Shopstatus.color[0], Shopstatus.color[1]]}
+                                    className=' rounded-2xl px-5 justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: Dimensions.get('window').height * 0.13 }}> */}
+                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                        {editingOutlet.openingTime} to {editingOutlet.closingTime}
+                                    </Text>
+                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                        OffDays: {storeDetailsOffDays.offDays.join(' ')}
+                                    </Text>
                                 {/* </LinearGradient> */}
-                            </View>
-
-                            {/* <LinearGradient className=' p-1 rounded-full' colors={['#D79C08', '#F4E653', '#D79C08']}> */}
-                            <Text className='text-xl font-black text-[#D79C08]'>  Know Us</Text>
-                            {/* </LinearGradient> */}
+                            {/* </View> */}
                         </View>
-                        <Ionicons name='chevron-forward' size={24} color={'#D79C08'} />
                     </View>
-                </View>
+                </ImageBackground>
             </View>
 
             <ScrollView
@@ -263,19 +293,19 @@ export default function EditScreen({ route, navigation }) {
                 keyboardShouldPersistTaps='handled'
             >
                 <View className='mt-3 px-2 flex-row justify-center'>
-                    <View className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')} className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                            <Ionicons name='heart-outline' size={24} color={Colors.dark.colors.mainTextColor} />
+                            <Ionicons name='pricetags-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>
-                        <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Favourites</Text>
-                    </View>
+                        <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Add Offers</Text>
+                    </TouchableOpacity>
 
-                    <View className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EditRestorent')} className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-                            <Ionicons name='bag-handle-outline' size={24} color={Colors.dark.colors.mainTextColor} />
+                            <Ionicons name='duplicate-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>
-                        <Text className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Orders</Text>
-                    </View>
+                        <Text className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Add Menu</Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View className='rounded-xl mt-3 w-full' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -337,9 +367,11 @@ export default function EditScreen({ route, navigation }) {
                                 <TextInput
                                     ref={ref => inputRefs.current['shopkeeperName'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
-                                    className='font-black text-base underline mr-2'
+                                    className='font-black text-base underline mr-2 text-right'
                                     value={editingOutlet.shopkeeperName}
                                     onChangeText={(value) => handleChange('shopkeeperName', value)}
+                                    placeholder='Your Name'
+                                    placeholderTextColor={Colors.dark.colors.textColor}
                                     onFocus={() => handleFocus('shopkeeperName')}
                                     onBlur={() => handleBlur('shopkeeperName')}
                                 />
@@ -361,9 +393,11 @@ export default function EditScreen({ route, navigation }) {
                                 <TextInput
                                     ref={ref => inputRefs.current['upiId'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
-                                    className='font-black text-base underline mr-2'
+                                    className='font-black text-base underline mr-2 text-right'
                                     value={editingOutlet.upiId}
                                     onChangeText={(value) => handleChange('upiId', value)}
+                                    placeholder='upi@123'
+                                    placeholderTextColor={Colors.dark.colors.textColor}
                                     onFocus={() => handleFocus('upiId')}
                                     onBlur={() => handleBlur('upiId')}
                                 />
@@ -381,7 +415,7 @@ export default function EditScreen({ route, navigation }) {
                         </View>
                     </View>
                 </View>
-                
+
                 <View className='mt-3 rounded-xl'>
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
@@ -395,8 +429,10 @@ export default function EditScreen({ route, navigation }) {
                                 <TextInput
                                     ref={ref => inputRefs.current['name'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
-                                    className='font-black text-base underline mr-2'
+                                    className='font-black text-base underline mr-2 text-right'
                                     value={editingOutlet.name}
+                                    placeholder='Store Name'
+                                    placeholderTextColor={Colors.dark.colors.textColor}
                                     onChangeText={(value) => handleChange('name', value)}
                                     onFocus={() => handleFocus('name')}
                                     onBlur={() => handleBlur('name')}
@@ -418,8 +454,10 @@ export default function EditScreen({ route, navigation }) {
                                 <TextInput
                                     ref={ref => inputRefs.current['location'] = ref}
                                     style={{ color: Colors.dark.colors.mainTextColor }}
-                                    className='font-black text-base underline mr-2'
+                                    className='font-black text-base underline mr-2 text-right'
                                     value={editingOutlet.location}
+                                    placeholder='Location, Landmark'
+                                    placeholderTextColor={Colors.dark.colors.textColor}
                                     onChangeText={(value) => handleChange('location', value)}
                                     onFocus={() => handleFocus('location')}
                                     onBlur={() => handleBlur('location')}
@@ -459,6 +497,8 @@ export default function EditScreen({ route, navigation }) {
                                 value={editingOutlet.details}
                                 onChangeText={(value) => handleChange('details', value)}
                                 multiline={true}
+                                placeholder={`Describe your store (e.g., products, specialties, atmosphere)`}
+                                        placeholderTextColor={Colors.dark.colors.textColor}
                                 // numberOfLines={4}
                                 onFocus={() => handleFocus('details')}
                                 onBlur={() => handleBlur('details')}
@@ -487,6 +527,8 @@ export default function EditScreen({ route, navigation }) {
                                 className='font-black text-base underline mr-2'
                                 value={editingOutlet.image}
                                 onChangeText={(value) => handleChange('image', value)}
+                                placeholder={`Enter Image URL (web link only, \n e.g., https://example.com/image.jpg)`}
+                                placeholderTextColor={Colors.dark.colors.textColor}
                                 multiline={true}
                                 // numberOfLines={3}
                                 onFocus={() => handleFocus('image')}
@@ -506,7 +548,12 @@ export default function EditScreen({ route, navigation }) {
                         <View className='my-1 flex-row items-center justify-between'>
                             <View className='w-[43%]'>
                                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Opening Time</Text>
-                                <TouchableOpacity onPress={() => showDatePicker('openingTime')}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        Keyboard.dismiss();
+                                        showDatePicker('openingTime');
+                                    }}
+                                >
                                     <TextInput
                                         className='font-black text-base rounded-md p-2'
                                         style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -518,7 +565,12 @@ export default function EditScreen({ route, navigation }) {
                             <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black top-3 text-xl'>to</Text>
                             <View className='w-[43%]'>
                                 <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base underline mb-1'>Closing Time</Text>
-                                <TouchableOpacity onPress={() => showDatePicker('closingTime')}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        Keyboard.dismiss();
+                                        showDatePicker('closingTime');
+                                    }}
+                                >
                                     <TextInput
                                         className='font-black text-base rounded-md p-2'
                                         style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -531,7 +583,11 @@ export default function EditScreen({ route, navigation }) {
 
                         <View className='my-1 flex-1'>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>Leave Days</Text>
-                            <TouchableOpacity onPress={showDateSelector}>
+                            <TouchableOpacity onPress={() => {
+                                Keyboard.dismiss();
+                                showDateSelector();
+                            }}
+                            >
                                 <TextInput
                                     className='font-black text-base rounded-md p-2'
                                     style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -547,7 +603,10 @@ export default function EditScreen({ route, navigation }) {
                             <TouchableOpacity
                                 className='p-3 font-black flex-row items-center justify-between text-base rounded-md'
                                 style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
-                                onPress={handleDropdownPress}
+                                onPress={() => {
+                                    Keyboard.dismiss();
+                                    handleDropdownPress();
+                                }}
                             >
                                 <Text
                                     className='font-black flex-row justify-between text-base rounded-md'
@@ -621,9 +680,9 @@ export default function EditScreen({ route, navigation }) {
                 />
 
                 {/* <View style={styles.container}> */}
-                    <TouchableOpacity onPress={handleSaveOutlet} style={styles.saveButton}>
-                        <Text style={styles.saveButtonText}>SAVE</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity onPress={handleSaveOutlet} style={styles.saveButton}>
+                    <Text style={styles.saveButtonText}>SAVE</Text>
+                </TouchableOpacity>
                 {/* </View> */}
 
 
