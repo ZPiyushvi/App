@@ -130,9 +130,9 @@ const Home = () => {
   const getData = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-
-      // http://192.168.1.6:5001/userdata
-      const response = await fetch(`http://192.168.1.6:5001/userdata`, {
+      console.log(token)
+      // http://192.168.1.3:5001/userdata
+      const response = await fetch(`http://192.168.1.3/:5001/userdata`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -145,6 +145,7 @@ const Home = () => {
       }
 
       const data = await response.json();
+      console.log('data', data)
       setUserData(data.data)
       console.log("userData", "home", data.data)
     } catch (error) {
@@ -196,7 +197,7 @@ const Home = () => {
       >
         <View className='staticContainer align-middle flex w-1/2' >
           <Animated.View style={[styles.banner(scrollA)]}>
-          {/* mt-7 // marginextra */}
+            {/* mt-7 // marginextra */}
             <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
               <View className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />

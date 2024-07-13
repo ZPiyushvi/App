@@ -1,12 +1,28 @@
 const mongoose = require('mongoose');
 
-const outletSchema = {
-    // user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true  },
+const outletSchema = new mongoose.Schema({
+    id:{ type: String, required: true },
     name: { type: String, required: true },
-    location: {type: String, required: true}, 
-    cuisine: { type: String, required: true },
-  }
+    shopkeeperName: { type: String, required: true },
+    upiId: { type: String, required: true },
+    featured: { type: Boolean, default: false },
+    type: { type: String, required: true },
 
+    offDays: { type: [String], required: true },
+
+    // menuType: { type: String, required: true },
+    location: { type: String, required: true },
+    // locationDetailed: { type: String, required: true },
+    // // rating: { type: Number, required: true },
+    // // ratingCount: { type: Number, required: true },
+    image: { type: String, required: true },
+    details: { type: String, required: true },
+    openingTime: { type: String, required: true },
+    closingTime: { type: String, required: true },
+    // offDays: { type: String, required: true },
+    leaveDay: { type: String, required: true },
+    userId: { type: String, ref: 'User', required: true },
+});
 
 // const itemSchema = new mongoose.Schema({
 //     id: { type: String, required: true },

@@ -73,12 +73,17 @@ const LoginScreen = () => {
     navigation.goBack();
   };
 
-  const handleNavigation = (screen) => {
-    if (screen == 'LoginScreen') {
-      AsyncStorage.setItem('token', "");
-      AsyncStorage.setItem('isLoggedIn', "");
+  const handleNavigation = async (screen) => {
+    try {
+      if (screen == 'RoleSelection') {
+        // AsyncStorage.setItem('token', "");
+        // AsyncStorage.setItem('isLoggedIn', "");
+        await AsyncStorage.clear();
+      }
+      navigation.navigate(screen)
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
     }
-    navigation.navigate(screen)
   };
   // onPress={() => navigation.navigate('IndiviualCart',
 

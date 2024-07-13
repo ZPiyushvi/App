@@ -75,7 +75,7 @@ export const ProfileScreenNav = [
         {
           "subtitle": "Logout",
           "iconName": "power-outline",
-          "navScreen": "LoginScreen",
+          "navScreen": "RoleSelection",
         },
         {
           "subtitle": "Privacy Policy",

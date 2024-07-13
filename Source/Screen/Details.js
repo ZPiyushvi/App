@@ -16,6 +16,7 @@ import ModelScreen from './ModelScreen';
 import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
 import { loadingScreenTxt } from '../Data/loadingScreenTxt';
 import useIncrementHandler, { handleIncrement } from '../Components/handleIncrement';
+import { dropDown } from '../Components/dropDown';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
@@ -346,6 +347,7 @@ const DetailsScreen = ({ route }) => {
                 <FlatList
                     data={filteredMenuItems}
                     renderItem={({ item }) => renderDropdown(item)}
+                    // renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, menuItems)}
                     keyExtractor={(item, index) => index.toString()}
                     ListHeaderComponent={
                         <>
@@ -487,48 +489,10 @@ const DetailsScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    buttonTxt: {
-        color: '#F7F6BB',
-        textAlign: 'center',
-        fontSize: 14,
-        fontWeight: '500',
-    },
-    container: {
-        flex: 1,
-        // padding: 16,
-        backgroundColor: Colors.dark.colors.backGroundColor,
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginVertical: 8,
-        padding: 8,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-    },
-    image: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-    },
-    detailsContainer: {
-        flex: 1,
-        marginLeft: 16,
-    },
-    itemText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
+ 
     descriptionText: {
         fontSize: 14,
         color: '#666',
-    },
-    quantityContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 8,
     },
     button: {
         borderRadius: 8,
@@ -537,16 +501,6 @@ const styles = StyleSheet.create({
         // paddingVertical: 8, // Adjust padding instead of fixed height
         // paddingHorizontal: 10, // Add padding for horizontal space
         // backgroundColor: '#114232',
-    },
-    buttonText: {
-        fontSize: 18,
-    },
-    quantityText: {
-        marginHorizontal: 16,
-        fontSize: 18,
-    },
-    dropdownContainer: {
-        marginBottom: 16,
     },
 });
 
