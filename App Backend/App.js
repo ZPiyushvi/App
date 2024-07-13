@@ -115,10 +115,11 @@ app.post('/addoutlet', async (req, res) => {
         closingTime,
         leaveDay,
         offDays,
+        menuType,
     } = req.body;
 
     if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
-        || !openingTime || !closingTime || !leaveDay || !offDays
+        || !openingTime || !closingTime || !leaveDay || !offDays || !menuType
     ) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
@@ -131,7 +132,7 @@ app.post('/addoutlet', async (req, res) => {
         if (id) {
             outlet = await OutletInfo.findOneAndUpdate({ id, userId }, {
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays
+                openingTime, closingTime, leaveDay, featured, offDays, menuType
             }, { new: true });
             if (!outlet) {
                 return res.status(404).send({ status: "error", data: "Outlet not found" });
@@ -146,7 +147,7 @@ app.post('/addoutlet', async (req, res) => {
             outlet = new OutletInfo({
                 id: Date.now().toString(),
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, userId
+                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType
             });
             await outlet.save();
         }

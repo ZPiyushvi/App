@@ -233,11 +233,11 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                 }}
             >
                 <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-                    <TouchableOpacity activeOpacity={1} 
-                    onPress={() => {
-                        // hide_Model?.();
-                        onPress ? onPress() : navToDetails(item);
-                    }}
+                    <TouchableOpacity activeOpacity={1}
+                        onPress={() => {
+                            // hide_Model?.();
+                            onPress ? onPress() : navToDetails(item);
+                        }}
                     >
                         <View className='overflow-hidden' style={styles.foodItemContainer}>
                             <ImageBackground
@@ -259,24 +259,11 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                                     className='overflow-hidden h-full w-full'
                                     colors={['transparent', Colors.dark.colors.backGroundColor]}
                                 >
-                                    {/* <View className='absolute bottom-1 p-2'>
-                                <Text className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                    {TruncatedTextComponent(item.name, 6)}
-                                </Text>
-                                <Text className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
-                                    {TruncatedTextComponent(item.name, 11)}
-                                </Text>
-                            </View> */}
                                 </LinearGradient>
                                 <View className='absolute bottom-2 right-2'>
                                     <View className='flex-row justify-center items-center'>
-                                        {
-                                            item.type === "Veg" &&
-                                            <>
-                                                <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
-                                                <Ionicons name="leaf" size={18} color={'#00e676'} />
-                                            </>
-                                        }
+                                        {item.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                        <Text className='ml-1 font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{item.type}</Text>
                                     </View>
                                 </View>
                             </ImageBackground>
@@ -299,9 +286,17 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                             </View>
                         </View>
                         <View className='font-extralight text-sm flex-row items-center' >
-                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text>
-                            <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                            {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text> */}
+                            {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
                             <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
+                            {/* {console.log('menuType', item.menuType)} */}
+                            {item.menuType.map((item, index) => (
+                                    <View className=' flex-row items-center'>
+                                        {/* {console.log(index)} */}
+                                        {index == 0 ? null : <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />}
+                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                    </View>
+                                ))}
                         </View>
                         <LinearGradient
                             start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
