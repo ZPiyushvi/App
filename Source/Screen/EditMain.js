@@ -11,17 +11,17 @@ import { ImageBackground } from 'react-native';
 
 import { LinearGradient } from "expo-linear-gradient";
 
-const menuTypes = ['Dessert', 'Beverage', 'Snack', 'Meal', 'Appetizer', 'Salad'];
+const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
 const weekDays = [
-    { label: 'Sunday', value: 'Sun' },
-    { label: 'Monday', value: 'Mon' },
-    { label: 'Tuesday', value: 'Tue' },
-    { label: 'Wednesday', value: 'Wed' },
-    { label: 'Thursday', value: 'Thu' },
-    { label: 'Friday', value: 'Fri' },
-    { label: 'Saturday', value: 'Sat' },
-    { label: 'None', value: 'None' },
+    { label: 'Sunday', value: 'Su' },
+    { label: 'Monday', value: 'Mo' },
+    { label: 'Tuesday', value: 'Tu' },
+    { label: 'Wednesday', value: 'We' },
+    { label: 'Thursday', value: 'Th' },
+    { label: 'Friday', value: 'Fr' },
+    { label: 'Saturday', value: 'Sa' },
+    { label: 'None', value: 'No' },
 ];
 
 export default function EditScreen({ route, navigation }) {
@@ -32,6 +32,7 @@ export default function EditScreen({ route, navigation }) {
         openingTime: '',
         closingTime: '',
         offDays: [],
+        menuType: [],
         leaveDays: 'None'
     });
     // console.log(offDays)
@@ -98,8 +99,45 @@ export default function EditScreen({ route, navigation }) {
     //     }));
     // };
 
+    const [storeMenuType, setStoreMenuType] = useState()
+
+    // const handleMenuTypeToggle = (day) => {
+    //     setEditingOutlet(prevState => {
+    //         const updatedOffDays = prevState.offDays.includes(day)
+    //             ? prevState.offDays.filter(item => item !== day)
+    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
+    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
+    //         return { ...prevState, offDays: updatedOffDays };
+    //     });
+    //     handleChange('offDays', storeDetailsOffDays.offDays)
+    // };
+
+    // const handleOffDaysToggle = (type) => {
+    //     setEditingOutlet(prevState => {
+    //         const updatedOffDays = prevState.offDays.includes(type)
+    //             ? prevState.offDays.filter(item => item !== type)
+    //             : [...prevState.offDays, type];
+    //         return { ...prevState, offDays: updatedOffDays };
+    //     });
+    // };
+    const handleOffDaysToggle = (type) => {
+        setEditingOutlet(prevState => {
+            let updatedOffDays;
+            if (type === 'None') {
+                updatedOffDays = ['None'];
+            } else {
+                if (prevState.offDays.includes(type)) {
+                    updatedOffDays = prevState.offDays.filter(item => item !== type);
+                } else {
+                    updatedOffDays = [...prevState.offDays.filter(item => item !== 'None'), type];
+                }
+            }
+            return { ...prevState, offDays: updatedOffDays };
+        });
+    };
+
     const handleMenuTypeToggle = (type) => {
-        setStoreDetails(prevState => {
+        setEditingOutlet(prevState => {
             const updatedMenuType = prevState.menuType.includes(type)
                 ? prevState.menuType.filter(item => item !== type)
                 : [...prevState.menuType, type];
@@ -142,8 +180,6 @@ export default function EditScreen({ route, navigation }) {
     const [storeDetailsOffDays, setStoreDetailsOffDays] = useState({
         offDays: [],
     });
-    // console.log(storeDetailsOffDays.offDays)
-    // console.log(editingOutlet.offDays)
 
     const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -151,41 +187,41 @@ export default function EditScreen({ route, navigation }) {
         setOpenDropdown(prevState => !prevState);
     };
 
-    const handleOffDaysToggle = (day) => {
-        setStoreDetailsOffDays(prevState => {
-            const updatedOffDays = prevState.offDays.includes(day)
-                ? prevState.offDays.filter(item => item !== day)
-                : [...prevState.offDays.filter(item => item !== 'None'), day];
-            if (day === 'None') return { ...prevState, offDays: ['None'] };
-            return { ...prevState, offDays: updatedOffDays };
-        });
-        handleChange('offDays', storeDetailsOffDays.offDays)
-    };
+    // const handleOffDaysToggle = (day) => {
+    //     setStoreDetailsOffDays(prevState => {
+    //         const updatedOffDays = prevState.offDays.includes(day)
+    //             ? prevState.offDays.filter(item => item !== day)
+    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
+    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
+    //         return { ...prevState, offDays: updatedOffDays };
+    //     });
+    //     handleChange('offDays', storeDetailsOffDays.offDays)
+    // };
 
-    const renderDropdownItem = ({ item }) => (
-        <TouchableOpacity
-            style={{
-                padding: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                overflow: 'hidden',
-                backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
-                // borderBottomWidth: 1,
-                // borderBottomColor: '#ccc',
-            }}
-            onPress={() => handleOffDaysToggle(item.value)}
-        >
-            <Text
-                className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
-                style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
-            >{item.label}
-            </Text>
-            {storeDetailsOffDays.offDays.includes(item.value) && (
-                <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
-            )}
-        </TouchableOpacity>
-    );
+    // const renderDropdownItem = ({ item }) => (
+    //     <TouchableOpacity
+    //         style={{
+    //             padding: 10,
+    //             flexDirection: 'row',
+    //             justifyContent: 'space-between',
+    //             alignItems: 'center',
+    //             overflow: 'hidden',
+    //             backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
+    //             // borderBottomWidth: 1,
+    //             // borderBottomColor: '#ccc',
+    //         }}
+    //         onPress={() => handleOffDaysToggle(item.value)}
+    //     >
+    //         <Text
+    //             className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
+    //             style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
+    //         >{item.label}
+    //         </Text>
+    //         {storeDetailsOffDays.offDays.includes(item.value) && (
+    //             <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
+    //         )}
+    //     </TouchableOpacity>
+    // );
 
     const scrollViewRef = useRef(null);
 
@@ -237,9 +273,9 @@ export default function EditScreen({ route, navigation }) {
                     alt="Logo"
                 >
                     <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
-                        <View 
-                        // style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} 
-                        className='flex-row items-center pb-4 px-3'>
+                        <View
+                            // style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }} 
+                            className='flex-row items-center pb-4 px-3'>
                             <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <Ionicons name="arrow-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
                             </TouchableOpacity>
@@ -247,17 +283,22 @@ export default function EditScreen({ route, navigation }) {
 
                         <View className='w-full px-3 items-center rounded-2xl overflow-hidden' style={{ height: Dimensions.get('window').height * 0.25 }}>
                             {/* <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}> */}
-                                <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.name}</Text>
-                                <View className='flex-row gap-2 justify-center items-center mb-3'>
-                                    <View className='flex-row justify-center items-center'>
-                                        {editingOutlet.type === "Veg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {editingOutlet.type}</Text>
-                                    </View>
-                                    <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{'Data.menutype'}</Text>
+                            <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.name}</Text>
+                            <View className='flex-row justify-center items-center mb-3'>
+                                <View className='flex-row justify-center items-center'>
+                                    {editingOutlet.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                    <Text className='ml-1 font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{editingOutlet.type} </Text>
                                 </View>
+                                {editingOutlet.menuType.map((item, index) => (
+                                    <View className=' flex-row items-center'>
+                                        {console.log(item)}
+                                        <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                    </View>
+                                ))}
+                            </View>
 
-                                {/* <View className='flex-row justify-center items-center gap-1 mb-3'>
+                            {/* <View className='flex-row justify-center items-center gap-1 mb-3'>
                                     <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
                                         <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{'Data.rating'}</Text>
                                         <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
@@ -265,21 +306,21 @@ export default function EditScreen({ route, navigation }) {
                                     <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {'Data.ratingcount'} ratings</Text>
                                 </View> */}
 
-                                <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
-                                    <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
-                                    <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.location} </Text>
-                                </View>
-                                {/* <LinearGradient
+                            <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
+                                <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
+                                <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.location} </Text>
+                            </View>
+                            {/* <LinearGradient
                                     start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
                                     // colors={[Shopstatus.color[0], Shopstatus.color[1]]}
                                     className=' rounded-2xl px-5 justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: Dimensions.get('window').height * 0.13 }}> */}
-                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                        {editingOutlet.openingTime} to {editingOutlet.closingTime}
-                                    </Text>
-                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                        OffDays: {storeDetailsOffDays.offDays.join(' ')}
-                                    </Text>
-                                {/* </LinearGradient> */}
+                            <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                {editingOutlet.openingTime} to {editingOutlet.closingTime}
+                            </Text>
+                            <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                OffDays: {editingOutlet.offDays.join(', ')}
+                            </Text>
+                            {/* </LinearGradient> */}
                             {/* </View> */}
                         </View>
                     </View>
@@ -330,22 +371,22 @@ export default function EditScreen({ route, navigation }) {
                         <View className=' flex-row items-center justify-between'>
                             <View className=' flex-row justify-between'>
                                 <TouchableOpacity
-                                    onPress={() => handleChange('type', 'Veg')}
-                                    style={{ backgroundColor: editingOutlet.type !== 'NonVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
+                                    onPress={() => handleChange('type', 'PureVeg')}
+                                    style={{ backgroundColor: editingOutlet.type === 'PureVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
                                     className=' w-[35%] p-3 rounded-l-lg items-center'
                                 >
                                     <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Pure Veg</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    onPress={() => handleChange('type', 'Both')}
-                                    style={{ backgroundColor: editingOutlet.type === 'Both' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
+                                    onPress={() => handleChange('type', 'Veg')}
+                                    style={{ backgroundColor: editingOutlet.type === 'Veg' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
                                     className=' w-[30%] p-3 items-center'
                                 >
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Both</Text>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Veg</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => handleChange('type', 'NonVeg')}
-                                    style={{ backgroundColor: editingOutlet.type !== 'Veg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
+                                    style={{ backgroundColor: editingOutlet.type === 'NonVeg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
                                     className=' w-[35%] p-3 rounded-r-lg items-center'
                                 >
                                     <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Non Veg</Text>
@@ -498,7 +539,7 @@ export default function EditScreen({ route, navigation }) {
                                 onChangeText={(value) => handleChange('details', value)}
                                 multiline={true}
                                 placeholder={`Describe your store (e.g., products, specialties, atmosphere)`}
-                                        placeholderTextColor={Colors.dark.colors.textColor}
+                                placeholderTextColor={Colors.dark.colors.textColor}
                                 // numberOfLines={4}
                                 onFocus={() => handleFocus('details')}
                                 onBlur={() => handleBlur('details')}
@@ -538,7 +579,7 @@ export default function EditScreen({ route, navigation }) {
                     </View>
                 </View>
 
-                <View className='my-3 rounded-xl'>
+                <View className='mt-3 rounded-xl'>
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
@@ -598,8 +639,35 @@ export default function EditScreen({ route, navigation }) {
                             </TouchableOpacity>
                         </View>
 
-                        <View className='my-1 flex-1'>
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>Off Days</Text>
+                        <View className='flex-row flex-wrap pt-3 justify-between'>
+                            {weekDays.map((item, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => handleOffDaysToggle(item.label)}
+                                    className='w-9 h-9 rounded-full items-center justify-center'
+                                    style={{
+                                        backgroundColor: editingOutlet.offDays.includes(item.label)
+                                            ? Colors.dark.colors.diffrentColorOrange
+                                            : Colors.dark.colors.backGroundColor
+                                    }}
+                                >
+                                    <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                        {item.value}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                </View>
+
+                <View className='mt-3 rounded-xl'>
+                    <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                        <View className='items-center flex-row mb-3'>
+                            <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Your Cusines</Text>
+                        </View>
+                        <View className='my-1'>
+
                             <TouchableOpacity
                                 className='p-3 font-black flex-row items-center justify-between text-base rounded-md'
                                 style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -612,7 +680,7 @@ export default function EditScreen({ route, navigation }) {
                                     className='font-black flex-row justify-between text-base rounded-md'
                                     style={{ color: Colors.dark.colors.mainTextColor }}
                                 >
-                                    {storeDetailsOffDays.offDays.length > 0 ? storeDetailsOffDays.offDays.map(day => weekDays.find(wd => wd.value === day).value).join(', ') : 'Select Off Days'}
+                                    {editingOutlet.menuType.length > 0 ? editingOutlet.menuType.join(', ') : 'Select Menu Type'}
                                 </Text>
                                 <Ionicons
                                     name={openDropdown ? "close" : "chevron-down"}
@@ -620,9 +688,10 @@ export default function EditScreen({ route, navigation }) {
                                     color={Colors.dark.colors.mainTextColor}
                                 />
                             </TouchableOpacity>
+
                             {openDropdown && (
                                 <View className='overflow-hidden font-black mt-2 text-base rounded-md' style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}>
-                                    {weekDays.map((item) => (
+                                    {menuTypes.map((item) => (
                                         <TouchableOpacity
                                             style={{
                                                 padding: 10,
@@ -630,25 +699,24 @@ export default function EditScreen({ route, navigation }) {
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
                                                 overflow: 'hidden',
-                                                backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
+                                                // backgroundColor: storeDetailsOffDays.offDays.includes(item) ? Colors.dark.colors.backGroundColor : 'transparent',
                                                 // borderBottomWidth: 1,
                                                 // borderBottomColor: '#ccc',
                                             }}
 
                                             onPress={() => {
-                                                handleOffDaysToggle(item.value);
-                                                if (item.value === 'None') {
+                                                handleMenuTypeToggle(item);
+                                                if (item === 'None') {
                                                     toggleDropdown(); // If not want to close on None
                                                 }
                                             }}
                                         >
                                             <Text
                                                 className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
-                                                style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
-                                            >{item.label}
-                                                {/* {console.log(item.label)} */}
+                                                style={{ color: editingOutlet.menuType.includes(item) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
+                                            >{item}
                                             </Text>
-                                            {storeDetailsOffDays.offDays.includes(item.value) && (
+                                            {editingOutlet.menuType.includes(item) && (
                                                 <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
                                             )}
                                         </TouchableOpacity>
@@ -679,12 +747,24 @@ export default function EditScreen({ route, navigation }) {
                     onCancel={hideDateSelector}
                 />
 
-                {/* <View style={styles.container}> */}
-                <TouchableOpacity onPress={handleSaveOutlet} style={styles.saveButton}>
-                    <Text style={styles.saveButtonText}>SAVE</Text>
-                </TouchableOpacity>
-                {/* </View> */}
 
+                <TouchableOpacity onPress={handleSaveOutlet} style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} className='my-3 rounded-xl overflow-hidden'>
+                    {/* <ImageBackground
+                        source={{
+                            uri: editingOutlet.image,
+                            method: 'POST',
+                            headers: {
+                                Pragma: 'no-cache',
+                            },
+                        }}
+                        defaultSource={require('./../../assets/favicon.png')}
+                        alt="Logo"
+                    > */}
+                    <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} className='items-center justify-center p-3' >
+                        <Text numberOfLines={1} ellipsizeMode='tail' className=' font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>SAVE</Text>
+                    </View>
+                    {/* </ImageBackground> */}
+                </TouchableOpacity>
 
             </ScrollView>
         </KeyboardAvoidingView>

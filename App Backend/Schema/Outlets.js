@@ -9,17 +9,15 @@ const outletSchema = new mongoose.Schema({
     type: { type: String, required: true },
 
     offDays: { type: [String], required: true },
+    menuType: { type: [String], required: true },
 
-    // menuType: { type: String, required: true },
     location: { type: String, required: true },
-    // locationDetailed: { type: String, required: true },
     // // rating: { type: Number, required: true },
     // // ratingCount: { type: Number, required: true },
     image: { type: String, required: true },
     details: { type: String, required: true },
     openingTime: { type: String, required: true },
     closingTime: { type: String, required: true },
-    // offDays: { type: String, required: true },
     leaveDay: { type: String, required: true },
     userId: { type: String, ref: 'User', required: true },
 });

@@ -6,7 +6,7 @@ export const mockCampusShops = [
         "upiId": "teapost@upi",
         "featured": "true",
         "type": "Veg",
-        "menutype": "Beverage",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -246,7 +246,7 @@ export const mockCampusShops = [
         "upiId": "amulstore@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Dessert",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Desserts",
@@ -278,7 +278,7 @@ export const mockCampusShops = [
         "upiId": "krupastore@upi",
         "featured": "true",
         "type": "Veg",
-        "menutype": "General",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Stationery",
@@ -306,7 +306,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "NonVeg",
-        "menutype": "Coffee",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 'id':'1',
@@ -342,7 +342,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Coffee",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -377,7 +377,7 @@ export const mockCampusShops = [
     //     "upiId": "notspecified@upi",
     //     "featured": "false",
     //     "type": "Service",
-    //     "menutype": "Printing",
+    //     "menuType": ["Snack", "Meal", "Salad"],
     //     "menu": [
     //         // Remaining to edit Items Images & Store Image
     //     ],
@@ -397,7 +397,7 @@ export const mockCampusShops = [
         "upiId": "dawatfoods@upi",
         "featured": "true",
         "type": "NonVeg",
-        "menutype": "Indian",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Meals",
@@ -430,7 +430,7 @@ export const mockCampusShops = [
         "upiId": "nutirich@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Beverage",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -457,7 +457,7 @@ export const mockCampusShops = [
         "upiId": "jkgrocerystore@upi",
         "featured": "true",
         "type": "Veg",
-        "menutype": "Grocery",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Produce",
@@ -485,7 +485,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Healthy Food",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -516,7 +516,7 @@ export const mockCampusShops = [
     //     "upiId": "notspecified@upi",
     //     "featured": "false",
     //     "type": "Veg",
-    //     "menutype": "Indian",
+    //     "menuType": ["Snack", "Meal", "Salad"],
     //     "menu": [],
     //     "location": "Central Arcade (Ground Floor)",
     //     "rating": "Not rated yet",
@@ -534,7 +534,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Coffee",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -569,7 +569,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "NonVeg",
-        "menutype": "Fast Food",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -613,7 +613,7 @@ export const mockCampusShops = [
         "upiId": "shrisainathcanteen@upi",
         "featured": "true",
         "type": "Veg",
-        "menutype": "Indian",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Beverages",
@@ -653,7 +653,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Stationery",
-        "menutype": "Stationery",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Stationery",
@@ -681,7 +681,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Cuisine",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Meals",
@@ -713,7 +713,7 @@ export const mockCampusShops = [
         "upiId": "notspecified@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Cuisine",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Meals",
@@ -745,7 +745,7 @@ export const mockCampusShops = [
     //     "upiId": "notspecified@upi",
     //     "featured": "false",
     //     "type": "Laundry",
-    //     "menutype": "Laundry Services",
+    //     "menuType": ["Snack", "Meal", "Salad"],
     //     "menu": [],
     //     "location": "Central Arcade, Shop Number - 113",
     //     "rating": "Not rated yet",
@@ -763,7 +763,7 @@ export const mockCampusShops = [
         "upiId": "atulbakery@upi",
         "featured": "false",
         "type": "Veg",
-        "menutype": "Bakery",
+        "menuType": ["Snack", "Meal", "Salad"],
         "menu": [
             {
                 "title": "Cakes",
