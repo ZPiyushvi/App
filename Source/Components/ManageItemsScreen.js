@@ -89,24 +89,13 @@ const ManageItemsScreen = ({ selectedCategory, editingOutlet, setEditingOutlet }
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-    },
+    
     header: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
     },
-    itemContainer: {
-        padding: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    item: {
-        fontSize: 18,
-    },
+    
     input: {
         height: 40,
         borderColor: '#ccc',

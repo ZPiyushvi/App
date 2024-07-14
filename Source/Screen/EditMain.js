@@ -53,14 +53,6 @@ export default function EditScreen({ route, navigation }) {
 
     // -------------------- For Auto Submit/ without save button use this ---------------------
 
-    // const handleChange = async (field, value) => {
-    //     const updatedOutlet = { ...editingOutlet, [field]: value };
-    //     setEditingOutlet(updatedOutlet);
-
-    //     // Automatically save the outlet whenever a field is updated
-    //     await handleSaveOutlet(updatedOutlet);
-    // };
-
     const handleSaveOutlet = async () => {
         if (!editingOutlet.name || !editingOutlet.shopkeeperName || !editingOutlet.upiId || !editingOutlet.image || !editingOutlet.details || !editingOutlet.location || editingOutlet.featured === undefined
             || !editingOutlet.openingTime || !editingOutlet.closingTime
@@ -107,27 +99,6 @@ export default function EditScreen({ route, navigation }) {
     //     }));
     // };
 
-    const [storeMenuType, setStoreMenuType] = useState()
-
-    // const handleMenuTypeToggle = (day) => {
-    //     setEditingOutlet(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(day)
-    //             ? prevState.offDays.filter(item => item !== day)
-    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
-    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    //     handleChange('offDays', storeDetailsOffDays.offDays)
-    // };
-
-    // const handleOffDaysToggle = (type) => {
-    //     setEditingOutlet(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(type)
-    //             ? prevState.offDays.filter(item => item !== type)
-    //             : [...prevState.offDays, type];
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    // };
     const handleOffDaysToggle = (type) => {
         setEditingOutlet(prevState => {
             let updatedOffDays;
@@ -194,42 +165,6 @@ export default function EditScreen({ route, navigation }) {
     const toggleDropdown = () => {
         setOpenDropdown(prevState => !prevState);
     };
-
-    // const handleOffDaysToggle = (day) => {
-    //     setStoreDetailsOffDays(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(day)
-    //             ? prevState.offDays.filter(item => item !== day)
-    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
-    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    //     handleChange('offDays', storeDetailsOffDays.offDays)
-    // };
-
-    // const renderDropdownItem = ({ item }) => (
-    //     <TouchableOpacity
-    //         style={{
-    //             padding: 10,
-    //             flexDirection: 'row',
-    //             justifyContent: 'space-between',
-    //             alignItems: 'center',
-    //             overflow: 'hidden',
-    //             backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
-    //             // borderBottomWidth: 1,
-    //             // borderBottomColor: '#ccc',
-    //         }}
-    //         onPress={() => handleOffDaysToggle(item.value)}
-    //     >
-    //         <Text
-    //             className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
-    //             style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
-    //         >{item.label}
-    //         </Text>
-    //         {storeDetailsOffDays.offDays.includes(item.value) && (
-    //             <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
-    //         )}
-    //     </TouchableOpacity>
-    // );
 
     const scrollViewRef = useRef(null);
 
@@ -305,14 +240,6 @@ export default function EditScreen({ route, navigation }) {
                                     </View>
                                 ))}
                             </View>
-
-                            {/* <View className='flex-row justify-center items-center gap-1 mb-3'>
-                                    <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
-                                        <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{'Data.rating'}</Text>
-                                        <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
-                                    </View>
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {'Data.ratingcount'} ratings</Text>
-                                </View> */}
 
                             <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
                                 <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
