@@ -62,8 +62,8 @@ export default function ModelScreen() {
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
-                handleSearch('')
-                navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
+                handleSearch('') // HomeScreen
+                navigation.navigate('BuyerNavigationStack'); // Replace 'Home' with your home screen route name
                 return true; // Prevent default behavior
             };
 

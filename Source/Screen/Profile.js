@@ -75,7 +75,7 @@ const LoginScreen = () => {
 
   const handleNavigation = async (screen) => {
     try {
-      if (screen == 'RoleSelection') {
+      if (screen == 'LoginNavigationStack') {
         // AsyncStorage.setItem('token', "");
         // AsyncStorage.setItem('isLoggedIn', "");
         await AsyncStorage.clear();

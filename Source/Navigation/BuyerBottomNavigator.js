@@ -11,7 +11,7 @@ import Likes from '../Screen/Like';
 import OrderHistory from '../Screen/OrderHistory';
 
 const Tab = createBottomTabNavigator();
-export default function BottomNavigator() {
+export default function BuyerBottomNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
