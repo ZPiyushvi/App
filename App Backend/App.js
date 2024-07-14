@@ -116,6 +116,7 @@ app.post('/addoutlet', async (req, res) => {
         leaveDay,
         offDays,
         menuType,
+        menu,
     } = req.body;
 
     if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
@@ -132,7 +133,7 @@ app.post('/addoutlet', async (req, res) => {
         if (id) {
             outlet = await OutletInfo.findOneAndUpdate({ id, userId }, {
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, menuType
+                openingTime, closingTime, leaveDay, featured, offDays, menuType, menu
             }, { new: true });
             if (!outlet) {
                 return res.status(404).send({ status: "error", data: "Outlet not found" });
@@ -146,8 +147,10 @@ app.post('/addoutlet', async (req, res) => {
 
             outlet = new OutletInfo({
                 id: Date.now().toString(),
+                rating: 3,
+                ratingcount: 7,
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType
+                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType, menu
             });
             await outlet.save();
         }

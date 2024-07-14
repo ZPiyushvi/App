@@ -1,62 +1,89 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import ManageItemsScreen from '../Components/ManageItemsScreen';
+import { ScrollView } from 'react-native';
 
-const EditRestorent = ({ navigation }) => {
-    const [categoryTitle, setCategoryTitle] = useState('');
-    const [items, setItems] = useState([{ id: '', item: '', price: '' }]);
+const ManageCategoriesScreen = ({ navigation, route }) => {
+  const { editingOutlet, setEditingOutlet } = route.params;
 
-    const addItem = () => {
-        setItems([...items, { id: '', item: '', price: '' }]);
-    };
+  const [newCategoryTitle, setNewCategoryTitle] = useState('');
 
-    const handleSave = () => {
-        // Handle save to the backend here
-        // e.g., send data to your backend API endpoint
-    };
+  const addCategory = () => {
+    const categoryExists = editingOutlet.menu.find(menuCategory => menuCategory.title === newCategoryTitle);
 
-    return (
-        <View>
-            <Text>Edit Restaurant</Text>
-            <TextInput
-                placeholder="Category Title"
-                value={categoryTitle}
-                onChangeText={setCategoryTitle}
-            />
-            {items.map((item, index) => (
-                <View key={index}>
-                    <TextInput
-                        placeholder="Item ID"
-                        value={item.id}
-                        onChangeText={text => {
-                            const newItems = [...items];
-                            newItems[index].id = text;
-                            setItems(newItems);
-                        }}
-                    />
-                    <TextInput
-                        placeholder="Item Name"
-                        value={item.item}
-                        onChangeText={text => {
-                            const newItems = [...items];
-                            newItems[index].item = text;
-                            setItems(newItems);
-                        }}
-                    />
-                    <TextInput
-                        placeholder="Item Price"
-                        value={item.price}
-                        onChangeText={text => {
-                            const newItems = [...items];
-                            newItems[index].price = text;
-                            setItems(newItems);
-                        }}
-                    />
-                </View>
-            ))}
-            <Button title="Add Item" onPress={addItem} />
-            <Button title="Save" onPress={handleSave} />
-        </View>
-    );
+    if (!categoryExists) {
+      const newCategory = {
+        id: Date.now().toString(),
+        title: newCategoryTitle,
+        items: []
+      };
+      setEditingOutlet({ ...editingOutlet, menu: [...editingOutlet.menu, newCategory] });
+      setNewCategoryTitle('');
+    } else {
+      Alert.alert('Category exists');
+    }
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.header}>Manage Categories</Text>
+        {console.log(editingOutlet)}
+        <FlatList
+          data={editingOutlet.menu}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => setSelectedCategory(item)}>
+              <Text style={styles.category}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+        />
+        <TextInput
+          style={styles.input}
+          value={newCategoryTitle}
+          onChangeText={setNewCategoryTitle}
+          placeholder="Add new category"
+        />
+        <Button title="Add Category" onPress={addCategory} />
+
+        {selectedCategory &&
+          <ManageItemsScreen
+            selectedCategory={selectedCategory}
+            editingOutlet={editingOutlet}
+            setEditingOutlet={setEditingOutlet}
+          />
+        }
+      </View>
+    </ScrollView>
+  );
 };
 
-export default EditRestorent;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  category: {
+    fontSize: 18,
+    padding: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+  },
+});
+
+export default ManageCategoriesScreen;

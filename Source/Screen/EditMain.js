@@ -10,6 +10,7 @@ import { ImageBackground } from 'react-native';
 
 
 import { LinearGradient } from "expo-linear-gradient";
+import ManageCategoriesScreen from './EditRestorent';
 
 const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
@@ -27,13 +28,22 @@ const weekDays = [
 export default function EditScreen({ route, navigation }) {
     const { outlet } = route.params;
     const [editingOutlet, setEditingOutlet] = useState(outlet || {
-        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both',
+        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'Veg',
         featured: false,
         openingTime: '',
         closingTime: '',
         offDays: [],
         menuType: [],
-        leaveDays: 'None'
+        leaveDays: 'None',
+        menu: [
+            {
+                id: '',
+                title: '',
+                items: [
+                    { id: '', item: '', price: '', type: '', description: ''}
+                ]
+            }
+        ],
     });
     // console.log(offDays)
 
@@ -60,8 +70,6 @@ export default function EditScreen({ route, navigation }) {
             Alert.alert("All fields are required");
             return;
         }
-
-
 
         try {
             const token = await AsyncStorage.getItem("token");
@@ -333,6 +341,12 @@ export default function EditScreen({ route, navigation }) {
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
                 keyboardShouldPersistTaps='handled'
             >
+                {/* <ManageCategoriesScreen
+                    editingOutlet={editingOutlet}
+                    setEditingOutlet={setEditingOutlet}
+                // onSelectCategory={setSelectedCategory}
+                /> */}
+
                 <View className='mt-3 px-2 flex-row justify-center'>
                     <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')} className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
@@ -341,7 +355,14 @@ export default function EditScreen({ route, navigation }) {
                         <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Add Offers</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('EditRestorent')} className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditRestorent', {
+                            editingOutlet: editingOutlet,
+                            setEditingOutlet: setEditingOutlet
+                        })}
+                        className='w-1/2 rounded-2xl overflow-hidden justify-between'
+                        style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}
+                    >
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                             <Ionicons name='duplicate-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>

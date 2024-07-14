@@ -129,8 +129,6 @@ export default function Like({ navigation }) {
         }
     };
 
-    console.log('outlets', outlets[0])
-
     const handleSubmit = async () => {
         if (!name || !location || !cuisine) {
             Alert.alert("All fields are required");
@@ -243,10 +241,10 @@ export default function Like({ navigation }) {
 
                         </View>
                         <View className=' mt-5' >
-                            {outlets[0] ? 
-                            <ListCard_Self2 item={outlets[0]} onPress={navToEditRestorent}/>
-                            :
-                            <ListCard_Self2 item={'null'} onPress={navToEditMain}/>
+                            {outlets[0] ?
+                                <ListCard_Self2 item={outlets[0]} onPress={navToEditRestorent} />
+                                :
+                                <ListCard_Self2 item={'null'} onPress={navToEditMain} />
                             }
                         </View>
                         {/* ---------------------- Added ---------------------- */}
@@ -285,12 +283,11 @@ export default function Like({ navigation }) {
                     </View>
 
                     {/* <View className='h-1 my-2' style={{backgroundColor: Colors.dark.colors.secComponentColor}} /> */}
-
+                    
                     <FlatList
-                        data={YouRestorent.menu}
-                        // renderItem={({ item }) => renderDropdown(item)}
+                        data={outlets.map(outlet => outlet.menu).flat()} // Flattening the menu arrays of all outlets into a single array
                         renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, toggleMenuItemStatus)}
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
                         ListFooterComponent={
                             <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                                 <View className='gap-3' >

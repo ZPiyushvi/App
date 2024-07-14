@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
 
-
 const itemSchema = new mongoose.Schema({
-    id: { type: String, required: true },
-    item: { type: String, required: true },
-    price: { type: String, required: true },
-    // description: { type: String, required: true },
-    // type: { type: String, required: true },
+    id: { type: String },
+    item: { type: String },
+    price: { type: String },
+    description: { type: String },
+    type: { type: String },
+    stutus: { type: Boolean },
     // category: { type: String, required: true },
     // image: { type: String, required: true },
     // quantity: { type: String, required: true },
-    // rating: { type: String, required: true },
-    // ratingcount: { type: String, required: true },
+    rating: { type: String },
+    ratingcount: { type: String },
     // longdescription: { type: String, required: true }
 });
 
 const menuCategorySchema = new mongoose.Schema({
-    id: { type: String, required: true },
-    title: { type: String, required: true },
-    items: { type: [itemSchema], required: true }
+    id: { type: String },
+    title: { type: String },
+    items: { type: [itemSchema] }
 });
 
 const outletSchema = new mongoose.Schema({
@@ -33,8 +33,8 @@ const outletSchema = new mongoose.Schema({
     menuType: { type: [String], required: true },
 
     location: { type: String, required: true },
-    // // rating: { type: Number, required: true },
-    // // ratingCount: { type: Number, required: true },
+    rating: { type: Number },
+    ratingcount: { type: Number },
     image: { type: String, required: true },
     details: { type: String, required: true },
     openingTime: { type: String, required: true },

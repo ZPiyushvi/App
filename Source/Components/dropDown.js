@@ -12,6 +12,7 @@ import useIncrementHandler from '../Components/handleIncrement';
 
 
 export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, onPressFuction) => {
+    console.log('dropDown', menu)
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -52,7 +53,7 @@ const renderDropdownItem = ({ item, title, navigation, onPressFuction }) => {
                     // activeOpacity={1}
                     onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                 >
-                    <View className='flex-row'>
+                    {/* <View className='flex-row'>
                         {
                             item.type &&
                             <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
@@ -62,18 +63,18 @@ const renderDropdownItem = ({ item, title, navigation, onPressFuction }) => {
                                 <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
                             ))
                         }
-                    </View>
+                    </View> */}
                     <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
                         {item.item}
                     </Text>
 
                     <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
-                    <View className=' flex-row py-2'>
+                    {/* <View className=' flex-row py-2'>
                         <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />
                         <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
-                    </View>
+                    </View> */}
 
-                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.longdescription}</Text>
+                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
                     <TouchableOpacity
@@ -102,7 +103,7 @@ const renderDropdownItem = ({ item, title, navigation, onPressFuction }) => {
                     </LinearGradient> */}
                         </ImageBackground>
                     </TouchableOpacity>
-                    <View
+                    {/* <View
                         style={[styles.button, {  backgroundColor: Colors.dark.colors.componentColor, borderColor: item.stutus == 'true' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed, borderWidth: 1 }]}
                         className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                     >
@@ -110,7 +111,7 @@ const renderDropdownItem = ({ item, title, navigation, onPressFuction }) => {
                             <Text className=' text-xl font-black' style={{ color: item.stutus == 'true' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.stutus == 'true' ? 'In Stock' : 'Sold Out'}</Text>
                         </TouchableOpacity>
                         <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>{item.stutus == 'true' ? '+' : '-'}</Text>
-                    </View>
+                    </View> */}
                 </View>
                 {/* {renderModal({ data: selectedItemData })} */}
             </View>
