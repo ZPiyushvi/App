@@ -107,6 +107,7 @@ app.post('/userdata', async (req, res) => {
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 })
+
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
     const {
@@ -133,7 +134,7 @@ app.post('/addoutlet', async (req, res) => {
         if (id) {
             outlet = await OutletInfo.findOneAndUpdate({ id, userId }, {
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, menuType, menu
+                openingTime, closingTime, leaveDay, featured, offDays, menuType,
             }, { new: true });
             if (!outlet) {
                 return res.status(404).send({ status: "error", data: "Outlet not found" });
@@ -150,12 +151,71 @@ app.post('/addoutlet', async (req, res) => {
                 rating: 3,
                 ratingcount: 7,
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType, menu
+                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType,
             });
             await outlet.save();
         }
 
         res.status(201).send({ status: "ok", data: "Outlet saved successfully" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- menu seller ----------------------------- //
+app.post('/addmenu', async (req, res) => {
+    const { menu, token } = req.body;
+
+    if (!menu || !token) {
+        return res.status(400).send({ status: "error", data: "All fields are required" });
+    }
+
+    try {
+        const user = jwt.verify(token, jwtSecret);
+        const userId = user.contactinfo;
+
+        let outlet = await OutletInfo.findOne({ userId });
+        if (!outlet) {
+            return res.status(404).send({ status: "error", data: "Outlet not found" });
+        }
+
+        // Append new categories and items to the existing menu
+        menu.forEach(newCategory => {
+            const existingCategory = outlet.menu.find(category => category.title === newCategory.title);
+            if (existingCategory) {
+                newCategory.items.forEach(newItem => {
+                    const itemExists = existingCategory.items.find(item => item.id === newItem.id);
+                    if (!itemExists) {
+                        existingCategory.items.push(newItem);
+                    }
+                });
+            } else {
+                outlet.menu.push(newCategory);
+            }
+        });
+
+        await outlet.save();
+
+        res.status(201).send({ status: "ok", data: "Menu saved successfully" });
+    } catch (err) {
+        console.error("Error saving menu:", err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- user menu ----------------------------- //
+app.post('/usermenu', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const user = jwt.verify(token, jwtSecret);
+        const usercontactinfo = user.contactinfo;
+
+        const outlets = await OutletInfo.find({ usercontactinfo });
+
+        res.status(200).send({ status: "ok", data: outlets });
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });

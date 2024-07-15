@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
-    id: { type: String },
+    // id: { type: String },
     item: { type: String },
     price: { type: String },
-    description: { type: String },
-    type: { type: String },
-    stutus: { type: Boolean },
+    // description: { type: String },
+    // type: { type: String },
+    // stutus: { type: Boolean },
     // category: { type: String, required: true },
     // image: { type: String, required: true },
     // quantity: { type: String, required: true },
@@ -16,7 +16,7 @@ const itemSchema = new mongoose.Schema({
 });
 
 const menuCategorySchema = new mongoose.Schema({
-    id: { type: String },
+    // id: { type: String },
     title: { type: String },
     items: { type: [itemSchema] }
 });

@@ -1,15 +1,65 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
-import ManageItemsScreen from '../Components/ManageItemsScreen';
-import { ScrollView } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import Colors from '../Components/Colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ADDMENU_ENDPOINT, API_BASE_URL, USERMENU_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
+import { getUserOutlets } from '../Components/fetchYourOutlet';
 
-const ManageCategoriesScreen = ({ navigation, route }) => {
-  const { editingOutlet, setEditingOutlet } = route.params;
-
+const ManageCategoriesScreen = ({ navigation }) => {
+  // const { outlet } = route.params;
+  const [menu, setMenu] = useState([]);
   const [newCategoryTitle, setNewCategoryTitle] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [itemName, setItemName] = useState('');
+  const [itemPrice, setItemPrice] = useState('');
+  const [itemType, setItemType] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+
+  // const fetchOutlets = async () => {
+  //   const outlets = await getUserOutlets();
+  //   setMenu(outlets[0].menu)
+  // };
+
+  // useEffect(() => {
+  //   fetchOutlets();
+  // }, []);
+
+  const handleSaveMenu = async () => {
+    if (!menu) {
+      console.log(menu)
+      Alert.alert("All fields are required");
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const dataToSend = { menu, token };
+      console.log('Sending data:', dataToSend);
+
+      const response = await fetch(`${API_BASE_URL}:${ADDMENU_ENDPOINT}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSend)
+      });
+
+      const data = await response.json();
+      if (data.status === "ok") {
+        Alert.alert("Menu saved successfully");
+        // navigation.goBack(); // Go back to the home screen
+      } else {
+        Alert.alert(data.data);
+      }
+    } catch (error) {
+      console.error("Error saving menu:", error);
+    }
+  };
 
   const addCategory = () => {
-    const categoryExists = editingOutlet.menu.find(menuCategory => menuCategory.title === newCategoryTitle);
+    const categoryExists = menu.find(menuCategory => menuCategory.title === newCategoryTitle);
 
     if (!categoryExists) {
       const newCategory = {
@@ -17,55 +67,48 @@ const ManageCategoriesScreen = ({ navigation, route }) => {
         title: newCategoryTitle,
         items: []
       };
-      setEditingOutlet({ ...editingOutlet, menu: [...editingOutlet.menu, newCategory] });
+      setMenu([...menu, newCategory]);
       setNewCategoryTitle('');
     } else {
       Alert.alert('Category exists');
     }
   };
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
-  const [itemName, setItemName] = useState('');
-  const [itemPrice, setItemPrice] = useState('');
-  const [itemType, setItemType] = useState('');
-  const [itemDescription, setItemDescription] = useState('');
-
   const addItem = () => {
+    if (!selectedCategory) {
+      Alert.alert("Please select a category");
+      return;
+    }
+
     const newItem = {
       id: Date.now().toString(),
       item: itemName,
       price: itemPrice,
       description: itemDescription,
       type: itemType,
-      stutus: true,
+      status: true,
     };
 
-    const updatedMenu = editingOutlet.menu.map((menuCategory) => {
+    const updatedMenu = menu.map(menuCategory => {
       if (menuCategory.id === selectedCategory.id) {
-        return {
-          ...menuCategory,
-          items: [...menuCategory.items, newItem],
-        };
+        return { ...menuCategory, items: [...menuCategory.items, newItem] };
       }
       return menuCategory;
     });
 
-    setEditingOutlet({ ...editingOutlet, menu: updatedMenu });
+    setMenu(updatedMenu);
     setItemName('');
     setItemPrice('');
     setItemDescription('');
-    // setItemStutus(true);
-    // setItemType('')
+    setItemType('');
   };
 
   return (
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.header}>Manage Categories</Text>
-        {console.log(editingOutlet)}
         <FlatList
-          data={editingOutlet.menu}
+          data={menu}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => setSelectedCategory(item)}>
@@ -91,9 +134,8 @@ const ManageCategoriesScreen = ({ navigation, route }) => {
                 <View style={styles.itemContainer}>
                   <Text style={styles.item}>{item.item}</Text>
                   <Text style={styles.item}>{item.price}</Text>
-                  {/* <Text style={styles.item}>{item.description}</Text> */}
                   <Text style={styles.item}>{item.description}</Text>
-                  <Text style={styles.item}>{item.stutus}</Text>
+                  <Text style={styles.item}>{item.status ? "Available" : "Unavailable"}</Text>
                 </View>
               )}
             />
@@ -122,15 +164,14 @@ const ManageCategoriesScreen = ({ navigation, route }) => {
               onChangeText={setItemType}
               placeholder="Item Type"
             />
-            {/* <TextInput
-              style={styles.input}
-              value={itemStutus}
-              onChangeText={setItemStutus}
-              placeholder="Item Status"
-          /> */}
             <Button title="Add Item" onPress={addItem} />
           </View>
         }
+        <TouchableOpacity onPress={handleSaveMenu} style={styles.saveButton}>
+          <View style={styles.saveButtonContent}>
+            <Text style={styles.saveButtonText}>SAVE</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -138,36 +179,53 @@ const ManageCategoriesScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    padding: 20
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20
   },
   category: {
-    fontSize: 18,
-    padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  itemContainer: {
-    padding: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  item: {
-    fontSize: 18,
+    padding: 10,
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    borderRadius: 5
   },
   input: {
-    height: 40,
-    borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 8,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5
   },
+  itemContainer: {
+    padding: 10,
+    backgroundColor: '#eee',
+    marginBottom: 10,
+    borderRadius: 5
+  },
+  item: {
+    fontSize: 16,
+    marginBottom: 5
+  },
+  saveButton: {
+    backgroundColor: Colors.dark.colors.diffrentColorOrange,
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center'
+  },
+  saveButtonContent: {
+    backgroundColor: 'rgba(0, 0, 0, 0.0)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10
+  },
+  saveButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.dark.colors.mainTextColor
+  }
 });
 
 export default ManageCategoriesScreen;

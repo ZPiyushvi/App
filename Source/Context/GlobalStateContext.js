@@ -4,6 +4,7 @@ export const GlobalStateContext = createContext();
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
 
 const filterRecentHistory = (history) => {
   const currentDate = new Date();
@@ -25,13 +26,41 @@ export const GlobalStateProvider = ({ children }) => {
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
+  const [outlets, setOutlets] = useState([]);
+
+  useEffect(() => {
+    getUserOutlets();
+}, []);
+
+  const getUserOutlets = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: token })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      setOutlets(data.data);
+    } catch (error) {
+      console.error('Error fetching user outlets:', error);
+    }
+  };
+  console.log(outlets)
 
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
       const groupedOrders = orders.reduce((acc, order) => {
         const { date, totalPrice, Noformatdate } = order;
         if (!acc[date]) {
-          acc[date] = { total: 0, orders: [], Noformatdate: ''};
+          acc[date] = { total: 0, orders: [], Noformatdate: '' };
         }
         acc[date].total += totalPrice;
         acc[date].orders.push(order);
@@ -166,7 +195,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

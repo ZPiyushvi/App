@@ -35,17 +35,8 @@ export default function EditScreen({ route, navigation }) {
         offDays: [],
         menuType: [],
         leaveDays: 'None',
-        menu: [
-            {
-                id: '',
-                title: '',
-                items: [
-                    { id: '', item: '', price: '', type: '', description: ''}
-                ]
-            }
-        ],
     });
-    // console.log(offDays)
+
 
     const handleChange = (field, value) => {
         setEditingOutlet({ ...editingOutlet, [field]: value });
@@ -283,10 +274,7 @@ export default function EditScreen({ route, navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('EditRestorent', {
-                            editingOutlet: editingOutlet,
-                            setEditingOutlet: setEditingOutlet
-                        })}
+                        onPress={() => navigation.navigate('EditRestorent', { outlet: outlet })}
                         className='w-1/2 rounded-2xl overflow-hidden justify-between'
                         style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}
                     >
