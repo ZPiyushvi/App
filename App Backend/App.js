@@ -180,21 +180,9 @@ app.post('/addmenu', async (req, res) => {
             return res.status(404).send({ status: "error", data: "Outlet not found" });
         }
 
-        // Append new categories and items to the existing menu
-        menu.forEach(newCategory => {
-            const existingCategory = outlet.menu.find(category => category.title === newCategory.title);
-            if (existingCategory) {
-                newCategory.items.forEach(newItem => {
-                    const itemExists = existingCategory.items.find(item => item.id === newItem.id);
-                    if (!itemExists) {
-                        existingCategory.items.push(newItem);
-                    }
-                });
-            } else {
-                outlet.menu.push(newCategory);
-            }
-        });
-
+        outlet = await OutletInfo.findOneAndUpdate({ userId }, {
+            menu
+        }, { new: true });
         await outlet.save();
 
         res.status(201).send({ status: "ok", data: "Menu saved successfully" });

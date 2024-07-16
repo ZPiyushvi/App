@@ -2,40 +2,38 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, FlatList, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Colors from '../Components/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ADDMENU_ENDPOINT, API_BASE_URL, USERMENU_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
-import { useFocusEffect } from '@react-navigation/native';
-import { GlobalStateContext } from '../Context/GlobalStateContext';
+import { ADDMENU_ENDPOINT, API_BASE_URL } from '../Constants/Constants';
 import { getUserOutlets } from '../Components/fetchYourOutlet';
 
 const ManageCategoriesScreen = ({ navigation }) => {
-  // const { outlet } = route.params;
-  const [menu, setMenu] = useState([]);
+  const [editingMenu, setEditingMenu] = useState([]);
   const [newCategoryTitle, setNewCategoryTitle] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [itemName, setItemName] = useState('');
-  const [itemPrice, setItemPrice] = useState('');
-  const [itemType, setItemType] = useState('');
-  const [itemDescription, setItemDescription] = useState('');
+  const [newItem, setNewItem] = useState({
+    item: '',
+    price: '',
+    type: '',
+    description: '',
+  });
 
-  // const fetchOutlets = async () => {
-  //   const outlets = await getUserOutlets();
-  //   setMenu(outlets[0].menu)
-  // };
+  const fetchOutlets = async () => {
+    const outlets = await getUserOutlets();
+    setEditingMenu(outlets[0].menu);
+  };
 
-  // useEffect(() => {
-  //   fetchOutlets();
-  // }, []);
+  useEffect(() => {
+    fetchOutlets();
+  }, []);
 
   const handleSaveMenu = async () => {
-    if (!menu) {
-      console.log(menu)
+    if (!editingMenu.length) {
       Alert.alert("All fields are required");
       return;
     }
 
     try {
       const token = await AsyncStorage.getItem("token");
-      const dataToSend = { menu, token };
+      const dataToSend = { menu: editingMenu, token };
       console.log('Sending data:', dataToSend);
 
       const response = await fetch(`${API_BASE_URL}:${ADDMENU_ENDPOINT}`, {
@@ -49,7 +47,6 @@ const ManageCategoriesScreen = ({ navigation }) => {
       const data = await response.json();
       if (data.status === "ok") {
         Alert.alert("Menu saved successfully");
-        // navigation.goBack(); // Go back to the home screen
       } else {
         Alert.alert(data.data);
       }
@@ -59,7 +56,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
   };
 
   const addCategory = () => {
-    const categoryExists = menu.find(menuCategory => menuCategory.title === newCategoryTitle);
+    const categoryExists = editingMenu.find(menuCategory => menuCategory.title === newCategoryTitle);
 
     if (!categoryExists) {
       const newCategory = {
@@ -67,11 +64,21 @@ const ManageCategoriesScreen = ({ navigation }) => {
         title: newCategoryTitle,
         items: []
       };
-      setMenu([...menu, newCategory]);
+      setEditingMenu([...editingMenu, newCategory]);
       setNewCategoryTitle('');
     } else {
       Alert.alert('Category exists');
     }
+  };
+  const editCategory = (id, newTitle) => {
+    console.log(id)
+    const updatedMenu = editingMenu.map(menuCategory => {
+      if (menuCategory._id === id) {
+        return { ...menuCategory, title: newTitle };
+      }
+      return menuCategory;
+    });
+    setEditingMenu(updatedMenu);
   };
 
   const addItem = () => {
@@ -80,27 +87,25 @@ const ManageCategoriesScreen = ({ navigation }) => {
       return;
     }
 
-    const newItem = {
+    const newItemObj = {
       id: Date.now().toString(),
-      item: itemName,
-      price: itemPrice,
-      description: itemDescription,
-      type: itemType,
+      ...newItem,
       status: true,
     };
 
-    const updatedMenu = menu.map(menuCategory => {
-      if (menuCategory.id === selectedCategory.id) {
-        return { ...menuCategory, items: [...menuCategory.items, newItem] };
+    const updatedMenu = editingMenu.map(menuCategory => {
+      if (menuCategory.title === selectedCategory.title) {
+        return { ...menuCategory, items: [...menuCategory.items, newItemObj] };
       }
       return menuCategory;
     });
 
-    setMenu(updatedMenu);
-    setItemName('');
-    setItemPrice('');
-    setItemDescription('');
-    setItemType('');
+    setEditingMenu(updatedMenu);
+    setNewItem({ item: '', price: '', type: '', description: '' });
+  };
+
+  const editItem = (item) => {
+    setNewItem(item);
   };
 
   return (
@@ -108,12 +113,20 @@ const ManageCategoriesScreen = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.header}>Manage Categories</Text>
         <FlatList
-          data={menu}
+          data={editingMenu}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedCategory(item)}>
-              <Text style={styles.category}>{item.title}</Text>
-            </TouchableOpacity>
+            <View style={styles.categoryContainer}>
+              <TouchableOpacity onPress={() => setSelectedCategory(item)}>
+                <Text style={styles.category}>{item.title}</Text>
+              </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                value={item.title}
+                onChangeText={(text) => editCategory(item._id, text)}
+                placeholder="Edit category title"
+              />
+            </View>
           )}
         />
         <TextInput
@@ -125,8 +138,15 @@ const ManageCategoriesScreen = ({ navigation }) => {
         <Button title="Add Category" onPress={addCategory} />
 
         {selectedCategory &&
+
           <View style={styles.container}>
             <Text style={styles.header}>Manage Items in {selectedCategory.title}</Text>
+            {console.log('editingMenu')}
+
+            {editingMenu.map(item => {
+              console.log(item);
+            })}
+
             <FlatList
               data={selectedCategory.items}
               keyExtractor={(item) => item.id}
@@ -136,32 +156,33 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   <Text style={styles.item}>{item.price}</Text>
                   <Text style={styles.item}>{item.description}</Text>
                   <Text style={styles.item}>{item.status ? "Available" : "Unavailable"}</Text>
+                  <Button title="Update Item" onPress={editItem} />
                 </View>
               )}
             />
             <TextInput
               style={styles.input}
-              value={itemName}
-              onChangeText={setItemName}
+              value={newItem.item}
+              onChangeText={(text) => setNewItem({ ...newItem, item: text })}
               placeholder="Item name"
             />
             <TextInput
               style={styles.input}
-              value={itemPrice}
-              onChangeText={setItemPrice}
+              value={newItem.price}
+              onChangeText={(text) => setNewItem({ ...newItem, price: text })}
               placeholder="Item price"
               keyboardType="numeric"
             />
             <TextInput
               style={styles.input}
-              value={itemDescription}
-              onChangeText={setItemDescription}
+              value={newItem.description}
+              onChangeText={(text) => setNewItem({ ...newItem, description: text })}
               placeholder="Item description"
             />
             <TextInput
               style={styles.input}
-              value={itemType}
-              onChangeText={setItemType}
+              value={newItem.type}
+              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
               placeholder="Item Type"
             />
             <Button title="Add Item" onPress={addItem} />
@@ -179,53 +200,49 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    flex: 1,
+    padding: 16,
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 16,
   },
   category: {
-    padding: 10,
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    borderRadius: 5
+    fontSize: 18,
+    padding: 8,
+    backgroundColor: Colors.lightGray,
+    marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5
+    borderColor: Colors.gray,
+    padding: 8,
+    marginBottom: 16,
   },
   itemContainer: {
-    padding: 10,
-    backgroundColor: '#eee',
-    marginBottom: 10,
-    borderRadius: 5
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 8,
+    backgroundColor: Colors.lightGray,
+    marginBottom: 8,
   },
   item: {
     fontSize: 16,
-    marginBottom: 5
   },
   saveButton: {
-    backgroundColor: Colors.dark.colors.diffrentColorOrange,
-    borderRadius: 10,
-    padding: 10,
-    alignItems: 'center'
+    marginTop: 16,
+    backgroundColor: Colors.primary,
+    padding: 16,
+    borderRadius: 8,
   },
   saveButtonContent: {
-    backgroundColor: 'rgba(0, 0, 0, 0.0)',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10
   },
   saveButtonText: {
+    color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.dark.colors.mainTextColor
-  }
+  },
 });
 
 export default ManageCategoriesScreen;
