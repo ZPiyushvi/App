@@ -10,6 +10,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
   const [newCategoryTitle, setNewCategoryTitle] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [newItem, setNewItem] = useState({
+    id: null,
     item: '',
     price: '',
     type: '',
@@ -70,8 +71,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
       Alert.alert('Category exists');
     }
   };
+
   const editCategory = (id, newTitle) => {
-    console.log(id)
     const updatedMenu = editingMenu.map(menuCategory => {
       if (menuCategory._id === id) {
         return { ...menuCategory, title: newTitle };
@@ -88,20 +89,34 @@ const ManageCategoriesScreen = ({ navigation }) => {
     }
 
     const newItemObj = {
-      id: Date.now().toString(),
-      ...newItem,
+      id: newItem.id ? newItem.id : Date.now().toString(),
+      item: newItem.item,
+      price: newItem.price,
+      type: newItem.type,
+      description: newItem.description,
       status: true,
     };
 
     const updatedMenu = editingMenu.map(menuCategory => {
       if (menuCategory.title === selectedCategory.title) {
-        return { ...menuCategory, items: [...menuCategory.items, newItemObj] };
+        
+        const existingItemIndex = menuCategory.items.findIndex(item => item.id == newItemObj.id);
+        console.log(existingItemIndex, newItemObj)
+        if (existingItemIndex == -1) {
+          // Add new item
+          menuCategory.items.push(newItemObj);
+          
+        } else {
+          // Update existing item
+          menuCategory.items[existingItemIndex] = newItemObj;
+        }
       }
       return menuCategory;
     });
 
     setEditingMenu(updatedMenu);
-    setNewItem({ item: '', price: '', type: '', description: '' });
+    setNewItem({ id: null, item: '', price: '', type: '', description: '' });
+    // fetchOutlets();
   };
 
   const editItem = (item) => {
@@ -141,11 +156,6 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
           <View style={styles.container}>
             <Text style={styles.header}>Manage Items in {selectedCategory.title}</Text>
-            {console.log('editingMenu')}
-
-            {editingMenu.map(item => {
-              console.log(item);
-            })}
 
             <FlatList
               data={selectedCategory.items}
@@ -156,7 +166,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   <Text style={styles.item}>{item.price}</Text>
                   <Text style={styles.item}>{item.description}</Text>
                   <Text style={styles.item}>{item.status ? "Available" : "Unavailable"}</Text>
-                  <Button title="Update Item" onPress={editItem} />
+                  <Button title="Edit" onPress={() => editItem(item)} />
                 </View>
               )}
             />
@@ -185,7 +195,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
               onChangeText={(text) => setNewItem({ ...newItem, type: text })}
               placeholder="Item Type"
             />
-            <Button title="Add Item" onPress={addItem} />
+            <Button title={newItem.id ? "Update Item" : "Add Item"} onPress={addItem} />
           </View>
         }
         <TouchableOpacity onPress={handleSaveMenu} style={styles.saveButton}>
@@ -208,17 +218,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
+  categoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
   category: {
     fontSize: 18,
     padding: 8,
     backgroundColor: Colors.lightGray,
-    marginBottom: 8,
+    flex: 1,
   },
   input: {
     borderWidth: 1,
     borderColor: Colors.gray,
     padding: 8,
     marginBottom: 16,
+    flex: 1,
   },
   itemContainer: {
     flexDirection: 'row',

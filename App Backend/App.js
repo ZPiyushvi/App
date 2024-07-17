@@ -183,6 +183,7 @@ app.post('/addmenu', async (req, res) => {
         outlet = await OutletInfo.findOneAndUpdate({ userId }, {
             menu
         }, { new: true });
+        
         await outlet.save();
 
         res.status(201).send({ status: "ok", data: "Menu saved successfully" });
