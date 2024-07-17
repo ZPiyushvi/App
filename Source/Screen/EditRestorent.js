@@ -116,7 +116,6 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
     setEditingMenu(updatedMenu);
     setNewItem({ id: null, item: '', price: '', type: '', description: '' });
-    // fetchOutlets();
   };
 
   const editItem = (item) => {
