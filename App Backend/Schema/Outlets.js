@@ -4,14 +4,14 @@ const itemSchema = new mongoose.Schema({
     id: { type: String },
     item: { type: String },
     price: { type: String },
-    // description: { type: String },
-    // type: { type: String },
-    // stutus: { type: Boolean },
-    // category: { type: String, required: true },
-    // image: { type: String, required: true },
-    // quantity: { type: String, required: true },
-    rating: { type: String },
-    ratingcount: { type: String },
+    type: { type: String },
+    description: { type: String },
+    status: { type: Boolean },
+    category: { type: String, required: true },
+    image: { type: String, required: true },
+    // quantity: { type: Number, required: true },
+    // rating: { type: Number },
+    // ratingcount: { type: Number },
     // longdescription: { type: String, required: true }
 });
 

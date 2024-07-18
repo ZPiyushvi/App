@@ -18,7 +18,6 @@ import FoodTypeIcon from '../Components/FoodTypeIcon';
 import LongStarIcon from '../Components/LongStarIcon';
 import { dropDown } from '../Components/dropDown';
 import { useFocusEffect } from '@react-navigation/native';
-import Details_Seller from '../Components/Details_Seller';
 
 const YouRestorent = {
     "name": "Amul Store",
@@ -68,10 +67,11 @@ const YouRestorent = {
     "leaveDay": "None"
 }
 
-export default function Like({ navigation }) {
+export default function Details_Seller({ navigation, handleChange }) {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [cuisine, setCuisine] = useState('');
+
     // const [outlets, setOutlets] = useState([]);
 
     // useEffect(() => {
@@ -162,14 +162,6 @@ export default function Like({ navigation }) {
 
     const scrollA = useRef(new Animated.Value(0)).current;
 
-    !menuItemStatus
-    const [menuItemStatus, setMenuItemStatus] = useState(true)
-
-    const toggleMenuItemStatus = () => {
-        setMenuItemStatus(!menuItemStatus)
-        console.log(menuItemStatus)
-    }
-
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
         // Initialize all dropdowns to be open
@@ -192,151 +184,45 @@ export default function Like({ navigation }) {
     }
 
     return (
-        <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-            {/* <StatusBar backgroundColor='black' /> */}
 
-            <LinearGradient
-                // Button Linear Gradient
-                colors={["black", Colors.dark.colors.backGroundColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Gradient_H, backgroundColor: Colors.dark.colors.componentColor }} />
-            {/* <StatusBar backgroundColor='black' /> */}
-            {/* <LinearGradient
-            // Button Linear Gradient
-            colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }}
-          /> */}
-            <Animated.ScrollView
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: scrollA } } }],
-                    { useNativeDriver: true },
-                )}
-                scrollEventThrottle={16}
-                keyboardDismissMode='on-drag'
-            >
-                <View className='staticContainer flex w-1/2 ' >
-                    <Animated.View style={[styles.banner(scrollA)]}>
-                        {/* ---------------------- Added ---------------------- */}
-                        <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                            <View className='address flex-row gap-2 items-center w-9/12'>
-                                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
-                                <View>
-                                    <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
-                                        {/* {console.log(userData.name)} */}
-                                        <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{"UserName"} </Text>
-                                        <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
-                                    </TouchableOpacity>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{"plot number 45, new row house"}</Text>
-                                </View>
-                            </View>
-                            <View className='address flex-row gap-2 items-center'>
-                                <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                            </View>
-                        </View>
+        <View style={styles.verticalScrollContainer}>
+            {/* ---------------------- Added ---------------------- */}
 
-                        <View className='pt-7 px-4'>
-                            <View className='flex-row'>
-                                <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>How</Text>
-                                <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}> Our App</Text>
-                            </View>
+            <View style={{ height: Dimensions.get('window').height * 0.08 }}>
+                <Titles title={"Your Offerings"} width={60} />
+            </View>
 
-                            <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>displays it.</Text>
-
-                        </View>
-                        <View className=' mt-5' >
-                            {outlets[0] ?
-                                <ListCard_Self2 item={outlets[0]} onPress={navToEditRestorent} />
-                                :
-                                <ListCard_Self2 item={'null'} onPress={navToEditMain} />
-                            }
-                        </View>
-                        {/* ---------------------- Added ---------------------- */}
-                    </Animated.View>
+            <View className='searchBodyContainer flex-row justify-between my-3' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
+                    <SearchBox />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
+                    <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                </TouchableOpacity>
+            </View>
+            <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
+                <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>All Items </Text>
+                    <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
+                    {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
                 </View>
-
-                <View style={styles.verticalScrollContainer}>
-                    {/* ---------------------- Added ---------------------- */}
-
-                    <View style={{ height: Dimensions.get('window').height * 0.08 }}>
-                        <Titles title={"Your Offerings"} width={60} />
-                    </View>
-
-                    <View className='searchBodyContainer flex-row justify-between my-3' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-                        <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
-                            <SearchBox />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
-                            <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
-                        </TouchableOpacity>
-                    </View>
-                    <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
-                        <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>All Items </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
-                            {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
-                        </View>
-                        <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>In Stock </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
-                        </View>
-                        <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Sold Out </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
-                        </View>
-                    </View>
-
-                    {/* <View className='h-1 my-2' style={{backgroundColor: Colors.dark.colors.secComponentColor}} /> */}
-
-                    <FlatList
-                        data={outlets.map(outlet => outlet.menu).flat()} // Flattening the menu arrays of all outlets into a single array
-                        renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, toggleMenuItemStatus)}
-                        keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
-                        ListFooterComponent={
-                            <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
-                                <View className='gap-3' >
-                                    <Text className='font-black text-lg -mb-1' style={{ color: Colors.dark.colors.textColor }}>
-                                        Disclaimer:
-                                    </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                                        Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
-                                    </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                                        Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
-                                    </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                                        The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
-                                    </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
-                                        An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
-                                    </Text>
-                                </View>
-                                <View className='mt-7' style={{ height: 1, backgroundColor: Colors.dark.colors.textColor }} />
-                                <TouchableOpacity className='flex-row justify-between items-center py-3'>
-                                    <View className='flex-row items-center'>
-                                        <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
-                                        <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
-                                    </View>
-                                    <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
-                                </TouchableOpacity>
-                                <View className='mb-7' style={{ height: 1, backgroundColor: Colors.dark.colors.textColor }} />
-                                <View>
-                                    <Image
-                                        source={require("./../Data/fssai.png")}
-                                        defaultSource={require('./../../assets/favicon.png')}
-                                        className='w-14 h-11'
-                                        alt="Logo"
-                                    />
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
-                                </View>
-                            </View>
-                        }
-                        showsHorizontalScrollIndicator={false}
-                    />
-
-                    {/* <Details_Seller navigation={navigation} /> */}
-                    {/* ---------------------- Added ---------------------- */}
+                <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>In Stock </Text>
+                    <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
                 </View>
+                <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Sold Out </Text>
+                    <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
+                </View>
+            </View>
 
-            </Animated.ScrollView>
-
+            <FlatList
+                data={outlets.map(outlet => outlet.menu).flat()} // Flattening the menu arrays of all outlets into a single array
+                renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, handleChange)}
+                keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
+                showsHorizontalScrollIndicator={false}
+            />
+            {/* ---------------------- Added ---------------------- */}
         </View>
     );
 

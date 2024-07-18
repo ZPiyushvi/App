@@ -4,6 +4,7 @@ import Colors from '../Components/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ADDMENU_ENDPOINT, API_BASE_URL } from '../Constants/Constants';
 import { getUserOutlets } from '../Components/fetchYourOutlet';
+import Details_Seller from '../Components/Details_Seller';
 
 const ManageCategoriesScreen = ({ navigation }) => {
   const [editingMenu, setEditingMenu] = useState([]);
@@ -15,6 +16,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
     price: '',
     type: '',
     description: '',
+    status: true,
+    category: '',
+    image: '',
+    rating: '',
+    ratingcount: '',
   });
 
   const fetchOutlets = async () => {
@@ -82,6 +88,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
     setEditingMenu(updatedMenu);
   };
 
+  const handleChange = (field, value) => {
+    setNewItem({ ...newItem, [field]: value })
+    // setEditingOutlet({ ...editingOutlet, [field]: value });
+};
+
   const addItem = () => {
     if (!selectedCategory) {
       Alert.alert("Please select a category");
@@ -94,18 +105,22 @@ const ManageCategoriesScreen = ({ navigation }) => {
       price: newItem.price,
       type: newItem.type,
       description: newItem.description,
-      status: true,
+      status: newItem.status,
+      category: newItem.category,
+      image: newItem.image,
+      // rating:  newItem.description,
+      // ratingcount:  newItem.description,
     };
 
     const updatedMenu = editingMenu.map(menuCategory => {
       if (menuCategory.title === selectedCategory.title) {
-        
+
         const existingItemIndex = menuCategory.items.findIndex(item => item.id == newItemObj.id);
         console.log(existingItemIndex, newItemObj)
         if (existingItemIndex == -1) {
           // Add new item
           menuCategory.items.push(newItemObj);
-          
+
         } else {
           // Update existing item
           menuCategory.items[existingItemIndex] = newItemObj;
@@ -194,6 +209,60 @@ const ManageCategoriesScreen = ({ navigation }) => {
               onChangeText={(text) => setNewItem({ ...newItem, type: text })}
               placeholder="Item Type"
             />
+            <TextInput
+              style={styles.input}
+              value={newItem.category}
+              onChangeText={(text) => setNewItem({ ...newItem, category: text })}
+              placeholder="Item category"
+            />
+            <TextInput
+              style={styles.input}
+              value={newItem.type}
+              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
+              placeholder="Item Type"
+            />
+            <View className='mt-3 rounded-xl'>
+              <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                <View className=' flex-row items-center justify-between'>
+                  <View className=' flex-row justify-between'>
+                    <TouchableOpacity
+                      onPress={() => handleChange('type', 'PureVeg')}
+                      style={{ backgroundColor: newItem.type === 'PureVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
+                      className=' w-[35%] p-3 rounded-l-lg items-center'
+                    >
+                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Pure Veg</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChange('type', 'Veg')}
+                      style={{ backgroundColor: newItem.type === 'Veg' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
+                      className=' w-[30%] p-3 items-center'
+                    >
+                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Veg</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChange('type', 'NonVeg')}
+                      style={{ backgroundColor: newItem.type === 'NonVeg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
+                      className=' w-[35%] p-3 rounded-r-lg items-center'
+                    >
+                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Non Veg</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <TextInput
+              style={styles.input}
+              value={newItem.image}
+              onChangeText={(text) => setNewItem({ ...newItem, image: text })}
+              placeholder="Item image"
+            />
+            {/* <TextInput
+              style={styles.input}
+              value={newItem.type}
+              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
+              placeholder="Item Type"
+            /> */}
+
             <Button title={newItem.id ? "Update Item" : "Add Item"} onPress={addItem} />
           </View>
         }
@@ -203,6 +272,13 @@ const ManageCategoriesScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       </View>
+
+      {/* {console.log(editingMenu)} */}
+      {editingMenu.map((item) => {
+        console.log(item)
+      })}
+
+      <Details_Seller outlets={editingMenu} handleChange={handleChange} />
     </ScrollView>
   );
 };
