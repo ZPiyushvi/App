@@ -9,9 +9,15 @@ import Colors from '../Components/Colors';
 import Home from '../Screen/Home';
 import Likes from '../Screen/Like';
 import OrderHistory from '../Screen/OrderHistory';
+import HomeSeller from '../Screen/HomeSeller';
+import { useContext } from 'react';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const Tab = createBottomTabNavigator();
 export default function BuyerBottomNavigator() {
+  const { userRole, setUserRole } = useContext(GlobalStateContext);
+  console.log('userRole', userRole)
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -59,7 +65,13 @@ export default function BuyerBottomNavigator() {
         // },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+
+      {
+        userRole == 'Seller' ?
+          <Tab.Screen name="Home" component={HomeSeller} /> :
+          <Tab.Screen name="Home" component={Home} />
+      }
+
       <Tab.Screen name="Likes" component={Likes} />
       <Tab.Screen
         options={{

@@ -132,7 +132,7 @@ const Home = () => {
       const token = await AsyncStorage.getItem("token");
       console.log(token)
       // http://192.168.1.3:5001/userdata
-      const response = await fetch(`http://192.168.1.3/:5001/userdata`, {
+      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -204,10 +204,10 @@ const Home = () => {
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
                     {/* {console.log(userData.name)} */}
-                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"} </Text>
+                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
-                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{"plot number 45, new row house"}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
