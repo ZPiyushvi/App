@@ -13,34 +13,8 @@ import { ADDMENU_ENDPOINT, API_BASE_URL } from '../Constants/Constants';
 
 
 
-export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, handleChange) => {
-
-    const handleSaveMenu = async () => {
-        try {
-            const token = await AsyncStorage.getItem("token");
-            const dataToSend = { menu: menu, token };
-            console.log('Sending data:', dataToSend);
-
-            const response = await fetch(`${API_BASE_URL}:${ADDMENU_ENDPOINT}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dataToSend)
-            });
-
-            const data = await response.json();
-            if (data.status === "ok") {
-                Alert.alert("Menu saved successfully");
-            } else {
-                Alert.alert(data.data);
-            }
-        } catch (error) {
-            console.error("Error saving menu:", error);
-        }
-    };
-
-    console.log('dropDown', menu)
+export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, handleChanges) => {
+    
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -48,13 +22,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
         }));
     };
 
-
     const renderDropdownItem = ({ item, title, navigation }) => {
-
-        const onPressFuction = (status) => {
-            status = !status
-            handleSaveMenu();
-        }
 
         return (
             <>
@@ -88,7 +56,6 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                     </View> */}
 
                         <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
-                        {console.log('item.status', item.status)}
                     </TouchableOpacity>
                     <View className='w-6/12 p-2'>
                         <TouchableOpacity
@@ -121,8 +88,8 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                             style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed, borderWidth: 1 }]}
                             className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                         >
-                            <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} 
-                            onPress={() => handleChange('status', !item.status)}
+                            <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]}
+                               onPress={() => handleChanges( title, 'status', !item.status, item.item)}
                             // onPress={() => handleChange('type', 'PureVeg')}
                             >
                                 <Text className=' text-xl font-black' style={{ color: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.status == true ? 'In Stock' : 'Sold Out'}</Text>
@@ -141,7 +108,6 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
 
     return (
         <>
-            {console.log(menu)}
             <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
                 <TouchableOpacity className=' mb-6 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
                     <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>

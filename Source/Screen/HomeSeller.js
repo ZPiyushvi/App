@@ -5,7 +5,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, FlatList, Animated, Dimensions, ImageBackground, Image, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Components/Colors'; // Adjust path as needed
-import { API_BASE_URL,USERSDATA_ENDPOINT, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { API_BASE_URL, USERSDATA_ENDPOINT, ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT, ADDMENU_ENDPOINT } from '../Constants/Constants';
 // import { ADDOUTLET_ENDPOINT, USEROUTLETS_ENDPOINT, API_BASE_URL // Adjust paths/constants
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import SearchBox from "../Components/SearchBox";
@@ -21,91 +21,16 @@ import { dropDown } from '../Components/dropDown';
 import { useFocusEffect } from '@react-navigation/native';
 import Details_Seller from '../Components/Details_Seller';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
-
-const YouRestorent = {
-    "name": "Amul Store",
-    "shopkippername": "Anil Mehta",
-    "upiId": "amulstore@upi",
-    "featured": "false",
-    "type": "Veg",
-    "menutype": "Dessert",
-    "menu": [
-        {
-            "title": "Desserts",
-            "items": [
-                { "stutus": "true", "id": "1", "rating": "4.0", "ratingcount": "200", "item": "Amul TriCone", "price": "50", "description": "Creamy frozen dessert in various flavors.", "type": "Veg", "category": "Cold_Dessert", "image": "https://i.pinimg.com/736x/33/e6/ff/33e6ff011d887758fa255ea000d3be4c.jpg", "quantity": "0", "longdescription": "Delicious creamy ice cream in a variety of flavors, perfect for a sweet treat." },
-                { "stutus": "false", "id": "2", "rating": "3.8", "ratingcount": "150", "item": "Amul Chocominis", "price": "40", "description": "Rich and indulgent chocolate.", "type": "Veg", "category": "Cold_Dessert", "image": "https://www.shutterstock.com/shutterstock/photos/1878842344/display_1500/stock-photo-india-april-chocolate-brand-amul-chocominis-1878842344.jpg", "quantity": "0", "longdescription": "Rich, bite-sized chocolates, perfect for chocolate lovers." }
-            ]
-        }, {
-            "title": "Beverages",
-            "items": [
-                { "stutus": "true", "id": "1", "rating": "4.2", "ratingcount": "250", "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://www.shutterstock.com/shutterstock/photos/1257639893/display_1500/stock-photo-pune-india-september-amul-kool-on-white-background-shot-in-studio-1257639893.jpg", "quantity": "0", "longdescription": "Refreshing milk-based drink available in various flavors." }
-            ]
-        }, {
-            "title": "Beveragess",
-            "items": [
-                { "stutus": "true", "id": "1", "rating": "4.2", "ratingcount": "250", "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://www.shutterstock.com/shutterstock/photos/1257639893/display_1500/stock-photo-pune-india-september-amul-kool-on-white-background-shot-in-studio-1257639893.jpg", "quantity": "0", "longdescription": "Refreshing milk-based drink available in various flavors." }
-            ]
-        }, {
-            "title": "Beverwages",
-            "items": [
-                { "stutus": "true", "id": "1", "rating": "4.2", "ratingcount": "250", "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://www.shutterstock.com/shutterstock/photos/1257639893/display_1500/stock-photo-pune-india-september-amul-kool-on-white-background-shot-in-studio-1257639893.jpg", "quantity": "0", "longdescription": "Refreshing milk-based drink available in various flavors." }
-            ]
-        }, {
-            "title": "Beveragaes",
-            "items": [
-                { "stutus": "true", "id": "1", "rating": "4.2", "ratingcount": "250", "item": "Amul Kool", "price": "70", "description": "Refreshing shake made with milk and flavorings.", "type": "Veg", "category": "Cold_Beverage", "image": "https://www.shutterstock.com/shutterstock/photos/1257639893/display_1500/stock-photo-pune-india-september-amul-kool-on-white-background-shot-in-studio-1257639893.jpg", "quantity": "0", "longdescription": "Refreshing milk-based drink available in various flavors." }
-            ]
-        }
-    ],
-    "location": "Emiet Hostel",
-    "locationdetailed": "Emiet Hostel",
-    "rating": "4.0",
-    "ratingcount": "300",
-    "image": "https://www.iitgn.ac.in/student/lifeoncampus/facilities/images/thumb/amulstore.jpg",
-    "details": "The Amul Store at the campus is a one-stop shop for a variety of dairy products including milk, cheese, ice cream, and other popular Amul products.",
-    "openingtime": "10:00 am",
-    "closingtime": "10:00 pm",
-    "offdays": "None",
-    "leaveDay": "None"
-}
+import ToastNotification from '../Components/ToastNotification';
 
 export default function HomeSeller({ navigation }) {
-    const [name, setName] = useState('');
-    const [location, setLocation] = useState('');
-    const [cuisine, setCuisine] = useState('');
-    // const [outlets, setOutlets] = useState([]);
+
     const [type, settype] = useState('');
     const { show, hide, RenderModel } = ModelScreen();
-    // useEffect(() => {
-    //     getUserOutlets();
-    // }, []);
-
-    // const getUserOutlets = async () => {
-    //     try {
-    //         const token = await AsyncStorage.getItem("token");
-    //         const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({ token: token })
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok ' + response.statusText);
-    //         }
-
-    //         const data = await response.json();
-    //         setOutlets(data.data);
-    //     } catch (error) {
-    //         console.error('Error fetching user outlets:', error);
-    //     }
-    // };
     const [userData, setUserData] = useState([]);
-
     const [outlets, setOutlets] = useState([]);
-
+    const [newItem, setNewItem] = useState();
+    const [sortItem, setSortItem] = useState('AllItems');
 
     useFocusEffect(
         React.useCallback(() => {
@@ -119,6 +44,12 @@ export default function HomeSeller({ navigation }) {
     );
 
     useEffect(() => {
+        handleSaveMenu()
+        // getData();
+    }, [newItem]);
+    
+    useEffect(() => {
+        // handleSaveMenu()
         getData();
     }, []);
 
@@ -160,9 +91,9 @@ export default function HomeSeller({ navigation }) {
             }
 
             const data = await response.json();
-            console.log('data', data)
+            // console.log('data', data)
             setUserData(data.data)
-            console.log("userData", "home", data.data)
+            // console.log("userData", "home", data.data)
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -185,59 +116,22 @@ export default function HomeSeller({ navigation }) {
 
             const data = await response.json();
             setOutlets(data.data);
+            setNewItem(data.data[0].menu)
         } catch (error) {
             console.error('Error fetching user outlets:', error);
         }
     };
 
-    const handleSubmit = async () => {
-        if (!name || !location || !cuisine) {
-            Alert.alert("All fields are required");
-            return;
-        }
-
-        try {
-            const token = await AsyncStorage.getItem("token");
-            const OutletData = { name, location, cuisine, token };
-
-            const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OutletData)
-            });
-
-            const data = await response.json();
-            if (data.status === "ok") {
-                Alert.alert("Outlet added successfully");
-                getUserOutlets(); // Refresh the outlets list
-            } else {
-                Alert.alert(data.data);
-            }
-        } catch (error) {
-            console.error("Error adding outlet:", error);
-        }
-    };
-
     const scrollA = useRef(new Animated.Value(0)).current;
-
-    !menuItemStatus
-    const [menuItemStatus, setMenuItemStatus] = useState(true)
-
-    const toggleMenuItemStatus = () => {
-        setMenuItemStatus(!menuItemStatus)
-        console.log(menuItemStatus)
-    }
 
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
-        // Initialize all dropdowns to be open
-        if (Array.isArray(YouRestorent)) {
-            menuItems.forEach(menu => {
+        // if (Array.isArray(outlets[0])) {
+            newItem?.forEach(menu => {
+                console.log('title', menu.title)
                 initialDropdowns[menu.title] = true;
             })
-        };
+        // };
         // setVisible(true);
         return initialDropdowns;
     });
@@ -250,6 +144,79 @@ export default function HomeSeller({ navigation }) {
     const navToEditMain = () => {
         navigation.navigate('EditMain', { outlet: null })
     }
+
+
+    const [showToast, setShowToast] = useState(false);
+    useEffect(() => {
+        let timer;
+        if (showToast) {
+            timer = setTimeout(() => {
+                setShowToast(false);
+            }, 3000); // 10 seconds
+        }
+        return () => clearTimeout(timer);
+    }, [showToast]);
+
+    const handleSaveMenu = async () => {
+
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const dataToSend = { menu: newItem, token };
+            console.log('Sending data:', dataToSend);
+            // newItem.forEach((item) => {
+            //     console.log('itemxxxx', item.items);
+            // });
+
+            const response = await fetch(`${API_BASE_URL}:${ADDMENU_ENDPOINT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(dataToSend)
+            });
+
+            const data = await response.json();
+            if (data.status === "ok") {
+                setShowToast(true);
+                // Alert.alert("Menu saved successfully");
+            } else {
+                Alert.alert(data.data);
+            }
+        } catch (error) {
+            console.error("Error saving menu:", error);
+        }
+    };
+
+
+    const handleChanges = (title, field, value, itemname) => {
+        setNewItem(newItem.map(item => {
+            if (item.title === title) {
+                return {
+                    ...item,
+                    items: item.items.map(subItem => {
+                        if (subItem.item === itemname) {
+                            return {
+                                ...subItem,
+                                status: !subItem.status
+                            };
+                        }
+                        return subItem; // Ensure other items are returned unchanged
+                    })
+                };
+            }
+            return item; // Ensure other items are returned unchanged
+        }));
+
+        // handleSaveMenu();
+    };
+
+    //     handleSaveMenu();
+    // };
+    // const filteredItems = newItem.map(category => ({
+    //     ...category,
+    //     items: category.items.filter(item => item.status === true)
+    // }));
+    // const filter()
 
     return (
         <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
@@ -328,26 +295,40 @@ export default function HomeSeller({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
-                        <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>All Items </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
+                        <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
+                            <Text className='font-semibold text-base' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>All Items </Text>
+                            <Text className='font-light text-sm' style={{ color:sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
                             {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
-                        </View>
-                        <View className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>In Stock </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
-                        </View>
-                        <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Sold Out </Text>
-                            <Text className='font-light text-sm' style={{ color: Colors.dark.colors.textColor }}>(12)</Text>
-                        </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setSortItem('InStock')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
+                            <Text className='font-semibold text-base' style={{ color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>In Stock </Text>
+                            <Text className='font-light text-sm' style={{ color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setSortItem('SoldOut')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
+                            <Text className='font-semibold text-base' style={{ color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>Sold Out </Text>
+                            <Text className='font-light text-sm' style={{ color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                        </TouchableOpacity>
                     </View>
 
                     {/* <View className='h-1 my-2' style={{backgroundColor: Colors.dark.colors.secComponentColor}} /> */}
 
                     <FlatList
-                        data={outlets.map(outlet => outlet.menu).flat()} // Flattening the menu arrays of all outlets into a single array
-                        renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, toggleMenuItemStatus)}
+                        data={(() => {
+                            if (sortItem === 'InStock') {
+                                return newItem.map(category => ({
+                                    ...category,
+                                    items: category.items.filter(item => item.status === true)
+                                }));
+                            } else if (sortItem === 'SoldOut') {
+                                return newItem.map(category => ({
+                                    ...category,
+                                    items: category.items.filter(item => item.status === false)
+                                }));
+                            } else {
+                                return newItem;
+                            }
+                        })()}
+                        renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
                         keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
                         ListFooterComponent={
                             <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
@@ -397,6 +378,7 @@ export default function HomeSeller({ navigation }) {
 
             </Animated.ScrollView>
             {RenderModel({ type: { type } })}
+            {showToast && <ToastNotification title={"Info"} description={"Menu updated successfully"} />}
         </View>
     );
 
