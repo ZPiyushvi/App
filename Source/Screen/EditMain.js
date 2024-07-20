@@ -274,6 +274,7 @@ export default function EditScreen({ route, navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity
+                    //create-outline
                         onPress={() => navigation.navigate('EditRestorent', { outlet: outlet })}
                         className='w-1/2 rounded-2xl overflow-hidden justify-between'
                         style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}

@@ -231,6 +231,27 @@ app.post('/useroutlets', async (req, res) => {
     }
 });
 
+// ----------------------------- Get all outlets with full menu ----------------------------- //
+app.post('/alloutlets', async (req, res) => {
+    try {
+        const outlets = await OutletInfo.find({});
+
+        res.status(200).send({ status: "ok", data: outlets });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+
+
+
+
+
+
+
+
 app.listen(5001, () => {
     console.log("Server started on port 5001");
 });
+

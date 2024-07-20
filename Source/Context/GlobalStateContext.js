@@ -4,7 +4,8 @@ export const GlobalStateContext = createContext();
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_BASE_URL, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { Alert } from 'react-native';
 
 const filterRecentHistory = (history) => {
   const currentDate = new Date();
@@ -28,9 +29,39 @@ export const GlobalStateProvider = ({ children }) => {
   const [History, setHistory] = useState([]);
   const [outlets, setOutlets] = useState([]);
 
+
+  const [outletsNEW, setOutletsNEW] = useState([]);
+  useEffect(() => {
+    const fetchOutlets = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({})
+        });
+
+        if (!response.ok) {
+          Alert.alert("Network response was not ok");
+          // throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOutletsNEW(data.data);
+        // setLoading(false);
+      } catch (error) {
+        console.error("Error saving menu:", error);
+        // setLoading(false);
+      }
+    };
+    fetchOutlets();
+    console.log('outletsNEW', outletsNEW)
+  }, []);
+
+  console.log('outletsNEW', outletsNEW)
   useEffect(() => {
     getUserOutlets();
-}, []);
+  }, []);
 
   const getUserOutlets = async () => {
     try {
