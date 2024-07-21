@@ -44,7 +44,7 @@ const DetailsScreen = ({ route }) => {
             setVisible(true);
         }, 100); // Adjust timing as necessary
     }, [Data]);
-    console.log('data', data)
+    // console.log('data', data)
 
     const [visible, setVisible] = React.useState(false)
     const shimmerColors = [Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor];
@@ -195,7 +195,7 @@ const DetailsScreen = ({ route }) => {
                         </LinearGradient> */}
                             </ImageBackground>
                         </TouchableOpacity>
-                        {/* {item.status ? */}
+                        {item.status ?
                             <View
                                 style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                                 className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
@@ -227,7 +227,7 @@ const DetailsScreen = ({ route }) => {
                                     );
                                 })()}
                             </View>
-                            {/* : null} */}
+                            : null}
                     </View>
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>
@@ -481,18 +481,18 @@ const DetailsScreen = ({ route }) => {
                                 showsHorizontalScrollIndicator={false}
                             />
                         </View>
-                        {updatedCartWithDetails.map(({ storeName, storeDetails, items, totalPrice }, index) => (
-                            storeName === Data.name ? (
-
-                                <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                        {cartItemsNEW.map((item, index) => (
+                            // console.log('item', item),
+                            item.id === Data.id ? ( //dataWithoutMenu.id
+                                <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
                                     <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
                                         <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                            {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {''}
-                                            {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} added
+                                            {item?.orders.reduce((acc, order) => acc + order.quantity, 0)}
+                                            {item?.orders.reduce((acc, order) => acc + order.quantity, 0) === 1 ? ' item' : ' items'} added
                                         </Text>
                                         <View className=' flex-row items-center'>
                                             <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>CheckOut </Text>
-                                            <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}>
+                                            <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
                                                 <Ionicons color={Colors.dark.colors.mainTextColor} name={'caret-forward-circle'} size={22} />
                                             </TouchableOpacity>
                                         </View>

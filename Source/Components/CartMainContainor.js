@@ -12,7 +12,7 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
-  const { outletsNEW, setCartItems, campusShops, setcampusShops, cartItemsNEW } = useContext(GlobalStateContext);
+  const { outletsNEW, setCartItemsNEW, setCartItems, campusShops, setcampusShops, cartItemsNEW } = useContext(GlobalStateContext);
 
   const updatedCartWithDetailsLength = updatedCartWithDetails.length;
 
@@ -20,7 +20,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
 
   // const { storeName, storeDetails, items, orders } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
   const Data = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
-
+console.log('Data', Data)
   const totalPrice = Data.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0);
   const totalItems = Data.orders.reduce((acc, order) => acc + order.quantity, 0);
   // const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
@@ -146,7 +146,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
           </TouchableOpacity>
           <View style={{ width: Dimensions.get('window').width * 0.08 }} className=' items-center justify-center'>
             <TouchableOpacity
-              onPress={() => removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops)}
+              onPress={() => removeStoreFromCart(Data.name, setCartItemsNEW)}
               className=' rounded-full p-1 items-center justify-center'
               style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
             >

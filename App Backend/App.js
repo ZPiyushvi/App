@@ -244,6 +244,16 @@ app.post('/alloutlets', async (req, res) => {
 });
 
 
+app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
+    try {
+      const outlets = await OutletInfo.find({});
+      res.status(200).send({ status: 'ok', data: outlets });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ status: 'error', data: 'Internal server error' });
+    }
+  });
+
 
 
 

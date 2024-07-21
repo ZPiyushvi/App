@@ -32,6 +32,36 @@ export const GlobalStateProvider = ({ children }) => {
 
 
   const [outletsNEW, setOutletsNEW] = useState([]);
+
+  const [outletsNEW2, setOutletsNEW2] = useState([]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getUserOutlets2();
+    }, 10000); // Poll every 10 seconds
+  
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+  
+  const getUserOutlets2 = async () => {
+    try {
+      // const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://192.168.138.12:5001/alloutlets2'); // Correct the URL
+  
+      if (!response.ok) {
+        console.log('Network response was not ok');
+        return;
+      }
+  
+      const data = await response.json();
+      
+      setOutletsNEW(data.data);
+      // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+    } catch (error) {
+      console.error('Error fetching user outlets:', error);
+    }
+  };
+  // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+
   useEffect(() => {
     const fetchOutlets = async () => {
       try {

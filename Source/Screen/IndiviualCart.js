@@ -18,11 +18,41 @@ const Cart = ({ route }) => {
   // const { item } = route.params;
 
 
-  // console.log('Updated Cart Items:', JSON.stringify(item, null, 2));
+
   const { outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
+  
+  const updateCartItemsStatus = () => {
+    const updatedCartItems = cartItemsNEW.map(cartItem => {
+      const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
+      // console.log(outlet, 'outlet')
+      if (outlet) {
+        const updatedOrders = cartItem.orders.map(order => {
+          const menu = outlet.menu.flatMap(menu => menu.items);
+          const menuItem = menu.find(item => item.id === order.id);
+          if (menuItem) {
+            return {
+              ...order,
+              status: menuItem.status
+            };
+          }
+          return order;
+        });
+        return {
+          ...cartItem,
+          orders: updatedOrders
+        };
+      }
+      return cartItem;
+    });
+    setCartItemsNEW(updatedCartItems);
+  };
+
+  useEffect(() => {
+    updateCartItemsStatus();
+  }, []);
 
   useEffect(() => {
     if (!item) {
@@ -199,7 +229,7 @@ const Cart = ({ route }) => {
 
   const handleProceedPayment = (item) => {
 
-    console.log('item', item)
+    // console.log('item', item)
     const removeItemsWithStatusFalse = () => {
       item.orders = item.orders.filter(order => order.status == true);
     };
@@ -232,7 +262,7 @@ const Cart = ({ route }) => {
                 ...prevHistory
               ]);
             }
-            // removeStoreFromCart(item.name, setCartItemsNEW);
+            removeStoreFromCart(item.name, setCartItemsNEW);
             navigation.navigate("Orders");
           }
         }]
@@ -250,7 +280,7 @@ const Cart = ({ route }) => {
         },
         ...prevHistory
       ]);
-      // removeStoreFromCart(item.name, setCartItemsNEW);
+      removeStoreFromCart(item.name, setCartItemsNEW);
       navigation.navigate("Orders");
     }
 
@@ -347,7 +377,7 @@ const Cart = ({ route }) => {
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
           <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
-        {console.log(today, getFormattedDate(today))}
+        {/* {console.log(today, getFormattedDate(today))} */}
         <TouchableOpacity
           onPress={() => handleProceedPayment(item)}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>

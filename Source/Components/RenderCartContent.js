@@ -10,7 +10,7 @@ import { mockCampusShops } from '../Data/mockCampusShops';
 
 const RenderCartItem = ({ item, setVisible, navigation }) => {
   // const { cartItemsNEW, outletsNEW, storeName, storeDetails, items } = item;
-  const { outletsNEW, setCartItems, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { outletsNEW, setCartItems, campusShops, setcampusShops, setCartItemsNEW } = useContext(GlobalStateContext);
 
   const navToDetails = (item) => {
     setVisible(false);
@@ -80,7 +80,7 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
         </TouchableOpacity>
         <View className='items-center justify-center'>
           <TouchableOpacity
-            onPress={() => removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops)}
+            onPress={() => removeStoreFromCart(item.name, setCartItemsNEW)}
             className='rounded-full p-1 items-center justify-center'
             style={{ backgroundColor: Colors.dark.colors.componentColor }}
           >
