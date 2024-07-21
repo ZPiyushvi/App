@@ -83,7 +83,7 @@ const Home = () => {
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { outletsNEW, CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -300,13 +300,13 @@ const Home = () => {
       </Animated.ScrollView>
 
       <View>
-        {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
+        {(!cartItemsNEW || cartItemsNEW.length === 0 || !cartItemsNEW[cartItemsNEW.length - 1]) ?
           null
           :
           <LinearGradient
             className=' absolute p-2 w-full bottom-0'
             colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} settype={settype} />
+            <FirstStoreComponent updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
           </LinearGradient>
         }
       </View>

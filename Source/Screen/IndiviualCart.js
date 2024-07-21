@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import FoodIcon from '../Components/FoodIcon';
 import Colors from '../Components/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,10 +8,36 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from '../Components/removeStoreFromCart';
+import useIncrementHandler from '../Components/handleIncrement';
 
 const Cart = ({ route }) => {
-  const { storeName, items, totalPrice, storeDetails } = route.params;
-  const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+
+  const { handleIncrement } = useIncrementHandler();
+  const { handleDecrement } = useIncrementHandler();
+  // const { storeName, items, totalPrice, storeDetails } = route.params;
+  // const { item } = route.params;
+
+
+  // console.log('Updated Cart Items:', JSON.stringify(item, null, 2));
+  const { outletsNEW, cartItemsNEW, setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+
+  // cartItemsNEW.find((cart) => console.log(cart.name));
+  const item = cartItemsNEW.find((cart) => cart.name === route.params.item.name);
+
+  useEffect(() => {
+    if (!item) {
+      navigation.goBack();
+    }
+  }, [item]); 
+
+
+  // const totalPrice = item.orders ? item.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0) : 0;
+  const totalPrice = item?.orders
+  ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+  : 0;
+  const totalQuantity = item?.orders
+  ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+  : 0;
 
   const today = new Date();
   // const yesterday = new Date();
@@ -82,7 +108,7 @@ const Cart = ({ route }) => {
             </>
           ) : (
             <>
-              <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, item.id, item, [...item.orders, item.id]) }}>
                 <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
               </TouchableOpacity>
               <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
@@ -94,8 +120,9 @@ const Cart = ({ route }) => {
     </View>
   );
 
-  const renderItem2 = ({ item, index }) => (
-    <View key={`${index}-${item.name}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+  const renderItem2 = ({ item, index, hotelId }) => (
+    <View key={item.id} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+      {/* {console.log('[...item.orders, item.id]', { orders: item.orders, id: hotelId })} */}
       <View className='flex-row w-full' >
         {/* {console.log(item.image)} */}
         <View className=' w-3/12'>
@@ -129,17 +156,18 @@ const Cart = ({ route }) => {
             >
               {item.quantity > 0 ? (
                 <>
-                  <TouchableOpacity className='z-10 left-0 absolute w-6/12 items-center'>
+                  {/* {console.log('xxxxx', item)} */}
+                  <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
                     <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
                   </TouchableOpacity>
                   <Text className=' uppercase text-base font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                  <TouchableOpacity className='z-10 right-0 absolute w-6/12 items-center'>
+                  <TouchableOpacity onPress={() => { handleIncrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 right-0 absolute w-6/12 items-center'>
                     <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
                   </TouchableOpacity>
                 </>
               ) : (
                 <>
-                  <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
+                  <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} >
                     <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                   </TouchableOpacity>
                   <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
@@ -155,7 +183,7 @@ const Cart = ({ route }) => {
   );
 
 
-  const filteredItems = items.map(({ price, quantity, image, category }) => ({
+  const filteredItems = item?.orders.map(({ price, quantity, image, category }) => ({
     price,
     quantity,
     image,
@@ -170,7 +198,7 @@ const Cart = ({ route }) => {
           <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
             <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
           </TouchableOpacity>
-          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(storeName, 21)}</Text>
+          <Text numberOfLines={1} ellipsizeMode='tail' className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{item?.name}</Text>
         </View>
         <TouchableOpacity className='p-2'>
           <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
@@ -186,7 +214,7 @@ const Cart = ({ route }) => {
               <View className=' ml-3 flex-row'>
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>You have </Text>
                 <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
-                  {calculateTotalQuantity(items)} {calculateTotalQuantity(items) > 1 ? 'items' : 'item'}
+                  {totalQuantity} {totalQuantity > 1 ? 'items' : 'item'}
                 </Text>
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}> in your list</Text>
               </View>
@@ -200,8 +228,8 @@ const Cart = ({ route }) => {
               keyExtractor={(items) => `${items.id}-${items.item}`}
             /> */}
             {/* {console.log(items.item)} */}
-            {items.map((menu, index) => (
-              renderItem2({ item: menu, index: index })
+            {item?.orders.map((items, index) => (
+              renderItem2({ hotelId: item.id, item: items, index: index, })
               // console.log(items[index])
             ))}
           </View>
@@ -251,7 +279,7 @@ const Cart = ({ route }) => {
         </View>
         {console.log(today, getFormattedDate(today))}
         <TouchableOpacity
-          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [ { items: filteredItems, storeDetails: storeDetails, totalPrice: totalPrice, Noformatdate: today, date: getFormattedDate(today)}, ...prevHistory]), navigation.navigate("HomeScreen") }}
+          onPress={() => { removeStoreFromCart(item), setHistory(prevHistory => [{ items: filteredItems, storeDetails: storeDetails, totalPrice: totalPrice, Noformatdate: today, date: getFormattedDate(today) }, ...prevHistory]), navigation.navigate("HomeScreen") }}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>

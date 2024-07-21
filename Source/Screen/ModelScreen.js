@@ -13,7 +13,7 @@ import RenderCartItem from '../Components/RenderCartContent';
 export default function ModelScreen() {
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
-    const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const { CartItems, updatedCartWithDetails, cartItemsNEW } = useContext(GlobalStateContext);
     const show = () => setVisible(true);
     const hide = () => setVisible(false);
     const [langunage, setlanguage] = useState("");
@@ -34,14 +34,14 @@ export default function ModelScreen() {
                     <View className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
                         <View className='flex-row justify-between p-1 pb-3 items-center'>
                             <Text style={{ color: Colors.dark.colors.mainTextColor, fontWeight: 'bold', fontSize: 20 }}>
-                                {type.type === "lang" ? "Select Language" : `Your Carts ${updatedCartWithDetails.length}`}
+                                {type.type === "lang" ? "Select Language" : `Your Carts ${cartItemsNEW.length}`}
                             </Text>
                             <Text style={{ color: Colors.dark.colors.textColor }} className='font-black text-base'>{type.type == "lang" ? null : "Clear All"}</Text>
                         </View>
                         {/* {
                             type.type == "cart" ? ( */}
                         <FlatList
-                            data={type.type === "lang" ? avalableLanguages : updatedCartWithDetails}
+                            data={type.type === "lang" ? avalableLanguages : cartItemsNEW}
                             keyExtractor={(item, index) => index.toString()}
                             showsVerticalScrollIndicator={false}
                             style={{ flex: 1, backgroundColor: Colors.dark.colors.backGroundColor }}

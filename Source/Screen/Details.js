@@ -56,7 +56,7 @@ const DetailsScreen = ({ route }) => {
     const { Data } = route.params || {};
     const [menuItems, setMenuItems] = useState(Data.menu);
     // console.log(menuItems)
-    const { CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const { cartItemsNEW, setCartItemsNEW, CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(Data.openingtime, Data.closingtime, Data.offdays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
@@ -108,8 +108,8 @@ const DetailsScreen = ({ route }) => {
         setVegBottom(!vegBottom)
     }
 
-    const { handleIncrement } = useIncrementHandler(menuItems);
-    const { handleDecrement } = useIncrementHandler(menuItems);
+    const { handleIncrement } = useIncrementHandler();
+    const { handleDecrement } = useIncrementHandler();
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -130,101 +130,135 @@ const DetailsScreen = ({ route }) => {
     };
 
 
-    const renderDropdownItem = ({ item, title }) => (
-        <>
-            {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center text-5xl font-black ' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>}
-            <View
-                // style={{ backgroundColor: 'rgba(355, 355, 355, 0.)' }}
-                className={`flex-row p-3 ${item.status ? 'pb-6' : 'opacity-40'}`}
-            >
-                <TouchableOpacity
-                    className='w-6/12 h-full'
-                    // activeOpacity={1}
-                    onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
+    const renderDropdownItem = ({ item, title }) => {
+        const dataWithoutMenu = { ...Data };
+        delete dataWithoutMenu.menu;
+        return (
+            <>
+                {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center text-5xl font-black ' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>}
+                <View
+                    // style={{ backgroundColor: 'rgba(355, 355, 355, 0.)' }}
+                    className={`flex-row p-3 ${item.status ? 'pb-6' : 'opacity-40'}`}
                 >
-                    <View className='flex-row'>
-                        {
-                            item.type &&
-                            <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
-                        }
-                        {
-                            item.category.split('_').map((part, index) => (
-                                <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
-                            ))
-                        }
-                    </View>
-                    <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
-                        {item.item}
-                    </Text>
-
-                    <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
-                    <View className=' flex-row py-2'>
-                        <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />
-                        <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
-                    </View>
-
-                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
-                </TouchableOpacity>
-                <View className='w-6/12 p-2'>
                     <TouchableOpacity
-                        activeOpacity={1}
+                        className='w-6/12 h-full'
+                        // activeOpacity={1}
                         onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                     >
-                        <ImageBackground
-                            source={{
-                                uri: item.image,
-                                method: 'POST',
-                                headers: {
-                                    Pragma: 'no-cache',
-                                },
-                            }}
-                            defaultSource={require('./../../assets/favicon.png')}
-                            resizeMode="cover"
-                            alt="Logo"
-                            className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
-                            style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+                        <View className='flex-row'>
+                            {
+                                item.type &&
+                                <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
+                            }
+                            {
+                                item.category.split('_').map((part, index) => (
+                                    <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
+                                ))
+                            }
+                        </View>
+                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                            {item.item}
+                        </Text>
+
+                        <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
+                        <View className=' flex-row py-2'>
+                            <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />
+                            <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                        </View>
+
+                        <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
+                    </TouchableOpacity>
+                    <View className='w-6/12 p-2'>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                         >
-                            {/* <LinearGradient
+                            <ImageBackground
+                                source={{
+                                    uri: item.image,
+                                    method: 'POST',
+                                    headers: {
+                                        Pragma: 'no-cache',
+                                    },
+                                }}
+                                defaultSource={require('./../../assets/favicon.png')}
+                                resizeMode="cover"
+                                alt="Logo"
+                                className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
+                                style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+                            >
+                                {/* <LinearGradient
                             start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
                             className='overflow-hidden h-full w-full'
                             colors={['transparent', Colors.dark.colors.backGroundColor]}
                         >
                         </LinearGradient> */}
-                        </ImageBackground>
-                    </TouchableOpacity>
-                    {item.status ?
+                            </ImageBackground>
+                        </TouchableOpacity>
+                        {item.status ?
                         <View
-                            style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                            className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
-                        >
-                            {item.quantity > 0 ? (
+                        style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                        className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
+                    >
+                        {(() => {
+                            // Find the hotel in the cart
+                            const hotel = cartItemsNEW.find(hotel => hotel.id === dataWithoutMenu.id);
+                            // Find the item in the hotel's orders if the hotel exists
+                            const orderItem = hotel ? hotel.orders.find(order => order.item === item.item) : null;
+                            const quantity = orderItem ? orderItem.quantity : 0;
+                    
+                            return quantity > 0 ? (
                                 <>
-                                    {/* {console.log(item)} */}
-                                    <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, Data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                    <TouchableOpacity onPress={() => handleDecrement(item.id, title, item, dataWithoutMenu)} className='z-10 left-0 absolute w-6/12 items-center'>
                                         <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
                                     </TouchableOpacity>
-                                    <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                    <TouchableOpacity onPress={() => handleIncrement(item.id, title, item.item, Data.name)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                    <Text className='uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{quantity}</Text>
+                                    <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
                                         <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
                                     </TouchableOpacity>
-                                    
                                 </>
                             ) : (
                                 <>
-                                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item.item, Data.name)}>
-                                        <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
+                                        <Text className='uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
                                     </TouchableOpacity>
-                                    <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                                    <Text className='top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
                                 </>
-                            )}
-                        </View>
-                        : null}
+                            );
+                        })()}
+                    </View>                    
+                            // <View
+                            //     style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                            //     className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
+                            // >
+                            //     {item.quantity > 0 ? (
+                            //         <>
+                            //             {/* {console.log(item)} */}
+                            //             <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, dataWithoutMenu) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                            //                 <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
+                            //             </TouchableOpacity>
+                            //             <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
+                            //             <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
+                            //                 <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
+                            //             </TouchableOpacity>
+                            //         </>
+                            //     ) : (
+                            //         <>
+                            //             <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
+                            //                 <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                            //             </TouchableOpacity>
+                            //             <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                            //         </>
+                            //     )}
+                            // </View>
+                            : null}
+                    </View>
+                    {/* {renderModal({ data: selectedItemData })} */}
                 </View>
-                {/* {renderModal({ data: selectedItemData })} */}
-            </View>
-            <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
-        </>
-    );
+                <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+            </>
+        )
+    };
 
     const [selectedIndex, setSelectedIndex] = useState(null);
     const renderMenuScroll = ({ typetitle, index }) => {
