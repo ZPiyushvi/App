@@ -8,6 +8,7 @@ export default function LongStarIcon({ rating, ratingcount, border, gaps, size, 
     const halfStars = rating % 1 != 0 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStars;
 
+    console.log(rating, halfStars)
     return (
         <View style={{ borderWidth: border, padding: 1, gap: gaps ? gaps : 1, backgroundColor: backGround ? backGround : Colors.dark.colors.secComponentColor }} className=' px-1 flex-row items-center border-[#F4BE1B] rounded-md'>
             {[...Array(fullStars)].map((_, index) => (

@@ -83,7 +83,7 @@ const Home = () => {
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { outletsNEW, CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -172,7 +172,8 @@ const Home = () => {
     // }
   };
 
-  const featuredData = campusShops ? campusShops.filter(item => item.featured === "true") : [];
+  // console.log(outletsNEW)
+  const featuredData = outletsNEW ? outletsNEW.filter(item => item.featured === true) : [];
   const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
 
   const viewabilityMenuConfig = {
@@ -268,7 +269,7 @@ const Home = () => {
             </View> */}
 
             <FlatList
-              data={campusShops}
+              data={outletsNEW}
               renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => index.toString()}
               showsHorizontalScrollIndicator={false}

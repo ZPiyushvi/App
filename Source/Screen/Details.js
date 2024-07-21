@@ -44,7 +44,7 @@ const DetailsScreen = ({ route }) => {
             setVisible(true);
         }, 100); // Adjust timing as necessary
     }, [Data]);
-
+    console.log('data', data)
 
     const [visible, setVisible] = React.useState(false)
     const shimmerColors = [Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor];
@@ -86,7 +86,7 @@ const DetailsScreen = ({ route }) => {
         // Show only veg items
         filteredMenuItems = menuItems.map(item => ({
             ...item,
-            items: item.items.filter(shop => shop.type === "Veg")
+            items: item.items.filter(shop => shop.type === "PureVeg")
         }));
     } else if (nonVegBottom) {
         // Show only non-veg items
@@ -132,8 +132,10 @@ const DetailsScreen = ({ route }) => {
 
     const renderDropdownItem = ({ item, title }) => (
         <>
+            {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center text-5xl font-black ' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>}
             <View
-                className=' flex-row p-3 pb-6'
+                // style={{ backgroundColor: 'rgba(355, 355, 355, 0.)' }}
+                className={`flex-row p-3 ${item.status ? 'pb-6' : 'opacity-40'}`}
             >
                 <TouchableOpacity
                     className='w-6/12 h-full'
@@ -161,7 +163,7 @@ const DetailsScreen = ({ route }) => {
                         <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
                     </View>
 
-                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.longdescription}</Text>
+                    <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
                 </TouchableOpacity>
                 <View className='w-6/12 p-2'>
                     <TouchableOpacity
@@ -190,30 +192,33 @@ const DetailsScreen = ({ route }) => {
                         </LinearGradient> */}
                         </ImageBackground>
                     </TouchableOpacity>
-                    <View
-                        style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                        className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
-                    >
-                        {item.quantity > 0 ? (
-                            <>
-                                {/* {console.log(item)} */}
-                                <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, Data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
-                                    <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
-                                </TouchableOpacity>
-                                <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                                <TouchableOpacity onPress={() => handleIncrement(item.id, title, item.item, Data.name)} className='z-10 right-0 absolute w-6/12 items-center'>
-                                    <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
-                                </TouchableOpacity>
-                            </>
-                        ) : (
-                            <>
-                                <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item.item, Data.name)}>
-                                    <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                                </TouchableOpacity>
-                                <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
-                            </>
-                        )}
-                    </View>
+                    {item.status ?
+                        <View
+                            style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                            className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
+                        >
+                            {item.quantity > 0 ? (
+                                <>
+                                    {/* {console.log(item)} */}
+                                    <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, Data.name) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                                        <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
+                                    </TouchableOpacity>
+                                    <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
+                                    <TouchableOpacity onPress={() => handleIncrement(item.id, title, item.item, Data.name)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                        <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
+                                    </TouchableOpacity>
+                                    
+                                </>
+                            ) : (
+                                <>
+                                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item.item, Data.name)}>
+                                        <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                                    </TouchableOpacity>
+                                    <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                                </>
+                            )}
+                        </View>
+                        : null}
                 </View>
                 {/* {renderModal({ data: selectedItemData })} */}
             </View>
@@ -286,7 +291,7 @@ const DetailsScreen = ({ route }) => {
     return (
         <View key={CartItems.storeName} style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
             <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
-            
+
             {!visible && <>
                 <View className=' w-full h-full'>
                     <View className='items-center'>
@@ -353,13 +358,18 @@ const DetailsScreen = ({ route }) => {
                         <>
                             <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
                                 <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
-                                <View className='flex-row gap-2 justify-center items-center mb-3'>
-                                    <View className='flex-row justify-center items-center'>
-                                        {Data.type === "Veg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                <View className='flex-row justify-center items-center mb-3'>
+                                    <View className='flex-row justify-center items-center mr-1'>
+                                        {Data.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
                                         <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {Data.type}</Text>
                                     </View>
-                                    <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{Data.menutype}</Text>
+                                    {Data.menuType.map((item, index) => (
+                                        <View className=' flex-row items-center'>
+                                            {/* {console.log(index)} */}
+                                            <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
+                                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                        </View>
+                                    ))}
                                 </View>
 
                                 <View className='flex-row justify-center items-center gap-1 mb-3'>
@@ -372,7 +382,7 @@ const DetailsScreen = ({ route }) => {
 
                                 <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
                                     <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
-                                    <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.locationdetailed} </Text>
+                                    <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.location} </Text>
                                 </View>
                                 <LinearGradient
                                     start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
@@ -387,17 +397,17 @@ const DetailsScreen = ({ route }) => {
                                 <View className='flex-row gap-3'>
                                     <TouchableOpacity onPress={() => handleVegBottom()} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
                                         <View className={`absolute z-10 ${vegBottom ? 'right-0' : 'left-2'}`}>
-                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'Veg'} size={10} padding={2} />
+                                            <FoodIcon style={{ backgroundColor: 'black' }} type={'PureVeg'} size={10} padding={2} />
                                         </View>
                                         <View className='h-2 w-11 rounded-full' style={{ backgroundColor: vegBottom ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor }} />
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => { setNonVegBottom(!nonVegBottom) }} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
+                                    {Data.type == 'NonVeg' && <TouchableOpacity onPress={() => { setNonVegBottom(!nonVegBottom) }} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
                                         <View className={`absolute z-10 ${nonVegBottom ? 'right-0' : 'left-2'}`}>
                                             <FoodIcon style={{ backgroundColor: 'black' }} type={'NonVeg'} size={10} padding={2} />
                                         </View>
                                         <View className='h-2 w-11 rounded-full' style={{ backgroundColor: nonVegBottom ? '#fca5a5' : Colors.dark.colors.textColor }} />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity>}
                                 </View>
                                 <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
                                     <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
@@ -489,7 +499,21 @@ const DetailsScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
- 
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    centeredText: {
+        color: Colors.dark.colors.mainTextColor,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        // top: 0,
+        bottom: 0,
+        textAlign: 'center',
+        textAlignVertical: 'center', // For Android to vertically center text
+    },
     descriptionText: {
         fontSize: 14,
         color: '#666',

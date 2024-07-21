@@ -10,8 +10,8 @@ const itemSchema = new mongoose.Schema({
     category: { type: String, required: true },
     image: { type: String, required: true },
     // quantity: { type: Number, required: true },
-    // rating: { type: Number },
-    // ratingcount: { type: Number },
+    rating: { type: Number },
+    ratingcount: { type: Number },
     // longdescription: { type: String, required: true }
 });
 

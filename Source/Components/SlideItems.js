@@ -3,8 +3,10 @@ import React from 'react'
 import Colors from './Colors'
 import TruncatedTextComponent from './TruncatedTextComponent'
 import FoodIcon from './FoodIcon'
+// import { useNavigation } from '@react-navigation/native'
 
-const SlideItems = ({ item }) => {
+const SlideItems = ({ item, navigation }) => {
+    // const navigation = useNavigation();
 
     return (
         <View className=' p-2 mt-5' style={styles.popularFeatureBodyContainer}>
@@ -22,14 +24,15 @@ const SlideItems = ({ item }) => {
                     alt="Logo"
                 />
                 <View style={styles.popularFeaturesContent}>
-                    <Text className='font-extrabold text-lg' style={{ color: Colors.dark.colors.textColor }}>{item.menutype}</Text>
-                    <Text className='font-normal text-xl -mt-1' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(item.name, 12)}</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{item.menuType[0]}</Text>
+                    <Text  numberOfLines={1} ellipsizeMode='tail' className='font-normal text-xl -mt-1' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name}</Text>
                     <TouchableOpacity
                         className='justify-center items-center rounded-md mt-2 px-3 py-1'
                         style={{
                             backgroundColor: Colors.dark.colors.diffrentColorOrange,
                             alignSelf: 'flex-start',
                         }}
+                        onPress={() => navigation.navigate("Details", { Data: item })}
                     >
                         <Text className='text-base font-bold' style={{color:Colors.dark.colors.mainTextColor}}>Buy now</Text>
                     </TouchableOpacity>

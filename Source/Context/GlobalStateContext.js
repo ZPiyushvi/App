@@ -55,10 +55,8 @@ export const GlobalStateProvider = ({ children }) => {
       }
     };
     fetchOutlets();
-    console.log('outletsNEW', outletsNEW)
   }, []);
 
-  console.log('outletsNEW', outletsNEW)
   useEffect(() => {
     getUserOutlets();
   }, []);
@@ -163,7 +161,7 @@ export const GlobalStateProvider = ({ children }) => {
   }, [CartItems]);
 
   useEffect(() => {
-    setcampusShops(vegMode ? mockCampusShops.filter(shop => shop.type === "Veg") : mockCampusShops);
+    setOutletsNEW(vegMode ? outletsNEW.filter(shop => shop.type === "PureVeg") : outletsNEW);
     setcampusMenu(vegMode ? mockCampusMenu.filter(shop => shop.type === "Veg") : mockCampusMenu);
   }, [vegMode]);
 
@@ -226,7 +224,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

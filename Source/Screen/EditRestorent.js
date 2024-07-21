@@ -116,8 +116,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
       // category: newItem.category.join('_'),
       category: newItem.category,
       image: newItem.image,
-      // rating: newItem.description,
-      // ratingcount: newItem.description,
+      // rating: 3,
+      // ratingcount: 7,
     };
 
     console.log('category', newItemObj.category)
@@ -129,7 +129,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
         console.log(existingItemIndex, newItemObj)
         if (existingItemIndex == -1) {
           // Add new item
-          menuCategory.items.push(newItemObj);
+          menuCategory.items.push({
+            ...newItemObj,
+            rating: 3,
+            ratingcount: 7
+          });
 
         } else {
           // Update existing item
