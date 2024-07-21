@@ -16,7 +16,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
 
   const updatedCartWithDetailsLength = updatedCartWithDetails.length;
 
-  console.log('Updated Cart Items:', JSON.stringify(updatedCartWithDetails, null, 2));
+  // console.log('Updated Cart Items:', JSON.stringify(updatedCartWithDetails, null, 2));
 
   // const { storeName, storeDetails, items, orders } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
   const Data = updatedCartWithDetails[updatedCartWithDetailsLength - 1];

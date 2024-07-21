@@ -195,63 +195,39 @@ const DetailsScreen = ({ route }) => {
                         </LinearGradient> */}
                             </ImageBackground>
                         </TouchableOpacity>
-                        {item.status ?
-                        <View
-                        style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                        className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
-                    >
-                        {(() => {
-                            // Find the hotel in the cart
-                            const hotel = cartItemsNEW.find(hotel => hotel.id === dataWithoutMenu.id);
-                            // Find the item in the hotel's orders if the hotel exists
-                            const orderItem = hotel ? hotel.orders.find(order => order.item === item.item) : null;
-                            const quantity = orderItem ? orderItem.quantity : 0;
-                    
-                            return quantity > 0 ? (
-                                <>
-                                    <TouchableOpacity onPress={() => handleDecrement(item.id, title, item, dataWithoutMenu)} className='z-10 left-0 absolute w-6/12 items-center'>
-                                        <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
-                                    </TouchableOpacity>
-                                    <Text className='uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{quantity}</Text>
-                                    <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
-                                        <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
-                                    </TouchableOpacity>
-                                </>
-                            ) : (
-                                <>
-                                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
-                                        <Text className='uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                                    </TouchableOpacity>
-                                    <Text className='top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
-                                </>
-                            );
-                        })()}
-                    </View>                    
-                            // <View
-                            //     style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                            //     className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
-                            // >
-                            //     {item.quantity > 0 ? (
-                            //         <>
-                            //             {/* {console.log(item)} */}
-                            //             <TouchableOpacity onPress={() => { handleDecrement(item.id, title, item.item, dataWithoutMenu) }} className='z-10 left-0 absolute w-6/12 items-center'>
-                            //                 <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
-                            //             </TouchableOpacity>
-                            //             <Text className=' uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                            //             <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
-                            //                 <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
-                            //             </TouchableOpacity>
-                            //         </>
-                            //     ) : (
-                            //         <>
-                            //             <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
-                            //                 <Text className=' uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                            //             </TouchableOpacity>
-                            //             <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
-                            //         </>
-                            //     )}
-                            // </View>
-                            : null}
+                        {/* {item.status ? */}
+                            <View
+                                style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                                className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
+                            >
+                                {(() => {
+                                    // Find the hotel in the cart
+                                    const hotel = cartItemsNEW.find(hotel => hotel.id === dataWithoutMenu.id);
+                                    // Find the item in the hotel's orders if the hotel exists
+                                    const orderItem = hotel ? hotel.orders.find(order => order.item === item.item) : null;
+                                    const quantity = orderItem ? orderItem.quantity : 0;
+
+                                    return quantity > 0 ? (
+                                        <>
+                                            <TouchableOpacity onPress={() => handleDecrement(item.id, title, item, dataWithoutMenu)} className='z-10 left-0 absolute w-6/12 items-center'>
+                                                <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
+                                            </TouchableOpacity>
+                                            <Text className='uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{quantity}</Text>
+                                            <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                                <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
+                                            </TouchableOpacity>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
+                                                <Text className='uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                                            </TouchableOpacity>
+                                            <Text className='top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                                        </>
+                                    );
+                                })()}
+                            </View>
+                            {/* : null} */}
                     </View>
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>

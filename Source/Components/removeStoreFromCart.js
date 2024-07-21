@@ -1,25 +1,12 @@
-export const removeStoreFromCart = (storeName, setCartItems, campusShops, setcampusShops) => {
-    setCartItems((prevCart) => {
+export const removeStoreFromCart = (storeName, setCartItemsNEW) => {
+    setCartItemsNEW((prevCart) => {
         const newCart = { ...prevCart };
-        delete newCart[storeName];
+        // Find the key that matches the storeName and delete it
+        Object.keys(newCart).forEach((key) => {
+            if (newCart[key].name === storeName) {
+                delete newCart[key];
+            }
+        });
         return newCart;
     });
-
-    const updatedShops = campusShops.map(shop => {
-        if (shop.name === storeName) {
-            const updatedMenu = shop.menu.map(category => {
-                const updatedItems = category.items.map(item => {
-                    return {
-                        ...item,
-                        quantity: 0 // Update to a number instead of a string
-                    };
-                });
-                return { ...category, items: updatedItems };
-            });
-            return { ...shop, menu: updatedMenu };
-        }
-        return shop;
-    });
-
-    setcampusShops(updatedShops);
-};  
+};
