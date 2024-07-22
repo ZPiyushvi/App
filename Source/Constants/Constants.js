@@ -15,3 +15,4 @@ export const ADDMENU_ENDPOINT = '5001/addmenu';
 export const USEROUTLETS_ENDPOINT = '5001/useroutlets';
 export const USERMENU_ENDPOINT = '5001/usermenu';
 export const ALLOUTLETS_ENDPOINT = '5001/alloutlets';
+export const ORDERS_ENDPOINT = '5001/createorder';

@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from '../Components/removeStoreFromCart';
 import useIncrementHandler from '../Components/handleIncrement';
+import { API_BASE_URL, ORDERS_ENDPOINT } from '../Constants/Constants';
 
 const Cart = ({ route }) => {
 
@@ -17,13 +18,36 @@ const Cart = ({ route }) => {
   // const { storeName, items, totalPrice, storeDetails } = route.params;
   // const { item } = route.params;
 
+  async function createOrder(orderData) {
+    console.log('orderData', orderData)
 
+    try {
+      const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
 
-  const { outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log('Order created successfully:', result.data);
+        return result.data;
+      } else {
+        console.error('Error creating order:', result.data);
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  }
+
+  const { userData, outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
-  
+
   const updateCartItemsStatus = () => {
     const updatedCartItems = cartItemsNEW.map(cartItem => {
       const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
@@ -248,7 +272,22 @@ const Cart = ({ route }) => {
             console.log("Proceeding with item:", item);
 
             const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+            const { name, username } = userData;
+
             if (orders.length !== 0) {
+              console.log('userDatammmmm', userData)
+
+              createOrder({
+                id: Date.now().toString(),
+                items: orders,
+                storeDetails: storeDetails,
+                totalPrice: item?.orders
+                  ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+                  : 0,
+                Noformatdate: today,
+                date: getFormattedDate(today),
+                userData: { name, username }
+              })
               setHistory(prevHistory => [
                 {
                   items: orders,
@@ -270,6 +309,21 @@ const Cart = ({ route }) => {
     } else {
       console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+      // console.log('userDatammmmm', userData)
+      const { name, username } = userData;
+
+      createOrder({
+        id: Date.now().toString(),
+        items: orders,
+        storeDetails: storeDetails,
+        totalPrice: item?.orders
+          ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+          : 0,
+        Noformatdate: today,
+        date: getFormattedDate(today),
+        userData: userData //{name, username}
+      })
+
       setHistory(prevHistory => [
         {
           items: orders,
