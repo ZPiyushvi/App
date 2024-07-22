@@ -107,6 +107,7 @@ app.post('/userdata', async (req, res) => {
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 })
+
 // ----------------------------- outletseller ----------------------------- //
 app.post('/addoutlet', async (req, res) => {
     const {
@@ -116,6 +117,7 @@ app.post('/addoutlet', async (req, res) => {
         leaveDay,
         offDays,
         menuType,
+        menu,
     } = req.body;
 
     if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
@@ -132,7 +134,7 @@ app.post('/addoutlet', async (req, res) => {
         if (id) {
             outlet = await OutletInfo.findOneAndUpdate({ id, userId }, {
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, menuType
+                openingTime, closingTime, leaveDay, featured, offDays, menuType,
             }, { new: true });
             if (!outlet) {
                 return res.status(404).send({ status: "error", data: "Outlet not found" });
@@ -146,13 +148,65 @@ app.post('/addoutlet', async (req, res) => {
 
             outlet = new OutletInfo({
                 id: Date.now().toString(),
+                rating: 3,
+                ratingcount: 7,
                 name, shopkeeperName, upiId, details, image, location, type,
-                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType
+                openingTime, closingTime, leaveDay, featured, offDays, userId, menuType,
             });
             await outlet.save();
         }
 
         res.status(201).send({ status: "ok", data: "Outlet saved successfully" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- menu seller ----------------------------- //
+app.post('/addmenu', async (req, res) => {
+    const { menu, token } = req.body;
+
+    if (!menu || !token) {
+        return res.status(400).send({ status: "error", data: "All fields are required" });
+    }
+
+    try {
+        const user = jwt.verify(token, jwtSecret);
+        const userId = user.contactinfo;
+
+        let outlet = await OutletInfo.findOne({ userId });
+        if (!outlet) {
+            return res.status(404).send({ status: "error", data: "Outlet not found" });
+        }
+
+        outlet = await OutletInfo.findOneAndUpdate({ userId }, {
+            menu,
+            // rating: 3,
+            // ratingcount: 7,
+        }, { new: true });
+
+        await outlet.save();
+
+        res.status(201).send({ status: "ok", data: "Menu saved successfully" });
+    } catch (err) {
+        console.error("Error saving menu:", err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- user menu ----------------------------- //
+app.post('/usermenu', async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const user = jwt.verify(token, jwtSecret);
+        const usercontactinfo = user.contactinfo;
+
+        const outlets = await OutletInfo.find({ usercontactinfo });
+
+        res.status(200).send({ status: "ok", data: outlets });
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });
@@ -177,6 +231,37 @@ app.post('/useroutlets', async (req, res) => {
     }
 });
 
+// ----------------------------- Get all outlets with full menu ----------------------------- //
+app.post('/alloutlets', async (req, res) => {
+    try {
+        const outlets = await OutletInfo.find({});
+
+        res.status(200).send({ status: "ok", data: outlets });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+
+app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
+    try {
+      const outlets = await OutletInfo.find({});
+      res.status(200).send({ status: 'ok', data: outlets });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ status: 'error', data: 'Internal server error' });
+    }
+  });
+
+
+
+
+
+
+
+
 app.listen(5001, () => {
     console.log("Server started on port 5001");
 });
+

@@ -12,18 +12,25 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
-  const { setCartItems, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { outletsNEW, setCartItemsNEW, setCartItems, campusShops, setcampusShops, cartItemsNEW } = useContext(GlobalStateContext);
 
   const updatedCartWithDetailsLength = updatedCartWithDetails.length;
-  const { storeName, storeDetails, items, totalPrice } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
-  const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
+
+  // console.log('Updated Cart Items:', JSON.stringify(updatedCartWithDetails, null, 2));
+
+  // const { storeName, storeDetails, items, orders } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
+  const Data = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
+console.log('Data', Data)
+  const totalPrice = Data.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0);
+  const totalItems = Data.orders.reduce((acc, order) => acc + order.quantity, 0);
+  // const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);
 
   const navToDetails = (item) => {
     navigation.navigate("Details", { Data: item });
   };
 
   return (
-    <View key={storeName}>
+    <View key={Data.id}>
       {updatedCartWithDetailsLength - 1 != 0 ?
         <>
           <TouchableOpacity
@@ -71,7 +78,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
         null
       }
       <View
-        // key={storeName}
+        key={cartItemsNEW.id}
         style={{
           height: Dimensions.get('window').height * 0.10,
           backgroundColor: Colors.dark.colors.componentColor,
@@ -90,7 +97,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
         <Image
           // source={require('./../Data/banner.jpg')}
           source={{
-            uri: storeDetails.image,
+            uri: Data.image,
             method: 'POST',
             headers: {
               Pragma: 'no-cache',
@@ -102,9 +109,9 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
         />
         <View style={{ width: Dimensions.get('window').width * 0.36 }}>
           <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg' numberOfLines={1} ellipsizeMode='tail'>
-            {storeName}
+            {Data.name}
           </Text>
-          <TouchableOpacity onPress={() => {navToDetails(mockCampusShops.find(shop => shop.name === storeName))}} className=' flex-row items-center'>
+          <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.id === Data.id)) }} className=' flex-row items-center'>
             <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
               View Full Menu
             </Text>
@@ -115,12 +122,13 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
           <TouchableOpacity
             className='justify-center items-center rounded-lg m-1'
             style={{ width: Dimensions.get('window').width * 0.28, backgroundColor: Colors.dark.colors.diffrentColorOrange }}
-            onPress={() => navigation.navigate('IndiviualCart', { storeName, items, totalPrice, storeDetails })}
+            onPress={() => navigation.navigate('IndiviualCart', { item: Data })}
           >
             <View className='flex-row items-center justify-center'>
               <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.mainTextColor }}>
-                {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
-                {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'}
+                {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
+                {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} */}
+                {totalItems} {totalItems === 1 ? 'item' : 'items'}
               </Text>
               <Ionicons
                 style={{ transform: [{ rotate: '90deg' }], margin: -3 }}
@@ -138,7 +146,7 @@ export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype
           </TouchableOpacity>
           <View style={{ width: Dimensions.get('window').width * 0.08 }} className=' items-center justify-center'>
             <TouchableOpacity
-              onPress={() => removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops)}
+              onPress={() => removeStoreFromCart(Data.name, setCartItemsNEW)}
               className=' rounded-full p-1 items-center justify-center'
               style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
             >

@@ -4,6 +4,8 @@ export const GlobalStateContext = createContext();
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { Alert } from 'react-native';
 
 const filterRecentHistory = (history) => {
   const currentDate = new Date();
@@ -15,6 +17,7 @@ const filterRecentHistory = (history) => {
 
 export const GlobalStateProvider = ({ children }) => {
   // const [userRole, setUserRole] = useState(null);
+  const [cartItemsNEW, setCartItemsNEW] = useState([]);
   const [userRole, setUserRole] = useState(null);
 
   const [vegMode, setVegMode] = useState(false);
@@ -25,13 +28,99 @@ export const GlobalStateProvider = ({ children }) => {
   const [updatedCartWithDetails, setUpdatedCartWithDetails] = useState([]);
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
+  const [outlets, setOutlets] = useState([]);
+
+
+  const [outletsNEW, setOutletsNEW] = useState([]);
+
+  const [outletsNEW2, setOutletsNEW2] = useState([]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getUserOutlets2();
+    }, 10000); // Poll every 10 seconds
+  
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
+  
+  const getUserOutlets2 = async () => {
+    try {
+      // const token = await AsyncStorage.getItem('token');
+      const response = await fetch('http://192.168.138.12:5001/alloutlets2'); // Correct the URL
+  
+      if (!response.ok) {
+        console.log('Network response was not ok');
+        return;
+      }
+  
+      const data = await response.json();
+      
+      setOutletsNEW(data.data);
+      // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+    } catch (error) {
+      console.error('Error fetching user outlets:', error);
+    }
+  };
+  // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+
+  useEffect(() => {
+    const fetchOutlets = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({})
+        });
+
+        if (!response.ok) {
+          Alert.alert("Network response was not ok");
+          // throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setOutletsNEW(data.data);
+        // setLoading(false);
+      } catch (error) {
+        console.error("Error saving menu:", error);
+        // setLoading(false);
+      }
+    };
+    fetchOutlets();
+  }, []);
+
+  useEffect(() => {
+    getUserOutlets();
+  }, []);
+
+  const getUserOutlets = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: token })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      setOutlets(data.data);
+    } catch (error) {
+      console.error('Error fetching user outlets:', error);
+    }
+  };
+  console.log(outlets)
 
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
       const groupedOrders = orders.reduce((acc, order) => {
         const { date, totalPrice, Noformatdate } = order;
         if (!acc[date]) {
-          acc[date] = { total: 0, orders: [], Noformatdate: ''};
+          acc[date] = { total: 0, orders: [], Noformatdate: '' };
         }
         acc[date].total += totalPrice;
         acc[date].orders.push(order);
@@ -103,7 +192,7 @@ export const GlobalStateProvider = ({ children }) => {
   }, [CartItems]);
 
   useEffect(() => {
-    setcampusShops(vegMode ? mockCampusShops.filter(shop => shop.type === "Veg") : mockCampusShops);
+    setOutletsNEW(vegMode ? outletsNEW.filter(shop => shop.type === "PureVeg") : outletsNEW);
     setcampusMenu(vegMode ? mockCampusMenu.filter(shop => shop.type === "Veg") : mockCampusMenu);
   }, [vegMode]);
 
@@ -166,7 +255,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

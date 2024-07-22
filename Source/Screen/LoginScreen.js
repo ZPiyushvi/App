@@ -53,7 +53,7 @@ const LoginScreen = () => {
           Alert.alert("Logged In Successful");
           AsyncStorage.setItem('token', data.data);
           AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-          navigation.navigate("HomeScreen");
+          userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")
         } else {
           Alert.alert(data.data || "Login failed");
         }
@@ -244,7 +244,10 @@ const LoginScreen = () => {
             <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
           </TouchableOpacity>
           <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>
-          <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }} onPress={() => navigation.navigate("HomeScreen")}>
+          {console.log(userRole)}
+          <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}
+            onPress={() => userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")}
+          >
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}

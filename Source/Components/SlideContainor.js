@@ -4,8 +4,10 @@ import SlideItems from './SlideItems'
 import { StyledComponent } from 'nativewind'
 import SlideItemsViwer from './SlideItemsViwer'
 import Colors from './Colors'
+import { useNavigation } from '@react-navigation/native'
 
 export default function SlideContainor({ flatListRef, data, viewabilityConfig }) {
+    const navigation = useNavigation();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -33,7 +35,7 @@ export default function SlideContainor({ flatListRef, data, viewabilityConfig })
                 data={data}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                renderItem={SlideItems}
+                renderItem={({ item }) => <SlideItems item={item} navigation={navigation} />}
                 snapToStart
                 keyExtractor={(item, index) => index.toString()}
                 // snapToInterval={(Dimensions.get('window').width * 0.9) + (Dimensions.get('window').width * 0.1)} // Width of item + margin

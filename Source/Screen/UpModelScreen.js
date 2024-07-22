@@ -27,7 +27,7 @@ export default function ModelScreen() {
     const [searches, setSearches] = useState({ menu: [], outlet: [] });
     // const [campusMenu, setCampusMenu] = useState([]);
 
-    const { CartItems, campusMenu, campusShops, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const { CartItems, campusMenu, campusShops, outletsNEW, updatedCartWithDetails } = useContext(GlobalStateContext);
 
     const show_UpModelScreen = () => setVisible(true);
     const hide_UpModelScreen = () => {setValue(''), setVisible(false)};
@@ -62,8 +62,8 @@ export default function ModelScreen() {
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
-                handleSearch('')
-                navigation.navigate('HomeScreen'); // Replace 'Home' with your home screen route name
+                handleSearch('') // HomeScreen
+                navigation.navigate('BuyerNavigationStack'); // Replace 'Home' with your home screen route name
                 return true; // Prevent default behavior
             };
 
@@ -103,7 +103,7 @@ export default function ModelScreen() {
         return () => clearInterval(interval);
     }, []);
 
-    const featuredShop = campusShops ? campusShops.filter(item => item.featured === "true") : [];
+    const featuredShop = outletsNEW ? outletsNEW.filter(item => item.featured === "true") : [];
     const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
     const buffer = 0;
 
@@ -118,7 +118,7 @@ export default function ModelScreen() {
         setValue(text);
         const filtered = selectedCategory === 0
             ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
-            : campusShops.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
+            : outletsNEW.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
 
         setFilteredData(filtered);
     };
@@ -133,11 +133,11 @@ export default function ModelScreen() {
             placeholderText = `Search "${campusMenu[currentIndex].name}"`;
         }
     } else {
-        if (campusShops && campusShops.length > currentIndex) {
-            if (currentIndex + 1 === campusShops.length) {
+        if (outletsNEW && outletsNEW.length > currentIndex) {
+            if (currentIndex + 1 === outletsNEW.length) {
                 setCurrentIndex(0);
             }
-            placeholderText = `Search "${campusShops[currentIndex].name}"`;
+            placeholderText = `Search "${outletsNEW[currentIndex].name}"`;
         }
     }
 
@@ -146,7 +146,7 @@ export default function ModelScreen() {
         setSelectedCategory(index);
         const filtered = index === 0
             ? campusMenu.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
-            : campusShops.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+            : outletsNEW.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
 
         setFilteredData(filtered);
     };
@@ -278,7 +278,7 @@ export default function ModelScreen() {
                                                         // storeYourSerchers(item.name);
                                                         // console.log(search);
                                                         // mockCampusShops.find(shop => shop.name === search)
-                                                        navigation.navigate("Details", { Data: mockCampusShops.find(shop => shop.name === search) });
+                                                        navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === search) });
                                                     } else {
                                                         handleSearch(search);
                                                         // storeYourSerchers(item.name);

@@ -1,5 +1,5 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView } from 'react-native';
-import React, { useContext, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView, Alert } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
 import FoodIcon from '../Components/FoodIcon';
 import Colors from '../Components/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,10 +8,64 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from '../Components/removeStoreFromCart';
+import useIncrementHandler from '../Components/handleIncrement';
 
 const Cart = ({ route }) => {
-  const { storeName, items, totalPrice, storeDetails } = route.params;
-  const { setCartItems, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+
+  const { handleIncrement } = useIncrementHandler();
+  const { handleDecrement } = useIncrementHandler();
+  // const { storeName, items, totalPrice, storeDetails } = route.params;
+  // const { item } = route.params;
+
+
+
+  const { outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+
+  // cartItemsNEW.find((cart) => console.log(cart.name));
+  const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
+  
+  const updateCartItemsStatus = () => {
+    const updatedCartItems = cartItemsNEW.map(cartItem => {
+      const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
+      // console.log(outlet, 'outlet')
+      if (outlet) {
+        const updatedOrders = cartItem.orders.map(order => {
+          const menu = outlet.menu.flatMap(menu => menu.items);
+          const menuItem = menu.find(item => item.id === order.id);
+          if (menuItem) {
+            return {
+              ...order,
+              status: menuItem.status
+            };
+          }
+          return order;
+        });
+        return {
+          ...cartItem,
+          orders: updatedOrders
+        };
+      }
+      return cartItem;
+    });
+    setCartItemsNEW(updatedCartItems);
+  };
+
+  useEffect(() => {
+    updateCartItemsStatus();
+  }, []);
+
+  useEffect(() => {
+    if (!item) {
+      navigation.goBack();
+    }
+  }, [item]);
+
+
+  // const totalPrice = item.orders ? item.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0) : 0;
+  const totalPrice = item?.orders
+    ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+    : 0;
+  const totalQuantity = item?.orders.reduce((acc, order) => acc + order.quantity, 0);
 
   const today = new Date();
   // const yesterday = new Date();
@@ -82,7 +136,7 @@ const Cart = ({ route }) => {
             </>
           ) : (
             <>
-              <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
+              <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, item.id, item, [...item.orders, item.id]) }}>
                 <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
               </TouchableOpacity>
               <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
@@ -94,83 +148,157 @@ const Cart = ({ route }) => {
     </View>
   );
 
-  const renderItem2 = ({ item, index }) => (
-    <View key={`${index}-${item.name}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-      <View className='flex-row w-full' >
-        {/* {console.log(item.image)} */}
-        <View className=' w-3/12'>
-          <ImageBackground
-            source={{
-              uri: item.image,
-              method: 'POST',
-              headers: {
-                Pragma: 'no-cache',
-              },
-            }}
-            defaultSource={require('./../../assets/favicon.png')}
-            resizeMode="cover"
-            alt="Logo"
-            className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'
-            style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
-          />
-        </View>
-        <View className=' w-9/12 px-3'>
-          <Text className='font-black text-base' numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{item.item}</Text>
-          <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity: {item.quantity} * ₹{item.price}</Text>
-          <View className=' flex-row justify-between w-full '>
-            <View className='flex-1 justify-end'>
-              <Text className='font-normal text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
-                ₹{item.price * item.quantity}
-              </Text>
-            </View>
-            <View
-              style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-              className='h-8 w-20  flex-row overflow-hidden mb-1'
-            >
-              {item.quantity > 0 ? (
-                <>
-                  <TouchableOpacity className='z-10 left-0 absolute w-6/12 items-center'>
-                    <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
-                  </TouchableOpacity>
-                  <Text className=' uppercase text-base font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
-                  <TouchableOpacity className='z-10 right-0 absolute w-6/12 items-center'>
-                    <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <>
-                  <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} onPress={() => { handleIncrement(item.id, title, item.item, data.name) }}>
-                    <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                  </TouchableOpacity>
-                  <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
-                </>
-              )}
-            </View>
-
+  const renderItem2 = ({ item, index, hotelId }) => (
+    <>
+      <View key={item.id} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+        {/* {console.log('[...item.orders, item.id]', { orders: item.orders, id: hotelId })} */}
+        <View className='flex-row w-full' >
+          <View className=' absolute right-3'>
+            {item.status ?
+              <Text className='font-black text-base uppercase' style={{ color: Colors.dark.colors.diffrentColorGreen }}>InStock</Text>
+              : <Text className='font-black text-base uppercase' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>
+            }
           </View>
-        </View>
 
+          {/* {console.log(item.image)} */}
+          <View className=' w-3/12'>
+            <ImageBackground
+              source={{
+                uri: item.image,
+                method: 'POST',
+                headers: {
+                  Pragma: 'no-cache',
+                },
+              }}
+              defaultSource={require('./../../assets/favicon.png')}
+              resizeMode="cover"
+              alt="Logo"
+              className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'
+              style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+            />
+          </View>
+          <View className=' w-9/12 px-3'>
+            <Text className='font-black text-base' numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{item.item}</Text>
+            <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity: {item.quantity} * ₹{item.price}</Text>
+            <View className=' flex-row justify-between w-full '>
+              <View className='flex-1 justify-end'>
+                <Text className='font-normal text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
+                  ₹{item.price * item.quantity}
+                </Text>
+              </View>
+              <View
+                style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                className='h-8 w-20  flex-row overflow-hidden mb-1'
+              >
+                {item.quantity > 0 ? (
+                  <>
+                    {/* {console.log('xxxxx', item)} */}
+                    <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                      <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
+                    </TouchableOpacity>
+                    <Text className=' uppercase text-base font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
+                    <TouchableOpacity onPress={() => { handleIncrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                      <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} >
+                      <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                    </TouchableOpacity>
+                    <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
+                  </>
+                )}
+              </View>
+
+            </View>
+          </View>
+
+        </View>
       </View>
-    </View>
+    </>
   );
 
 
-  const filteredItems = items.map(({ price, quantity, image, category }) => ({
+  const filteredItems = item?.orders.map(({ price, quantity, image, category }) => ({
     price,
     quantity,
     image,
     category
   }));
 
+  const handleProceedPayment = (item) => {
+
+    // console.log('item', item)
+    const removeItemsWithStatusFalse = () => {
+      item.orders = item.orders.filter(order => order.status == true);
+    };
+    const outOfStockItems = item.orders.some(order => order.status === false);
+
+    if (outOfStockItems) {
+      Alert.alert(
+        "Out of Stock Items",
+        "Your cart contains some items that are currently out of stock. Would you like to proceed with the available items or review your cart?",
+        [{
+          text: "Review Cart",
+        }, {
+          text: "Yes, Proceed",
+          onPress: () => {
+            removeItemsWithStatusFalse();
+            console.log("Proceeding with item:", item);
+
+            const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+            if (orders.length !== 0) {
+              setHistory(prevHistory => [
+                {
+                  items: orders,
+                  storeDetails: storeDetails,
+                  totalPrice: item?.orders
+                    ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+                    : 0,
+                  Noformatdate: today,
+                  date: getFormattedDate(today)
+                },
+                ...prevHistory
+              ]);
+            }
+            removeStoreFromCart(item.name, setCartItemsNEW);
+            navigation.navigate("Orders");
+          }
+        }]
+      );
+    } else {
+      console.log("Proceeding with item:", item);
+      const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+      setHistory(prevHistory => [
+        {
+          items: orders,
+          storeDetails: storeDetails,
+          totalPrice: totalPrice,
+          Noformatdate: today,
+          date: getFormattedDate(today)
+        },
+        ...prevHistory
+      ]);
+      removeStoreFromCart(item.name, setCartItemsNEW);
+      navigation.navigate("Orders");
+    }
+
+    console.log('History', item.name)
+  };
+
+
+
   return (
     // View style={{backgroundColor: Colors.dark.colors.backGroundColor}}
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-      <View className=' p-3 pt-8 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+      <View className=' p-2 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
+          <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+        </TouchableOpacity>
         <View className='flex-row items-center'>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
-            <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-          </TouchableOpacity>
-          <Text className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{TruncatedTextComponent(storeName, 21)}</Text>
+
+          <Text numberOfLines={1} ellipsizeMode='tail' className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{item?.name}</Text>
         </View>
         <TouchableOpacity className='p-2'>
           <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
@@ -186,7 +314,7 @@ const Cart = ({ route }) => {
               <View className=' ml-3 flex-row'>
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>You have </Text>
                 <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
-                  {calculateTotalQuantity(items)} {calculateTotalQuantity(items) > 1 ? 'items' : 'item'}
+                  {totalQuantity} {totalQuantity > 1 ? 'items' : 'item'}
                 </Text>
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}> in your list</Text>
               </View>
@@ -200,8 +328,8 @@ const Cart = ({ route }) => {
               keyExtractor={(items) => `${items.id}-${items.item}`}
             /> */}
             {/* {console.log(items.item)} */}
-            {items.map((menu, index) => (
-              renderItem2({ item: menu, index: index })
+            {item?.orders.map((items, index) => (
+              renderItem2({ hotelId: item.id, item: items, index: index, })
               // console.log(items[index])
             ))}
           </View>
@@ -249,9 +377,9 @@ const Cart = ({ route }) => {
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
           <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
         </View>
-        {console.log(today, getFormattedDate(today))}
+        {/* {console.log(today, getFormattedDate(today))} */}
         <TouchableOpacity
-          onPress={() => { removeStoreFromCart(storeName, setCartItems, campusShops, setcampusShops), setHistory(prevHistory => [ { items: filteredItems, storeDetails: storeDetails, totalPrice: totalPrice, Noformatdate: today, date: getFormattedDate(today)}, ...prevHistory]), navigation.navigate("HomeScreen") }}
+          onPress={() => handleProceedPayment(item)}
           className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
           <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
         </TouchableOpacity>

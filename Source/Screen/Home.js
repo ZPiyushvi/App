@@ -83,7 +83,7 @@ const Home = () => {
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { CartItems, updatedCartWithDetails, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -132,7 +132,7 @@ const Home = () => {
       const token = await AsyncStorage.getItem("token");
       console.log(token)
       // http://192.168.1.3:5001/userdata
-      const response = await fetch(`http://192.168.1.3/:5001/userdata`, {
+      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -172,7 +172,8 @@ const Home = () => {
     // }
   };
 
-  const featuredData = campusShops ? campusShops.filter(item => item.featured === "true") : [];
+  // console.log(outletsNEW)
+  const featuredData = outletsNEW ? outletsNEW.filter(item => item.featured === true) : [];
   const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
 
   const viewabilityMenuConfig = {
@@ -204,10 +205,10 @@ const Home = () => {
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
                     {/* {console.log(userData.name)} */}
-                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"} </Text>
+                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
-                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{"plot number 45, new row house"}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
@@ -268,7 +269,7 @@ const Home = () => {
             </View> */}
 
             <FlatList
-              data={campusShops}
+              data={outletsNEW}
               renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => index.toString()}
               showsHorizontalScrollIndicator={false}
@@ -299,13 +300,13 @@ const Home = () => {
       </Animated.ScrollView>
 
       <View>
-        {(!updatedCartWithDetails || updatedCartWithDetails.length === 0 || !updatedCartWithDetails[updatedCartWithDetails.length - 1]) ?
+        {(!cartItemsNEW || cartItemsNEW.length === 0 || !cartItemsNEW[cartItemsNEW.length - 1]) ?
           null
           :
           <LinearGradient
             className=' absolute p-2 w-full bottom-0'
             colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-            <FirstStoreComponent updatedCartWithDetails={updatedCartWithDetails} Modelshow={show} settype={settype} />
+            <FirstStoreComponent updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
           </LinearGradient>
         }
       </View>

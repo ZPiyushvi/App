@@ -10,6 +10,7 @@ import { ImageBackground } from 'react-native';
 
 
 import { LinearGradient } from "expo-linear-gradient";
+import ManageCategoriesScreen from './EditRestorent';
 
 const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
@@ -27,29 +28,21 @@ const weekDays = [
 export default function EditScreen({ route, navigation }) {
     const { outlet } = route.params;
     const [editingOutlet, setEditingOutlet] = useState(outlet || {
-        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'both',
+        name: '', shopkeeperName: '', upiId: '', image: '', details: '', location: '', type: 'Veg',
         featured: false,
         openingTime: '',
         closingTime: '',
         offDays: [],
         menuType: [],
-        leaveDays: 'None'
+        leaveDays: 'None',
     });
-    // console.log(offDays)
+
 
     const handleChange = (field, value) => {
         setEditingOutlet({ ...editingOutlet, [field]: value });
     };
 
     // -------------------- For Auto Submit/ without save button use this ---------------------
-
-    // const handleChange = async (field, value) => {
-    //     const updatedOutlet = { ...editingOutlet, [field]: value };
-    //     setEditingOutlet(updatedOutlet);
-
-    //     // Automatically save the outlet whenever a field is updated
-    //     await handleSaveOutlet(updatedOutlet);
-    // };
 
     const handleSaveOutlet = async () => {
         if (!editingOutlet.name || !editingOutlet.shopkeeperName || !editingOutlet.upiId || !editingOutlet.image || !editingOutlet.details || !editingOutlet.location || editingOutlet.featured === undefined
@@ -60,8 +53,6 @@ export default function EditScreen({ route, navigation }) {
             Alert.alert("All fields are required");
             return;
         }
-
-
 
         try {
             const token = await AsyncStorage.getItem("token");
@@ -99,27 +90,6 @@ export default function EditScreen({ route, navigation }) {
     //     }));
     // };
 
-    const [storeMenuType, setStoreMenuType] = useState()
-
-    // const handleMenuTypeToggle = (day) => {
-    //     setEditingOutlet(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(day)
-    //             ? prevState.offDays.filter(item => item !== day)
-    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
-    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    //     handleChange('offDays', storeDetailsOffDays.offDays)
-    // };
-
-    // const handleOffDaysToggle = (type) => {
-    //     setEditingOutlet(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(type)
-    //             ? prevState.offDays.filter(item => item !== type)
-    //             : [...prevState.offDays, type];
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    // };
     const handleOffDaysToggle = (type) => {
         setEditingOutlet(prevState => {
             let updatedOffDays;
@@ -186,42 +156,6 @@ export default function EditScreen({ route, navigation }) {
     const toggleDropdown = () => {
         setOpenDropdown(prevState => !prevState);
     };
-
-    // const handleOffDaysToggle = (day) => {
-    //     setStoreDetailsOffDays(prevState => {
-    //         const updatedOffDays = prevState.offDays.includes(day)
-    //             ? prevState.offDays.filter(item => item !== day)
-    //             : [...prevState.offDays.filter(item => item !== 'None'), day];
-    //         if (day === 'None') return { ...prevState, offDays: ['None'] };
-    //         return { ...prevState, offDays: updatedOffDays };
-    //     });
-    //     handleChange('offDays', storeDetailsOffDays.offDays)
-    // };
-
-    // const renderDropdownItem = ({ item }) => (
-    //     <TouchableOpacity
-    //         style={{
-    //             padding: 10,
-    //             flexDirection: 'row',
-    //             justifyContent: 'space-between',
-    //             alignItems: 'center',
-    //             overflow: 'hidden',
-    //             backgroundColor: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.backGroundColor : 'transparent',
-    //             // borderBottomWidth: 1,
-    //             // borderBottomColor: '#ccc',
-    //         }}
-    //         onPress={() => handleOffDaysToggle(item.value)}
-    //     >
-    //         <Text
-    //             className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
-    //             style={{ color: storeDetailsOffDays.offDays.includes(item.value) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
-    //         >{item.label}
-    //         </Text>
-    //         {storeDetailsOffDays.offDays.includes(item.value) && (
-    //             <Ionicons name="checkmark-outline" size={20} color={Colors.dark.colors.diffrentColorGreen} />
-    //         )}
-    //     </TouchableOpacity>
-    // );
 
     const scrollViewRef = useRef(null);
 
@@ -298,14 +232,6 @@ export default function EditScreen({ route, navigation }) {
                                 ))}
                             </View>
 
-                            {/* <View className='flex-row justify-center items-center gap-1 mb-3'>
-                                    <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
-                                        <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{'Data.rating'}</Text>
-                                        <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
-                                    </View>
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {'Data.ratingcount'} ratings</Text>
-                                </View> */}
-
                             <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
                                 <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
                                 <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{editingOutlet.location} </Text>
@@ -333,6 +259,12 @@ export default function EditScreen({ route, navigation }) {
                 style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
                 keyboardShouldPersistTaps='handled'
             >
+                {/* <ManageCategoriesScreen
+                    editingOutlet={editingOutlet}
+                    setEditingOutlet={setEditingOutlet}
+                // onSelectCategory={setSelectedCategory}
+                /> */}
+
                 <View className='mt-3 px-2 flex-row justify-center'>
                     <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')} className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
@@ -341,7 +273,12 @@ export default function EditScreen({ route, navigation }) {
                         <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Add Offers</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('EditRestorent')} className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}>
+                    <TouchableOpacity
+                    //create-outline
+                        onPress={() => navigation.navigate('EditRestorent', { outlet: outlet })}
+                        className='w-1/2 rounded-2xl overflow-hidden justify-between'
+                        style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}
+                    >
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                             <Ionicons name='duplicate-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>
