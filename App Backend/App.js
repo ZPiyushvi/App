@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const PORT = process.env.PORT || 5001;
 
 const app = express();
 app.use(express.json());
@@ -11,7 +12,7 @@ app.use(express.json());
 const jwtSecret = "aasjldjdspu29073ekjwhd2u8-u[uuwpiqwhdhuoy1028dhw";
 const mongoUrl = "mongodb+srv://vipulpatil:e1UzKh7o5ewlOQ7U@cluster0.drh80rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-mongoose.connect(mongoUrl).then(() => {
+mongoose.connect(process.env.MONGO_URL || mongoUrl).then(() => {
     console.log("Database Connected");
 }).catch((err) => {
     console.log("error", err);
@@ -22,6 +23,9 @@ const User = mongoose.model("UserInfo");
 
 require('./Schema/Outlets');
 const OutletInfo = mongoose.model("OutletInfo");
+
+require('./Schema/Order');
+const OrderInfo = mongoose.model("OrderInfo");
 
 app.get("/", (req, res) => {
     res.send({ status: "started" });
@@ -121,7 +125,7 @@ app.post('/addoutlet', async (req, res) => {
     } = req.body;
 
     if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
-        || !openingTime || !closingTime || !leaveDay || !offDays || !menuType
+        || !openingTime || !closingTime || !offDays || !menuType
     ) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }
@@ -254,14 +258,93 @@ app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
     }
   });
 
+// ----------------------------- Create a new order endpoint ----------------------------- //
+app.post('/createorder', async (req, res) => {
+    try {
+        const { items, totalPrice, name, date, status, massage, id } = req.body;
+
+        let order = await OrderInfo.findOne({ id });
+
+        if (order) {
+            // Update existing order
+            order.name = name;
+            order.items = items;
+            order.totalPrice = totalPrice;
+            order.date = date;
+            order.status = status;
+            order.massage = massage;
+
+            await order.save();
+
+            res.status(200).send({ status: "ok", data: order });
+        } else {
+            // Create a new order
+            const newOrder = new OrderInfo({
+                id,
+                name,
+                items,
+                totalPrice,
+                date,
+                status,
+                massage
+            });
+
+            await newOrder.save();
+
+            res.status(201).send({ status: "ok", data: newOrder });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+// app.post('/createorder', async (req, res) => {
+//     try {
+//         const { items, totalPrice, name, date,
+//             status, massage, id} = req.body;
+
+//         const newOrder = new OrderInfo({
+//             id,
+//             name,
+//             items,
+//             totalPrice,
+//             date,
+//             status,
+//             massage
+//         });
+
+//         await newOrder.save();
+
+//         res.status(201).send({ status: "ok", data: newOrder });
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).send({ status: "error", data: "Internal server error" });
+//     }
+// });
+
+
+app.post("/getorderseller", async (req, res) => {
+    const { contactinfo } = req.body;
+    if (!contactinfo) {
+        return res.status(400).send({ status: "error", data: "Contact info is required" });
+    }
+
+    try {
+        const orderSeller = await OrderInfo.find({ "items.userId": contactinfo });
+        if (orderSeller.length === 0) {
+            return res.status(400).send({ status: "error", data: "Seller not found" });
+        }
+        res.status(200).send({ status: 'ok', data: orderSeller });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
 
 
 
 
-
-
-
-app.listen(5001, () => {
-    console.log("Server started on port 5001");
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
 

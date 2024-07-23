@@ -34,7 +34,7 @@ export default function EditScreen({ route, navigation }) {
         closingTime: '',
         offDays: [],
         menuType: [],
-        leaveDays: 'None',
+        leaveDay: 'None',
     });
 
 
@@ -48,7 +48,7 @@ export default function EditScreen({ route, navigation }) {
         if (!editingOutlet.name || !editingOutlet.shopkeeperName || !editingOutlet.upiId || !editingOutlet.image || !editingOutlet.details || !editingOutlet.location || editingOutlet.featured === undefined
             || !editingOutlet.openingTime || !editingOutlet.closingTime
             || !editingOutlet.offDays
-            || !editingOutlet.leaveDay
+            // || !editingOutlet.leaveDay
         ) {
             Alert.alert("All fields are required");
             return;
@@ -274,7 +274,7 @@ export default function EditScreen({ route, navigation }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                    //create-outline
+                        //create-outline
                         onPress={() => navigation.navigate('EditRestorent', { outlet: outlet })}
                         className='w-1/2 rounded-2xl overflow-hidden justify-between'
                         style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15 }}
@@ -561,18 +561,30 @@ export default function EditScreen({ route, navigation }) {
 
                         <View className='my-1 flex-1'>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>Leave Days</Text>
-                            <TouchableOpacity onPress={() => {
-                                Keyboard.dismiss();
-                                showDateSelector();
-                            }}
+
+
+                            <TouchableOpacity
+                                className='p-3 font-black flex-row items-center justify-between text-base rounded-md'
+                                style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
+                                onPress={() => {
+                                    Keyboard.dismiss();
+                                    showDateSelector();
+                                }}
                             >
-                                <TextInput
-                                    className='font-black text-base rounded-md p-2'
-                                    style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
-                                    value={editingOutlet.leaveDay}
-                                    editable={false}
+                                <Text
+                                    className='font-black flex-row justify-between text-base rounded-md'
+                                    style={{ color: Colors.dark.colors.mainTextColor }}
+                                >
+                                    {editingOutlet.leaveDay}
+                                </Text>
+                                { editingOutlet.leaveDay !=='None' &&
+                                    <Ionicons
+                                    onPress={() => handleChange('leaveDay', 'None')}
+                                    name="close"
+                                    size={20}
+                                    color={Colors.dark.colors.mainTextColor}
                                 />
-                                {/* {console.log(editingOutlet.leaveDay)} */}
+                                }
                             </TouchableOpacity>
                         </View>
 

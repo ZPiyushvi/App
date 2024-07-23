@@ -26,12 +26,13 @@ import { ProfileScreenNav } from "../Data/ProfileScreenNav";
 import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
 import { LinearGradient } from 'expo-linear-gradient'
 import { GlobalStateContext } from "../Context/GlobalStateContext";
+import Size from "../Components/Size";
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const LoginScreen = () => {
-  const route = useRoute();
-  const { userData } = route.params;
-  const { vegMode, setVegMode } = useContext(GlobalStateContext);
+  // const route = useRoute();
+  // const { userData } = route.params;
+  const { fontFamilies, userData, vegMode, setVegMode } = useContext(GlobalStateContext);
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -85,6 +86,11 @@ const LoginScreen = () => {
       console.error('Error clearing AsyncStorage:', error);
     }
   };
+
+  if (!fontFamilies) {
+    return null;
+  }
+
   // onPress={() => navigation.navigate('IndiviualCart',
 
   const [userDataVisible, setUserDataVisible] = useState(false);
@@ -123,16 +129,16 @@ const LoginScreen = () => {
 
         <ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible} className='w-full rounded-2xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.25, }}>
           <View className=' h-3/5 flex-row items-center'>
-            <View className=' w-16 h-16 mx-3 pt-1 rounded-full items-center justify-center' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerpleBG }}>
-              <Text className='text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorPerple }}>
+            <View className=' w-16 h-16 mx-3 rounded-full items-center justify-center' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerpleBG }}>
+              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorPerple }}>
                 {userData.name ? userData.name.substring(0, 1) : 'U'}
               </Text>
             </View>
             <View>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"}</Text>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-bold text-lg' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.contactinfo : "Contact details"}</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>{userData.name ? userData.name : "UserName"}</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.semibold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.textColor }}>{userData.name ? userData.contactinfo : "Contact details"}</Text>
               <View className=' -mt-1 flex-row items-center'>
-                <Text className='font-medium text-base underline' style={{ color: Colors.dark.colors.diffrentColorOrange }}>View activity</Text>
+                <Text className='underline' style={{ fontFamily: fontFamilies.regular, fontSize: Size.size.mediumText, color: Colors.dark.colors.diffrentColorOrange }}>View activity</Text>
                 <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
               </View>
             </View>
@@ -146,7 +152,7 @@ const LoginScreen = () => {
               </View>
 
               {/* <LinearGradient className=' p-1 rounded-full' colors={['#D79C08', '#F4E653', '#D79C08']}> */}
-              <Text className='text-xl font-black text-[#D79C08]'>  Know Us</Text>
+              <Text className='text-[#D79C08]' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.extraLargeText }}>  Know Us</Text>
               {/* </LinearGradient> */}
             </View>
             <Ionicons name='chevron-forward' size={24} color={'#D79C08'} />
@@ -169,21 +175,21 @@ const LoginScreen = () => {
               <View className=' p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                 <Ionicons name='bag-handle-outline' size={24} color={Colors.dark.colors.mainTextColor} />
               </View>
-              <Text className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Orders</Text>
+              <Text className='absolute left-6 bottom-4' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>Orders</Text>
             </ShimmerPlaceholder>
           </> : <>
             <View shimmerColors={shimmerColors} visible={userDataVisible} className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15, }}>
               <View className=' p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                 <Ionicons name='heart-outline' size={24} color={Colors.dark.colors.mainTextColor} />
               </View>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Favourites</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.mainTextColor }}>Favourites</Text>
             </View>
 
             <View shimmerColors={shimmerColors} visible={userDataVisible} className='w-1/2 rounded-2xl overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15, }}>
               <View className=' p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                 <Ionicons name='bag-handle-outline' size={24} color={Colors.dark.colors.mainTextColor} />
               </View>
-              <Text className='absolute left-6 bottom-4 font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Orders</Text>
+              <Text className='absolute left-6 bottom-4' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.mainTextColor }}>Orders</Text>
             </View>
           </>}
         </View>
@@ -194,7 +200,7 @@ const LoginScreen = () => {
               <View>
                 <FoodIcon style={{ backgroundColor: 'black', padding: 3 }} type={"Veg"} size={12} padding={2} />
               </View>
-              <Text className='font-bold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> Veg Mode</Text>
+              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.mainTextColor }}> Veg Mode</Text>
             </View>
             <TouchableOpacity onPress={toggleVegMode}>
               <Ionicons name='toggle' size={38} style={{ transform: [{ rotate: vegMode ? '0deg' : '180deg' }] }} color={vegMode ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.mainTextColor} />
@@ -211,7 +217,7 @@ const LoginScreen = () => {
                 <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                   <View className=' items-center flex-row mb-3'>
                     <View className=' absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> {section.title}</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.mainTextColor }}> {section.title}</Text>
                   </View>
 
                   {section.data.map((item, itemIndex) => {
@@ -221,7 +227,7 @@ const LoginScreen = () => {
                           <View className='p-1 rounded-full justify-center items-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                             <Ionicons name={item.iconName} size={22} color={Colors.dark.colors.mainTextColor} />
                           </View>
-                          <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.subtitle}</Text>
+                          <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.semiBold, fontSize: Size.size.mediumText, color: Colors.dark.colors.mainTextColor }}>  {item.subtitle}</Text>
                         </View>
                         <Ionicons name='chevron-forward-outline' size={23} color={Colors.dark.colors.mainTextColor} />
                       </TouchableOpacity>

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView, Alert, TextInput } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import FoodIcon from '../Components/FoodIcon';
 import Colors from '../Components/Colors';
@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from '../Components/removeStoreFromCart';
 import useIncrementHandler from '../Components/handleIncrement';
+import { API_BASE_URL, ORDERS_ENDPOINT } from '../Constants/Constants';
 
 const Cart = ({ route }) => {
 
@@ -17,13 +18,36 @@ const Cart = ({ route }) => {
   // const { storeName, items, totalPrice, storeDetails } = route.params;
   // const { item } = route.params;
 
+  async function createOrder(orderData) {
+    console.log('orderData', orderData)
 
+    try {
+      const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
 
-  const { outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log('Order created successfully:', result.data);
+        return result.data;
+      } else {
+        console.error('Error creating order:', result.data);
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+  }
+
+  const { userData, outletsNEW, cartItemsNEW, setCartItems, setCartItemsNEW, campusShops, setcampusShops, History, setHistory } = useContext(GlobalStateContext);
 
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
-  
+
   const updateCartItemsStatus = () => {
     const updatedCartItems = cartItemsNEW.map(cartItem => {
       const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
@@ -227,6 +251,8 @@ const Cart = ({ route }) => {
     category
   }));
 
+  const [massage, setMassage] = useState('')
+
   const handleProceedPayment = (item) => {
 
     // console.log('item', item)
@@ -248,7 +274,34 @@ const Cart = ({ route }) => {
             console.log("Proceeding with item:", item);
 
             const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+            const { name, username } = userData;
+
             if (orders.length !== 0) {
+              console.log('userDatammmmm', userData)
+              createOrder({
+                id: Date.now().toString(),
+                items: item,
+                // name: userData,    
+                massage: massage,
+                totalPrice: item?.orders
+                  ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+                  : 0,
+                // Noformatdate: today,
+                date: getFormattedDate(today),
+                status: 'Scheduled',
+                name: userData,
+              })
+              // createOrder({
+              //   id: Date.now().toString(),
+              //   items: orders,
+              //   storeDetails: storeDetails,
+              //   totalPrice: item?.orders
+              //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+              //     : 0,
+              //   Noformatdate: today,
+              //   date: getFormattedDate(today),
+              //   userData: { name, username }
+              // })
               setHistory(prevHistory => [
                 {
                   items: orders,
@@ -256,8 +309,9 @@ const Cart = ({ route }) => {
                   totalPrice: item?.orders
                     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
                     : 0,
-                  Noformatdate: today,
-                  date: getFormattedDate(today)
+                  date: getFormattedDate(today),
+                  massage: massage,
+                  status: 'Scheduled',
                 },
                 ...prevHistory
               ]);
@@ -270,6 +324,34 @@ const Cart = ({ route }) => {
     } else {
       console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
+      console.log('userDatammmmm', userData.contactinfo)
+      // const { name, username } = userData;
+
+      createOrder({
+        id: Date.now().toString(),
+        items: item,
+        // name: userData,    
+        massage: massage,
+        totalPrice: item?.orders
+          ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+          : 0,
+        // Noformatdate: today,
+        date: getFormattedDate(today),
+        status: 'Scheduled',
+        name: userData,
+      })
+      // createOrder({
+      //   id: Date.now().toString(),
+      //   items: orders,
+      //   storeDetails: storeDetails,
+      //   totalPrice: item?.orders
+      //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+      //     : 0,
+      //   Noformatdate: today,
+      //   date: getFormattedDate(today),
+      //   userData: userData //{name, username}
+      // })
+
       setHistory(prevHistory => [
         {
           items: orders,
@@ -319,7 +401,26 @@ const Cart = ({ route }) => {
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}> in your list</Text>
               </View>
             </View>
+            <View className='flex-row p-3' >
+              <Ionicons name="document-text-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+              <View className=' ml-3'>
+                <View className='flex-row'>
+                  <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Note for the outlet </Text>
+                  {/* <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>₹{totalPrice}</Text> */}
+                </View>
+                <TextInput
+                  className='font-medium text-base'
+                  style={{ color: Colors.dark.colors.textColor }}
+                  value={massage}
+                  multiline={true}
+                  onChangeText={(text) => setMassage(text)}
+                  placeholder="Edit category title"
+                  placeholderTextColor={Colors.dark.colors.textColor}
+                />
+              </View>
+            </View>
           </View>
+
 
           <View className=' rounded-xl overflow-hidden'>
             {/* <FlatList

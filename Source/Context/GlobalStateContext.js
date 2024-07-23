@@ -4,8 +4,9 @@ export const GlobalStateContext = createContext();
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT } from '../Constants/Constants';
+import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import { Alert } from 'react-native';
+import { useFonts } from 'expo-font';
 
 const filterRecentHistory = (history) => {
   const currentDate = new Date();
@@ -16,7 +17,6 @@ const filterRecentHistory = (history) => {
 
 
 export const GlobalStateProvider = ({ children }) => {
-  // const [userRole, setUserRole] = useState(null);
   const [cartItemsNEW, setCartItemsNEW] = useState([]);
   const [userRole, setUserRole] = useState(null);
 
@@ -34,26 +34,59 @@ export const GlobalStateProvider = ({ children }) => {
   const [outletsNEW, setOutletsNEW] = useState([]);
 
   const [outletsNEW2, setOutletsNEW2] = useState([]);
+
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      console.log(token)
+      // http://192.168.1.3:5001/userdata
+      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token: token })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      // console.log('data', data)
+      setUserData(data.data)
+      // console.log("userData", "home", data.data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       getUserOutlets2();
     }, 10000); // Poll every 10 seconds
-  
+
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
-  
+
   const getUserOutlets2 = async () => {
     try {
       // const token = await AsyncStorage.getItem('token');
       const response = await fetch('http://192.168.138.12:5001/alloutlets2'); // Correct the URL
-  
+
       if (!response.ok) {
         console.log('Network response was not ok');
         return;
       }
-  
+
       const data = await response.json();
-      
+
       setOutletsNEW(data.data);
       // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
     } catch (error) {
@@ -61,6 +94,26 @@ export const GlobalStateProvider = ({ children }) => {
     }
   };
   // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+  const [fontFamilies, setFontFamilies] = useState({});
+
+  const [fontsLoaded] = useFonts({
+    'AddFont_Bold': require('./../../assets/fonts/staticNunito/Nunito-Bold.ttf'),
+    'AddFont_Medium': require('./../../assets/fonts/staticNunito/Nunito-Medium.ttf'),
+    'AddFont_Regular': require('./../../assets/fonts/staticNunito/Nunito-Regular.ttf'),
+    'AddFont_SemiBold': require('./../../assets/fonts/staticNunito/Nunito-SemiBold.ttf'),
+  });
+  
+  useEffect(() => {
+    if (fontsLoaded) {
+      setFontFamilies({
+        regular: 'AddFont_Regular',
+        medium: 'AddFont_Medium',
+        semiBold: 'AddFont_SemiBold',
+        bold: 'AddFont_Bold',
+        none : 'none',
+      });
+    }
+  }, [fontsLoaded]);
 
   useEffect(() => {
     const fetchOutlets = async () => {
@@ -113,7 +166,7 @@ export const GlobalStateProvider = ({ children }) => {
       console.error('Error fetching user outlets:', error);
     }
   };
-  console.log(outlets)
+  // console.log(outlets)
 
   useEffect(() => {
     const groupOrdersByDate = (orders) => {
@@ -255,7 +308,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

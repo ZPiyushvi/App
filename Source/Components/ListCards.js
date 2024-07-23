@@ -5,6 +5,7 @@ import Icons from "./Icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { mockCampusShops } from "../Data/mockCampusShops";
+import TruncatedTextComponent from "./TruncatedTextComponent";
 
 const { StarIcon, CarIcon } = Icons();
 
@@ -304,7 +305,7 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                             className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
                         >
                             {CarIcon()}
-                            <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location}</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location.split(',')[0]}</Text>
                         </LinearGradient>
 
                     </LinearGradient>

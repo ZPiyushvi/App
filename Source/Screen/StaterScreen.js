@@ -12,6 +12,9 @@ import Constants from 'expo-constants';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../Components/Colors';
+import Size from '../Components/Size';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
+import { useContext } from 'react';
 
 const { width } = Dimensions.get('window');
 const AnimatedAntDesign = Animated.createAnimatedComponent(AntDesign);
@@ -159,6 +162,8 @@ export default function StaterScreen() {
   const inputRange = [...Array(quotes.length).keys()];
   const [index, setIndex] = React.useState(0);
 
+  const { fontFamilies } = useContext(GlobalStateContext);
+
   const animate = (i) =>
     Animated.parallel([
       Animated.timing(sliderAnimatedValue, {
@@ -188,6 +193,9 @@ export default function StaterScreen() {
       setIndex((index + 1) % colors.length);
     }
   };
+  if (!fontFamilies) {
+    return null;
+  }
 
   return (
     <View className='w-full h-full pt-32'>
@@ -224,18 +232,18 @@ export default function StaterScreen() {
           return (
             <View className='p-3' style={{ paddingRight: width, width: width * 2 }} key={i}>
               <Text
-                className='font-semibold text-3xl' style={{ color: colors[i].nextBgColor }}
+                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.titleText, color: colors[i].nextBgColor }}
               >
                 {normaltitle}
               </Text>
               <Text
-                className=' pt-1 font-black text-4xl' style={{ color: colors[i].nextBgColor }}
+                className=' pt-1'  style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: colors[i].nextBgColor }}
               >
                 {quote}
               </Text>
               <Text
-                className=' pt-5 font-normal text-xl'
-                style={{
+                className=' pt-5'
+                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText,
                   color: Colors.dark.colors.mainTextColor,
                 }}
               >

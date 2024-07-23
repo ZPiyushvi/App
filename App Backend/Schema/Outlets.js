@@ -16,7 +16,7 @@ const itemSchema = new mongoose.Schema({
 });
 
 const menuCategorySchema = new mongoose.Schema({
-    // id: { type: String },
+    // date: { type: String },
     title: { type: String },
     items: { type: [itemSchema] }
 });
@@ -39,10 +39,11 @@ const outletSchema = new mongoose.Schema({
     details: { type: String, required: true },
     openingTime: { type: String, required: true },
     closingTime: { type: String, required: true },
-    leaveDay: { type: String, required: true },
+    leaveDay: { type: String },
     userId: { type: String, ref: 'User', required: true },
 
     menu: { type: [menuCategorySchema] },
 });
 
+module.exports = mongoose.model('MenuInfo', itemSchema);
 module.exports = mongoose.model('OutletInfo', outletSchema);
