@@ -50,10 +50,11 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                         </Text>
 
                         <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
-                        {/* <View className=' flex-row py-2'>
-                        <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />
-                        <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
-                    </View> */}
+                        <View className=' flex-row py-2'>
+                            {item.rating &&
+                                <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />}
+                            <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                        </View>
 
                         <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
                     </TouchableOpacity>

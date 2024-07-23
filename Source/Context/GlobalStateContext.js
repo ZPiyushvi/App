@@ -16,7 +16,6 @@ const filterRecentHistory = (history) => {
 
 
 export const GlobalStateProvider = ({ children }) => {
-  // const [userRole, setUserRole] = useState(null);
   const [cartItemsNEW, setCartItemsNEW] = useState([]);
   const [userRole, setUserRole] = useState(null);
 

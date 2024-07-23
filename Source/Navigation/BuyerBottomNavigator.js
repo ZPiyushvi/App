@@ -17,14 +17,32 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import ToastNotification from '../Components/ToastNotification';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Error from '../Components/Error';
 
 const Tab = createBottomTabNavigator();
 export default function BuyerBottomNavigator() {
   const navigation = useNavigation();
-  const { userRole, setUserRole } = useContext(GlobalStateContext);
-  console.log('userRole', userRole)
-
+  const { userData } = useContext(GlobalStateContext);
   const [showToast, setShowToast] = useState(false);
+
+  
+  const [isRoleDefined, setIsRoleDefined] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    if (userData.role) {
+      setUserRole(userData.role);
+      setIsRoleDefined(true);
+    }
+  }, [userData]);
+
+  console.log('userData', userData.role, userRole);
+
+  if (!isRoleDefined) {
+    return <Error />;
+  }
 
   return (
     <>
