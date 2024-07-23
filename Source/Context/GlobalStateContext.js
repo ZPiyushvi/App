@@ -29,12 +29,7 @@ export const GlobalStateProvider = ({ children }) => {
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
   const [outlets, setOutlets] = useState([]);
-
-
   const [outletsNEW, setOutletsNEW] = useState([]);
-
-  const [outletsNEW2, setOutletsNEW2] = useState([]);
-
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -45,6 +40,9 @@ export const GlobalStateProvider = ({ children }) => {
     try {
       const token = await AsyncStorage.getItem("token");
       console.log(token)
+      if (!token) {
+        return console.log('err [Token not found]');
+      }
       // http://192.168.1.3:5001/userdata
       const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
         method: 'POST',
@@ -63,7 +61,7 @@ export const GlobalStateProvider = ({ children }) => {
       setUserData(data.data)
       // console.log("userData", "home", data.data)
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching datadata:', error);
     }
   };
 
@@ -308,7 +306,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

@@ -29,12 +29,12 @@ export default function HomeSeller({ navigation }) {
 
     const [type, settype] = useState('');
     const { show, hide, RenderModel } = ModelScreen();
-    const [userData, setUserData] = useState([]);
+    // const [userData, setUserData] = useState([]);
     const [outlets, setOutlets] = useState([]);
     const [newItem, setNewItem] = useState();
     const [sortItem, setSortItem] = useState('AllItems');
 
-    const { fontsLoaded, fontFamilies } = useContext(GlobalStateContext);
+    const { fontsLoaded, userData, setUserData, fontFamilies } = useContext(GlobalStateContext);
 
     if (!fontFamilies) {
         return null;
