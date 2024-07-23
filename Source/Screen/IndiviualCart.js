@@ -276,18 +276,29 @@ const Cart = ({ route }) => {
 
             if (orders.length !== 0) {
               console.log('userDatammmmm', userData)
-
               createOrder({
-                id: Date.now().toString(),
-                items: orders,
-                storeDetails: storeDetails,
+                // id: Date.now().toString(),
+                items: item,
+                // name: name,    
+                // storeDetails: storeDetails,
                 totalPrice: item?.orders
                   ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
                   : 0,
-                Noformatdate: today,
-                date: getFormattedDate(today),
-                userData: { name, username }
+                // Noformatdate: today,
+                // date: getFormattedDate(today),
+                // userData: { name, username }
               })
+              // createOrder({
+              //   id: Date.now().toString(),
+              //   items: orders,
+              //   storeDetails: storeDetails,
+              //   totalPrice: item?.orders
+              //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+              //     : 0,
+              //   Noformatdate: today,
+              //   date: getFormattedDate(today),
+              //   userData: { name, username }
+              // })
               setHistory(prevHistory => [
                 {
                   items: orders,
@@ -309,20 +320,32 @@ const Cart = ({ route }) => {
     } else {
       console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
-      // console.log('userDatammmmm', userData)
-      const { name, username } = userData;
+      console.log('userDatammmmm', userData.contactinfo)
+      // const { name, username } = userData;
 
       createOrder({
-        id: Date.now().toString(),
-        items: orders,
-        storeDetails: storeDetails,
+        // id: Date.now().toString(),
+        items: item,
+        // name: userData,    
+        // storeDetails: storeDetails,
         totalPrice: item?.orders
           ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
           : 0,
-        Noformatdate: today,
-        date: getFormattedDate(today),
-        userData: userData //{name, username}
+        // Noformatdate: today,
+        // date: getFormattedDate(today),
+        name : userData.contactinfo,
       })
+      // createOrder({
+      //   id: Date.now().toString(),
+      //   items: orders,
+      //   storeDetails: storeDetails,
+      //   totalPrice: item?.orders
+      //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+      //     : 0,
+      //   Noformatdate: today,
+      //   date: getFormattedDate(today),
+      //   userData: userData //{name, username}
+      // })
 
       setHistory(prevHistory => [
         {
