@@ -23,6 +23,7 @@ import Details_Seller from '../Components/Details_Seller';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import ToastNotification from '../Components/ToastNotification';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
+import Size from '../Components/Size';
 
 export default function HomeSeller({ navigation }) {
 
@@ -33,7 +34,12 @@ export default function HomeSeller({ navigation }) {
     const [newItem, setNewItem] = useState();
     const [sortItem, setSortItem] = useState('AllItems');
 
-    // const { userData, setUserData } = useContext(GlobalStateContext);
+    const { fontsLoaded, fontFamilies } = useContext(GlobalStateContext);
+
+    if (!fontFamilies) {
+        return null;
+    }
+    // fontFamily: fontFamilies.bold,
 
     useFocusEffect(
         React.useCallback(() => {
@@ -262,8 +268,9 @@ export default function HomeSeller({ navigation }) {
                         </View>
 
                         <View className='pt-7 px-4'>
-                            <View className='flex-row'>
-                                <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>How</Text>
+                            <View className='flex-row items-center'>
+                                
+                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.titleText, color: Colors.dark.colors.mainTextColor }}>How</Text>
                                 <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}> Our App</Text>
                             </View>
 

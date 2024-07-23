@@ -6,6 +6,7 @@ import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import { Alert } from 'react-native';
+import { useFonts } from 'expo-font';
 
 const filterRecentHistory = (history) => {
   const currentDate = new Date();
@@ -93,6 +94,25 @@ export const GlobalStateProvider = ({ children }) => {
     }
   };
   // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
+  const [fontFamilies, setFontFamilies] = useState({});
+
+  const [fontsLoaded] = useFonts({
+    'AddFont_Bold': require('./../../assets/fonts/static/EduAUVICWANTHand-Bold.ttf'),
+    'AddFont_Medium': require('./../../assets/fonts/static/EduAUVICWANTHand-Medium.ttf'),
+    'AddFont_Regular': require('./../../assets/fonts/static/EduAUVICWANTHand-Regular.ttf'),
+    'AddFont_SemiBold': require('./../../assets/fonts/static/EduAUVICWANTHand-SemiBold.ttf'),
+  });
+  
+  useEffect(() => {
+    if (fontsLoaded) {
+      setFontFamilies({
+        regular: 'AddFont_Regular',
+        medium: 'AddFont_Medium',
+        semiBold: 'AddFont_SemiBold',
+        bold: 'AddFont_Bold',
+      });
+    }
+  }, [fontsLoaded]);
 
   useEffect(() => {
     const fetchOutlets = async () => {
@@ -287,7 +307,7 @@ export const GlobalStateProvider = ({ children }) => {
   // };
 
   return (
-    <GlobalStateContext.Provider value={{ userData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
       {children}
     </GlobalStateContext.Provider>
   );
