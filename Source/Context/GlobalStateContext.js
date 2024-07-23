@@ -97,10 +97,10 @@ export const GlobalStateProvider = ({ children }) => {
   const [fontFamilies, setFontFamilies] = useState({});
 
   const [fontsLoaded] = useFonts({
-    'AddFont_Bold': require('./../../assets/fonts/static/EduAUVICWANTHand-Bold.ttf'),
-    'AddFont_Medium': require('./../../assets/fonts/static/EduAUVICWANTHand-Medium.ttf'),
-    'AddFont_Regular': require('./../../assets/fonts/static/EduAUVICWANTHand-Regular.ttf'),
-    'AddFont_SemiBold': require('./../../assets/fonts/static/EduAUVICWANTHand-SemiBold.ttf'),
+    'AddFont_Bold': require('./../../assets/fonts/staticNunito/Nunito-Bold.ttf'),
+    'AddFont_Medium': require('./../../assets/fonts/staticNunito/Nunito-Medium.ttf'),
+    'AddFont_Regular': require('./../../assets/fonts/staticNunito/Nunito-Regular.ttf'),
+    'AddFont_SemiBold': require('./../../assets/fonts/staticNunito/Nunito-SemiBold.ttf'),
   });
   
   useEffect(() => {
@@ -110,6 +110,7 @@ export const GlobalStateProvider = ({ children }) => {
         medium: 'AddFont_Medium',
         semiBold: 'AddFont_SemiBold',
         bold: 'AddFont_Bold',
+        none : 'none',
       });
     }
   }, [fontsLoaded]);

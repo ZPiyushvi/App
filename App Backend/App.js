@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const PORT = process.env.PORT || 5001;
 
 const app = express();
 app.use(express.json());
@@ -11,7 +12,7 @@ app.use(express.json());
 const jwtSecret = "aasjldjdspu29073ekjwhd2u8-u[uuwpiqwhdhuoy1028dhw";
 const mongoUrl = "mongodb+srv://vipulpatil:e1UzKh7o5ewlOQ7U@cluster0.drh80rq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-mongoose.connect(mongoUrl).then(() => {
+mongoose.connect(process.env.MONGO_URL || mongoUrl).then(() => {
     console.log("Database Connected");
 }).catch((err) => {
     console.log("error", err);
@@ -343,7 +344,7 @@ app.post("/getorderseller", async (req, res) => {
 
 
 
-app.listen(5001, () => {
-    console.log("Server started on port 5001");
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
 

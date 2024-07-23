@@ -270,11 +270,11 @@ export default function HomeSeller({ navigation }) {
                         <View className='pt-7 px-4'>
                             <View className='flex-row items-center'>
                                 
-                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.titleText, color: Colors.dark.colors.mainTextColor }}>How</Text>
-                                <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}> Our App</Text>
+                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>How</Text>
+                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange }}> Our App</Text>
                             </View>
 
-                            <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>displays it.</Text>
+                            <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>displays it.</Text>
 
                         </View>
                         <View className=' mt-5' >
@@ -305,7 +305,7 @@ export default function HomeSeller({ navigation }) {
                     </View>
                     <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
                         <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>All Items </Text>
+                            <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.mediumText, color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>All Items </Text>
                             <Text className='font-light text-sm' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
                             {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
                         </TouchableOpacity>

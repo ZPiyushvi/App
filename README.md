@@ -2,9 +2,7 @@
 npx expo start
 npm error npm config set legacy-peer-deps true
 
-# FinEdu
-
-Fin Education Application React Code.
+# IITOutlet
 
 Creating a first build for android
 
@@ -25,265 +23,120 @@ Creating a first build for android
 
 5] Run a build aab file : eas build --platform android
 
-deep links 
-To test deep links : npx uri-scheme open https://fili.hibudgeting.com/app/home --android
-1]Home Screen : https://fili.hibudgeting.com/app/home
-2]Quiz Screen : https://fili.hibudgeting.com/app/quiz
-3]Video Screen : https://fili.hibudgeting.com/app/videos
-4]community screen : https://fili.hibudgeting.com/app/community-screen
-5]Forgot Password Verify Otp Screen :https://fili.hibudgeting.com/app/verify-otp
-6]Verify otp during registration : https://fili.hibudgeting.com/app/verify-register-otp
-7)Registeration Screen: https://fili.hibudgeting.com/app/registration-screen
+## Introduction
 
+This is a React Native application developed using Expo. This guide will help you set up the project, run it on your local machine, and build the app for production.
 
-Release App On Production 
-Before Building Production Build First change Versions in the following Files 
-1]Profile.js => Version : _._._
-2]app.json i] "version": "_._._"
-           ii] "versionCode": _
-3]package.json =>  "version": "_._._"
-4]Screen/Modules.js => curVersion: '_._._'
-Steps 
-1] Run This Command in terminal and download kea alis : npx eas credentials
-2] Copy and Place the  @spgiradkar2002__fili.jks file from root directory to under the android/app directory in your project folder
-3] Edit the file ~/.gradle/gradle.properties or android/gradle.properties, and add the following (replace *****    with the correct keystore password, alias and key password), 
+## Prerequisites
 
-MYAPP_UPLOAD_STORE_FILE=@spgiradkar2002__fili.jks
-MYAPP_UPLOAD_KEY_ALIAS=22e761f18f423516dd9c82602b58ba33
-MYAPP_UPLOAD_STORE_PASSWORD=8953decd2b788b7ab9e4e23d386c8a43
-MYAPP_UPLOAD_KEY_PASSWORD=c478dcddca0a4d7917dd7329bb47e9b7
+Before you begin, ensure you have the following installed:
 
-4] Edit the file android/app/build.gradle in your project folder, and add the signing config,
+- Node.js
+- npm or yarn
+- Expo CLI
+- EAS CLI (Expo Application Services CLI)
 
-android {
+## Getting Started
 
-    defaultConfig { ... }
-    signingConfigs { // remove debug signing and add release 
-        release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-        }
-    }
-    buildTypes {  // remove debug signing and add release 
-        release {
-            signingConfig signingConfigs.release
-        }
-    }
-}
+### 1. Clone the Repository
 
-5]  clean the project directory :=> cd android && ./gradlew clean
-    create an apk file :=> cd android && ./gradlew assembleRelease
+Clone this repository to your local machine using the following command:
 
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
 
-6]  Generating the release AAB For PlayStore
-    clean the project directory :=> cd android && ./gradlew clean
-    run this command in root directory 
-    npx react-native build-android --mode=release 
+### 2. Install Dependencies
 
+Install the necessary dependencies using npm or yarn:
 
+```bash
+# Using npm
+npm install
 
+# Using yarn
+yarn install
+```
 
+### 3. Start the Development Server
 
-    status: false,
+Start the development server using Expo CLI:
 
+```bash
+expo start
+```
 
-  
+## Building the App
 
-  
+### Using EAS (Expo Application Services)
 
+#### 1. Install the latest EAS CLI
 
+To install the EAS CLI, use the following commands:
 
-  const addItem = () => {
-    if (!selectedCategory) {
-      Alert.alert("Please select a category");
-      return;
-    }
+```bash
+# Using npm
+npm install -g expo-cli
+npm install -g eas-cli
 
-    const newItemObj = {
-      id: newItem.id ? newItem.id : Date.now().toString(),
-      item: newItem.item,
-      price: newItem.price,
-      type: newItem.type,
-      description: newItem.description,
-      status: newItem.status,
-      category: newItem.category,
-      image: newItem.image,
-      // rating:  newItem.description,
-      // ratingcount:  newItem.description,
-    };
+# Using yarn (for macOS)
+yarn global add eas-cli
+```
 
-    const updatedMenu = editingMenu.map(menuCategory => {
-      if (menuCategory.title === selectedCategory.title) {
+#### 2. Log in to your Expo account
 
-        const existingItemIndex = menuCategory.items.findIndex(item => item.id == newItemObj.id);
-        console.log(existingItemIndex, newItemObj)
-        if (existingItemIndex == -1) {
-          // Add new item
-          menuCategory.items.push(newItemObj);
+Log in to your Expo account with the following command:
 
-        } else {
-          // Update existing item
-          menuCategory.items[existingItemIndex] = newItemObj;
-        }
-      }
-      return menuCategory;
-    });
+```bash
+eas login
+```
 
-    setEditingMenu(updatedMenu);
-    setNewItem({ id: null, item: '', price: '', type: '', description: '', status: false });
-  };
+You can verify your login status with:
 
-  const editItem = (item) => {
-    setNewItem(item);
-  };
+```bash
+eas whoami
+```
 
+#### 3. Configure the Project
 
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.header}>Manage Categories</Text>
-        <FlatList
-          data={editingMenu}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.categoryContainer}>
-              <TouchableOpacity onPress={() => setSelectedCategory(item)}>
-                <Text style={styles.category}>{item.title}</Text>
-              </TouchableOpacity>
-              <TextInput
-                style={styles.input}
-                value={item.title}
-                onChangeText={(text) => editCategory(item._id, text)}
-                placeholder="Edit category title"
-              />
-            </View>
-          )}
-        />
-        <TextInput
-          style={styles.input}
-          value={newCategoryTitle}
-          onChangeText={setNewCategoryTitle}
-          placeholder="Add new category"
-        />
-        <Button title="Add Category" onPress={addCategory} />
+Configure your project for building with EAS:
 
-        {selectedCategory &&
+```bash
+eas build:configure
+```
 
-          <View style={styles.container}>
-            <Text style={styles.header}>Manage Items in {selectedCategory.title}</Text>
+#### 4. Create APK for Android
 
-            <FlatList
-              data={selectedCategory.items}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={styles.itemContainer}>
-                  <Text style={styles.item}>{item.item}</Text>
-                  <Text style={styles.item}>{item.price}</Text>
-                  <Text style={styles.item}>{item.description}</Text>
-                  <Text style={styles.item}>{item.status ? "Available" : "Unavailable"}</Text>
-                  <Button title="Edit" onPress={() => editItem(item)} />
-                  <Button title='Status' onPress={() => handleChange('status', false)} />
+To build an APK for Android, use the following command:
 
-                </View>
-              )}
-            />
+```bash
+eas build --platform android --profile preview
+```
 
-            <TextInput
-              style={styles.input}
-              value={newItem.item}
-              onChangeText={(text) => setNewItem({ ...newItem, item: text })}
-              placeholder="Item name"
-            />
-            <TextInput
-              style={styles.input}
-              value={newItem.price}
-              onChangeText={(text) => setNewItem({ ...newItem, price: text })}
-              placeholder="Item price"
-              keyboardType="numeric"
-            />
-            <TextInput
-              style={styles.input}
-              value={newItem.description}
-              onChangeText={(text) => setNewItem({ ...newItem, description: text })}
-              placeholder="Item description"
-            />
-            <TextInput
-              style={styles.input}
-              value={newItem.type}
-              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
-              placeholder="Item Type"
-            />
-            <TextInput
-              style={styles.input}
-              value={newItem.category}
-              onChangeText={(text) => setNewItem({ ...newItem, category: text })}
-              placeholder="Item category"
-            />
-            <TextInput
-              style={styles.input}
-              value={newItem.type}
-              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
-              placeholder="Item Type"
-            />
-            <Button title='Status' onPress={() => handleChange('status', !newItem.status)} />
-            {console.log(newItem.status)}
-            <View className='mt-3 rounded-xl'>
-              <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-                <View className=' flex-row items-center justify-between'>
-                  <View className=' flex-row justify-between'>
-                    <TouchableOpacity
-                      onPress={() => handleChange('type', 'PureVeg')}
-                      style={{ backgroundColor: newItem.type === 'PureVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
-                      className=' w-[35%] p-3 rounded-l-lg items-center'
-                    >
-                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Pure Veg</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChange('type', 'Veg')}
-                      style={{ backgroundColor: newItem.type === 'Veg' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
-                      className=' w-[30%] p-3 items-center'
-                    >
-                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Veg</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleChange('type', 'NonVeg')}
-                      style={{ backgroundColor: newItem.type === 'NonVeg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
-                      className=' w-[35%] p-3 rounded-r-lg items-center'
-                    >
-                      <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Non Veg</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <TextInput
-              style={styles.input}
-              value={newItem.image}
-              onChangeText={(text) => setNewItem({ ...newItem, image: text })}
-              placeholder="Item image"
-            />
-            {/* <TextInput
-              style={styles.input}
-              value={newItem.type}
-              onChangeText={(text) => setNewItem({ ...newItem, type: text })}
-              placeholder="Item Type"
-            /> */}
+### Building Locally
 
-            <Button title={newItem.id ? "Update Item" : "Add Item"} onPress={addItem} />
-          </View>
-        }
-        <TouchableOpacity onPress={handleSaveMenu} style={styles.saveButton}>
-          <View style={styles.saveButtonContent}>
-            <Text style={styles.saveButtonText}>SAVE</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+If you want to build the app locally, follow these steps:
 
-      <Details_Seller outlets={editingMenu} handleChange={handleChange} />
-    </ScrollView>
-  );
-};
+#### 1. Clean the Project Directory
+
+Navigate to the `android` directory and clean the project:
+
+```bash
+cd android && ./gradlew clean
+```
+
+#### 2. Create AAB File
+
+To create an Android App Bundle (AAB) file, run the following command in the root directory of your project:
+
+```bash
+npx react-native build-android --mode=release
+```
+
+## Conclusion
+
+You are now ready to develop and build your Expo React Native app. If you encounter any issues, please refer to the [Expo documentation](https://docs.expo.dev/) or open an issue on this repository.
+```
+
+Feel free to replace `your-username` and `your-repo-name` with your actual GitHub username and repository name. This guide provides comprehensive steps for setting up, running, and building your Expo React Native app.

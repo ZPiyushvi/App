@@ -74,6 +74,7 @@ import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import UpModelScreen from './UpModelScreen';
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
+import Size from '../Components/Size';
 
 const Home = () => {
   // const [userData, setUserData] = useState([]);
@@ -83,7 +84,7 @@ const Home = () => {
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { userData, setUserData, outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { fontFamilies, userData, setUserData, outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -153,6 +154,10 @@ const Home = () => {
     }
   };
 
+  if (!fontFamilies) {
+    return null;
+  }
+
   const fetchFeatures = async () => {
     // setcampusShops(mockCampusShops)
     setcampusMenu(mockCampusMenu)
@@ -205,10 +210,10 @@ const Home = () => {
                 <View>
                   <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
                     {/* {console.log(userData.name)} */}
-                    <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
+                    <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                   </TouchableOpacity>
-                  <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.semiBold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
                 </View>
               </View>
               <View className='address flex-row gap-2 items-center'>
@@ -218,10 +223,10 @@ const Home = () => {
             </View>
 
             <View className='pt-7 px-4'>
-              <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Discover the best</Text>
+              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>Discover the best</Text>
               <View className='flex-row'>
-                <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Meal </Text>
-                <Text className=' text-4xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>for you</Text>
+                <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange }}>Meal </Text>
+                <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>for you</Text>
               </View>
             </View>
 
@@ -277,18 +282,17 @@ const Home = () => {
               showsHorizontalScrollIndicator={false}
             />
 
-            <View className='justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
+            <View className=' items-center justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
               <Text
-                className='font-black text-xl text-center'
-                style={{ color: Colors.dark.colors.diffrentColorOrange }}
+                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.diffrentColorOrange }}
                 numberOfLines={1}
                 ellipsizeMode='tail'
               >
                 Exciting Updates Coming Soon!
               </Text>
               <Text
-                className='font-light text-sm text-center'
-                style={{ color: Colors.dark.colors.textColor }}
+              className=' text-center'
+                style={{ fontFamily: fontFamilies.regular, fontSize: Size.size.submediumText, color: Colors.dark.colors.textColor }}
                 numberOfLines={3}
                 ellipsizeMode='tail'
               >

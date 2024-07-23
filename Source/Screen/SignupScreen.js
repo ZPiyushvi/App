@@ -18,11 +18,15 @@ import { useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constants/Constants";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
+import Size from "../Components/Size";
 
 const LoginScreen = () => {
 
-  const { userRole } = useContext(GlobalStateContext);
+  const { fontFamilies, userRole } = useContext(GlobalStateContext);
   // 192.168.110.12
+  if (!fontFamilies) {
+    return null;
+  }
 
   function handleSubmit() {
     // console.log("Contact Info:", contactinfo);
@@ -137,8 +141,8 @@ const LoginScreen = () => {
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
-        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Let's get</Text>
-        <Text className=' text-4xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }}>started</Text>
+        <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Let's get</Text>
+        <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }}>started</Text>
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
@@ -242,21 +246,21 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity onPress={() => handleSubmit()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>Register</Text>
+            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>Register</Text>
           </TouchableOpacity>
-          <Text className=' text-base font-normal my-4 text-center' style={{ color: Colors.dark.colors.textColor }}>or continue with</Text>
+          <Text className=' my-4 text-center' style={{ fontFamily: fontFamilies ? fontFamilies.medium : null, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>or continue with</Text>
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}
               size={20}
             />
-            <Text className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>  Google</Text>
+            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>  Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>Already have an account!</Text>
+            <Text style={{ fontFamily: fontFamilies.medium, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>Already have an account!</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text className=' text-base font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Login</Text>
+              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.mediumText, color: Colors.dark.colors.mainTextColor }}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>
