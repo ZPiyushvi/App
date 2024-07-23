@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView, Alert } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ImageBackground, Dimensions, ScrollView, Alert, TextInput } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import FoodIcon from '../Components/FoodIcon';
 import Colors from '../Components/Colors';
@@ -251,6 +251,8 @@ const Cart = ({ route }) => {
     category
   }));
 
+  const [massage, setMassage] = useState('')
+
   const handleProceedPayment = (item) => {
 
     // console.log('item', item)
@@ -306,8 +308,9 @@ const Cart = ({ route }) => {
                   totalPrice: item?.orders
                     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
                     : 0,
-                  Noformatdate: today,
-                  date: getFormattedDate(today)
+                  date: getFormattedDate(today),
+                  massage: massage,
+                  status: 'Scheduled',
                 },
                 ...prevHistory
               ]);
@@ -327,13 +330,14 @@ const Cart = ({ route }) => {
         // id: Date.now().toString(),
         items: item,
         // name: userData,    
-        // storeDetails: storeDetails,
+        massage: massage,
         totalPrice: item?.orders
           ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
           : 0,
         // Noformatdate: today,
-        // date: getFormattedDate(today),
-        name : userData,
+        date: getFormattedDate(today),
+        status: 'Scheduled',
+        name: userData,
       })
       // createOrder({
       //   id: Date.now().toString(),
@@ -396,7 +400,26 @@ const Cart = ({ route }) => {
                 <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}> in your list</Text>
               </View>
             </View>
+            <View className='flex-row p-3' >
+              <Ionicons name="document-text-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+              <View className=' ml-3'>
+                <View className='flex-row'>
+                  <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Note for the outlet </Text>
+                  {/* <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>₹{totalPrice}</Text> */}
+                </View>
+                <TextInput
+                  className='font-medium text-base'
+                  style={{ color: Colors.dark.colors.textColor }}
+                  value={massage}
+                  multiline={true}
+                  onChangeText={(text) => setMassage(text)}
+                  placeholder="Edit category title"
+                  placeholderTextColor={Colors.dark.colors.textColor}
+                />
+              </View>
+            </View>
           </View>
+
 
           <View className=' rounded-xl overflow-hidden'>
             {/* <FlatList

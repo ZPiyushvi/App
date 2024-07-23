@@ -1,5 +1,8 @@
 export const availableStatus = [
     {
+        "status": "Scheduled",
+    },
+    {
         "status": "Not Started",
     },
     {
@@ -7,9 +10,6 @@ export const availableStatus = [
     },
     {
         "status": "On Hold",
-    },
-    {
-        "status": "Scheduled",
     },
     {
         "status": "Delayed",

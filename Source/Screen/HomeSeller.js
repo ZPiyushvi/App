@@ -28,12 +28,12 @@ export default function HomeSeller({ navigation }) {
 
     const [type, settype] = useState('');
     const { show, hide, RenderModel } = ModelScreen();
-    // const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState([]);
     const [outlets, setOutlets] = useState([]);
     const [newItem, setNewItem] = useState();
     const [sortItem, setSortItem] = useState('AllItems');
 
-    const { userData, setUserData } = useContext(GlobalStateContext);
+    // const { userData, setUserData } = useContext(GlobalStateContext);
 
     useFocusEffect(
         React.useCallback(() => {

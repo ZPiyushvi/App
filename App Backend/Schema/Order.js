@@ -49,6 +49,9 @@ const userSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+    massage: { type: String, required: true },
+    status: { type: String, required: true },
+    date: { type: String, required: true },
     name: { type: userSchema, required: true },
     items: { type: OrderItemsSchema, required: true },
     totalPrice: { type: Number, required: true }

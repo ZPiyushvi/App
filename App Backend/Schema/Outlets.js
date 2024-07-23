@@ -16,7 +16,7 @@ const itemSchema = new mongoose.Schema({
 });
 
 const menuCategorySchema = new mongoose.Schema({
-    // id: { type: String },
+    // date: { type: String },
     title: { type: String },
     items: { type: [itemSchema] }
 });

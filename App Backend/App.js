@@ -260,12 +260,16 @@ app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
 // ----------------------------- Create a new order endpoint ----------------------------- //
 app.post('/createorder', async (req, res) => {
     try {
-        const { items, totalPrice, name } = req.body;
+        const { items, totalPrice, name, date,
+            status, massage} = req.body;
 
         const newOrder = new OrderInfo({
             name,
             items,
             totalPrice,
+            date,
+            status,
+            massage
         });
 
         await newOrder.save();
