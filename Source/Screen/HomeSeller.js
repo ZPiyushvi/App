@@ -22,15 +22,18 @@ import { useFocusEffect } from '@react-navigation/native';
 import Details_Seller from '../Components/Details_Seller';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import ToastNotification from '../Components/ToastNotification';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 export default function HomeSeller({ navigation }) {
 
     const [type, settype] = useState('');
     const { show, hide, RenderModel } = ModelScreen();
-    const [userData, setUserData] = useState([]);
+    // const [userData, setUserData] = useState([]);
     const [outlets, setOutlets] = useState([]);
     const [newItem, setNewItem] = useState();
     const [sortItem, setSortItem] = useState('AllItems');
+
+    const { userData, setUserData } = useContext(GlobalStateContext);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -47,7 +50,7 @@ export default function HomeSeller({ navigation }) {
         handleSaveMenu()
         // getData();
     }, [newItem]);
-    
+
     useEffect(() => {
         // handleSaveMenu()
         getData();
@@ -127,10 +130,10 @@ export default function HomeSeller({ navigation }) {
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};
         // if (Array.isArray(outlets[0])) {
-            newItem?.forEach(menu => {
-                console.log('title', menu.title)
-                initialDropdowns[menu.title] = true;
-            })
+        newItem?.forEach(menu => {
+            console.log('title', menu.title)
+            initialDropdowns[menu.title] = true;
+        })
         // };
         // setVisible(true);
         return initialDropdowns;
@@ -297,7 +300,7 @@ export default function HomeSeller({ navigation }) {
                     <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
                         <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
                             <Text className='font-semibold text-base' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>All Items </Text>
-                            <Text className='font-light text-sm' style={{ color:sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                            <Text className='font-light text-sm' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
                             {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => setSortItem('InStock')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>

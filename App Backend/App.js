@@ -278,7 +278,23 @@ app.post('/createorder', async (req, res) => {
 });
 
 
+app.post("/getorderseller", async (req, res) => {
+    const { contactinfo } = req.body;
+    if (!contactinfo) {
+        return res.status(400).send({ status: "error", data: "Contact info is required" });
+    }
 
+    try {
+        const orderSeller = await OrderInfo.find({ "items.userId": contactinfo });
+        if (orderSeller.length === 0) {
+            return res.status(400).send({ status: "error", data: "Seller not found" });
+        }
+        res.status(200).send({ status: 'ok', data: orderSeller });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
 
 
 

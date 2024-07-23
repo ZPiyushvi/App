@@ -76,14 +76,14 @@ import UpModelScreen from './UpModelScreen';
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 
 const Home = () => {
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
 
   // const { Openmodal, setOpenmodal, renderModal } = PopUpLang(); /// Error Why
   const navigation = useNavigation();
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { userData, setUserData, outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();

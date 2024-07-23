@@ -29,9 +29,9 @@ import { GlobalStateContext } from "../Context/GlobalStateContext";
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const LoginScreen = () => {
-  const route = useRoute();
-  const { userData } = route.params;
-  const { vegMode, setVegMode } = useContext(GlobalStateContext);
+  // const route = useRoute();
+  // const { userData } = route.params;
+  const { userData, vegMode, setVegMode } = useContext(GlobalStateContext);
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
