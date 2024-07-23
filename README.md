@@ -103,7 +103,20 @@ Navigate to the `android` directory and clean the project:
 cd android && ./gradlew clean
 ```
 
-#### 2. Create AAB File
+#### 2a. Create APK File
+
+To create an Android App Bundle (APK) file, run the following command in the root directory of your project:
+
+```bash
+cd android && ./gradlew assembleRelease
+```
+
+If already in android folder
+```bash
+./gradlew assembleRelease
+```
+
+#### 2b. Create AAB File
 
 To create an Android App Bundle (AAB) file, run the following command in the root directory of your project:
 
