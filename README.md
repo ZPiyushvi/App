@@ -1,27 +1,4 @@
-# App
-npx expo start
-npm error npm config set legacy-peer-deps true
-
 # IITOutlet
-
-Creating a first build for android
-
-1] Install the latest EAS CLI : npm install -g expo-cli // npm i eas-cli // mac : yarn global add eas-cli
-2] Log in to your Expo account : eas login  // eas whoami
-3] Configure the project : eas build:configure
-4] Create apk : eas build --platform android --profile preview
-
-
-    in local machine 
-
-    clean the project directory :=> cd android && ./gradlew clean
-    create abb file :=> npx react-native build-android --mode=release run this command in root directory 
-
-    clean the project directory :=> cd android && ./gradlew clean
-    create an apk file :=> cd android && ./gradlew assembleRelease
-
-
-5] Run a build aab file : eas build --platform android
 
 ## Introduction
 
@@ -64,7 +41,7 @@ yarn install
 Start the development server using Expo CLI:
 
 ```bash
-expo start
+npx expo start
 ```
 
 ## Building the App
@@ -137,6 +114,3 @@ npx react-native build-android --mode=release
 ## Conclusion
 
 You are now ready to develop and build your Expo React Native app. If you encounter any issues, please refer to the [Expo documentation](https://docs.expo.dev/) or open an issue on this repository.
-```
-
-Feel free to replace `your-username` and `your-repo-name` with your actual GitHub username and repository name. This guide provides comprehensive steps for setting up, running, and building your Expo React Native app.
