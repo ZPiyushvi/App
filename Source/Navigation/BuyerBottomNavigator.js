@@ -28,7 +28,7 @@ export default function BuyerBottomNavigator() {
   const { userRole } = useContext(GlobalStateContext);
   const [showToast, setShowToast] = useState(false);
 
-  
+
   const [isRoleDefined, setIsRoleDefined] = useState(false);
   // const [userRole, setUserRole] = useState(null);
 
@@ -127,8 +127,11 @@ export default function BuyerBottomNavigator() {
             <Tab.Screen name="Home" component={Home} />
         }
 
-        <Tab.Screen name="Likes" component={Likes} />
-
+        {
+          userRole == 'Seller' ?
+            null :
+            <Tab.Screen name="Likes" component={Likes} />
+        }
         {
           userRole == 'Seller' ?
             <Tab.Screen

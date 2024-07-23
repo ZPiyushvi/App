@@ -80,7 +80,6 @@ export default function HomeSeller({ navigation }) {
         try {
             const token = await AsyncStorage.getItem("token");
             console.log(token)
-            // http://192.168.1.3:5001/userdata
             const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
                 method: 'POST',
                 headers: {
