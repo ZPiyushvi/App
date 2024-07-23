@@ -23,8 +23,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
     status: true,
     category: '',
     image: '',
-    // rating: '',
-    // ratingcount: '',
+    rating: '',
+    ratingcount: '',
   });
 
   const fetchOutlets = async () => {
@@ -116,8 +116,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
       // category: newItem.category.join('_'),
       category: newItem.category,
       image: newItem.image,
-      // rating: 3,
-      // ratingcount: 7,
+      rating: newItem.rating || 3,
+      ratingcount: newItem.ratingcount || 7,
     };
 
     console.log('category', newItemObj.category)
@@ -144,7 +144,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
     });
 
     setEditingMenu(updatedMenu);
-    setNewItem({ id: null, item: '', price: '', type: '', description: '' });
+    setNewItem({ id: null, item: '', price: '', type: '', description: '', rating: '', ratingcount: '' });
   };
 
   const editItem = (item) => {

@@ -124,7 +124,7 @@ app.post('/addoutlet', async (req, res) => {
     } = req.body;
 
     if (!name || !shopkeeperName || !upiId || !token || !details || !image || !location || !type || featured === undefined
-        || !openingTime || !closingTime || !leaveDay || !offDays || !menuType
+        || !openingTime || !closingTime || !offDays || !menuType
     ) {
         return res.status(400).send({ status: "error", data: "All fields are required" });
     }

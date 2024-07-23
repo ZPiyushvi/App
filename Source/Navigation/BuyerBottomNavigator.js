@@ -24,21 +24,29 @@ import Error from '../Components/Error';
 const Tab = createBottomTabNavigator();
 export default function BuyerBottomNavigator() {
   const navigation = useNavigation();
-  const { userData } = useContext(GlobalStateContext);
+  // const { userData } = useContext(GlobalStateContext);
+  const { userRole } = useContext(GlobalStateContext);
   const [showToast, setShowToast] = useState(false);
 
   
   const [isRoleDefined, setIsRoleDefined] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  // const [userRole, setUserRole] = useState(null);
+
+  // useEffect(() => {
+  //   if (userData.role) {
+  //     setUserRole(userData.role);
+  //     setIsRoleDefined(true);
+  //   }
+  // }, [userData]);
 
   useEffect(() => {
-    if (userData.role) {
-      setUserRole(userData.role);
+    if (userRole) {
+      // setUserRole(userData.role);
       setIsRoleDefined(true);
     }
-  }, [userData]);
+  }, [userRole]);
 
-  console.log('userData', userData.role, userRole);
+  console.log('userData', userRole);
 
   if (!isRoleDefined) {
     return <Error />;

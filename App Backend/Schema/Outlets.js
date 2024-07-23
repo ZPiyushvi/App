@@ -39,7 +39,7 @@ const outletSchema = new mongoose.Schema({
     details: { type: String, required: true },
     openingTime: { type: String, required: true },
     closingTime: { type: String, required: true },
-    leaveDay: { type: String, required: true },
+    leaveDay: { type: String },
     userId: { type: String, ref: 'User', required: true },
 
     menu: { type: [menuCategorySchema] },
