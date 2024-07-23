@@ -49,7 +49,8 @@ const userSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-    massage: { type: String, required: true },
+    id: { type: String, required: true },
+    massage: { type: String },
     status: { type: String, required: true },
     date: { type: String, required: true },
     name: { type: userSchema, required: true },

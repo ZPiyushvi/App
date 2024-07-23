@@ -261,9 +261,10 @@ app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
 app.post('/createorder', async (req, res) => {
     try {
         const { items, totalPrice, name, date,
-            status, massage} = req.body;
+            status, massage, id} = req.body;
 
         const newOrder = new OrderInfo({
+            id,
             name,
             items,
             totalPrice,
