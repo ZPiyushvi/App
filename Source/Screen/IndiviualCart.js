@@ -281,14 +281,15 @@ const Cart = ({ route }) => {
               createOrder({
                 id: Date.now().toString(),
                 items: item,
-                // name: name,    
-                // storeDetails: storeDetails,
+                // name: userData,    
+                massage: massage,
                 totalPrice: item?.orders
                   ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
                   : 0,
                 // Noformatdate: today,
-                // date: getFormattedDate(today),
-                // userData: { name, username }
+                date: getFormattedDate(today),
+                status: 'Scheduled',
+                name: userData,
               })
               // createOrder({
               //   id: Date.now().toString(),

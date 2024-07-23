@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { API_BASE_URL, ORDERSSELLER_ENDPOINT } from '../Constants/Constants';
+import { API_BASE_URL, ORDERS_ENDPOINT, ORDERSSELLER_ENDPOINT } from '../Constants/Constants';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import ModelScreen from './ModelScreen';
@@ -15,6 +15,31 @@ export default function OrderHistorySeller() {
     const { show, hide, RenderModel } = ModelScreen();
     const [type, settype] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
+
+    async function createOrder(orderData) {
+        console.log('orderData', orderData)
+
+        try {
+            const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Order created successfully:', result.data);
+                return result.data;
+            } else {
+                console.error('Error creating order:', result.data);
+            }
+        } catch (error) {
+            console.error('Error creating order:', error);
+        }
+    }
 
     function GetOrdersSeller() {
         console.log(userData);
@@ -46,18 +71,48 @@ export default function OrderHistorySeller() {
         GetOrdersSeller();
     }, []);
 
-    const dialNumber = (number) => {
-        Linking.openURL(`tel:${number}`);
+    const dialNumber = (input) => {
+        if (input.includes('@gmail.c')) {
+            // Handle email
+            Linking.openURL(`mailto:${input}`);
+        } else {
+            // Handle phone number
+            Linking.openURL(`tel:${input}`);
+        }
     };
 
-    const OrderStatusDropdown = ({ item, onChangeStatus }) => {
+    const OrderStatusDropdown = ({ order, item, onChangeStatus }) => {
+        console.log('order', order)
         const [modalVisible, setModalVisible] = useState(false);
         const [selectedStatus, setSelectedStatus] = useState(item.status);
 
-        const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+        const statuses = [
+            // "Pending",
+            // "Processing",
+            // "Shipped",
+            // "Delivered",
+            
+            "Scheduled",
+            "Not Started",
+            "In Progress",
+            "On Hold",
+            "Delayed",
+            "Finished"
+        ];
 
         const handleStatusChange = (status) => {
             setSelectedStatus(status);
+            createOrder({
+                id: order.id,
+                items: order.items,
+                // name: userData,    
+                massage: order.massage,
+                totalPrice: order.totalPrice,
+                // Noformatdate: today,
+                date: order.date,
+                status: status,
+                name: order.name,
+            })
             // onChangeStatus(status);
             setModalVisible(false);
         };
@@ -155,7 +210,7 @@ export default function OrderHistorySeller() {
                             <View className='flex-row justify-between'>
                                 <View className='flex-row items-center'>
                                     <Text className='text-base font-black' style={{ color: Colors.dark.colors.textColor }}>Order Status: </Text>
-                                    <OrderStatusDropdown item={item} onChangeStatus={(status) => onChangeStatus(item.id, status)} />
+                                    <OrderStatusDropdown order={item} item={item} onChangeStatus={(status) => onChangeStatus(item.id, status)} />
                                     {/* onPress={() => { settype('status'), show() }} */}
                                 </View>
                                 <TouchableOpacity

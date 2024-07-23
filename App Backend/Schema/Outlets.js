@@ -45,4 +45,5 @@ const outletSchema = new mongoose.Schema({
     menu: { type: [menuCategorySchema] },
 });
 
+module.exports = mongoose.model('MenuInfo', itemSchema);
 module.exports = mongoose.model('OutletInfo', outletSchema);

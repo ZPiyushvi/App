@@ -260,27 +260,66 @@ app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
 // ----------------------------- Create a new order endpoint ----------------------------- //
 app.post('/createorder', async (req, res) => {
     try {
-        const { items, totalPrice, name, date,
-            status, massage, id} = req.body;
+        const { items, totalPrice, name, date, status, massage, id } = req.body;
 
-        const newOrder = new OrderInfo({
-            id,
-            name,
-            items,
-            totalPrice,
-            date,
-            status,
-            massage
-        });
+        let order = await OrderInfo.findOne({ id });
 
-        await newOrder.save();
+        if (order) {
+            // Update existing order
+            order.name = name;
+            order.items = items;
+            order.totalPrice = totalPrice;
+            order.date = date;
+            order.status = status;
+            order.massage = massage;
 
-        res.status(201).send({ status: "ok", data: newOrder });
+            await order.save();
+
+            res.status(200).send({ status: "ok", data: order });
+        } else {
+            // Create a new order
+            const newOrder = new OrderInfo({
+                id,
+                name,
+                items,
+                totalPrice,
+                date,
+                status,
+                massage
+            });
+
+            await newOrder.save();
+
+            res.status(201).send({ status: "ok", data: newOrder });
+        }
     } catch (err) {
         console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });
+// app.post('/createorder', async (req, res) => {
+//     try {
+//         const { items, totalPrice, name, date,
+//             status, massage, id} = req.body;
+
+//         const newOrder = new OrderInfo({
+//             id,
+//             name,
+//             items,
+//             totalPrice,
+//             date,
+//             status,
+//             massage
+//         });
+
+//         await newOrder.save();
+
+//         res.status(201).send({ status: "ok", data: newOrder });
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).send({ status: "error", data: "Internal server error" });
+//     }
+// });
 
 
 app.post("/getorderseller", async (req, res) => {
