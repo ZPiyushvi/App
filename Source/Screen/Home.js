@@ -235,7 +235,9 @@ const Home = () => {
             </View>
 
             {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
-            <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
+            {outletsNEW.length > 0 &&
+              <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
+            }
 
             <Titles title={"What’s on your heart?"} width={30} />
 

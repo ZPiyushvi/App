@@ -23,11 +23,8 @@ const User = mongoose.model("UserInfo");
 require('./Schema/Outlets');
 const OutletInfo = mongoose.model("OutletInfo");
 
-require('./Schema/Orders');
-const OrderInfo = mongoose.model("OrderInfo");
-
 require('./Schema/Order');
-const Order = mongoose.model("Order");
+const OrderInfo = mongoose.model("OrderInfo");
 
 app.get("/", (req, res) => {
     res.send({ status: "started" });
@@ -261,33 +258,11 @@ app.get('/alloutlets2', async (req, res) => { // Use GET instead of POST
   });
 
 // ----------------------------- Create a new order endpoint ----------------------------- //
-// app.post('/createorder', async (req, res) => {
-//     try {
-//         const { id, items, storeDetails, totalPrice, Noformatdate, date, userData } = req.body;
-
-//         const newOrder = new OrderInfo({
-//             id,
-//             items,
-//             storeDetails,
-//             totalPrice,
-//             Noformatdate,
-//             date,
-//             userData
-//         });
-
-//         await newOrder.save();
-
-//         res.status(201).send({ status: "ok", data: newOrder });
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send({ status: "error", data: "Internal server error" });
-//     }
-// });
 app.post('/createorder', async (req, res) => {
     try {
         const { items, totalPrice, name } = req.body;
 
-        const newOrder = new Order({
+        const newOrder = new OrderInfo({
             name,
             items,
             totalPrice,

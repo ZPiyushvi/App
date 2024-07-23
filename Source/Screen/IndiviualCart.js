@@ -333,7 +333,7 @@ const Cart = ({ route }) => {
           : 0,
         // Noformatdate: today,
         // date: getFormattedDate(today),
-        name : userData.contactinfo,
+        name : userData,
       })
       // createOrder({
       //   id: Date.now().toString(),
