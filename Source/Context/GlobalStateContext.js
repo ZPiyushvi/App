@@ -4,7 +4,7 @@ export const GlobalStateContext = createContext();
 import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
+import { ALLOUTLETS2_ENDPOINT, ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import { Alert } from 'react-native';
 import { useFonts } from 'expo-font';
 
@@ -57,9 +57,8 @@ export const GlobalStateProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      // console.log('data', data)
       setUserData(data.data)
-      // console.log("userData", "home", data.data)
+      console.log("userData", "home", data.data)
     } catch (error) {
       console.error('Error fetching datadata:', error);
     }
@@ -76,7 +75,7 @@ export const GlobalStateProvider = ({ children }) => {
   const getUserOutlets2 = async () => {
     try {
       // const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.138.12:5001/alloutlets2'); // Correct the URL
+      const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS2_ENDPOINT}`); // Correct the URL
 
       if (!response.ok) {
         console.log('Network response was not ok');
@@ -146,6 +145,11 @@ export const GlobalStateProvider = ({ children }) => {
   const getUserOutlets = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        return console.log('err [Token not found]');
+      }
+      
       const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
         method: 'POST',
         headers: {

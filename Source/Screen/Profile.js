@@ -1,4 +1,31 @@
 // make a profile stats screen on app
+// const { setCartItemsNEW,
+//   setUserRole,
+//   setVegMode,
+//   setCartItems,
+//   setCampusShops,
+//   setCampusMenu,
+//   setQuantity,
+//   setUpdatedCartWithDetails,
+//   setDateGroup,
+//   setHistory,
+//   setOutlets,
+//   setOutletsNEW,
+//   setUserData, fontFamilies, userData, vegMode } = useContext(GlobalStateContext);
+// setUserData([]);
+// setCartItemsNEW([]);
+// setUserRole(null);
+// setVegMode(false);
+// setCartItems([]);
+// setCampusShops([]);
+// setCampusMenu([]);
+// setQuantity(0);
+// setUpdatedCartWithDetails([]);
+// setDateGroup([]);
+// setHistory([]);
+// setOutlets([]);
+// setOutletsNEW([]);
+// setUserData([]);
 
 import {
   Alert,
@@ -32,7 +59,7 @@ const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 const LoginScreen = () => {
   // const route = useRoute();
   // const { userData } = route.params;
-  const { fontFamilies, userData, vegMode, setVegMode } = useContext(GlobalStateContext);
+  const { setUserData, fontFamilies, userData, vegMode, setVegMode } = useContext(GlobalStateContext);
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -80,6 +107,8 @@ const LoginScreen = () => {
         // AsyncStorage.setItem('token', "");
         // AsyncStorage.setItem('isLoggedIn', "");
         await AsyncStorage.clear();
+
+        // setUserData([])
       }
       navigation.navigate(screen)
     } catch (error) {

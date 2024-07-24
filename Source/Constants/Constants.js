@@ -15,5 +15,6 @@ export const ADDMENU_ENDPOINT = '/addmenu';
 export const USEROUTLETS_ENDPOINT = '/useroutlets';
 export const USERMENU_ENDPOINT = '/usermenu';
 export const ALLOUTLETS_ENDPOINT = '/alloutlets';
+export const ALLOUTLETS2_ENDPOINT = '/alloutlets2';
 export const ORDERS_ENDPOINT = '/createorder';
 export const ORDERSSELLER_ENDPOINT = '/getorderseller';

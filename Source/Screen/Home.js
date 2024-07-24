@@ -146,7 +146,6 @@ const Home = () => {
       }
 
       const data = await response.json();
-      console.log('data', data)
       setUserData(data.data)
       console.log("userData", "home", data.data)
     } catch (error) {

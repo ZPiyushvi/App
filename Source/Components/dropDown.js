@@ -34,17 +34,17 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                         // activeOpacity={1}
                         onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                     >
-                        {/* <View className='flex-row'>
-                        {
-                            item.type &&
-                            <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
-                        }
-                        {
-                            item.category.split('_').map((part, index) => (
-                                <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
-                            ))
-                        }
-                    </View> */}
+                        <View className='flex-row'>
+                            {
+                                item.type &&
+                                <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
+                            }
+                            {
+                                item.category.split('_').map((part, index) => (
+                                    <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
+                                ))
+                            }
+                        </View>
                         <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
                             {item.item}
                         </Text>
