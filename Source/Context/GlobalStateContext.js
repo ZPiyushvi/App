@@ -41,7 +41,14 @@ export const GlobalStateProvider = ({ children }) => {
       const token = await AsyncStorage.getItem("token");
       console.log(token)
       if (!token) {
-        return console.log('err [Token not found]');
+        console.log('err [Token not found in GlobalState]');
+        return (
+          <Error
+            heading="Network Error"
+            content={`We’re sorry for the inconvenience. It looks like your session has expired due to inactivity or other reasons. Our team is constantly working to improve your experience.
+            \n Please log out and log back in to refresh your session. Thank you for your understanding and patience!`}
+          />
+        );
       }
       // http://192.168.1.3:5001/userdata
       const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
@@ -53,14 +60,14 @@ export const GlobalStateProvider = ({ children }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
+        throw new Error('Network response /userdata in GlobalState was not ok ' + response.statusText);
       }
 
       const data = await response.json();
+      console.log("/userdata in GlobalState", data.data)
       setUserData(data.data)
-      console.log("userData", "home", data.data)
     } catch (error) {
-      console.error('Error fetching datadata:', error);
+      console.error('Error fetching /userdata in GlobalState:', error);
     }
   };
 
@@ -99,7 +106,7 @@ export const GlobalStateProvider = ({ children }) => {
     'AddFont_Regular': require('./../../assets/fonts/staticNunito/Nunito-Regular.ttf'),
     'AddFont_SemiBold': require('./../../assets/fonts/staticNunito/Nunito-SemiBold.ttf'),
   });
-  
+
   useEffect(() => {
     if (fontsLoaded) {
       setFontFamilies({
@@ -107,7 +114,7 @@ export const GlobalStateProvider = ({ children }) => {
         medium: 'AddFont_Medium',
         semiBold: 'AddFont_SemiBold',
         bold: 'AddFont_Bold',
-        none : 'none',
+        none: 'none',
       });
     }
   }, [fontsLoaded]);
@@ -149,7 +156,7 @@ export const GlobalStateProvider = ({ children }) => {
       if (!token) {
         return console.log('err [Token not found]');
       }
-      
+
       const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
         method: 'POST',
         headers: {

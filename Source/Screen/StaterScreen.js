@@ -185,7 +185,7 @@ export default function StaterScreen() {
 
   const onPress = () => {
     if (index === quotes.length - 1) {
-      navigation.navigate("RoleSelection");
+      navigation.navigate("LoginNavigationStack");
     } else {
       animatedValue.setValue(0);
       animatedValue2.setValue(0);

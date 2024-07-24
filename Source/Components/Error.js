@@ -5,7 +5,7 @@ import Colors from './Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Error() {
+export default function Error({ heading, content }) {
     const navigation = useNavigation();
 
     const handleLogOff = async (screen) => {
@@ -21,12 +21,12 @@ export default function Error() {
         <View className='justify-center w-full h-full p-3' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
             <Ionicons name="sad" size={54} color={Colors.dark.colors.mainTextColor} />
             <Text className='font-black text-2xl my-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-                Oops! Something Went Wrong
+                {heading ? heading : 'Oops! Something Went Wrong'}
             </Text>
             <Text className='font-semibold text-base mb-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-                We’re sorry for the inconvenience. It looks like we’re experiencing a temporary issue. Our team is working hard to fix it.
-                {`\n`}In the meantime, please be patient and try again later. If you’d like, you can log out and re-login to refresh your session.
-                {`\n`}Thank you for your understanding!
+                {content ? content : `We’re sorry for the inconvenience. It looks like we’re experiencing a temporary issue. Our team is working hard to fix it.
+            \nIn the meantime, please be patient and try again later. If you’d like, you can log out and re-login to refresh your session.
+            \nThank you for your understanding!`}
             </Text>
             <View className='mb-8'>
                 <TouchableOpacity className=' absolute py-2 px-6 rounded-md' style={{ backgroundColor: Colors.dark.colors.backGroundColor }} onPress={() => handleLogOff('LoginNavigationStack')}>

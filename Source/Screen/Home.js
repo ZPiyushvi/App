@@ -146,8 +146,24 @@ const Home = () => {
       }
 
       const data = await response.json();
+      console.log("/userdata in Home", data.data)
+      if (data.data == 'token expired') {
+        Alert.alert(
+          "Oops! Your Session Has Expired",
+          `We’re sorry for the inconvenience. It looks like your session has expired due to inactivity or other reasons`,
+          [
+            // {
+            //   text: "Close App",
+            //   onPress: () => BackHandler.exitApp(),
+            // },
+            {
+              text: "Login Back",
+              onPress: () => navigation.navigate('LoginNavigationStack'),
+            },
+          ]
+        );
+      }
       setUserData(data.data)
-      console.log("userData", "home", data.data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -290,7 +306,7 @@ const Home = () => {
                 Exciting Updates Coming Soon!
               </Text>
               <Text
-              className=' text-center'
+                className=' text-center'
                 style={{ fontFamily: fontFamilies.regular, fontSize: Size.size.submediumText, color: Colors.dark.colors.textColor }}
                 numberOfLines={3}
                 ellipsizeMode='tail'

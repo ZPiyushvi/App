@@ -68,10 +68,10 @@ export default function AppNavigator() {
 
     const LoginNavigationStack = () => (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="StaterScreen"
                 component={StaterScreen}
-            />
+            /> */}
             <Stack.Screen
                 name="RoleSelection"
                 component={RoleSelection}
@@ -84,7 +84,7 @@ export default function AppNavigator() {
                 name="LoginScreen"
                 component={LoginScreen}
             />
-            
+
             <Stack.Screen
                 name="BuyerNavigationStack"
                 options={{ headerShown: false }}
@@ -185,10 +185,17 @@ export default function AppNavigator() {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
+
                 {isLoggedInValue ? (
                     <Stack.Screen name='BuyerNavigationStack' component={BuyerNavigationStack} />
                 ) : (
-                    <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
+                    <>
+                        <Stack.Screen
+                            name="StaterScreen"
+                            component={StaterScreen}
+                        />
+                        <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
+                    </>
                 )}
             </Stack.Navigator>
         </NavigationContainer>
