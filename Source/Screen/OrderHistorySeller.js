@@ -67,9 +67,17 @@ export default function OrderHistorySeller() {
             .catch(error => console.log("err", error));
     }
 
+    // useEffect(() => {
+    //     GetOrdersSeller();
+    // }, []);
+    
     useEffect(() => {
-        GetOrdersSeller();
-    }, []);
+        const intervalId = setInterval(() => {
+            GetOrdersSeller();
+        }, 10000); // Poll every 10 seconds
+    
+        return () => clearInterval(intervalId); // Cleanup on unmount
+      }, []);
 
     const dialNumber = (input) => {
         if (input.includes('@gmail.c')) {
