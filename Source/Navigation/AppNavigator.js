@@ -1,7 +1,6 @@
 import React, { Profiler, useEffect, useState } from 'react'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from '../Screen/Login';
 import Details from '../Screen/Details';
 import { TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';

@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, Button, ScrollView, Image, StatusBar, Dimensions, FlatList } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, FlatList } from 'react-native';
 // import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Colors from '../Components/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import RenderStatusContent from '../Components/RenderStatusContent';
+import RenderCartContent from '../Components/RenderCartContent';
 import { availableStatus } from '../Data/availableStatus';
 
 export default function ModelScreen() {
@@ -75,7 +74,7 @@ export default function ModelScreen() {
                                     } else if (type.type === "status") {
                                         return <RenderStatusContent item={item} selected={selectedStatus} setSelected={setSelectedStatus} setVisible={setVisible} navigation={navigation} />;
                                     } else {
-                                        return <RenderCartItem item={item} setVisible={setVisible} navigation={navigation} />;
+                                        return <RenderCartContent item={item} setVisible={setVisible} navigation={navigation} />;
                                     }
                                 }}
                             />

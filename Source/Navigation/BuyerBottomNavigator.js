@@ -46,8 +46,6 @@ export default function BuyerBottomNavigator() {
     }
   }, [userRole]);
 
-  console.log('userData', userRole);
-
   if (!isRoleDefined) {
     return <Error />;
   }

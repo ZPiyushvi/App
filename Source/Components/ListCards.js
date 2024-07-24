@@ -329,7 +329,7 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
                 data={item.availability} //campusShops
                 renderItem={({ item }) => <ListCard_Z item={item} navigationMenu={true} hide_Model={hide_Model} />}
                 // renderItem={({ item }) => {console.log(item.location)}}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => `${index}_${item.name}`}
             />
         </>
     );

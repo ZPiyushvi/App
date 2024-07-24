@@ -150,11 +150,11 @@ const DetailsScreen = ({ route }) => {
                                 item.type &&
                                 <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
                             }
-                            {
+                            {/* {
                                 item.category.split('_').map((part, index) => (
-                                    <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
+                                    <FoodTypeIcon key={`${index}_${part}`} type={part} size={15} padding={3} textShow={false} />
                                 ))
-                            }
+                            } */}
                         </View>
                         <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
                             {item.item}
@@ -243,7 +243,7 @@ const DetailsScreen = ({ route }) => {
 
         return (
             <TouchableOpacity
-                key={index}
+                key={`${index}_${typetitle}`}
                 // style={{ padding: 12 }}
                 className=' px-4'
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
@@ -264,7 +264,7 @@ const DetailsScreen = ({ route }) => {
 
     const renderDropdown = (menu) => (
         <>
-            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
+            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
                 <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
                     <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
@@ -273,7 +273,7 @@ const DetailsScreen = ({ route }) => {
                     <FlatList
                         data={menu.items}
                         renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
-                        keyExtractor={item => item.id}
+                        keyExtractor={(item, index) => `${index}_${item.id}`}
                     />
                 )}
             </View>
@@ -300,7 +300,7 @@ const DetailsScreen = ({ route }) => {
     const navigation = useNavigation();
 
     return (
-        <View key={CartItems.storeName} style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
             <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
             {!visible && <>
@@ -364,7 +364,7 @@ const DetailsScreen = ({ route }) => {
                     data={filteredMenuItems}
                     renderItem={({ item }) => renderDropdown(item)}
                     // renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, menuItems)}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(item, index) => `${index}_${item.title}`}
                     ListHeaderComponent={
                         <>
                             <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -477,7 +477,7 @@ const DetailsScreen = ({ route }) => {
                             <FlatList
                                 data={Data.menu}
                                 renderItem={({ item, index }) => renderMenuScroll({ typetitle: item.title, index })}
-                                keyExtractor={(item, index) => index.toString()}
+                                keyExtractor={(item, index) => `${index}_${item.title}`}
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
                             />
@@ -486,7 +486,7 @@ const DetailsScreen = ({ route }) => {
                             // console.log('item', item),
                             item.id === Data.id ? ( //dataWithoutMenu.id
                                 <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
-                                    <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={index}>
+                                    <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={`${index}_${item.id}`}>
                                         <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
                                             {item?.orders.reduce((acc, order) => acc + order.quantity, 0)}
                                             {item?.orders.reduce((acc, order) => acc + order.quantity, 0) === 1 ? ' item' : ' items'} added

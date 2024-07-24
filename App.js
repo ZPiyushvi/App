@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { GlobalStateProvider } from "./Source/Context/GlobalStateContext";
 import AppNavigator from './Source/Navigation/AppNavigator';
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
-import Login from './Source/Screen/Login';
 
 export default function App() {
   return (
