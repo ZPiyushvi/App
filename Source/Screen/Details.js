@@ -17,6 +17,7 @@ import { createShimmerPlaceHolder } from 'expo-shimmer-placeholder'
 import { loadingScreenTxt } from '../Data/loadingScreenTxt';
 import useIncrementHandler, { handleIncrement } from '../Components/handleIncrement';
 import { dropDown } from '../Components/dropDown';
+import TextStyles from '../Style/TextStyles';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
@@ -135,7 +136,7 @@ const DetailsScreen = ({ route }) => {
         delete dataWithoutMenu.menu;
         return (
             <>
-                {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center text-5xl font-black ' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>}
+                {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center' style={[fontstyles.h1, { fontSize: 70, marginTop: -30, color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>}
                 <View
                     // style={{ backgroundColor: 'rgba(355, 355, 355, 0.)' }}
                     className={`flex-row p-3 ${item.status ? 'pb-6' : 'opacity-40'}`}
@@ -156,15 +157,18 @@ const DetailsScreen = ({ route }) => {
                                 ))
                             } */}
                         </View>
-                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.blackh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
                             {item.item}
                         </Text>
 
-                        <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
+                        <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>₹{item.price}</Text>
                         <View className=' flex-row py-2'>
                             {item.rating &&
                                 <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />}
-                            <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                            <View className=' flex-row items-end'>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>  {item.ratingcount}</Text>
+                                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}> ratings</Text>
+                            </View>
                         </View>
 
                         <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
@@ -221,7 +225,7 @@ const DetailsScreen = ({ route }) => {
                                     ) : (
                                         <>
                                             <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
-                                                <Text className='uppercase text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                                                <Text style={[fontstyles.number, { fontSize:16, color: Colors.dark.colors.diffrentColorGreen }]}>ADD</Text>
                                             </TouchableOpacity>
                                             <Text className='top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
                                         </>
@@ -249,12 +253,9 @@ const DetailsScreen = ({ route }) => {
                 onPress={() => setSelectedIndex(index)} // Update the selected index on press
             >
                 <Text
-                    style={{
-                        // fontWeight: 'bold',
-                        // fontSize: 21,
-                        color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
-                    }}
-                    className='text-base font-semibold'
+                    style={[fontstyles.h3, {
+                        marginTop: -8, color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
+                    }]}
                 >
                     {typetitle}
                 </Text>
@@ -266,7 +267,7 @@ const DetailsScreen = ({ route }) => {
         <>
             <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
                 <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                    <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                    <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
                 </TouchableOpacity>
                 {openDropdowns[menu.title] && (
@@ -298,6 +299,7 @@ const DetailsScreen = ({ route }) => {
     };
 
     const navigation = useNavigation();
+    const fontstyles = TextStyles();
 
     return (
         <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -316,7 +318,7 @@ const DetailsScreen = ({ route }) => {
                         <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className=' h-3 mt-3 w-full' />
                         <ShimmerPlaceholder shimmerColors={shimmerColors} visible={visible} className='mt-5 mb-3 rounded-md overflow-hidden justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.070, width: Dimensions.get('window').width * 0.95 }} />
                     </View>
-                    <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+                    <Text numberOfLines={1} ellipsizeMode='clip' style={[{ color: Colors.dark.colors.textColor }]}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
 
                     <View className=' mt-3 px-2 flex-row'>
                         <View className='w-6/12 h-full overflow-hidden'>
@@ -368,38 +370,40 @@ const DetailsScreen = ({ route }) => {
                     ListHeaderComponent={
                         <>
                             <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-                                <Text className='text-3xl font-black mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.name}</Text>
+                                <Text className='mb-1' style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>{Data.name}</Text>
                                 <View className='flex-row justify-center items-center mb-3'>
                                     <View className='flex-row justify-center items-center mr-1'>
                                         {Data.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {Data.type}</Text>
+                                        <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {Data.type}</Text>
                                     </View>
                                     {Data.menuType.map((item, index) => (
                                         <View className=' flex-row items-center'>
                                             {/* {console.log(index)} */}
                                             <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                                            <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                            <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {item} </Text>
                                         </View>
                                     ))}
                                 </View>
 
-                                <View className='flex-row justify-center items-center gap-1 mb-3'>
-                                    <View className='flex-row justify-center items-center rounded-lg px-1' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
-                                        <Text className='font-semibold text-base mr-1' style={{ color: Colors.dark.colors.backGroundColor }}>{Data.rating}</Text>
+                                <View className='flex-row justify-center items-center gap-2 mb-3'>
+                                    <View className='flex-row justify-center items-center rounded-lg py-1 px-2' style={{ paddingVertical: 2, backgroundColor: Colors.dark.colors.diffrentColorGreen }}>
+                                        <Text className='mr-1' style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>{Data.rating.toFixed(1)}</Text>
                                         <Ionicons name="star" color={Colors.dark.colors.backGroundColor} />
                                     </View>
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor, textDecorationLine: 'underline', textDecorationStyle: 'dotted' }}> {Data.ratingcount} ratings</Text>
+                                    <Text style={[fontstyles.number, {
+                                        color: Colors.dark.colors.mainTextColor, borderBottomWidth: 1, borderBottomColor: Colors.dark.colors.mainTextColor, borderStyle: 'dotted',
+                                    }]}> {Data.ratingcount} ratings </Text>
                                 </View>
 
                                 <View className='flex-row justify-center items-center rounded-full py-1 px-2 mb-5' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}>
                                     <Ionicons name="navigate-circle" size={24} color={Colors.dark.colors.diffrentColorPerpleBG} />
-                                    <Text className='font-semibold text-base mx-1' style={{ color: Colors.dark.colors.mainTextColor }}>{Data.location} </Text>
+                                    <Text className='mx-1' style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>{Data.location} </Text>
                                 </View>
                                 <LinearGradient
                                     start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
                                     colors={[Shopstatus.color[0], Shopstatus.color[1]]}
                                     className=' rounded-2xl px-5 justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: Dimensions.get('window').height * 0.13 }}>
-                                    <Text className='font-semibold text-base text-center' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    <Text className=' text-center' style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                                         {Shopstatus.text}
                                     </Text>
                                 </LinearGradient>
@@ -421,7 +425,7 @@ const DetailsScreen = ({ route }) => {
                                     </TouchableOpacity>}
                                 </View>
                                 <View className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: Colors.dark.colors.textColor, borderWidth: 1 }}>
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Filter </Text>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>Filter </Text>
                                     <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} />
                                 </View>
                             </View>
@@ -430,27 +434,27 @@ const DetailsScreen = ({ route }) => {
                     ListFooterComponent={
                         <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                             <View className='gap-3' >
-                                <Text className='font-black text-lg -mb-1' style={{ color: Colors.dark.colors.textColor }}>
+                                <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>
                                     Disclaimer:
                                 </Text>
-                                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                     Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
                                 </Text>
-                                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                     Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
                                 </Text>
-                                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                     The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
                                 </Text>
-                                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                     An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
                                 </Text>
                             </View>
                             <View className='mt-7' style={{ height: 1, backgroundColor: Colors.dark.colors.textColor }} />
-                            <TouchableOpacity className='flex-row justify-between items-center py-3' onPress={show}>
+                            <TouchableOpacity className='flex-row justify-between items-center py-3'>
                                 <View className='flex-row items-center'>
                                     <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
-                                    <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
+                                    <Text style={[fontstyles.h4, { color: 'red' }]}> Report an issue with the menu</Text>
                                 </View>
                                 <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
                             </TouchableOpacity>
@@ -462,7 +466,7 @@ const DetailsScreen = ({ route }) => {
                                     className='w-14 h-11'
                                     alt="Logo"
                                 />
-                                <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>Lic. No. 11521055001181</Text>
                             </View>
                         </View>
                     }
@@ -487,12 +491,12 @@ const DetailsScreen = ({ route }) => {
                             item.id === Data.id ? ( //dataWithoutMenu.id
                                 <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
                                     <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={`${index}_${item.id}`}>
-                                        <Text className='font-semibold text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                        <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>
                                             {item?.orders.reduce((acc, order) => acc + order.quantity, 0)}
                                             {item?.orders.reduce((acc, order) => acc + order.quantity, 0) === 1 ? ' item' : ' items'} added
                                         </Text>
                                         <View className=' flex-row items-center'>
-                                            <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>CheckOut </Text>
+                                            <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>CheckOut </Text>
                                             <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
                                                 <Ionicons color={Colors.dark.colors.mainTextColor} name={'caret-forward-circle'} size={22} />
                                             </TouchableOpacity>

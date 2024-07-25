@@ -7,6 +7,9 @@ import { getUserOutlets } from '../Components/fetchYourOutlet';
 import Details_Seller from '../Components/Details_Seller';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import TextStyles from '../Style/TextStyles';
+import TruncatedTextComponent from '../Components/TruncatedTextComponent';
+import { StatusBar } from 'react-native';
 
 const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
@@ -204,6 +207,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
     });
   };
 
+  const fontstyles = TextStyles();
   return (
     <>
       <ScrollView
@@ -212,12 +216,13 @@ const ManageCategoriesScreen = ({ navigation }) => {
         style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
         keyboardShouldPersistTaps='handled'
       >
+<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
         <View className='mt-3 rounded-xl'>
           <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
             <View className='items-center flex-row mb-3'>
               <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Manage Categories</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Manage Categories</Text>
             </View>
             <View className='my-1'>
 
@@ -230,8 +235,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
                 }}
               >
                 <Text
-                  className='font-black flex-row justify-between text-base rounded-md'
-                  style={{ color: Colors.dark.colors.mainTextColor }}
+                  className='flex-row justify-between rounded-md'
+                  style={[fontstyles.h3, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}
                 >
                   {/* {selectedCategory} */}
                   {selectedCategory?.title ? selectedCategory.title : 'Select Item Categories'}
@@ -267,17 +272,16 @@ const ManageCategoriesScreen = ({ navigation }) => {
                               toggleDropdown()
                             }}
                           >
-                            <Text className='text-base font-black'>Select</Text>
+                            <Text style={[fontstyles.h4, { color: Colors.dark.colors.backGroundColor }]}>Select</Text>
                           </TouchableOpacity>
 
-                          <TouchableOpacity className=' justify-center items-center px-1 rounded-md'
-                            style={{ backgroundColor: Colors.dark.colors.diffrentColorRed }}
+                          <TouchableOpacity className=' bg-red-200 justify-center items-center px-2 rounded-md'
                             onPress={() => {
                               handleMenuTypeToggle(item);
                               toggleDropdown()
                             }}
                           >
-                            <Ionicons name="trash-bin" size={24} />
+                            <Ionicons color={Colors.dark.colors.diffrentColorRed} name="trash-bin" size={18} />
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -293,11 +297,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   />
 
                   <TouchableOpacity
-                    className='p-2 m-2 items-center rounded-md'
+                    className='p-3 m-2 items-center rounded-md'
                     style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}
                     onPress={addCategory}
                   >
-                    <Text className=' font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Add Category</Text>
+                    <Text style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Add Category</Text>
                   </TouchableOpacity>
                   {/* <TouchableOpacity
                   className='p-2 mb-2 mx-2 items-center rounded-md'
@@ -316,7 +320,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
               <View>
                 <View className='items-center flex-row my-3'>
                   <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-                  <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Your Cusines in {selectedCategory?.title}</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Your Cusines in {selectedCategory?.title}</Text>
                 </View>
 
                 <FlatList
@@ -337,35 +341,33 @@ const ManageCategoriesScreen = ({ navigation }) => {
                           },
                         }}
                         defaultSource={require('./../../assets/favicon.png')}
-                        className='w-12 h-12 rounded-full mr-2'
+                        className='w-12 h-12 rounded-full mr-1'
                         alt="Logo"
                       />
                       <View>
-                        {console.log(item.image)}
-                        <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>
-                          {/* {TruncatedTextComponent(item, 13)} */}
-                          {item.item}
+                        <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]} numberOfLines={1} ellipsizeMode='tail'>
+                          {TruncatedTextComponent(item.item, 11)}
                         </Text>
                         <TouchableOpacity onPress={() => navToDetails(mockCampusShops.find(shop => shop.name === storeName))} className='flex-row items-center'>
-                          <Text style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-sm underline'>
-                            {item.type}
+                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline'>
+                            {item.category}
                           </Text>
                           {/* <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} /> */}
                         </TouchableOpacity>
                       </View>
                       <View className='flex-row gap-x-2 absolute right-2 top-2 h-full'>
                         <TouchableOpacity
-                          className='justify-center items-center rounded-lg'
-                          style={{ width: Dimensions.get('window').width * 0.3, backgroundColor: Colors.dark.colors.diffrentColorGreen }}
+                          className='justify-center items-center rounded-lg px-3'
+                          style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}
                           onPress={() => editItem(item)}
                         >
-                          <Text className='font-normal text-sm'>
-                            Edit
+                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.backGroundColor }]}>
+                          {item.type}
                           </Text>
 
                           <View className='flex-row items-center justify-center'>
-                            <Text className='font-black text-base'>
-                              {item.type}
+                            <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
+                              Edit
                               {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '} */}
                               {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} */}
                             </Text>
@@ -375,20 +377,20 @@ const ManageCategoriesScreen = ({ navigation }) => {
                               size={16}
                             // color={Colors.dark.colors.mainTextColor}
                             />
-                            <Text className='font-black text-base'>
+                            <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
                               ₹{item.price}
                             </Text>
                           </View>
 
                         </TouchableOpacity>
                         {/* <View className='items-center justify-center h-full'> */}
-                        <TouchableOpacity className=' justify-center items-center px-1 rounded-md'
-                          style={{ backgroundColor: Colors.dark.colors.diffrentColorRed }}
+                        <TouchableOpacity className=' bg-red-200 justify-center items-center px-2 rounded-lg'
+                          
                         // onPress={() => {
                         //   handleMenuTypeToggle(item);
                         // }}
                         >
-                          <Ionicons name="trash-bin" size={24} />
+                          <Ionicons color={ Colors.dark.colors.diffrentColorRed } name="trash-bin-outline" size={20} />
                         </TouchableOpacity>
                         {/* </View> */}
                       </View>
@@ -412,12 +414,12 @@ const ManageCategoriesScreen = ({ navigation }) => {
             <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
               <View className='items-center flex-row mt-1'>
                 <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
-                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>Edit Cusines in {selectedCategory?.title}</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Edit Cusines in {selectedCategory?.title}</Text>
               </View>
 
               <View className='mt-2 flex-row items-center justify-between'>
                 <View className=' w-[47%]'>
-                  <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Item Name</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Item Name</Text>
                   <TextInput
                     value={newItem.item}
                     style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -428,7 +430,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   />
                 </View>
                 <View className=' w-[47%]'>
-                  <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Item Price</Text>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Item Price</Text>
                   <TextInput
                     value={newItem.price}
                     style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
@@ -442,7 +444,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
               </View>
 
               <View className='mt-1 w-full'>
-                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Item Description</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Item Description</Text>
                 <TextInput
                   style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
                   placeholderTextColor={Colors.dark.colors.textColor}
@@ -454,7 +456,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                 />
               </View>
               <View className='mt-1 w-full'>
-                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Item Image</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Item Image</Text>
                 <TextInput
                   style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
                   placeholderTextColor={Colors.dark.colors.textColor}
@@ -466,7 +468,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                 />
               </View>
               <View className='mt-1 w-full'>
-                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Item Category</Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Item Category</Text>
                 <TextInput
                   style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}
                   placeholderTextColor={Colors.dark.colors.textColor}
@@ -560,21 +562,21 @@ const ManageCategoriesScreen = ({ navigation }) => {
                         style={{ backgroundColor: newItem.type === 'PureVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
                         className=' w-[35%] p-4 rounded-l-lg items-center'
                       >
-                        <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Pure Veg</Text>
+                        <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Pure Veg</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChange('type', 'Veg')}
                         style={{ backgroundColor: newItem.type === 'Veg' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
                         className=' w-[30%] p-4 items-center'
                       >
-                        <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Veg</Text>
+                        <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Veg</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => handleChange('type', 'NonVeg')}
                         style={{ backgroundColor: newItem.type === 'NonVeg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
                         className=' w-[35%] p-4 rounded-r-lg items-center'
                       >
-                        <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Non Veg</Text>
+                        <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Non Veg</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -588,11 +590,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
   /> */}
 
               <TouchableOpacity
-                className='p-2 items-center rounded-md'
+                className='p-3 items-center rounded-md'
                 style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}
                 onPress={addItem}
               >
-                <Text className=' font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>{newItem.id ? "Update Item" : "Add Item"}</Text>
+                <Text style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>{newItem.id ? "Update Item" : "Add Item"}</Text>
               </TouchableOpacity>
 
               {/* <Button title= onPress={addItem} /> */}
@@ -605,7 +607,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
           <TouchableOpacity onPress={handleSaveMenu}
             className=' w-full my-3 rounded-xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
             <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} className='items-center justify-center p-3' >
-              <Text numberOfLines={1} ellipsizeMode='tail' className=' font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>SAVE</Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.blackh2, { paddingBottom: 4, color: Colors.dark.colors.mainTextColor }]}>SAVE</Text>
             </View>
           </TouchableOpacity>
         </View>

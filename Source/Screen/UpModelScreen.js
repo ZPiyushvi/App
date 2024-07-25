@@ -11,6 +11,7 @@ import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { mockCampusShops } from '../Data/mockCampusShops';
 import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TextStyles from '../Style/TextStyles';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -30,7 +31,7 @@ export default function ModelScreen() {
     const { CartItems, campusMenu, campusShops, outletsNEW, updatedCartWithDetails } = useContext(GlobalStateContext);
 
     const show_UpModelScreen = () => setVisible(true);
-    const hide_UpModelScreen = () => {setValue(''), setVisible(false)};
+    const hide_UpModelScreen = () => { setValue(''), setVisible(false) };
 
     // Load searches from AsyncStorage when the component mounts
     useEffect(() => {
@@ -151,6 +152,8 @@ export default function ModelScreen() {
         setFilteredData(filtered);
     };
 
+    const fontstyles = TextStyles();
+
     const renderMenuScroll = ({ item, index }) => {
         const isSelected = selectedCategory === index; // Check if the current item is selected
 
@@ -162,9 +165,9 @@ export default function ModelScreen() {
                 onPress={() => handleMenuPress(index)} // Update the selected index on press
             >
                 <Text
-                    style={{
+                    style={[fontstyles.h3, {
                         color: isSelected ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.textColor
-                    }}
+                    }]}
                     className='text-lg font-semibold'
                 >
                     {item}
@@ -266,30 +269,32 @@ export default function ModelScreen() {
                                             showsHorizontalScrollIndicator={false}
                                         />
                                     </View>
-                                    <View className=' px-3'>
-                                        <TitlesLeft title="Your Search" height={2} color={Colors.dark.colors.mainTextColor} />
+                                    <View className=' px-2 overflow-hidden'>
+                                        <View className=' pr-2 overflow-hidden'>
+                                            <TitlesLeft title="Your Search" height={2} fontstyles={fontstyles} color={Colors.dark.colors.mainTextColor} />
+                                        </View>
                                         <View className='flex-row py-3 w-full gap-3' style={{ flexWrap: 'wrap' }}>
                                             {recentSearches.map((search, index) => (
-                                                <TouchableOpacity 
-                                                onPress={() => {
-                                                    Keyboard.dismiss();
-                                                    if (selectedCategory == 1) {
-                                                        hide_UpModelScreen();
-                                                        // storeYourSerchers(item.name);
-                                                        // console.log(search);
-                                                        // mockCampusShops.find(shop => shop.name === search)
-                                                        navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === search) });
-                                                    } else {
-                                                        handleSearch(search);
-                                                        // storeYourSerchers(item.name);
-                                                        setShowingOptions(false);
-                                                    }
-                                                }}
-                                                // onPress={() => { handleSearch(search), setShowingOptions(false) }} 
-                                                key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        Keyboard.dismiss();
+                                                        if (selectedCategory == 1) {
+                                                            hide_UpModelScreen();
+                                                            // storeYourSerchers(item.name);
+                                                            // console.log(search);
+                                                            // mockCampusShops.find(shop => shop.name === search)
+                                                            navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === search) });
+                                                        } else {
+                                                            handleSearch(search);
+                                                            // storeYourSerchers(item.name);
+                                                            setShowingOptions(false);
+                                                        }
+                                                    }}
+                                                    // onPress={() => { handleSearch(search), setShowingOptions(false) }} 
+                                                    key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
                                                 >
                                                     <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}> {search}  </Text>
+                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, {color: Colors.dark.colors.textColor}]} className='justify-center'> {search}  </Text>
                                                 </TouchableOpacity>
                                             ))}
                                         </View>
@@ -346,7 +351,7 @@ export default function ModelScreen() {
                                                     className='w-12 h-12 rounded-full mr-2'
                                                     alt="Logo"
                                                 />
-                                                <Text className='text-gray-50 justify-center text-lg font-semibold'>{item.name}</Text>
+                                                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, {color: Colors.dark.colors.mainTextColor}]} className='justify-center'>{item.name}</Text>
                                             </TouchableOpacity>
                                         )}
                                     />
@@ -362,16 +367,17 @@ export default function ModelScreen() {
                                     keyExtractor={(item, index) => index.toString()}
                                     ListHeaderComponent={
                                         <>
-                                            <View className=' px-3'>
-                                                <TitlesLeft title="Popular Options" height={2} color={Colors.dark.colors.mainTextColor} />
+                                            <View className=' pr-2 overflow-hidden'>
+                                                <TitlesLeft title="Popular Options" height={2} fontstyles={fontstyles} color={Colors.dark.colors.mainTextColor} />
                                             </View>
                                             {/* featuredMenu featuredShop */}
                                             <PopularMenuContainor data={selectedCategory == 0 ? featuredMenu : featuredShop} />
                                             {
                                                 value.length > buffer ?
-                                                    <View className=' px-3'>
-                                                        <TitlesLeft title="Search Results" height={2} color={Colors.dark.colors.mainTextColor} />
+                                                    <View className=' pr-2 overflow-hidden'>
+                                                        <TitlesLeft title="Search Results" height={2} fontstyles={fontstyles} color={Colors.dark.colors.mainTextColor} />
                                                     </View>
+
                                                     : null
                                             }
                                         </>

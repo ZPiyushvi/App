@@ -3,13 +3,15 @@ import React from 'react'
 import Colors from './Colors'
 import TruncatedTextComponent from './TruncatedTextComponent'
 import FoodIcon from './FoodIcon'
+import TextStyles from '../Style/TextStyles'
 // import { useNavigation } from '@react-navigation/native'
 
 const SlideItems = ({ item, navigation }) => {
+    const fontstyles = TextStyles();
     // const navigation = useNavigation();
 
     return (
-        <View className=' p-2 mt-5' style={styles.popularFeatureBodyContainer}>
+        <View className=' p-2' style={styles.popularFeatureBodyContainer}>
             <View style={styles.popularFeatureSplitContainer}>
                 <Image
                     source={{
@@ -24,17 +26,17 @@ const SlideItems = ({ item, navigation }) => {
                     alt="Logo"
                 />
                 <View style={styles.popularFeaturesContent}>
-                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.textColor }}>{item.menuType[0]}</Text>
-                    <Text  numberOfLines={1} ellipsizeMode='tail' className='font-normal text-xl -mt-1' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name}</Text>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.menuType[0]}</Text>
+                    <Text  numberOfLines={1} ellipsizeMode='tail' className=' -mt-1' style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>{item.name}</Text>
                     <TouchableOpacity
-                        className='justify-center items-center rounded-md mt-2 px-3 py-1'
+                        className='justify-center items-center rounded-md mt-1 px-3 py-1'
                         style={{
                             backgroundColor: Colors.dark.colors.diffrentColorOrange,
                             alignSelf: 'flex-start',
                         }}
                         onPress={() => navigation.navigate("Details", { Data: item })}
                     >
-                        <Text className='text-base font-bold' style={{color:Colors.dark.colors.mainTextColor}}>Buy now</Text>
+                        <Text style={[fontstyles.number, {color:Colors.dark.colors.mainTextColor}]}>Buy now</Text>
                     </TouchableOpacity>
                 </View>
 

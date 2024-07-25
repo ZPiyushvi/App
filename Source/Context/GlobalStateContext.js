@@ -101,20 +101,37 @@ export const GlobalStateProvider = ({ children }) => {
   const [fontFamilies, setFontFamilies] = useState({});
 
   const [fontsLoaded] = useFonts({
-    'AddFont_Bold': require('./../../assets/fonts/staticNunito/Nunito-Bold.ttf'),
-    'AddFont_Medium': require('./../../assets/fonts/staticNunito/Nunito-Medium.ttf'),
-    'AddFont_Regular': require('./../../assets/fonts/staticNunito/Nunito-Regular.ttf'),
-    'AddFont_SemiBold': require('./../../assets/fonts/staticNunito/Nunito-SemiBold.ttf'),
+    'Zain_Black': require('./../../assets/fonts/Zain/Zain-Black.ttf'),
+    'Zain_ExtraBold': require('./../../assets/fonts/Zain/Zain-ExtraBold.ttf'),
+    'Zain_Bold': require('./../../assets/fonts/Zain/Zain-Bold.ttf'),
+    'Zain_Light': require('./../../assets/fonts/Zain/Zain-Light.ttf'),
+    'Zain_ExtraLight': require('./../../assets/fonts/Zain/Zain-ExtraLight.ttf'),
+    'Zain_Regular': require('./../../assets/fonts/Zain/Zain-Regular.ttf'),
+
+    'Nunito_Black': require('./../../assets/fonts/Montserrat/static/Montserrat-Black.ttf'),
+    'Nunito_ExtraBold': require('./../../assets/fonts/Montserrat/static/Montserrat-ExtraBold.ttf'),
+    'Nunito_Bold': require('./../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf'),
+    'Nunito_Light': require('./../../assets/fonts/Montserrat/static/Montserrat-Light.ttf'),
+    'Nunito_ExtraLight': require('./../../assets/fonts/Montserrat/static/Montserrat-ExtraLight.ttf'),
+    'Nunito_Medium': require('./../../assets/fonts/Montserrat/static/Montserrat-Medium.ttf'),
   });
 
   useEffect(() => {
     if (fontsLoaded) {
       setFontFamilies({
-        regular: 'AddFont_Regular',
-        medium: 'AddFont_Medium',
-        semiBold: 'AddFont_SemiBold',
-        bold: 'AddFont_Bold',
-        none: 'none',
+        Zain_black: 'Zain_Black',
+        Zain_extrabold: 'Zain_ExtraBold',
+        Zain_bold: 'Zain_Bold',
+        Zain_regular: 'Zain_Regular',
+        Zain_light: 'Zain_Light',
+        Zain_extralight: 'Zain_ExtraLight',
+
+        Nunito_black: 'Nunito_Black',
+        Nunito_extrabold: 'Nunito_ExtraBold',
+        Nunito_bold: 'Nunito_Bold',
+        Nunito_medium: 'Nunito_Medium',
+        Nunito_light: 'Nunito_Light',
+        Nunito_extralight: 'Nunito_ExtraLight',
       });
     }
   }, [fontsLoaded]);

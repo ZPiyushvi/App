@@ -7,10 +7,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import Icons from '../Components/Icons'
 import { GlobalStateContext } from '../Context/GlobalStateContext'
 import { mockCampusShops } from '../Data/mockCampusShops'
+import TextStyles from '../Style/TextStyles'
 const { StarIcon, CarIcon } = Icons();
+
 
 const ListCard_Self2 = ({ item, onShowDetails, showDetails }) => {
   const navigation = useNavigation();
+
   const navToDetails = (item) => {
     navigation.navigate("Details", { Data: item });
   };
@@ -44,9 +47,9 @@ const ListCard_Self2 = ({ item, onShowDetails, showDetails }) => {
               <View className='absolute bottom-2 right-2'>
                 <View className='flex-row justify-center items-center'>
                   {
-                    item.storeDetails.type === "Veg" &&
+                    item.storeDetails.type === "PureVeg" &&
                     <>
-                      <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
+                      <Text style={[{ color: '#00e676' }]} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
                       <Ionicons name="leaf" size={16} color={'#00e676'} />
                     </>
                   }
@@ -191,7 +194,8 @@ const ListCard_Self3 = ({ item }) => {
   );
 }
 
-const ListCard_Self1 = ({ item }) => {
+const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
+  
   const navigation = useNavigation();
   const navToDetails = (item) => {
     navigation.navigate("Details", { Data: item });
@@ -199,7 +203,7 @@ const ListCard_Self1 = ({ item }) => {
   const [showDetails, setShowDetails] = useState(null);
 
   return (
-    <TouchableOpacity onPress={() => { navToDetails(mockCampusShops.find(shop => shop.name === item.storeDetails.name)) }}>
+    <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.name === item.storeDetails.name)) }}>
       <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
         <LinearGradient
           start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
@@ -228,46 +232,43 @@ const ListCard_Self1 = ({ item }) => {
                 />
                 <View className='absolute bottom-2 right-2'>
                   <View className='flex-row justify-center items-center'>
-                    {
-                      item.storeDetails.type === "Veg" &&
-                      <>
-                        <Text style={{ color: '#00e676' }} className='text-base font-semibold mr-1'>Pure {item.type}</Text>
-                        <Ionicons name="leaf" size={16} color={'#00e676'} />
-                      </>
-                    }
+                    <View className='flex-row justify-center items-center'>
+                      {item.storeDetails.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                      <Text className='ml-1' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.type}</Text>
+                    </View>
                   </View>
                 </View>
               </ImageBackground>
             </View>
             <View className=' ml-2'>
-              <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>
+              <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>
                 {item.storeDetails.name}
               </Text>
               <View className='flex-row items-center' >
                 {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm font-black'>{item.storeDetails.menutype}</Text>
-                <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                <Text style={{ color: Colors.dark.colors.diffrentColorPerple }} className='text-sm font-black'>{item.storeDetails.location}</Text>
+                {/* <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.menutype}</Text> */}
+                {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
+                <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorPerple }]}>{item.storeDetails.location}</Text>
               </View>
               <View className='flex-row py-2'>
                 <View className=' px-4 rounded-md bg-black' style={{ paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
-                  <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}>
-                    <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
-                      {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
-                    </Text>
+                  {/* <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}> */}
+                  <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
+                    {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
                   </Text>
+                  {/* </Text> */}
                 </View>
 
                 <View className='flex-row ml-2 items-center'>
-                  <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹</Text>
-                  <Text className='font-light text-xl' style={{ color: Colors.dark.colors.mainTextColor }}> {item.totalPrice}</Text>
+                  <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
+                  <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}> {item.totalPrice}</Text>
                 </View>
               </View>
             </View>
 
-            <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className=' pt-8 pl-4 flex-row items-center absolute right-4 bottom-2'>
-              <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-thin text-sm underline mr-1'>View Full Order</Text>
+            <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className='pt-10 pl-80 flex-row items-center absolute right-4 bottom-2'>
+              {/* <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline mr-1'>view full order</Text> */}
               <Ionicons name={showDetails ? 'caret-up' : 'caret-down'} size={16} color={Colors.dark.colors.diffrentColorOrange} />
             </TouchableOpacity>
           </View>
@@ -296,15 +297,15 @@ const ListCard_Self1 = ({ item }) => {
                     </ImageBackground>
                   </View>
                   <View className=' bg-black w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
-                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹</Text>
-                    <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>  {cartItem.price}</Text>
+                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
+                    <Text style={[ fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.price}</Text>
                   </View>
                 </View>
                 <View className='h-14 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
-                  <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>X</Text>
-                  <Text className='font-black text-xl' style={{ color: Colors.dark.colors.mainTextColor }}>  {cartItem.quantity}</Text>
+                  <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>X</Text>
+                  <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.quantity}</Text>
                 </View>
-                <Text className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>{cartItem.price * cartItem.quantity}</Text>
+                <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>{cartItem.price * cartItem.quantity}</Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -321,13 +322,14 @@ const ListCard_Self1 = ({ item }) => {
 
 export default function OrderHistory() {
   const navigation = useNavigation();
-  const { dateGroup } = useContext(GlobalStateContext);
+  const { dateGroup, outletsNEW } = useContext(GlobalStateContext);
   const [showDetails, setShowDetails] = useState(null);
   const handleShowDetails = (index) => {
     setShowDetails(showDetails === index ? null : index);
   };
 
   // console.log(dateGroup)
+  const fontstyles = TextStyles();
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
@@ -347,19 +349,19 @@ export default function OrderHistory() {
               <View className='my-6 px-4' key={index}>
                 <View className='flex-row justify-between -mb-2'>
                   <View>
-                    <Text className='text-lg font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Order Date</Text>
-                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{group.date}</Text>
+                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Date</Text>
+                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{group.date}</Text>
                   </View>
                   <View className='items-end'>
-                    <Text className='text-lg font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total Amount</Text>
-                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹ {group.total}</Text>
+                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Amount</Text>
+                    <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.diffrentColorOrange }]}>₹ {group.total.toFixed(2)}</Text>
                   </View>
                 </View>
 
                 <View>
                   {group.orders.map((order, index) => (
                     <View key={index}>
-                      <ListCard_Self1 item={order} />
+                      <ListCard_Self1 fontstyles={fontstyles} item={order} outletsNEW={outletsNEW}/>
                     </View>
                   ))}
                 </View>

@@ -1,51 +1,3 @@
-// import React, { useState } from 'react';
-// import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-
-// export default function Home() {
-//   const [loading, setLoading] = useState(false);
-//   const navigation = useNavigation();
-
-//   const navToPage = (page) => {
-//     setLoading(true);
-//     setTimeout(() => {
-//       setLoading(false);
-//     navigation.navigate(page);
-//    }, 2000);
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {loading && <ActivityIndicator size="large" color="#0000ff" />}
-//       <TouchableOpacity style={styles.button} onPress={() => navToPage('SelectAddress')}>
-//         <Text style={styles.buttonText}>Go to Details</Text>
-//       </TouchableOpacity>
-//     </View>
-//   )
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   button: {
-//     backgroundColor: '#007bff',
-//     padding: 10,
-//     borderRadius: 5,
-//   },
-//   buttonText: {
-//     color: '#fff',
-//     fontSize: 16,
-//   },
-//   text: {
-//     fontSize: 18,
-//   },
-// });
-
-
-// import { BANNER_H } from "./../Constants/Constants"
 const BANNER_H = Dimensions.get('window').height * 0.82;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
@@ -75,6 +27,7 @@ import LangContent from '../Components/RenderLangContent';
 import UpModelScreen from './UpModelScreen';
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import Size from '../Components/Size';
+import TextStyles from '../Style/TextStyles';
 
 const Home = () => {
   // const [userData, setUserData] = useState([]);
@@ -200,6 +153,8 @@ const Home = () => {
     itemVisiblePercentThreshold: 50
   };
 
+  const fontstyles = TextStyles();
+
   return (
     <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
       <StatusBar backgroundColor='black' />
@@ -220,17 +175,17 @@ const Home = () => {
           <Animated.View style={[styles.banner(scrollA)]}>
             {/* mt-7 // marginextra */}
             <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <View className='address flex-row gap-2 items-center w-9/12'>
+              <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className='address flex-row gap-2 items-center w-9/12'>
                 <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                 <View>
-                  <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className=' flex-row'>
+                  <View className=' flex-row'>
                     {/* {console.log(userData.name)} */}
-                    <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
+                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
-                  </TouchableOpacity>
-                  <Text numberOfLines={1} ellipsizeMode='tail' style={{ fontFamily: fontFamilies.semiBold, fontSize: Size.size.sublargeText, color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
+                  </View>
+                  <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
               <View className='address flex-row gap-2 items-center'>
                 <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
                 <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
@@ -238,10 +193,11 @@ const Home = () => {
             </View>
 
             <View className='pt-7 px-4'>
-              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>Discover the best</Text>
+              {/* TextStyles.TextStyles.h1,  */}
+              <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>Discover the </Text>
               <View className='flex-row'>
-                <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange }}>Meal </Text>
-                <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>for you</Text>
+                <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}>Best Meal </Text>
+                <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>for you</Text>
               </View>
             </View>
 
@@ -255,21 +211,23 @@ const Home = () => {
             </View>
 
             {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
+            <View className='mt-4'>
             {outletsNEW.length > 0 &&
               <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
             }
+            </View>
 
-            <Titles title={"What’s on your heart?"} width={30} />
+            <View className='mx-4 pt-3 overflow-hidden' >
+              <Titles title={"What’s on your heart?"} width={30} />
+            </View>
 
             <PopularMenuContainor data={popularMenu} />
           </Animated.View>
-
         </View>
 
         <View style={styles.verticalScrollContainer}>
-
           <View>
-            <View style={{ height: Dimensions.get('window').height * 0.08 }}>
+            <View className='mx-4 pt-6 overflow-hidden' style={{ height: Dimensions.get('window').height * 0.08 }}>
               <Titles title={"All Restaurants"} width={60} />
             </View>
 
@@ -299,7 +257,7 @@ const Home = () => {
 
             <View className=' items-center justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
               <Text
-                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.diffrentColorOrange }}
+                style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}
                 numberOfLines={1}
                 ellipsizeMode='tail'
               >
@@ -307,11 +265,12 @@ const Home = () => {
               </Text>
               <Text
                 className=' text-center'
-                style={{ fontFamily: fontFamilies.regular, fontSize: Size.size.submediumText, color: Colors.dark.colors.textColor }}
+                style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}
                 numberOfLines={3}
                 ellipsizeMode='tail'
               >
-                We're working on bringing you fresh new choices. Meanwhile, explore our current selection and find your perfect match!
+                We're working on bringing you fresh
+                choices.
               </Text>
             </View>
           </View>
@@ -327,7 +286,7 @@ const Home = () => {
           <LinearGradient
             className=' absolute p-2 w-full bottom-0'
             colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-            <FirstStoreComponent updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
+            <FirstStoreComponent fontstyles={fontstyles} updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
           </LinearGradient>
         }
       </View>

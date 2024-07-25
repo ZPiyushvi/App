@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './Colors';
 import TruncatedTextComponent from './TruncatedTextComponent';
+import TextStyles from '../Style/TextStyles';
 
 const PopularMenuContainer = ({ data }) => {
     const navigation = useNavigation();
@@ -13,6 +14,8 @@ const PopularMenuContainer = ({ data }) => {
     const navToDetails = (item) => {
         navigation.navigate("Details", { data: item });
     };
+
+    const fontstyles = TextStyles();
 
     const renderItem = ({ item, index }) => {
         const isLastItem = index === data.length - 1;
@@ -49,11 +52,11 @@ const PopularMenuContainer = ({ data }) => {
                             )} */}
                             <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                                 <View className='absolute bottom-1 p-2'>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' className='-mb-1' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>
                                         {item.name}
                                     </Text>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
-                                        {item.name}
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>
+                                        {item.menutype}
                                     </Text>
                                 </View>
                             </LinearGradient>

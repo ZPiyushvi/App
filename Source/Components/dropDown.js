@@ -10,11 +10,14 @@ import { FlatList } from 'react-native';
 import useIncrementHandler from '../Components/handleIncrement';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ADDMENU_ENDPOINT, API_BASE_URL } from '../Constants/Constants';
+import TextStyles from '../Style/TextStyles';
 
 
 
-export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, handleChanges) => {
+export const dropDown = (fontstyles, menu, navigation, setOpenDropdowns, openDropdowns, handleChanges) => {
     
+    // const fontstyles = TextStyles();
+
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -45,15 +48,18 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                                 ))
                             }
                         </View>
-                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.blackh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
                             {item.item}
                         </Text>
 
-                        <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
+                        <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>₹{item.price}</Text>
                         <View className=' flex-row py-2'>
                             {item.rating &&
                                 <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />}
-                            <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                            <View className=' flex-row items-end'>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>  {item.ratingcount}</Text>
+                                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}> ratings</Text>
+                            </View>
                         </View>
 
                         <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
@@ -93,7 +99,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                                onPress={() => handleChanges( title, 'status', !item.status, item.item)}
                             // onPress={() => handleChange('type', 'PureVeg')}
                             >
-                                <Text className=' text-xl font-black' style={{ color: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.status == true ? 'In Stock' : 'Sold Out'}</Text>
+                                <Text style={[fontstyles.h3, { marginBottom: -3, color: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }]}>{item.status == true ? 'In Stock' : 'Sold Out'}</Text>
                             </TouchableOpacity>
                             <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>{item.status == true ? '+' : '-'}</Text>
                         </View>
@@ -111,7 +117,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
         <>
             <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
                 <TouchableOpacity className=' mb-6 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                    <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                    <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
                 </TouchableOpacity>
                 {openDropdowns[menu.title] && (

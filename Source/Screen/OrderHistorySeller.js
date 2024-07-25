@@ -60,8 +60,6 @@ export default function OrderHistorySeller() {
                 console.log('data', data);
                 if (data.status === "ok") {
                     setOrders(data.data);
-                } else {
-                    Alert.alert(data.data || "Failed");
                 }
             })
             .catch(error => console.log("err", error));

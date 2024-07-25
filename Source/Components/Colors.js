@@ -26,7 +26,7 @@ const dark = {
     diffrentColorOrange: "#ff3c00",
     diffrentColorPerple: "#0092ff", 
     diffrentColorPerpleBG: "#9dd5ff",
-    diffrentColorGreen: '#00e676',
+    diffrentColorGreen: '#00e676', //#00e676
     diffrentColorRed: '#ff0000',
     // backGroundColor: "#1C1C1E",
     // fond_iconColor: "#E7E1E6",

@@ -21,6 +21,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API_BASE_URL, LOGIN_ENDPOINT } from "../Constants/Constants";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
+import TextStyles from "../Style/TextStyles";
 
 const LoginScreen = () => {
 
@@ -128,6 +129,7 @@ const LoginScreen = () => {
     navigation.navigate("SignupScreen");
   };
 
+  const fontstyles = TextStyles();
   return (
     <View className='p-4 pt-8 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       {/* <TouchableOpacity className=' h-10 w-10 justify-center items-center rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} onPress={handleGoBack}>
@@ -140,8 +142,8 @@ const LoginScreen = () => {
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
-        <Text style={{ fontFamily: fontFamilies.semiBold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Let's get</Text>
-        <Text style={{ fontFamily: fontFamilies.semiBold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }}>started</Text>
+        <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor, lineHeight: 45 }]}>Welcome Back!</Text>
+        <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }]}>Log to continue</Text>
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
@@ -242,14 +244,14 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity>
-            <Text className='mb-8 text-right mt-4' style={{ fontFamily: fontFamilies.regular, fontSize: Size.size.mediumText, color: Colors.dark.colors.mainTextColor }}>Forgot Password?</Text>
+            <Text className='mb-8 text-right mt-4' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Forgot Password?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => handleLogin()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>Login</Text>
+            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>Login</Text>
           </TouchableOpacity>
-          <Text className=' my-4 text-center' style={{ fontFamily: fontFamilies.medium, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>or continue with</Text>
-          {console.log(userRole)}
+          <Text className=' py-3 text-center' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
+          {/* {console.log(userRole)} */}
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}
             onPress={() => userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")}
           >
@@ -258,12 +260,12 @@ const LoginScreen = () => {
               color={Colors.dark.colors.mainTextColor}
               size={20}
             />
-            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>  Google</Text>
+            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text style={{ fontFamily: fontFamilies.medium, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>Don’t have an account?</Text>
+            <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Don’t have an account?</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.mediumText, color: Colors.dark.colors.mainTextColor }}>Sign up</Text>
+              <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>

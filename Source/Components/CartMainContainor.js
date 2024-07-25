@@ -9,7 +9,7 @@ import { mockCampusShops } from '../Data/mockCampusShops';
 import { removeStoreFromCart } from './removeStoreFromCart';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 
-export const FirstStoreComponent = ({ updatedCartWithDetails, Modelshow, settype }) => {
+export const FirstStoreComponent = ({ fontstyles, updatedCartWithDetails, Modelshow, settype }) => {
   // const { CartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
   const navigation = useNavigation();
   const { outletsNEW, setCartItemsNEW, setCartItems, campusShops, setcampusShops, cartItemsNEW } = useContext(GlobalStateContext);
@@ -55,7 +55,7 @@ console.log('Data', Data)
               transform: [{ translateX: -50 }, { translateY: -50 }],
             }}
           >
-            <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.diffrentColorOrange }}>+{updatedCartWithDetailsLength - 1} more </Text>
+            <Text style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorOrange }]}>+{updatedCartWithDetailsLength - 1} more </Text>
             <Ionicons name='caret-up' color={Colors.dark.colors.diffrentColorOrange} size={16} />
           </TouchableOpacity>
           <View
@@ -108,12 +108,12 @@ console.log('Data', Data)
           alt="Logo"
         />
         <View style={{ width: Dimensions.get('window').width * 0.36 }}>
-          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg' numberOfLines={1} ellipsizeMode='tail'>
-            {Data.name}
+          <Text style={[ fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]} numberOfLines={1} ellipsizeMode='tail'>
+            {TruncatedTextComponent(Data.name, 13)}
           </Text>
           <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.id === Data.id)) }} className=' flex-row items-center'>
-            <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
-              View Full Menu
+            <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline'>
+            view full menu
             </Text>
             <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
           </TouchableOpacity>
@@ -121,11 +121,11 @@ console.log('Data', Data)
         <View className='flex-row gap-x-1 absolute right-2 top-2 h-full'>
           <TouchableOpacity
             className='justify-center items-center rounded-lg m-1'
-            style={{ width: Dimensions.get('window').width * 0.28, backgroundColor: Colors.dark.colors.diffrentColorOrange }}
+            style={{ width: Dimensions.get('window').width * 0.30, backgroundColor: Colors.dark.colors.diffrentColorOrange }}
             onPress={() => navigation.navigate('IndiviualCart', { item: Data })}
           >
-            <View className='flex-row items-center justify-center'>
-              <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.mainTextColor }}>
+            <View className=' flex-row items-center justify-center'>
+              <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                 {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
                 {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} */}
                 {totalItems} {totalItems === 1 ? 'item' : 'items'}
@@ -136,11 +136,11 @@ console.log('Data', Data)
                 size={16}
                 color={Colors.dark.colors.mainTextColor}
               />
-              <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
+              <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                 ₹{totalPrice}
               </Text>
             </View>
-            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base'>
+            <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>
               CheckOut
             </Text>
           </TouchableOpacity>

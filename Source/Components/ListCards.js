@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import { mockCampusShops } from "../Data/mockCampusShops";
 import TruncatedTextComponent from "./TruncatedTextComponent";
+import TextStyles from "../Style/TextStyles";
 
 const { StarIcon, CarIcon } = Icons();
 
@@ -199,11 +200,15 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
     );
 }
 
+
 export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
+    const fontstyles = TextStyles();
+
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+
     return (
         item == 'null' ?
             <TouchableOpacity activeOpacity={1}
@@ -220,8 +225,8 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Text className=' text-2xl font-black' style={{ color: Colors.dark.colors.textColor }}>You don't have store?</Text>
-                            <Text className=' text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add Now!</Text>
+                            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>You don't have store?</Text>
+                            <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.textColor }]}>Add Now!</Text>
                         </View>
                     </View>
                 </View>
@@ -264,7 +269,7 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                                 <View className='absolute bottom-2 right-2'>
                                     <View className='flex-row justify-center items-center'>
                                         {item.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                                        <Text className='ml-1 font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{item.type}</Text>
+                                        <Text className='ml-1' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.type}</Text>
                                     </View>
                                 </View>
                             </ImageBackground>
@@ -276,26 +281,26 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                         colors={['transparent', Colors.dark.colors.backGroundColor]}
                         className=' -ml-1 flex-1 justify-center '
                     >
-                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
                             {/* {item.name} */}
                             {item.name}
                         </Text>
                         <View className='flex-row'>
                             <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
                                 {StarIcon()}
-                                <Text className=' text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}> {item.rating} ({item.ratingcount}+)</Text>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}> {item.rating} ({item.ratingcount}+)</Text>
                             </View>
                         </View>
                         <View className='font-extralight text-sm flex-row items-center' >
                             {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text> */}
                             {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
+                            {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text> */}
                             {/* {console.log('menuType', item.menuType)} */}
                             {item.menuType.map((item, index) => (
                                     <View className=' flex-row items-center'>
                                         {/* {console.log(index)} */}
                                         {index == 0 ? null : <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />}
-                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                        <Text style={[fontstyles.h5, {color: Colors.dark.colors.textColor }]}> {item} </Text>
                                     </View>
                                 ))}
                         </View>
@@ -305,7 +310,7 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                             className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
                         >
                             {CarIcon()}
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location.split(',')[0]}</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.number, { textTransform:'uppercase', color: Colors.dark.colors.diffrentColorPerple }]}>  {item.location.split(',')[0]}</Text>
                         </LinearGradient>
 
                     </LinearGradient>
