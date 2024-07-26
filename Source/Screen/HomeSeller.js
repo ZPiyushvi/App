@@ -343,8 +343,8 @@ export default function HomeSeller({ navigation }) {
                                 return newItem;
                             }
                         })()}
-                        renderItem={({ item }) => dropDown(fontstyles, item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
-                        keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
+                        renderItem={({ item, index }) => dropDown(index, fontstyles, item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
+                        keyExtractor={(item, index) => `${item.item}_${index}`} // Example key extractor, adjust as needed
                         ListFooterComponent={
                             <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                                 <View className='gap-3' >

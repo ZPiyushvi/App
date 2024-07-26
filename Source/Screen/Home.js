@@ -247,7 +247,7 @@ const Home = () => {
 
             <FlatList
               data={outletsNEW}
-              renderItem={({ item }) => <ListCard_Self2 item={item} />} // ListCard_O && ListCard_Z
+              renderItem={({ item, index }) => <ListCard_Self2 item={item} index={index} />} // ListCard_O && ListCard_Z
               keyExtractor={(item, index) => `${index}_${item.id}`}
               showsHorizontalScrollIndicator={false}
             />

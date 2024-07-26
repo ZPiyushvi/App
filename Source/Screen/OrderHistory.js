@@ -1,12 +1,13 @@
 import { View, Text, TouchableOpacity, StatusBar, ImageBackground, StyleSheet, Dimensions, ScrollView } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Colors from '../Components/Colors'
 import { Ionicons } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { LinearGradient } from "expo-linear-gradient";
 import Icons from '../Components/Icons'
 import { GlobalStateContext } from '../Context/GlobalStateContext'
 import TextStyles from '../Style/TextStyles'
+import Animated, { FadeInDown } from 'react-native-reanimated'
 const { StarIcon, CarIcon } = Icons();
 
 
@@ -193,7 +194,7 @@ const ListCard_Self3 = ({ item }) => {
   );
 }
 
-const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
+const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW }) => {
   
   const navigation = useNavigation();
   const navToDetails = (item) => {
@@ -201,8 +202,16 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
   };
   const [showDetails, setShowDetails] = useState(null);
 
+  useFocusEffect(
+    useCallback(() => {
+      // Reset animation values or state if needed
+      setShowDetails(null);
+    }, [])
+  );
+
   return (
-    <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.name === item.storeDetails.name)) }}>
+    <Animated.View key={index} entering={FadeInDown.delay(index*100).springify().damping(12)}>
+      <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.name === item.storeDetails.name)) }}>
       <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
         <LinearGradient
           start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
@@ -317,6 +326,7 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
 
       </View>
     </TouchableOpacity>
+    </Animated.View>
   );
 }
 
@@ -324,9 +334,6 @@ export default function OrderHistory() {
   const navigation = useNavigation();
   const { dateGroup, outletsNEW } = useContext(GlobalStateContext);
   const [showDetails, setShowDetails] = useState(null);
-  const handleShowDetails = (index) => {
-    setShowDetails(showDetails === index ? null : index);
-  };
 
   // console.log(dateGroup)
   const fontstyles = TextStyles();
@@ -361,7 +368,7 @@ export default function OrderHistory() {
                 <View>
                   {group.orders.map((order, index) => (
                     <View key={index}>
-                      <ListCard_Self1 fontstyles={fontstyles} item={order} outletsNEW={outletsNEW}/>
+                      <ListCard_Self1 index={index} fontstyles={fontstyles} item={order} outletsNEW={outletsNEW}/>
                     </View>
                   ))}
                 </View>

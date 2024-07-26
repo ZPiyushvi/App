@@ -11,6 +11,7 @@ import TextStyles from '../Style/TextStyles';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { StatusBar } from 'react-native';
 import ToastNotification from '../Components/ToastNotification';
+import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated';
 
 const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
@@ -330,7 +331,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Your Cusines in {selectedCategory?.title}</Text>
                 </View>
 
-                <FlatList
+                <Animated.FlatList
+                  itemLayoutAnimation={LinearTransition}
                   data={selectedCategory.items}
                   keyExtractor={(item) => item.id}
                   renderItem={({ item }) => (
@@ -609,23 +611,18 @@ const ManageCategoriesScreen = ({ navigation }) => {
             </View>
           </View>
         }
+      </ScrollView>
 
-        <View>
+      <View className='px-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+        <Animated.View entering={FadeInDown.delay(100).springify().damping(12)}>
           <TouchableOpacity onPress={handleSaveMenu}
             className=' w-full my-3 rounded-xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
             <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} className='items-center justify-center p-3' >
               <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.blackh2, { paddingBottom: 4, color: Colors.dark.colors.mainTextColor }]}>SAVE</Text>
             </View>
           </TouchableOpacity>
-        </View>
-
-
-
-
-
-
-
-      </ScrollView>
+        </Animated.View>
+      </View>
       {/* <View className='mx-3'>
         <LinearGradient
           className=' absolute w-full bottom-0 h-10'

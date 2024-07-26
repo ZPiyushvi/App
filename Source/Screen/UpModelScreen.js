@@ -1,6 +1,6 @@
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { View, Text, Modal, TextInput, Image, TouchableOpacity, Animated, Dimensions, FlatList, KeyboardAvoidingView, Platform, BackHandler, Keyboard } from 'react-native'
+import { View, Text, Modal, TextInput, Image, TouchableOpacity, Dimensions, FlatList, KeyboardAvoidingView, Platform, BackHandler, Keyboard, StatusBar } from 'react-native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Colors from '../Components/Colors';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import PopularMenuContainor from "../Components/PopularMenuContainor";
 import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextStyles from '../Style/TextStyles';
+import Animated, { SlideInUp, FadeInUp } from 'react-native-reanimated';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -19,7 +20,7 @@ export default function ModelScreen() {
     const [value, setValue] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
+    // const fadeAnim = useRef(new Animated.Value(0)).current;
     // const [campusShops, setCampusShops] = useState();
     const [selectedCategory, setSelectedCategory] = useState(0);
     const [filteredData, setFilteredData] = useState(selectedCategory == 0 ? campusMenu : campusShops);
@@ -73,21 +74,21 @@ export default function ModelScreen() {
         }, [navigation])
     );
 
-    useEffect(() => {
-        if (!isFocused && value === '') {
-            Animated.timing(fadeAnim, {
-                toValue: 1,
-                duration: 500,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.timing(fadeAnim, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: true,
-            }).start();
-        }
-    }, [isFocused, value]);
+    // useEffect(() => {
+    //     if (!isFocused && value === '') {
+    //         Animated.timing(fadeAnim, {
+    //             toValue: 1,
+    //             duration: 500,
+    //             useNativeDriver: true,
+    //         }).start();
+    //     } else {
+    //         Animated.timing(fadeAnim, {
+    //             toValue: 0,
+    //             duration: 500,
+    //             useNativeDriver: true,
+    //         }).start();
+    //     }
+    // }, [isFocused, value]);
 
     // useEffect(() => {
     //     fetchFeatures();
@@ -193,7 +194,8 @@ export default function ModelScreen() {
 
     const RenderModel_UpModelScreen = () => (
         <>
-            {/* <StatusBar hidden /> */}
+            <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}>
@@ -203,10 +205,10 @@ export default function ModelScreen() {
                     animationType="fade"
                     transparent
                 >
-                    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
+                    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                         {value.length > 0 ? null : <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />}
 
-                        <View className={`${value.length > 0 ? 'h-full' : 'absolute rounded-b-3xl'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <Animated.View entering={SlideInUp.duration(300)} className={`${value.length > 0 ? 'h-full' : 'absolute rounded-b-3xl'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
                             {/* <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
                             <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
                                 <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[83%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
@@ -292,7 +294,7 @@ export default function ModelScreen() {
                                                     key={index} className='flex-row items-center rounded-full p-1' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
                                                 >
                                                     <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="timer-outline" size={24} className='searchIcon' />
-                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, {color: Colors.dark.colors.textColor}]} className='justify-center'> {search}  </Text>
+                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]} className='justify-center'> {search}  </Text>
                                                 </TouchableOpacity>
                                             ))}
                                         </View>
@@ -321,36 +323,38 @@ export default function ModelScreen() {
                                                 />
                                             </View>
                                         }
-                                        renderItem={({ item }) => (
-                                            <TouchableOpacity
-                                                onPress={() => {
-                                                    Keyboard.dismiss();
-                                                    if (selectedCategory == 1) {
-                                                        hide_UpModelScreen();
-                                                        storeYourSerchers(item.name);
-                                                        navigation.navigate("Details", { Data: item });
-                                                    } else {
-                                                        handleSearch(item.name);
-                                                        storeYourSerchers(item.name);
-                                                        setShowingOptions(false);
-                                                    }
-                                                }}
-                                                key={item.id} className='p-2 mt-3 flex-row items-center'
-                                            >
-                                                <Image
-                                                    source={{
-                                                        uri: item.image,
-                                                        method: 'POST',
-                                                        headers: {
-                                                            Pragma: 'no-cache',
-                                                        },
+                                        renderItem={({ item, index }) => (
+                                            <Animated.View entering={FadeInUp.delay(index * 70).springify().damping(12)}>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        Keyboard.dismiss();
+                                                        if (selectedCategory == 1) {
+                                                            hide_UpModelScreen();
+                                                            storeYourSerchers(item.name);
+                                                            navigation.navigate("Details", { Data: item });
+                                                        } else {
+                                                            handleSearch(item.name);
+                                                            storeYourSerchers(item.name);
+                                                            setShowingOptions(false);
+                                                        }
                                                     }}
-                                                    defaultSource={require('./../../assets/store.jpg')}
-                                                    className='w-12 h-12 rounded-full mr-2'
-                                                    alt="Logo"
-                                                />
-                                                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, {color: Colors.dark.colors.mainTextColor}]} className='justify-center'>{item.name}</Text>
-                                            </TouchableOpacity>
+                                                    key={item.id} className='p-2 mt-3 flex-row items-center'
+                                                >
+                                                    <Image
+                                                        source={{
+                                                            uri: item.image,
+                                                            method: 'POST',
+                                                            headers: {
+                                                                Pragma: 'no-cache',
+                                                            },
+                                                        }}
+                                                        defaultSource={require('./../../assets/store.jpg')}
+                                                        className='w-12 h-12 rounded-full mr-2'
+                                                        alt="Logo"
+                                                    />
+                                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.mainTextColor }]} className='justify-center'>{item.name}</Text>
+                                                </TouchableOpacity>
+                                            </Animated.View>
                                         )}
                                     />
                                     // </KeyboardAvoidingView>
@@ -384,7 +388,7 @@ export default function ModelScreen() {
                             )}
 
 
-                        </View>
+                        </Animated.View>
                         {/* <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
                         <FlatList
                             data={['Menu', 'Outlets']}

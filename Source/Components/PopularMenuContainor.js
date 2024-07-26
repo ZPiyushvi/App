@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './Colors';
 import TruncatedTextComponent from './TruncatedTextComponent';
 import TextStyles from '../Style/TextStyles';
+import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 
 const PopularMenuContainer = ({ data }) => {
     const navigation = useNavigation();
@@ -21,7 +22,7 @@ const PopularMenuContainer = ({ data }) => {
         const isLastItem = index === data.length - 1;
 
         return (
-            <View style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
+            <Animated.View entering={FadeInRight.delay(index*100).springify()} style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
                 {/* onPress={() => navToDetails(item)} */}
                 <TouchableOpacity>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
@@ -63,7 +64,7 @@ const PopularMenuContainer = ({ data }) => {
                         </ImageBackground>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
         );
     }
 
