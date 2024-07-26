@@ -72,7 +72,7 @@ export default DetailView = ({ route }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/menu.jpg')}
                         alt="Logo"
                         className='h-full overflow-hidden'
                         style={{ borderBottomRightRadius: 100 }}

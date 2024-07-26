@@ -35,7 +35,7 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
             Pragma: 'no-cache',
           },
         }}
-        defaultSource={require('./../../assets/favicon.png')}
+        defaultSource={require('./../../assets/store.jpg')}
         className='w-12 h-12 rounded-full mr-2'
         alt="Logo"
       />

@@ -34,7 +34,7 @@ const ListCard_Self2 = ({ item, onShowDetails, showDetails }) => {
                   Pragma: 'no-cache',
                 },
               }}
-              defaultSource={require('./../../assets/favicon.png')}
+              defaultSource={require('./../../assets/store.jpg')}
               className=' w-full h-full mr-2'
               alt="Logo"
             >
@@ -117,7 +117,7 @@ const ListCard_Self3 = ({ item }) => {
                     Pragma: 'no-cache',
                   },
                 }}
-                defaultSource={require('./../../assets/favicon.png')}
+                defaultSource={require('./../../assets/store.jpg')}
                 className=' w-full h-full mr-2'
                 alt="Logo"
               >
@@ -161,7 +161,7 @@ const ListCard_Self3 = ({ item }) => {
                           Pragma: 'no-cache',
                         },
                       }}
-                      defaultSource={require('./../../assets/favicon.png')}
+                      defaultSource={require('./../../assets/store.jpg')}
                       className=' w-full h-full mr-2'
                       alt="Logo"
                     >
@@ -220,7 +220,7 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
                     Pragma: 'no-cache',
                   },
                 }}
-                defaultSource={require('./../../assets/favicon.png')}
+                defaultSource={require('./../../assets/store.jpg')}
                 className=' w-full h-full mr-2'
                 alt="Logo"
               >
@@ -285,6 +285,7 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
                           Pragma: 'no-cache',
                         },
                       }}
+                      defaultSource={require('./../../assets/menu.jpg')}
                       className=' w-full h-full mr-2'
                       alt="Logo"
                     >

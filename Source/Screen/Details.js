@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import PopUp from '../Components/PopUp';
 import FoodIcon from '../Components/FoodIcon';
 import FoodTypeIcon from '../Components/FoodTypeIcon';
 import Colors from '../Components/Colors';

@@ -33,7 +33,7 @@ const PopularMenuContainer = ({ data }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/menu.jpg')}
                             // onLoadStart={() => setIsLoading(true)}
                             // onLoadEnd={() => setIsLoading(false)}
                             // source={item.image}
@@ -47,7 +47,7 @@ const PopularMenuContainer = ({ data }) => {
                                     source={require('./../../assets/favicon.png')}
                                     style={{ flex: 1, justifyContent: 'center' }}
                                     resizeMode='cover'
-                                    defaultSource={require('./../../assets/favicon.png')}
+                                    defaultSource={require('./../../assets/menu.jpg')}
                                 />
                             )} */}
                             <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>

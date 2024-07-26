@@ -1,7 +1,10 @@
-import { View, Text, ScrollView } from 'react-native'
-import React, { useContext } from 'react'
+import { View, Text, ScrollView, Image } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { StyleSheet } from 'react-native';
+import Colors from '../Components/Colors';
+import { loadingScreenTxt } from '../Data/loadingScreenTxt';
+import TextStyles from '../Style/TextStyles';
 
 export default function Like() {
 
@@ -9,49 +12,36 @@ export default function Like() {
   if (!fontFamilies) {
     return null;
   }
+  const [loadingMessage, setLoadingMessage] = useState('');
+
+  useEffect(() => {
+    const updateMessage = () => {
+      const randomIndex = Math.floor(Math.random() * loadingScreenTxt.length);
+      setLoadingMessage(loadingScreenTxt[randomIndex]);
+    };
+    updateMessage();
+    const intervalId = setInterval(updateMessage, 10000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const fontstyles = TextStyles();
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_black }]}>
-        Zain Black
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_extrabold }]}>
-        Zain ExtraBold
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_bold }]}>
-        Zain Bold
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_regular }]}>
-        Zain Regular
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_light }]}>
-        Zain Light
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Zain_extralight }]}>
-        Zain ExtraLight
-      </Text>
-      
-      
+    <View style={{ backgroundColor: Colors.dark.colors.subbackGroundColor }} className=' p-2 h-full w-full items-center justify-center'>
+      {/* <View style={{ backgroundColor: Colors.dark.colors.subbackGroundColor }} className='items-center justify-center w-72 h-72 rounded-full'> */}
+        <View style={{ backgroundColor: Colors.dark.colors.componentColor }} className=' items-center justify-center w-64 h-64 rounded-full'>
+          <View style={{ backgroundColor: Colors.dark.colors.secComponentColor }} className='w-44 h-44 items-center justify-center rounded-full'>
+            <Image
+              source={require("./../../assets/store.jpg")}
+              className='w-28 h-28 rounded-full'
+              alt="Logo"
+            />
+          </View>
+        </View>
+      {/* </View> */}
 
-
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_black }]}>
-        Nunito Black
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_extrabold }]}>
-        Nunito ExtraBold
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_bold }]}>
-        Nunito Bold
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_regular }]}>
-        Nunito Regular
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_light }]}>
-        Nunito Light
-      </Text>
-      <Text style={[styles.text, { fontFamily: fontFamilies.Nunito_extralight }]}>
-        Nunito ExtraLight
-      </Text>
-    </ScrollView>
+      <Text className='text-center pt-3' style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>Namaskar !!!</Text>
+      <Text className='text-center' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{loadingMessage}</Text>
+    </View>
   );
 };
 

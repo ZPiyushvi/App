@@ -18,7 +18,6 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 import ModelScreen from './ModelScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL, USERSDATA_ENDPOINT } from '../Constants/Constants';
-import Popular from '../Components/Popular';
 import Model from './Model';
 import Like from './Like';
 import { avalableLanguages } from '../Data/avalableLanguages';

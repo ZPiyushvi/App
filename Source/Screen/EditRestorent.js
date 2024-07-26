@@ -347,7 +347,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                             Pragma: 'no-cache',
                           },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/menu.jpg')}
                         className='w-12 h-12 rounded-full mr-1'
                         alt="Logo"
                       />

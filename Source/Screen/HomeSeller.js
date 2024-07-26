@@ -234,12 +234,11 @@ export default function HomeSeller({ navigation }) {
     const fontstyles = TextStyles();
     return (
         <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-            <StatusBar backgroundColor='black' />
+      <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
             <LinearGradient
                 // Button Linear Gradient
                 colors={["black", Colors.dark.colors.backGroundColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Gradient_H, backgroundColor: Colors.dark.colors.componentColor }} />
-            {/* <StatusBar backgroundColor='black' /> */}
             {/* <LinearGradient
             // Button Linear Gradient
             colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }}
@@ -377,7 +376,7 @@ export default function HomeSeller({ navigation }) {
                                 <View>
                                     <Image
                                         source={require("./../Data/fssai.png")}
-                                        defaultSource={require('./../../assets/favicon.png')}
+                                        defaultSource={require('./../../assets/store.jpg')}
                                         className='w-14 h-11'
                                         alt="Logo"
                                     />

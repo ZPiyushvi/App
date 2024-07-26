@@ -21,7 +21,7 @@ const SlideItems = ({ item, navigation }) => {
                             Pragma: 'no-cache',
                         },
                     }}
-                    defaultSource={require('./../../assets/favicon.png')}
+                    defaultSource={require('./../../assets/store.jpg')}
                     style={styles.popularFeatureImage}
                     alt="Logo"
                 />

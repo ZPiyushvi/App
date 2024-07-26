@@ -203,7 +203,7 @@ export default function EditScreen({ route, navigation }) {
                             Pragma: 'no-cache',
                         },
                     }}
-                    defaultSource={require('./../../assets/favicon.png')}
+                    defaultSource={require('./../../assets/store.jpg')}
                     // className=''
 
                     alt="Logo"
@@ -708,7 +708,7 @@ export default function EditScreen({ route, navigation }) {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/store.jpg')}
                         alt="Logo"
                     > */}
                     <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.0)' }} className='items-center justify-center p-3' >
