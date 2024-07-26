@@ -140,7 +140,7 @@ export default function HomeSeller({ navigation }) {
         const initialDropdowns = {};
         // if (Array.isArray(outlets[0])) {
         newItem?.forEach(menu => {
-            console.log('title', menu.title)
+            // console.log('title', menu.title)
             initialDropdowns[menu.title] = true;
         })
         // };
@@ -170,10 +170,10 @@ export default function HomeSeller({ navigation }) {
     }, [showToast]);
 
     const handleSaveMenu = async () => {
-
         try {
             const token = await AsyncStorage.getItem("token");
             const dataToSend = { menu: newItem, token };
+            const privdataToSend = { menu: newItem, token };
             console.log('Sending data:', dataToSend);
             // newItem.forEach((item) => {
             //     console.log('itemxxxx', item.items);
@@ -189,7 +189,8 @@ export default function HomeSeller({ navigation }) {
 
             const data = await response.json();
             if (data.status === "ok") {
-                setShowToast(true);
+                // setShowToast(true);
+                console.log('HomeSellerUpdated')
                 // Alert.alert("Menu saved successfully");
             } else {
                 Alert.alert(data.data);
@@ -310,7 +311,7 @@ export default function HomeSeller({ navigation }) {
                     </View>
                     <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
                         <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
-                            {console.log(newItem)}
+                            {/* {console.log(newItem)} */}
                             <Text style={[fontstyles.number, { color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }]}>All Items </Text>
                             {/* <Text style={[fontstyles.entryUpper, { color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }]}>(12)</Text> */}
                             {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}

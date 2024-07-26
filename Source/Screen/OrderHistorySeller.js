@@ -17,7 +17,7 @@ export default function OrderHistorySeller() {
     const [selectedStatus, setSelectedStatus] = useState('');
 
     async function createOrder(orderData) {
-        console.log('orderData', orderData)
+        // console.log('orderData', orderData)
 
         try {
             const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
@@ -42,7 +42,7 @@ export default function OrderHistorySeller() {
     }
 
     function GetOrdersSeller() {
-        console.log(userData);
+        // console.log(userData);
 
         const contactinfo = {
             contactinfo: userData.contactinfo,
@@ -57,7 +57,7 @@ export default function OrderHistorySeller() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('data', data);
+                console.log('order Updated');
                 if (data.status === "ok") {
                     setOrders(data.data);
                 }
@@ -70,8 +70,9 @@ export default function OrderHistorySeller() {
     // }, []);
     
     useEffect(() => {
+        GetOrdersSeller();
         const intervalId = setInterval(() => {
-            GetOrdersSeller();
+            
         }, 10000); // Poll every 10 seconds
     
         return () => clearInterval(intervalId); // Cleanup on unmount
@@ -88,7 +89,6 @@ export default function OrderHistorySeller() {
     };
 
     const OrderStatusDropdown = ({ order, item, onChangeStatus }) => {
-        console.log('order', order)
         const [modalVisible, setModalVisible] = useState(false);
         const [selectedStatus, setSelectedStatus] = useState(item.status);
 
@@ -238,7 +238,6 @@ export default function OrderHistorySeller() {
         <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
             <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                {console.log('Orders', JSON.stringify(Orders))}
                 <View className=' mb-36'>
                     {Orders.length === 0 ? (
                         <View className='flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>

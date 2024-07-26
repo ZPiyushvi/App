@@ -32,51 +32,51 @@ export const GlobalStateProvider = ({ children }) => {
   const [outletsNEW, setOutletsNEW] = useState([]);
   const [userData, setUserData] = useState([]);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
-  const getData = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      console.log(token)
-      if (!token) {
-        console.log('err [Token not found in GlobalState]');
-        return (
-          <Error
-            heading="Network Error"
-            content={`We’re sorry for the inconvenience. It looks like your session has expired due to inactivity or other reasons. Our team is constantly working to improve your experience.
-            \n Please log out and log back in to refresh your session. Thank you for your understanding and patience!`}
-          />
-        );
-      }
-      // http://192.168.1.3:5001/userdata
-      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ token: token })
-      });
+  // const getData = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("token");
+  //     console.log(token)
+  //     if (!token) {
+  //       console.log('err [Token not found in GlobalState]');
+  //       return (
+  //         <Error
+  //           heading="Network Error"
+  //           content={`We’re sorry for the inconvenience. It looks like your session has expired due to inactivity or other reasons. Our team is constantly working to improve your experience.
+  //           \n Please log out and log back in to refresh your session. Thank you for your understanding and patience!`}
+  //         />
+  //       );
+  //     }
+  //     // http://192.168.1.3:5001/userdata
+  //     const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ token: token })
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Network response /userdata in GlobalState was not ok ' + response.statusText);
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Network response /userdata in GlobalState was not ok ' + response.statusText);
+  //     }
 
-      const data = await response.json();
-      console.log("/userdata in GlobalState", data.data)
-      setUserData(data.data)
-    } catch (error) {
-      console.error('Error fetching /userdata in GlobalState:', error);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log("/userdata in GlobalState", data.data)
+  //     setUserData(data.data)
+  //   } catch (error) {
+  //     console.error('Error fetching /userdata in GlobalState:', error);
+  //   }
+  // };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       getUserOutlets2();
-    }, 10000); // Poll every 10 seconds
+    }, 10000);
 
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const getUserOutlets2 = async () => {
@@ -97,7 +97,6 @@ export const GlobalStateProvider = ({ children }) => {
       console.error('Error fetching user outlets:', error);
     }
   };
-  // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
   const [fontFamilies, setFontFamilies] = useState({});
 
   const [fontsLoaded] = useFonts({
@@ -136,31 +135,31 @@ export const GlobalStateProvider = ({ children }) => {
     }
   }, [fontsLoaded]);
 
-  useEffect(() => {
-    const fetchOutlets = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({})
-        });
+  // useEffect(() => {
+  //   const fetchOutlets = async () => {
+  //     try {
+  //       const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({})
+  //       });
 
-        if (!response.ok) {
-          Alert.alert("Network response was not ok");
-          // throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setOutletsNEW(data.data);
-        // setLoading(false);
-      } catch (error) {
-        console.error("Error saving menu:", error);
-        // setLoading(false);
-      }
-    };
-    fetchOutlets();
-  }, []);
+  //       if (!response.ok) {
+  //         Alert.alert("Network response was not ok");
+  //         // throw new Error('Network response was not ok');
+  //       }
+  //       const data = await response.json();
+  //       setOutletsNEW(data.data);
+  //       // setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error saving menu:", error);
+  //       // setLoading(false);
+  //     }
+  //   };
+  //   fetchOutlets();
+  // }, []);
 
   useEffect(() => {
     getUserOutlets();

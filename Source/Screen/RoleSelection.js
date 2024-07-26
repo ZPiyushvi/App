@@ -1,7 +1,7 @@
 // Seller Buyer
 
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, BackHandler, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button, BackHandler, Alert, StatusBar } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Colors from '../Components/Colors';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
@@ -54,6 +54,8 @@ const SelectionScreen = () => {
 
   return (
     <View className='p-4 pt-8 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+      <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+
       <View className=' h-full justify-center'>
         <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor}]}>Choose your</Text>
         <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}>role to continue.</Text>

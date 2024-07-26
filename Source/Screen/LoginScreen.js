@@ -2,6 +2,7 @@ import {
   Alert,
   BackHandler,
   Image,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -139,6 +140,7 @@ const LoginScreen = () => {
           size={22}
         />
       </TouchableOpacity> */}
+<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}

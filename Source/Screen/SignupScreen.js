@@ -20,6 +20,7 @@ import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constant
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
 import TextStyles from "../Style/TextStyles";
+import { StatusBar } from "react-native";
 
 const LoginScreen = () => {
 
@@ -140,6 +141,7 @@ const LoginScreen = () => {
           size={22}
         />
       </TouchableOpacity> */}
+<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}

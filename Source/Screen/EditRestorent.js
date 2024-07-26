@@ -10,6 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import TextStyles from '../Style/TextStyles';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { StatusBar } from 'react-native';
+import ToastNotification from '../Components/ToastNotification';
 
 const menuTypes = ['Beverage', 'Dessert', 'General', 'Coffee', 'Printing', 'Indian', 'Grocery', 'Healthy Food', 'Fast Food', 'Stationery', 'Cuisine', 'Laundry Services', 'Bakery'];
 
@@ -39,6 +40,8 @@ const ManageCategoriesScreen = ({ navigation }) => {
     fetchOutlets();
   }, []);
 
+  const [showToast, setShowToast] = useState(false);
+
   const handleSaveMenu = async () => {
     if (!editingMenu) {
       Alert.alert("All fields are required");
@@ -47,7 +50,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
     try {
       const token = await AsyncStorage.getItem("token");
-      console.log(editingMenu)
+      // console.log(editingMenu)
       // const updatedMenuType = { ...prevState, category: category.join('_') };
 
       const dataToSend = { menu: editingMenu, token };
@@ -63,7 +66,11 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
       const data = await response.json();
       if (data.status === "ok") {
-        Alert.alert("Menu saved successfully");
+        setShowToast(true);
+
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2500); // 300ms slide in + 3000ms delay + 300ms slide out
       } else {
         Alert.alert(data.data);
       }
@@ -129,7 +136,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
       if (menuCategory.title === selectedCategory.title) {
 
         const existingItemIndex = menuCategory.items.findIndex(item => item.id == newItemObj.id);
-        console.log(existingItemIndex, newItemObj)
+        // console.log(existingItemIndex, newItemObj)
         if (existingItemIndex == -1) {
           // Add new item
           menuCategory.items.push({
@@ -186,7 +193,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
   // const handleMenuTypeToggle = (item) => {
   //   setSelectedCategory(item)
   // };
-  console.log(editingMenu)
+  // console.log(editingMenu)
 
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -216,7 +223,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
         style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
         keyboardShouldPersistTaps='handled'
       >
-<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+        <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
         <View className='mt-3 rounded-xl'>
           <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -362,7 +369,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                           onPress={() => editItem(item)}
                         >
                           <Text style={[fontstyles.h5, { color: Colors.dark.colors.backGroundColor }]}>
-                          {item.type}
+                            {item.type}
                           </Text>
 
                           <View className='flex-row items-center justify-center'>
@@ -385,12 +392,12 @@ const ManageCategoriesScreen = ({ navigation }) => {
                         </TouchableOpacity>
                         {/* <View className='items-center justify-center h-full'> */}
                         <TouchableOpacity className=' bg-red-200 justify-center items-center px-2 rounded-lg'
-                          
+
                         // onPress={() => {
                         //   handleMenuTypeToggle(item);
                         // }}
                         >
-                          <Ionicons color={ Colors.dark.colors.diffrentColorRed } name="trash-bin-outline" size={20} />
+                          <Ionicons color={Colors.dark.colors.diffrentColorRed} name="trash-bin-outline" size={20} />
                         </TouchableOpacity>
                         {/* </View> */}
                       </View>
@@ -632,6 +639,14 @@ const ManageCategoriesScreen = ({ navigation }) => {
         </LinearGradient>
 
       </View> */}
+      {/* ToastNotification */}
+      {showToast && (
+        <ToastNotification
+          title="Success!"
+          description="Menu saved successfully."
+          showToast={showToast}
+        />
+      )}
     </>
   );
 };

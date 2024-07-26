@@ -234,6 +234,8 @@ export default function StaterScreen() {
         {quotes.slice(0, colors.length).map(({ quote, author, normaltitle }, i) => {
           return (
             <View className='p-3' style={{ paddingRight: width, width: width * 2 }} key={i}>
+                <StatusBar backgroundColor='transparent'/>
+
               <Text
                 style={[fontstyles.entryUpper, {color: colors[i].nextBgColor }]}
               >

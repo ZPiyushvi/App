@@ -227,7 +227,7 @@ export default function EditScreen({ route, navigation }) {
                                 </View>
                                 {editingOutlet.menuType.map((item, index) => (
                                     <View className=' flex-row items-center'>
-                                        {console.log(item)}
+                                        {/* {console.log(item)} */}
                                         <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
                                         <Text className='ml-1'                                     style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.textColor }]}> {item} </Text>
                                     </View>
@@ -294,7 +294,7 @@ export default function EditScreen({ route, navigation }) {
                             <Text  style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Featured</Text>
                         </View>
                         <TouchableOpacity onPress={() => handleChange('featured', !editingOutlet.featured)}>
-                            {console.log(editingOutlet.featured)}
+                            {/* {console.log(editingOutlet.featured)} */}
                             <Ionicons
                                 name='toggle'
                                 size={38}

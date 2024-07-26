@@ -7,6 +7,10 @@ import { useFonts } from 'expo-font';
 const TextStyles = () => {
   const { fontFamilies} = useContext(GlobalStateContext);
 
+  if (!fontFamilies) {
+    return null;
+  }
+
   const fontSizes = {
     verysmall: 10, //
     small: 12, //
