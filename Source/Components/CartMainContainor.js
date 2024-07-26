@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import ModelScreen from '../Screen/ModelScreen';
-import { mockCampusShops } from '../Data/mockCampusShops';
 import { removeStoreFromCart } from './removeStoreFromCart';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 

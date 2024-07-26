@@ -4,7 +4,6 @@ import Colors from "./Colors";
 import Icons from "./Icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import { mockCampusShops } from "../Data/mockCampusShops";
 import TruncatedTextComponent from "./TruncatedTextComponent";
 import TextStyles from "../Style/TextStyles";
 
@@ -56,7 +55,7 @@ const InProgress = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/store.jpg')}
                             className=' w-full h-44'
                             alt="Logo"
                         />
@@ -110,7 +109,7 @@ export const ListCard_Self1 = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/store.jpg')}
                         className=' h-full w-7/12 rounded-xl'
                         style={{ borderWidth: 2, borderColor: Colors.dark.colors.backGroundColor }}
                         alt="Logo"
@@ -158,7 +157,7 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/store.jpg')}
                             className=' w-full h-full mr-2'
                             alt="Logo"
                         >
@@ -254,7 +253,7 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                                         Pragma: 'no-cache',
                                     },
                                 }}
-                                defaultSource={require('./../../assets/favicon.png')}
+                                defaultSource={require('./../../assets/store.jpg')}
                                 className=' h-full w-full overflow-hidden'
                                 alt="Logo"
                                 resizeMode='cover'
@@ -327,7 +326,6 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
     return (
         <>
             {/* {console.log(item.availability)} */}
-            {/* navToDetails(mockCampusShops.find(shop => shop.name === avail.name))} */}
             <FlatList
                 showsVerticalScrollIndicator={false}
                 keyboardDismissMode='on-drag'
@@ -346,7 +344,7 @@ export const ListCard_Z = ({ item, hide_Model, navigationMenu }) => {
         navigation.navigate("Details", { Data: item });
     };
     return (
-        <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(navigationMenu ? mockCampusShops.find(shop => shop.name === item.name) : item) }}>
+        <TouchableOpacity activeOpacity={1}>
             <LinearGradient
                 className='mb-2 drop-shadow-2xl overflow-hidden p-2'
                 colors={[Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor]}
@@ -360,7 +358,7 @@ export const ListCard_Z = ({ item, hide_Model, navigationMenu }) => {
                             Pragma: 'no-cache',
                         },
                     }}
-                    defaultSource={require('./../../assets/favicon.png')}
+                    defaultSource={require('./../../assets/store.jpg')}
                     className=' h-full w-full overflow-hidden '
                     alt="Logo"
                     resizeMode='cover'
@@ -431,7 +429,7 @@ export const ListCard_S = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/store.jpg')}
                         style={styles.CardImageBG}
                         resizeMode="cover">
                         <View style={styles.CardRatingContainer}>
@@ -576,16 +574,9 @@ const styles = StyleSheet.create({
     },
 
     shadowProp: {
-        backgroundColor: 'rgba(180, 180, 180, 0.1)',
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 12,
-        // },
-        // shadowOpacity: 0.58,
-        // shadowRadius: 16.00,
-        elevation: 30,
-
-    },
+        backgroundColor: Colors.dark.colors.shadowcolor,
+        elevation: 5,
+      },
     foodItemCollectionContainer: {
         marginHorizontal: Dimensions.get('window').width * 0.07,
         marginTop: Dimensions.get('window').height * 0.02,

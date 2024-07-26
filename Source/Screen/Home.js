@@ -5,7 +5,6 @@ import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/nativ
 import { Ionicons } from '@expo/vector-icons';
 
 import SlideContainor from "../Components/SlideContainor";
-import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import PopularMenuContainor from "../Components/PopularMenuContainor";
 import Titles from "../Components/Titles";
@@ -127,7 +126,6 @@ const Home = () => {
   }
 
   const fetchFeatures = async () => {
-    // setcampusShops(mockCampusShops)
     setcampusMenu(mockCampusMenu)
     // try {
     //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
@@ -157,11 +155,11 @@ const Home = () => {
 
   return (
     <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-      <StatusBar backgroundColor='black' />
+      <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
       <LinearGradient
         // Button Linear Gradient
-        colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
+        colors={[Colors.dark.colors.subbackGroundColor, Colors.dark.colors.subbackGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
       <Animated.ScrollView
         // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
         onScroll={Animated.event(

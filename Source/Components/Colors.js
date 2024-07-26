@@ -1,3 +1,5 @@
+
+
 const commonColor = {
   colors: {
     //   primary: "#292865",
@@ -17,17 +19,37 @@ const light = {
 
 const dark = {
   colors: {
-    // backGroundColor: "rgba(5, 6, 8)",
-    componentColor: "#252A32",
-    secComponentColor: "#52555A",
-    backGroundColor: "#1C1C1E",
-    mainTextColor: "#FFFFFF",
-    textColor: "#AEAEAE",
+    shadowcolor:'rgba(180, 180, 180, 0.1)',
+    subbackGroundColor: "#000000",
+    backGroundColor: "rgba(5, 6, 8)",
+    componentColor: "#252A32", 
+    secComponentColor: "#52555A", //#FFFFFF
+    backGroundColor: "#1C1C1E", //#F5F6FB
+    mainTextColor: "#FFFFFF", //#1B1C1F
+    textColor: "#AEAEAE", //#747A84
+    bbackGroundColor: "rgba(5, 6, 8)",
     diffrentColorOrange: "#ff3c00",
     diffrentColorPerple: "#0092ff", 
     diffrentColorPerpleBG: "#9dd5ff",
     diffrentColorGreen: '#00e676', //#00e676
     diffrentColorRed: '#ff0000',
+
+    // shadowcolor:'#f7f7fb',
+    // subbackGroundColor: "#E3E3EA",
+    // componentColor: "#FFFFFF", 
+    // secComponentColor: "#E3E3EA", //#FFFFFF
+    // backGroundColor: "#F5F6FB", //#F5F6FB
+    // mainTextColor: "#1B1C1F", //#1B1C1F
+    // textColor: "#747A84", //#747A84
+    // bbackGroundColor: "rgba(5, 6, 8)",
+    // diffrentColorOrange: "#ff3c00",
+    // diffrentColorPerple: "#0092ff", 
+    // diffrentColorPerpleBG: "#9dd5ff",
+    // diffrentColorGreen: '#0B8660', //#00e676
+    // diffrentColorRed: '#ff0000',
+
+
+
     // backGroundColor: "#1C1C1E",
     // fond_iconColor: "#E7E1E6",
 

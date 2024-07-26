@@ -186,7 +186,7 @@ const DetailsScreen = ({ route }) => {
                                         Pragma: 'no-cache',
                                     },
                                 }}
-                                defaultSource={require('./../../assets/favicon.png')}
+                                defaultSource={require('./../../assets/menu.jpg')}
                                 resizeMode="cover"
                                 alt="Logo"
                                 className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
@@ -462,7 +462,6 @@ const DetailsScreen = ({ route }) => {
                             <View>
                                 <Image
                                     source={require("./../Data/fssai.png")}
-                                    defaultSource={require('./../../assets/favicon.png')}
                                     className='w-14 h-11'
                                     alt="Logo"
                                 />

@@ -1,7 +1,7 @@
 // GlobalStateContext.js
 import React, { createContext, useState, useEffect } from 'react';
 export const GlobalStateContext = createContext();
-import { mockCampusShops } from "../Data/mockCampusShops";
+// import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ALLOUTLETS2_ENDPOINT, ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
@@ -21,6 +21,8 @@ export const GlobalStateProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
 
   const [vegMode, setVegMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
   const [CartItems, setCartItems] = useState([]);
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
@@ -80,6 +82,7 @@ export const GlobalStateProvider = ({ children }) => {
   }, []);
 
   const getUserOutlets2 = async () => {
+
     try {
       // const token = await AsyncStorage.getItem('token');
       const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS2_ENDPOINT}`); // Correct the URL
@@ -91,7 +94,10 @@ export const GlobalStateProvider = ({ children }) => {
 
       const data = await response.json();
 
-      setOutletsNEW(data.data);
+      if (outletsNEW !== data.data) {
+        setOutletsNEW(data.data);
+      }
+
       // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
     } catch (error) {
       console.error('Error fetching user outlets:', error);
@@ -135,31 +141,33 @@ export const GlobalStateProvider = ({ children }) => {
     }
   }, [fontsLoaded]);
 
-  // useEffect(() => {
-  //   const fetchOutlets = async () => {
-  //     try {
-  //       const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({})
-  //       });
+  useEffect(() => {
+    const fetchOutlets = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS_ENDPOINT}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({})
+        });
 
-  //       if (!response.ok) {
-  //         Alert.alert("Network response was not ok");
-  //         // throw new Error('Network response was not ok');
-  //       }
-  //       const data = await response.json();
-  //       setOutletsNEW(data.data);
-  //       // setLoading(false);
-  //     } catch (error) {
-  //       console.error("Error saving menu:", error);
-  //       // setLoading(false);
-  //     }
-  //   };
-  //   fetchOutlets();
-  // }, []);
+        if (!response.ok) {
+          Alert.alert("Network response was not ok");
+          // throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (outletsNEW !== data.data) {
+          setOutletsNEW(data.data);
+        }
+        // setLoading(false);
+      } catch (error) {
+        console.error("Error saving menu:", error);
+        // setLoading(false);
+      }
+    };
+    fetchOutlets();
+  }, []);
 
   useEffect(() => {
     getUserOutlets();
@@ -242,32 +250,42 @@ export const GlobalStateProvider = ({ children }) => {
       }
     };
     getVegData();
+
+    const getDarkData = async () => {
+      try {
+        const storedDarkMode = await AsyncStorage.getItem('darkMode');
+        if (storedDarkMode !== null) setDarkMode(JSON.parse(storedDarkMode));
+      } catch (error) {
+        console.error('Error fetching storedDarkMode:', error);
+      }
+    };
+    getDarkData();
   }, []);
 
-  useEffect(() => {
-    const updatedCart = Object.entries(CartItems)
-      .map(([storeName, items]) => {
-        const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
-        const store = mockCampusShops.find(shop => shop.name === storeName);
-        if (store) {
-          const { menu, ...storeDetails } = store; // Exclude the menu
-          return {
-            storeName,
-            storeDetails,
-            items,
-            totalPrice
-          };
-        }
-        return {
-          storeName,
-          storeDetails: null,
-          items,
-          totalPrice
-        };
-      })
-      .filter(cart => cart.items.length > 0 && cart.totalPrice > 0); // Filter out stores with no items or total price 0
-    setUpdatedCartWithDetails(updatedCart);
-  }, [CartItems]);
+  // useEffect(() => {
+  //   const updatedCart = Object.entries(CartItems)
+  //     .map(([storeName, items]) => {
+  //       const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  //       const store = mockCampusShops.find(shop => shop.name === storeName);
+  //       if (store) {
+  //         const { menu, ...storeDetails } = store; // Exclude the menu
+  //         return {
+  //           storeName,
+  //           storeDetails,
+  //           items,
+  //           totalPrice
+  //         };
+  //       }
+  //       return {
+  //         storeName,
+  //         storeDetails: null,
+  //         items,
+  //         totalPrice
+  //       };
+  //     })
+  //     .filter(cart => cart.items.length > 0 && cart.totalPrice > 0); // Filter out stores with no items or total price 0
+  //   setUpdatedCartWithDetails(updatedCart);
+  // }, [CartItems]);
 
   useEffect(() => {
     setOutletsNEW(vegMode ? outletsNEW.filter(shop => shop.type === "PureVeg") : outletsNEW);
@@ -313,6 +331,7 @@ export const GlobalStateProvider = ({ children }) => {
     saveHistory(History);
   }, [History]);
 
+
   // const fetchFeatures = async () => {
   // setcampusShops(mockCampusShops)
   // setcampusMenu(mockCampusMenu)
@@ -332,8 +351,60 @@ export const GlobalStateProvider = ({ children }) => {
   // }
   // };
 
+
+  let segregatedData = {};
+
+  const [segregatedDataList, setSegregatedDataList] = useState()
+
+  function segregateData(outlets) {
+    segregatedData = {}; // Reset segregatedData
+
+    outlets.forEach(store => {
+      store.menu.forEach(menu => {
+        menu.items.forEach(item => {
+          const itemKey = item.item;
+          if (!segregatedData[itemKey]) {
+            segregatedData[itemKey] = {
+              name: itemKey,
+              image: item.image,
+              availability: [],
+              rating: item.rating,
+              ratingcount: item.ratingcount,
+              menutype: menu.title,
+              type: item.type,
+              featured: store.featured
+            };
+          }
+          const availabilityDetails = {
+            location: store.location,
+            menutype: menu.title,
+            type: item.type,
+            name: store.name,
+            price: item.price,
+            upiId: store.upiId,
+            shopkeepername: store.shopkeeperName,
+            image: store.image,
+            rating: item.rating,
+            ratingcount: item.ratingcount
+          };
+          segregatedData[itemKey].availability.push(availabilityDetails);
+        });
+      });
+    });
+
+    if (segregatedData != segregatedDataList) {
+      console.log('run2')
+      setSegregatedDataList(Object.values(segregatedData));
+    }
+  }
+
+  useEffect(() => {
+    segregateData(outletsNEW);
+  }, [outletsNEW]);
+
+
   return (
-    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode, setDarkMode, darkMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

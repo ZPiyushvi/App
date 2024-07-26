@@ -355,9 +355,9 @@ const ManageCategoriesScreen = ({ navigation }) => {
                         <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]} numberOfLines={1} ellipsizeMode='tail'>
                           {TruncatedTextComponent(item.item, 11)}
                         </Text>
-                        <TouchableOpacity onPress={() => navToDetails(mockCampusShops.find(shop => shop.name === storeName))} className='flex-row items-center'>
-                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline'>
-                            {item.category}
+                        <TouchableOpacity className='flex-row items-center'>
+                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} >
+                            {item.category.split('_').join(', ')}
                           </Text>
                           {/* <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} /> */}
                         </TouchableOpacity>

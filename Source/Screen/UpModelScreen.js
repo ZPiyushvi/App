@@ -8,7 +8,6 @@ import { mockCampusMenu } from "../Data/mockCampusMenu";
 import SearchBox from "../Components/SearchBox";
 import TitlesLeft from '../Components/TitlesLeft';
 import PopularMenuContainor from "../Components/PopularMenuContainor";
-import { mockCampusShops } from '../Data/mockCampusShops';
 import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextStyles from '../Style/TextStyles';
@@ -282,7 +281,6 @@ export default function ModelScreen() {
                                                             hide_UpModelScreen();
                                                             // storeYourSerchers(item.name);
                                                             // console.log(search);
-                                                            // mockCampusShops.find(shop => shop.name === search)
                                                             navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === search) });
                                                         } else {
                                                             handleSearch(search);

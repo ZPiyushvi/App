@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 import { LinearGradient } from "expo-linear-gradient";
 import Icons from '../Components/Icons'
 import { GlobalStateContext } from '../Context/GlobalStateContext'
-import { mockCampusShops } from '../Data/mockCampusShops'
 import TextStyles from '../Style/TextStyles'
 const { StarIcon, CarIcon } = Icons();
 
@@ -18,7 +17,7 @@ const ListCard_Self2 = ({ item, onShowDetails, showDetails }) => {
     navigation.navigate("Details", { Data: item });
   };
   return (
-    <TouchableOpacity onPress={() => { navToDetails(mockCampusShops.find(shop => shop.name === item.storeDetails.name)) }}>
+    <TouchableOpacity >
       <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
         <LinearGradient
           start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
@@ -252,7 +251,7 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
                 <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorPerple }]}>{item.storeDetails.location}</Text>
               </View>
               <View className='flex-row py-2'>
-                <View className=' px-4 rounded-md bg-black' style={{ paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
+                <View className=' px-4 rounded-md' style={{ backgroundColor:Colors.dark.colors.subbackGroundColor, paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
                   {/* <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}> */}
                   <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                     {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
@@ -296,7 +295,7 @@ const ListCard_Self1 = ({ fontstyles, item, outletsNEW }) => {
                   /> */}
                     </ImageBackground>
                   </View>
-                  <View className=' bg-black w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
+                  <View className=' w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ backgroundColor:Colors.dark.colors.subbackGroundColor, marginLeft: 4 }}>
                     <Text style={[fontstyles.h4, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
                     <Text style={[ fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.price}</Text>
                   </View>
@@ -389,7 +388,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   shadowProp: {
-    backgroundColor: 'rgba(180, 180, 180, 0.1)',
-    elevation: 30,
+    backgroundColor: Colors.dark.colors.shadowcolor,
+    elevation: 10,
   },
 })

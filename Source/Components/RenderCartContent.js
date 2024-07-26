@@ -6,7 +6,6 @@ import TruncatedTextComponent from './TruncatedTextComponent';
 import Colors from './Colors';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from './removeStoreFromCart';
-import { mockCampusShops } from '../Data/mockCampusShops';
 import TextStyles from '../Style/TextStyles';
 
 const RenderCartItem = ({ item, setVisible, navigation }) => {
