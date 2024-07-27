@@ -7,6 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import TruncatedTextComponent from "./TruncatedTextComponent";
 import TextStyles from "../Style/TextStyles";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { useContext } from "react";
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 
 const { StarIcon, CarIcon } = Icons();
 
@@ -343,12 +345,14 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
 
 export const ListCard_Z = ({ index, item, hide_Model, navigationMenu }) => {
     const navigation = useNavigation();
+    const {outletsNEW} = useContext(GlobalStateContext);
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+    
     return (
         <Animated.View entering={FadeInDown.delay(100).springify().damping(12)}>
-        <TouchableOpacity activeOpacity={1}>
+        <TouchableOpacity onPress={() => { hide_Model?.(), navToDetails(navigationMenu ? outletsNEW.find(shop => shop.name === item.name) : item)}} activeOpacity={1}>
             <LinearGradient
                 className='mb-2 drop-shadow-2xl overflow-hidden p-2'
                 colors={[Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor]}
@@ -415,6 +419,7 @@ export const ListCard_S = ({ item, hide_Model }) => {
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+
     return (
         // <Text>{item.type}</Text>
         <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(item) }}>

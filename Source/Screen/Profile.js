@@ -60,7 +60,7 @@ const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 const LoginScreen = () => {
   // const route = useRoute();
   // const { userData } = route.params;
-  const { setUserData, setDarkMode, darkMode, fontFamilies, userData, vegMode, setVegMode } = useContext(GlobalStateContext);
+  const { setUserData, setUserRole, setDarkMode, darkMode, fontFamilies, userData, vegMode, setVegMode } = useContext(GlobalStateContext);
 
   const navigation = useNavigation();
   const [secureEntry, setSecureEntry] = useState(true);
@@ -109,9 +109,10 @@ const LoginScreen = () => {
       if (screen == 'LoginNavigationStack') {
         // AsyncStorage.setItem('token', "");
         // AsyncStorage.setItem('isLoggedIn', "");
+        setUserData([])
         await AsyncStorage.clear();
-
-        // setUserData([])
+        setUserRole('')
+        setUserData([])
       }
       navigation.navigate(screen)
     } catch (error) {

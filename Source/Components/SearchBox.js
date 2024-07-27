@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, TextInput, StyleSheet, Text, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../Components/Colors';
-import { mockCampusMenu } from "../Data/mockCampusMenu";
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const SearchInput = ({ }) => {
   const [isFocused, setIsFocused] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const {segregatedDataList, setSegregatedDataList } = useContext(GlobalStateContext); 
   const [campusMenu, setCampusMenu] = useState([]);
   const [value, setValue] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,10 +29,10 @@ const SearchInput = ({ }) => {
   }, [isFocused, value]);
 
   useEffect(() => {
-    setCampusMenu(mockCampusMenu.map(item => item.name));
+    setCampusMenu(segregatedDataList.map(item => item.name));
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % mockCampusMenu.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % segregatedDataList.length);
     }, 3000); // Change every 3 seconds (adjust as needed)
 
     return () => clearInterval(interval);

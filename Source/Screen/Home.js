@@ -35,7 +35,7 @@ const Home = () => {
   const { show, hide, RenderModel } = ModelScreen();
   const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
-  const { fontFamilies, userData, setUserData, outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
+  const { segregatedDataList, setSegregatedDataList, fontFamilies, userData, setUserData, outletsNEW, CartItems, cartItemsNEW, setCartItemsNEW, campusShops, setcampusShops } = useContext(GlobalStateContext);
 
   const scrollA = useRef(new Animated.Value(0)).current;
   const { colors } = useTheme();
@@ -125,26 +125,14 @@ const Home = () => {
   }
 
   const fetchFeatures = async () => {
-    setcampusMenu(mockCampusMenu)
-    // try {
-    //   const response = await fetch('https://fdbb94ad-4fe0-4083-8c28-aaf22b8d5dad.mock.pstmn.io/mockcampus/home/popular');
-    //   if (!response.ok) {
-    //     console.log('Network response was not ok');
-    //   }
-    //   const data = await response.json();
-    //   console.log(data)
-    //   setFeatures(data);
-    //   if (!data) {
-    //     console.log('Failed to parse response as JSON');
-    //   }
-    // } catch (error) {
-    //   console.error("Error loading features:", error);
-    // }
+    setcampusMenu(segregatedDataList)
   };
 
   // console.log(outletsNEW)
   const featuredData = outletsNEW ? outletsNEW.filter(item => item.featured === true) : [];
-  const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
+  const popularMenu = campusMenu ? campusMenu.filter(item => 
+    item.availability.some(avail => avail.menutype === 'Popular')
+  ) : [];
 
   const viewabilityMenuConfig = {
     itemVisiblePercentThreshold: 50

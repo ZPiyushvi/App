@@ -353,9 +353,7 @@ export const GlobalStateProvider = ({ children }) => {
 
 
   let segregatedData = {};
-
   const [segregatedDataList, setSegregatedDataList] = useState()
-
   function segregateData(outlets) {
     segregatedData = {}; // Reset segregatedData
 
@@ -391,20 +389,15 @@ export const GlobalStateProvider = ({ children }) => {
         });
       });
     });
-
-    if (segregatedData != segregatedDataList) {
-      console.log('run2')
-      setSegregatedDataList(Object.values(segregatedData));
-    }
+    setSegregatedDataList(Object.values(segregatedData));
   }
 
   useEffect(() => {
     segregateData(outletsNEW);
   }, [outletsNEW]);
 
-
   return (
-    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode, setDarkMode, darkMode }}>
+    <GlobalStateContext.Provider value={{ segregatedDataList, setSegregatedDataList, fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode, setDarkMode, darkMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

@@ -23,12 +23,12 @@ export default function ModelScreen() {
     // const fadeAnim = useRef(new Animated.Value(0)).current;
     // const [campusShops, setCampusShops] = useState();
     const [selectedCategory, setSelectedCategory] = useState(0);
-    const [filteredData, setFilteredData] = useState(selectedCategory == 0 ? campusMenu : campusShops);
+    const [filteredData, setFilteredData] = useState(selectedCategory == 0 ? segregatedDataList : campusShops);
     const [ShowingOptions, setShowingOptions] = useState(true);
     const [searches, setSearches] = useState({ menu: [], outlet: [] });
     // const [campusMenu, setCampusMenu] = useState([]);
 
-    const { CartItems, campusMenu, campusShops, outletsNEW, updatedCartWithDetails } = useContext(GlobalStateContext);
+    const { CartItems, segregatedDataList, campusMenu, campusShops, outletsNEW, updatedCartWithDetails } = useContext(GlobalStateContext);
 
     const show_UpModelScreen = () => setVisible(true);
     const hide_UpModelScreen = () => { setValue(''), setVisible(false) };
@@ -105,7 +105,11 @@ export default function ModelScreen() {
     }, []);
 
     const featuredShop = outletsNEW ? outletsNEW.filter(item => item.featured === "true") : [];
-    const featuredMenu = campusMenu ? campusMenu.filter(item => item.featured === "true") : [];
+    // const featuredMenu = segregatedDataList ? segregatedDataList.filter(item => item.featured === "true") : [];
+    const featuredMenu = segregatedDataList ? segregatedDataList.filter(item => 
+        item.availability.some(avail => avail.menutype === 'Popular')
+      ) : [];
+
     const buffer = 0;
 
     const handleSearch = (text) => {
@@ -118,7 +122,7 @@ export default function ModelScreen() {
 
         setValue(text);
         const filtered = selectedCategory === 0
-            ? campusMenu.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
+            ? segregatedDataList.filter(item => item.name.toLowerCase().includes(text.toLowerCase()))
             : outletsNEW.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
 
         setFilteredData(filtered);
@@ -127,11 +131,11 @@ export default function ModelScreen() {
     let placeholderText = 'Search';
 
     if (selectedCategory === 0) {
-        if (campusMenu && campusMenu.length > currentIndex) {
-            if (currentIndex + 1 === campusMenu.length) {
+        if (segregatedDataList && segregatedDataList.length > currentIndex) {
+            if (currentIndex + 1 === segregatedDataList.length) {
                 setCurrentIndex(0);
             }
-            placeholderText = `Search "${campusMenu[currentIndex].name}"`;
+            placeholderText = `Search "${segregatedDataList[currentIndex].name}"`;
         }
     } else {
         if (outletsNEW && outletsNEW.length > currentIndex) {
@@ -146,7 +150,7 @@ export default function ModelScreen() {
         setValue('')
         setSelectedCategory(index);
         const filtered = index === 0
-            ? campusMenu.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
+            ? segregatedDataList.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))
             : outletsNEW.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
 
         setFilteredData(filtered);

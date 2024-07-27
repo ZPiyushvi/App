@@ -159,15 +159,6 @@ export default function HomeSeller({ navigation }) {
 
 
     const [showToast, setShowToast] = useState(false);
-    useEffect(() => {
-        let timer;
-        if (showToast) {
-            timer = setTimeout(() => {
-                setShowToast(false);
-            }, 3000); // 10 seconds
-        }
-        return () => clearTimeout(timer);
-    }, [showToast]);
 
     const handleSaveMenu = async () => {
         try {
@@ -190,10 +181,14 @@ export default function HomeSeller({ navigation }) {
             const data = await response.json();
             if (data.status === "ok") {
                 // setShowToast(true);
+
+                // setTimeout(() => {
+                //     setShowToast(false);
+                // }, 2500);
                 console.log('HomeSellerUpdated')
                 // Alert.alert("Menu saved successfully");
             } else {
-                Alert.alert(data.data);
+                // Alert.alert(data.data);
             }
         } catch (error) {
             console.error("Error saving menu:", error);
@@ -234,7 +229,7 @@ export default function HomeSeller({ navigation }) {
     const fontstyles = TextStyles();
     return (
         <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-      <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
+            <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
             <LinearGradient
                 // Button Linear Gradient
@@ -274,12 +269,12 @@ export default function HomeSeller({ navigation }) {
 
                         <View className='pt-7 px-4'>
                             <View className='flex-row items-center'>
-                                
+
                                 <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>How</Text>
                                 <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}> Our App</Text>
                             </View>
 
-                            <Text style={[fontstyles.entryUpper, {color: Colors.dark.colors.mainTextColor }]}>displays it.</Text>
+                            <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>displays it.</Text>
 
                         </View>
                         <View className=' mt-5' >
@@ -351,16 +346,16 @@ export default function HomeSeller({ navigation }) {
                                     <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>
                                         Disclaimer:
                                     </Text>
-                                    <Text style={[fontstyles.number,{ color: Colors.dark.colors.textColor }]}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
                                     </Text>
-                                    <Text style={[fontstyles.number,{ color: Colors.dark.colors.textColor }]}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
                                     </Text>
-                                    <Text style={[fontstyles.number,{ color: Colors.dark.colors.textColor }]}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
                                     </Text>
-                                    <Text style={[fontstyles.number,{ color: Colors.dark.colors.textColor }]}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
                                     </Text>
                                 </View>
@@ -380,7 +375,7 @@ export default function HomeSeller({ navigation }) {
                                         className='w-14 h-11'
                                         alt="Logo"
                                     />
-                                    <Text  style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>Lic. No. 11521055001181</Text>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>Lic. No. 11521055001181</Text>
                                 </View>
                             </View>
                         }
@@ -394,7 +389,13 @@ export default function HomeSeller({ navigation }) {
             </Animated.ScrollView>
             {RenderModel({ type: { type } })}
             {RenderModel_UpModelScreen()}
-            {showToast && <ToastNotification title={"Info"} description={"Menu updated successfully"} />}
+            {showToast && (
+                <ToastNotification
+                    title="Success!"
+                    description="Status updated successfully."
+                    showToast={showToast}
+                />
+            )}
         </View>
     );
 }

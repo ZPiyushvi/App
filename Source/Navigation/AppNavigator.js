@@ -238,7 +238,7 @@ export default function AppNavigator() {
                     <Stack.Screen name='BuyerNavigationStack' component={BuyerNavigationStack} />
                 ) : (
                     <>
-                        <Stack.Screen name='StarterScreen' component={StarterScreen} />
+                        <Stack.Screen name='StarterScreen' component={StaterScreen} />
                         <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
                     </>
                 )}
