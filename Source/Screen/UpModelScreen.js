@@ -208,7 +208,7 @@ export default function ModelScreen() {
                     <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                         {value.length > 0 ? null : <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide_UpModelScreen() }} />}
 
-                        <Animated.View entering={SlideInUp.duration(300)} className={`${value.length > 0 ? 'h-full' : 'absolute rounded-b-3xl'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <View className={`${value.length > 0 ? 'h-full' : 'absolute rounded-b-3xl'} w-full top-0 pb-5`} style={{ maxHeight: 750, backgroundColor: Colors.dark.colors.backGroundColor }}>
                             {/* <View className=' absolute w-full top-0 pb-5' style={{ maxHeight: 750, borderBottomRightRadius: 21, borderBottomLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}> */}
                             <View className='searchBodyContainer px-3 pt-3 flex-row justify-between pb-3'>
                                 <View className='searchInputTxt justify-center rounded-xl text-base px-3 w-[83%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: 50 }}>
@@ -388,7 +388,7 @@ export default function ModelScreen() {
                             )}
 
 
-                        </Animated.View>
+                        </View>
                         {/* <View className='w-full bottom-0 border-t-2 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]}>
                         <FlatList
                             data={['Menu', 'Outlets']}
