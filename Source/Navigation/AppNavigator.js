@@ -21,6 +21,7 @@ import BuyerBottomNavigator from './BuyerBottomNavigator';
 import Insights from '../Screen/Insights';
 import EditRestorent from '../Screen/EditRestorent';
 import EditMain from '../Screen/EditMain';
+import SplashScreen from '../Screen/SplashScreen';
 
 const Stack = createStackNavigator();
 
@@ -195,7 +196,18 @@ export default function AppNavigator() {
             />
         </Stack.Navigator>
     )
-    
+
+    const [isSplashVisible, setIsSplashVisible] = useState(true);
+
+    useEffect(() => {
+        // Show splash screen for at least 3 seconds
+        const timer = setTimeout(() => {
+            setIsSplashVisible(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <NavigationContainer>
             {showToast &&
@@ -220,15 +232,13 @@ export default function AppNavigator() {
                 </View>
             }
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-                {isLoggedInValue ? (
+                {isSplashVisible ? (
+                    <Stack.Screen name='Splash' component={SplashScreen} />
+                ) : isLoggedInValue ? (
                     <Stack.Screen name='BuyerNavigationStack' component={BuyerNavigationStack} />
                 ) : (
                     <>
-                        <Stack.Screen
-                            name="StaterScreen"
-                            component={StaterScreen}
-                        />
+                        <Stack.Screen name='StarterScreen' component={StarterScreen} />
                         <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
                     </>
                 )}
