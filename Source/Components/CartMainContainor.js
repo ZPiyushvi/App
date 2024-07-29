@@ -19,7 +19,7 @@ export const FirstStoreComponent = ({ fontstyles, updatedCartWithDetails, Models
 
   // const { storeName, storeDetails, items, orders } = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
   const Data = updatedCartWithDetails[updatedCartWithDetailsLength - 1];
-console.log('Data', Data)
+
   const totalPrice = Data.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0);
   const totalItems = Data.orders.reduce((acc, order) => acc + order.quantity, 0);
   // const totalItems = items.reduce((total, item) => total + parseInt(item.quantity, 10), 0);

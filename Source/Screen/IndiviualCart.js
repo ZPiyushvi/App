@@ -21,7 +21,6 @@ const Cart = ({ route }) => {
   // const { item } = route.params;
 
   async function createOrder(orderData) {
-    console.log('orderData', orderData)
 
     try {
       const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
@@ -279,7 +278,7 @@ const Cart = ({ route }) => {
             const { name, username } = userData;
 
             if (orders.length !== 0) {
-              console.log('userDatammmmm', userData)
+              
               createOrder({
                 id: Date.now().toString(),
                 items: item,
@@ -326,7 +325,7 @@ const Cart = ({ route }) => {
     } else {
       console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
-      console.log('userDatammmmm', userData.contactinfo)
+     
       // const { name, username } = userData;
 
       createOrder({
@@ -367,8 +366,6 @@ const Cart = ({ route }) => {
       removeStoreFromCart(item.name, setCartItemsNEW);
       navigation.navigate("Orders");
     }
-
-    console.log('History', item.name)
   };
 
 
