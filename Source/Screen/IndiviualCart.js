@@ -12,6 +12,7 @@ import useIncrementHandler from '../Components/handleIncrement';
 import { API_BASE_URL, ORDERS_ENDPOINT } from '../Constants/Constants';
 import TextStyles from '../Style/TextStyles';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native';
 
 const Cart = ({ route }) => {
 
@@ -373,9 +374,9 @@ const Cart = ({ route }) => {
 
   return (
     // View style={{backgroundColor: Colors.dark.colors.backGroundColor}}
-    <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+    <SafeAreaView className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
 
-      <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+      <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <ScrollView>
         <View className=' p-5 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -477,7 +478,7 @@ const Cart = ({ route }) => {
           <Text style={[ fontstyles.number, { fontSize: 18,  color: Colors.dark.colors.mainTextColor }]}>Proceed to Pay</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

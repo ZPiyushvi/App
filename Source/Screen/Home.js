@@ -26,6 +26,7 @@ import UpModelScreen from './UpModelScreen';
 import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import Size from '../Components/Size';
 import TextStyles from '../Style/TextStyles';
+import { SafeAreaView } from 'react-native';
 
 const Home = () => {
   // const [userData, setUserData] = useState([]);
@@ -130,7 +131,7 @@ const Home = () => {
 
   // console.log(outletsNEW)
   const featuredData = outletsNEW ? outletsNEW.filter(item => item.featured === true) : [];
-  const popularMenu = campusMenu ? campusMenu.filter(item => 
+  const popularMenu = campusMenu ? campusMenu.filter(item =>
     item.availability.some(avail => avail.menutype === 'Popular')
   ) : [];
 
@@ -141,82 +142,88 @@ const Home = () => {
   const fontstyles = TextStyles();
 
   return (
-    <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-      <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
-
-      <LinearGradient
-        // Button Linear Gradient
-        colors={[Colors.dark.colors.subbackGroundColor, Colors.dark.colors.subbackGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
-      <Animated.ScrollView
-        // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollA } } }],
-          { useNativeDriver: true },
-        )}
-        scrollEventThrottle={16}
-        keyboardDismissMode='on-drag'
-      >
-        <View className='staticContainer align-middle flex w-1/2' >
-          <Animated.View style={[styles.banner(scrollA)]}>
-            {/* mt-7 // marginextra */}
-            <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className='address flex-row gap-2 items-center w-9/12'>
-                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
-                <View>
-                  <View className=' flex-row'>
-                    {/* {console.log(userData.name)} */}
-                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
-                    <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+    <SafeAreaView>
+      <StatusBar hidden={false} backgroundColor={Colors.dark.colors.subbackGroundColor} />
+      
+      <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+        <LinearGradient
+          // Button Linear Gradient
+          colors={[Colors.dark.colors.subbackGroundColor, Colors.dark.colors.subbackGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.secComponentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
+        <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+          // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollA } } }],
+            { useNativeDriver: true },
+          )}
+          scrollEventThrottle={16}
+          keyboardDismissMode='on-drag'
+        >
+          <View className='staticContainer align-middle flex w-1/2' >
+            <Animated.View style={[styles.banner(scrollA)]}>
+              {/* mt-7 // marginextra */}
+              <View className='searchBodyContainer flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                <TouchableOpacity activeOpacity={1} onPress={() => navToPage('SelectAddress')} className='address flex-row gap-2 items-center w-9/12'>
+                  <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="earth" size={24} className='searchIcon' style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+                  <View>
+                    <View className=' flex-row'>
+                      {/* {console.log(userData.name)} */}
+                      <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
+                      <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+                    </View>
+                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
                   </View>
-                  <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
+                </TouchableOpacity>
+                <View className='address flex-row gap-2 items-center'>
+                  <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} />
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-              <View className='address flex-row gap-2 items-center'>
-                <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
-                <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, textAlign: 'center', textAlignVertical: 'center' }} />
               </View>
-            </View>
 
-            <View className='pt-7 px-4'>
-              {/* TextStyles.TextStyles.h1,  */}
-              <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>Discover the </Text>
-              <View className='flex-row'>
-                <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}>Best Meal </Text>
-                <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>for you</Text>
+              <View className='pt-7 px-4'>
+                {/* TextStyles.TextStyles.h1,  */}
+                <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>Discover the </Text>
+                <View className='flex-row'>
+                  <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}>Best Meal </Text>
+                  <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>for you</Text>
+                </View>
               </View>
-            </View>
 
-            <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
-              <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
-                <SearchBox />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
-                <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
-              </TouchableOpacity>
-            </View>
+              <View className='searchBodyContainer mt-5 flex-row justify-between' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
+                  <SearchBox />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, alignItems: 'center', justifyContent: 'center' }} onPress={() => navigation.navigate('YettoUpdate')}>
+                  <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' />
+                </TouchableOpacity>
+              </View>
 
-            {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
-            <View className='mt-4'>
-            {outletsNEW.length > 0 &&
-              <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
-            }
-            </View>
+              {/* <Popular flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} /> */}
+              <View className='mt-4'>
+                {outletsNEW.length > 0 &&
+                  <SlideContainor flatListRef={flatListRef} data={featuredData} viewabilityConfig={viewabilityMenuConfig} />
+                }
+              </View>
 
-            <View className='mx-4 pt-3 overflow-hidden' >
-              <Titles title={"What’s on your heart?"} width={30} />
-            </View>
+              <View className='mx-4 pt-3 overflow-hidden' >
+                <Titles title={"What’s on your heart?"} width={30} />
+              </View>
 
-            <PopularMenuContainor data={popularMenu} />
-          </Animated.View>
-        </View>
+              <PopularMenuContainor data={popularMenu} />
+            </Animated.View>
+          </View>
 
-        <View style={styles.verticalScrollContainer}>
-          <View>
-            <View className='mx-4 pt-6 overflow-hidden' style={{ height: Dimensions.get('window').height * 0.08 }}>
-              <Titles title={"All Restaurants"} width={60} />
-            </View>
+          <View style={styles.verticalScrollContainer}>
+            <View>
+              <View className='mx-4 pt-6 overflow-hidden' style={{ height: Dimensions.get('window').height * 0.08 }}>
+                <Titles title={"All Restaurants"} width={60} />
+              </View>
 
-            {/* <View style={styles.renderItem2container}>
+              {/* <View style={styles.renderItem2container}>
               <View>
                 <FlatList
                   data={campusShops}
@@ -233,51 +240,53 @@ const Home = () => {
               </View>
             </View> */}
 
-            <FlatList
-              data={outletsNEW}
-              renderItem={({ item, index }) => <ListCard_Self2 item={item} index={index} />} // ListCard_O && ListCard_Z
-              keyExtractor={(item, index) => `${index}_${item.id}`}
-              showsHorizontalScrollIndicator={false}
-            />
+              <FlatList
+                data={outletsNEW}
+                renderItem={({ item, index }) => <ListCard_Self2 item={item} index={index} />} // ListCard_O && ListCard_Z
+                keyExtractor={(item, index) => `${index}_${item.id}`}
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+              />
 
-            <View className=' items-center justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
-              <Text
-                style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}
-                numberOfLines={1}
-                ellipsizeMode='tail'
-              >
-                Exciting Updates Coming Soon!
-              </Text>
-              <Text
-                className=' text-center'
-                style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}
-                numberOfLines={3}
-                ellipsizeMode='tail'
-              >
-                We're working on bringing you fresh
-                choices.
-              </Text>
+              <View className=' items-center justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
+                <Text
+                  style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                >
+                  Exciting Updates Coming Soon!
+                </Text>
+                <Text
+                  className=' text-center'
+                  style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}
+                  numberOfLines={3}
+                  ellipsizeMode='tail'
+                >
+                  We're working on bringing you fresh
+                  choices.
+                </Text>
+              </View>
             </View>
+
           </View>
 
+        </Animated.ScrollView>
+
+        <View>
+          {(!cartItemsNEW || cartItemsNEW.length === 0 || !cartItemsNEW[cartItemsNEW.length - 1]) ?
+            null
+            :
+            <LinearGradient
+              className=' absolute p-2 w-full bottom-0'
+              colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
+              <FirstStoreComponent fontstyles={fontstyles} updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
+            </LinearGradient>
+          }
         </View>
-
-      </Animated.ScrollView>
-
-      <View>
-        {(!cartItemsNEW || cartItemsNEW.length === 0 || !cartItemsNEW[cartItemsNEW.length - 1]) ?
-          null
-          :
-          <LinearGradient
-            className=' absolute p-2 w-full bottom-0'
-            colors={['transparent', Colors.dark.colors.backGroundColor, Colors.dark.colors.backGroundColor]}>
-            <FirstStoreComponent fontstyles={fontstyles} updatedCartWithDetails={cartItemsNEW} Modelshow={show} settype={settype} />
-          </LinearGradient>
-        }
+        {RenderModel({ type: { type } })}
+        {RenderModel_UpModelScreen()}
       </View>
-      {RenderModel({ type: { type } })}
-      {RenderModel_UpModelScreen()}
-    </View>
+    </SafeAreaView>
   );
 };
 

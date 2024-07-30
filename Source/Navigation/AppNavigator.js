@@ -110,7 +110,7 @@ export default function AppNavigator() {
                     headerShown: true,
                     title: '',
                     headerTintColor: Colors.dark.colors.mainTextColor,
-                    // headerLeft: () => <CustomBackButton />,
+                    headerLeft: () => <CustomBackButton />,
                     headerRight: () => <HeaderRightIcons />
                 }}
                 component={Details}
@@ -125,6 +125,7 @@ export default function AppNavigator() {
             />
             <Stack.Screen
                 options={({ route }) => ({
+                    headerLeft: () => <CustomBackButton />,
                     headerStyle: {
                         backgroundColor: Colors.dark.colors.backGroundColor,
                     },

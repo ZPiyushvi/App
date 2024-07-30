@@ -12,6 +12,7 @@ import { ListCard_Menu_Self2, ListCard_Self2, ListCard_Z } from '../Components/L
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextStyles from '../Style/TextStyles';
 import Animated, { SlideInUp, FadeInUp } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native';
 
 export default function ModelScreen() {
     const navigation = useNavigation();
@@ -197,8 +198,8 @@ export default function ModelScreen() {
     const recentSearches = selectedCategory === 0 ? searches.menu : searches.outlet;
 
     const RenderModel_UpModelScreen = () => (
-        <>
-            <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+        <SafeAreaView>
+            <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -250,9 +251,12 @@ export default function ModelScreen() {
                                         </View>
                                     }
                                 </View>
-                                <TouchableOpacity onPress={() => { hide_UpModelScreen(), navigation.navigate('YettoUpdate') }}>
-                                    <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                                <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, alignItems: 'center', justifyContent: 'center' }} onPress={() => { hide_UpModelScreen(), navigation.navigate('YettoUpdate') }}>
+                                    <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' />
                                 </TouchableOpacity>
+                                {/* <TouchableOpacity onPress={() => { hide_UpModelScreen(), navigation.navigate('YettoUpdate') }}>
+                                    <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
+                                </TouchableOpacity> */}
                             </View>
                             {/* <View className='w-full bottom-0 flex-row items-center right-0' style={[{ height: Dimensions.get('window').height * 0.08, borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.backGroundColor }]}>
                                 <FlatList
@@ -405,7 +409,7 @@ export default function ModelScreen() {
                     </View>
                 </Modal>
             </KeyboardAvoidingView>
-        </>
+        </SafeAreaView>
     );
 
     return { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen };
