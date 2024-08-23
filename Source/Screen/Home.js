@@ -1,4 +1,4 @@
-const BANNER_H = Dimensions.get('window').height * 0.82;
+const BANNER_H = 600;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
@@ -141,16 +141,23 @@ const Home = () => {
 
   const fontstyles = TextStyles();
 
+  const [height, setHeight] = useState(null);
+
+  const handleLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    setHeight(height);
+  };
+
   return (
     <SafeAreaView>
       <StatusBar hidden={false} backgroundColor={Colors.dark.colors.subbackGroundColor} />
-      
+
       <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
         <LinearGradient
           // Button Linear Gradient
           colors={[Colors.dark.colors.subbackGroundColor, Colors.dark.colors.subbackGroundColor, Colors.dark.colors.backGroundColor, Colors.dark.colors.secComponentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }} />
         <Animated.ScrollView
-        showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           // onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollA } } }],
@@ -173,6 +180,7 @@ const Home = () => {
                     </View>
                     <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
                   </View>
+                  {/* {console.log(height)} */}
                 </TouchableOpacity>
                 <View className='address flex-row gap-2 items-center'>
                   <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
@@ -184,8 +192,9 @@ const Home = () => {
                 </View>
               </View>
 
-              <View className='pt-7 px-4'>
+              <View onLayout={handleLayout} className='pt-7 px-4'>
                 {/* TextStyles.TextStyles.h1,  */}
+                {/* {console.log(height)} */}
                 <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>Discover the </Text>
                 <View className='flex-row'>
                   <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}>Best Meal </Text>
