@@ -56,7 +56,7 @@ export default function SlideContainor({ flatListRef, data, viewabilityConfig })
 const styles = {
     scrollViwerContainer: {
         marginHorizontal: Dimensions.get('window').width * 0.03,  // should be applyed to all fixed items
-        height: Dimensions.get('window').height * 0.02,
+        // height: Dimensions.get('window').height * 0.02,
         gap: 3,
         flexWrap: 'wrap',
         flexDirection: 'row',

@@ -1,15 +1,48 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text, Animated } from "react-native";
 // import,{ FadeInUp, FadeOutUp } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/MaterialIcons"
 import Colors from "./Colors";
 
-const ToastNotification = ({title, description}) => {
+const ToastNotification = ({title, description, showToast}) => {
+    const slideAnim = useRef(new Animated.Value(-100)).current; // Initial value for the animation
+
+    useEffect(() => {
+        if (showToast) {
+            // Define the slide-in animation
+            const slideIn = Animated.timing(
+                slideAnim,
+                {
+                    toValue: 0,
+                    duration: 250,
+                    useNativeDriver: true, // Enable native driver for better performance
+                }
+            );
+
+            // Define a delay
+            const delay = Animated.delay(2000); // 3 seconds delay
+
+            // Define the slide-out animation
+            const slideOut = Animated.timing(
+                slideAnim,
+                {
+                    toValue: -100,
+                    duration: 250,
+                    useNativeDriver: true,
+                }
+            );
+
+            // Sequence the animations
+            Animated.sequence([slideIn, delay, slideOut]).start();
+        }
+    }, [showToast]);
+
     return(
         <Animated.View
             // entering={FadeInUp}
             // exiting={FadeOutUp}
             style={{
+                transform: [{ translateY: slideAnim }],
                 top: 30,
                 left: '5%',
                 backgroundColor: Colors.dark.colors.diffrentColorOrange,

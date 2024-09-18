@@ -19,6 +19,8 @@ import Colors from "../Components/Colors";
 import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constants/Constants";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
+import TextStyles from "../Style/TextStyles";
+import { StatusBar } from "react-native";
 
 const LoginScreen = () => {
 
@@ -129,6 +131,7 @@ const LoginScreen = () => {
     navigation.navigate("LoginScreen");
   };
 
+  const fontstyles = TextStyles();
   return (
     <View className='p-4 pt-8 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       {/* <TouchableOpacity className=' h-10 w-10 justify-center items-center rounded-full' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} onPress={handleGoBack}>
@@ -138,11 +141,13 @@ const LoginScreen = () => {
           size={22}
         />
       </TouchableOpacity> */}
+<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
-        <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor, lineHeight: 45 }}>Let's get</Text>
-        <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }}>started</Text>
+        <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.diffrentColorOrange, lineHeight: 45 }]}>to get started</Text>
+        <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor, lineHeight: 45 }]}>Create an account</Text>
+
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
@@ -157,7 +162,7 @@ const LoginScreen = () => {
             />
             {/* {username.length < 1 ? null : name_verify ? <Ionicons name={"mail-outline"} size={22} color={Colors.dark.colors.diffrentColorGreen} /> : <Ionicons name={"mail-outline"} size={22} color={Colors.dark.colors.diffrentColorOrange} />} */}
           </View>
-          {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, { marginTop: -8 }]}>Name must be 3+ characters.</Text>}
+          {name_verify ? null : <Text className='absolute top-0' style={[styles.textInputSub, fontstyles.h7, { marginTop: -8 }]}>Name must be 3+ characters.</Text>}
           {/* at least 3 */}
 
           {/* New */}
@@ -198,15 +203,15 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity>
-            {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Email address must be a valid</Text>
+            {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Email address must be a valid</Text>
               :
-              contactinfo_verify ? null : <Text className='absolute top-0' style={styles.textInputSub}>Phone number must be 10 digits.</Text>}
+              contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Phone number must be 10 digits.</Text>}
           </View>
 
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: password_verify ? Colors.dark.colors.componentColor : Colors.dark.colors.backGroundColor }}>
             <Ionicons name={password_verify ? "extension-puzzle" : "extension-puzzle-outline"} size={22} color={password_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
-              style={styles.textInput}
+              style={[fontstyles.h5, styles.textInput]}
               placeholder="Enter your password"
               placeholderTextColor={Colors.dark.colors.textColor}
               secureTextEntry={secureEntry}
@@ -240,27 +245,27 @@ const LoginScreen = () => {
               //   // end={{ x: 1, y: 0 }}
               //   style={styles.textInputSub}
               // >
-              <Text className='absolute top-0' style={styles.textInputSub}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
+              <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Minimum 8 chars, 3 letters, 1 symbol.</Text>
               // </LinearGradient>
             }
           </View>
 
           <TouchableOpacity onPress={() => handleSubmit()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>Register</Text>
+            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>Register</Text>
           </TouchableOpacity>
-          <Text className=' my-4 text-center' style={{ fontFamily: fontFamilies ? fontFamilies.medium : null, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>or continue with</Text>
+          <Text className=' py-3 text-center' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}
               size={20}
             />
-            <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText, color: Colors.dark.colors.mainTextColor }}>  Google</Text>
+            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text style={{ fontFamily: fontFamilies.medium, fontSize: Size.size.mediumText, color: Colors.dark.colors.textColor }}>Already have an account!</Text>
+            <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Already have an account!</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.mediumText, color: Colors.dark.colors.mainTextColor }}>Login</Text>
+              <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -278,8 +283,8 @@ const styles = StyleSheet.create({
     // backgroundColor: Colors.dark.colors.backGroundColor,
     marginTop: -10,
     marginLeft: 20,
-    fontSize: 14,
-    fontWeight: 900,
+    // fontSize: 14,
+    // fontWeight: 900,
     paddingHorizontal: 7,
     color: Colors.dark.colors.diffrentColorOrange,
   },

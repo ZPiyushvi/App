@@ -1,5 +1,3 @@
-# IITOutlet
-
 ## Introduction
 
 This is a React Native application developed using Expo. This guide will help you set up the project, run it on your local machine, and build the app for production.

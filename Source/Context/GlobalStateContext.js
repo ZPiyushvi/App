@@ -1,10 +1,10 @@
 // GlobalStateContext.js
 import React, { createContext, useState, useEffect } from 'react';
 export const GlobalStateContext = createContext();
-import { mockCampusShops } from "../Data/mockCampusShops";
+// import { mockCampusShops } from "../Data/mockCampusShops";
 import { mockCampusMenu } from "../Data/mockCampusMenu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
+import { ALLOUTLETS2_ENDPOINT, ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_ENDPOINT, USERSDATA_ENDPOINT } from '../Constants/Constants';
 import { Alert } from 'react-native';
 import { useFonts } from 'expo-font';
 
@@ -21,6 +21,8 @@ export const GlobalStateProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(null);
 
   const [vegMode, setVegMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
   const [CartItems, setCartItems] = useState([]);
   const [campusShops, setcampusShops] = useState([]);
   const [campusMenu, setcampusMenu] = useState([]);
@@ -29,56 +31,61 @@ export const GlobalStateProvider = ({ children }) => {
   const [dateGroup, setDateGroup] = useState([]);
   const [History, setHistory] = useState([]);
   const [outlets, setOutlets] = useState([]);
-
-
   const [outletsNEW, setOutletsNEW] = useState([]);
-
-  const [outletsNEW2, setOutletsNEW2] = useState([]);
-
   const [userData, setUserData] = useState([]);
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
-  const getData = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      console.log(token)
-      // http://192.168.1.3:5001/userdata
-      const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ token: token })
-      });
+  // const getData = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("token");
+  //     console.log(token)
+  //     if (!token) {
+  //       console.log('err [Token not found in GlobalState]');
+  //       return (
+  //         <Error
+  //           heading="Network Error"
+  //           content={`We’re sorry for the inconvenience. It looks like your session has expired due to inactivity or other reasons. Our team is constantly working to improve your experience.
+  //           \n Please log out and log back in to refresh your session. Thank you for your understanding and patience!`}
+  //         />
+  //       );
+  //     }
+  //     // http://192.168.1.3:5001/userdata
+  //     const response = await fetch(`${API_BASE_URL}:${USERSDATA_ENDPOINT}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ token: token })
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Network response /userdata in GlobalState was not ok ' + response.statusText);
+  //     }
 
-      const data = await response.json();
-      // console.log('data', data)
-      setUserData(data.data)
-      // console.log("userData", "home", data.data)
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log("/userdata in GlobalState", data.data)
+  //     setUserData(data.data)
+  //   } catch (error) {
+  //     console.error('Error fetching /userdata in GlobalState:', error);
+  //   }
+  // };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       getUserOutlets2();
-    }, 10000); // Poll every 10 seconds
+    }, 10000);
 
-    return () => clearInterval(intervalId); // Cleanup on unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const getUserOutlets2 = async () => {
+
     try {
       // const token = await AsyncStorage.getItem('token');
-      const response = await fetch('http://192.168.138.12:5001/alloutlets2'); // Correct the URL
+      const response = await fetch(`${API_BASE_URL}:${ALLOUTLETS2_ENDPOINT}`); // Correct the URL
 
       if (!response.ok) {
         console.log('Network response was not ok');
@@ -87,30 +94,49 @@ export const GlobalStateProvider = ({ children }) => {
 
       const data = await response.json();
 
-      setOutletsNEW(data.data);
+      if (outletsNEW !== data.data) {
+        setOutletsNEW(data.data);
+      }
+
       // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
     } catch (error) {
       console.error('Error fetching user outlets:', error);
     }
   };
-  // console.log('geeting',  JSON.stringify(outletsNEW, null, 2))
   const [fontFamilies, setFontFamilies] = useState({});
 
   const [fontsLoaded] = useFonts({
-    'AddFont_Bold': require('./../../assets/fonts/staticNunito/Nunito-Bold.ttf'),
-    'AddFont_Medium': require('./../../assets/fonts/staticNunito/Nunito-Medium.ttf'),
-    'AddFont_Regular': require('./../../assets/fonts/staticNunito/Nunito-Regular.ttf'),
-    'AddFont_SemiBold': require('./../../assets/fonts/staticNunito/Nunito-SemiBold.ttf'),
+    'Zain_Black': require('./../../assets/fonts/Zain/Zain-Black.ttf'),
+    'Zain_ExtraBold': require('./../../assets/fonts/Zain/Zain-ExtraBold.ttf'),
+    'Zain_Bold': require('./../../assets/fonts/Zain/Zain-Bold.ttf'),
+    'Zain_Light': require('./../../assets/fonts/Zain/Zain-Light.ttf'),
+    'Zain_ExtraLight': require('./../../assets/fonts/Zain/Zain-ExtraLight.ttf'),
+    'Zain_Regular': require('./../../assets/fonts/Zain/Zain-Regular.ttf'),
+
+    'Nunito_Black': require('./../../assets/fonts/Montserrat/static/Montserrat-Black.ttf'),
+    'Nunito_ExtraBold': require('./../../assets/fonts/Montserrat/static/Montserrat-ExtraBold.ttf'),
+    'Nunito_Bold': require('./../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf'),
+    'Nunito_Light': require('./../../assets/fonts/Montserrat/static/Montserrat-Light.ttf'),
+    'Nunito_ExtraLight': require('./../../assets/fonts/Montserrat/static/Montserrat-ExtraLight.ttf'),
+    'Nunito_Medium': require('./../../assets/fonts/Montserrat/static/Montserrat-Medium.ttf'),
   });
-  
+
   useEffect(() => {
     if (fontsLoaded) {
       setFontFamilies({
-        regular: 'AddFont_Regular',
-        medium: 'AddFont_Medium',
-        semiBold: 'AddFont_SemiBold',
-        bold: 'AddFont_Bold',
-        none : 'none',
+        Zain_black: 'Zain_Black',
+        Zain_extrabold: 'Zain_ExtraBold',
+        Zain_bold: 'Zain_Bold',
+        Zain_regular: 'Zain_Regular',
+        Zain_light: 'Zain_Light',
+        Zain_extralight: 'Zain_ExtraLight',
+
+        Nunito_black: 'Nunito_Black',
+        Nunito_extrabold: 'Nunito_ExtraBold',
+        Nunito_bold: 'Nunito_Bold',
+        Nunito_medium: 'Nunito_Medium',
+        Nunito_light: 'Nunito_Light',
+        Nunito_extralight: 'Nunito_ExtraLight',
       });
     }
   }, [fontsLoaded]);
@@ -131,7 +157,9 @@ export const GlobalStateProvider = ({ children }) => {
           // throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setOutletsNEW(data.data);
+        if (outletsNEW !== data.data) {
+          setOutletsNEW(data.data);
+        }
         // setLoading(false);
       } catch (error) {
         console.error("Error saving menu:", error);
@@ -148,6 +176,11 @@ export const GlobalStateProvider = ({ children }) => {
   const getUserOutlets = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        return console.log('err [Token not found]');
+      }
+
       const response = await fetch(`${API_BASE_URL}:${USEROUTLETS_ENDPOINT}`, {
         method: 'POST',
         headers: {
@@ -217,32 +250,42 @@ export const GlobalStateProvider = ({ children }) => {
       }
     };
     getVegData();
+
+    const getDarkData = async () => {
+      try {
+        const storedDarkMode = await AsyncStorage.getItem('darkMode');
+        if (storedDarkMode !== null) setDarkMode(JSON.parse(storedDarkMode));
+      } catch (error) {
+        console.error('Error fetching storedDarkMode:', error);
+      }
+    };
+    getDarkData();
   }, []);
 
-  useEffect(() => {
-    const updatedCart = Object.entries(CartItems)
-      .map(([storeName, items]) => {
-        const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
-        const store = mockCampusShops.find(shop => shop.name === storeName);
-        if (store) {
-          const { menu, ...storeDetails } = store; // Exclude the menu
-          return {
-            storeName,
-            storeDetails,
-            items,
-            totalPrice
-          };
-        }
-        return {
-          storeName,
-          storeDetails: null,
-          items,
-          totalPrice
-        };
-      })
-      .filter(cart => cart.items.length > 0 && cart.totalPrice > 0); // Filter out stores with no items or total price 0
-    setUpdatedCartWithDetails(updatedCart);
-  }, [CartItems]);
+  // useEffect(() => {
+  //   const updatedCart = Object.entries(CartItems)
+  //     .map(([storeName, items]) => {
+  //       const totalPrice = items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  //       const store = mockCampusShops.find(shop => shop.name === storeName);
+  //       if (store) {
+  //         const { menu, ...storeDetails } = store; // Exclude the menu
+  //         return {
+  //           storeName,
+  //           storeDetails,
+  //           items,
+  //           totalPrice
+  //         };
+  //       }
+  //       return {
+  //         storeName,
+  //         storeDetails: null,
+  //         items,
+  //         totalPrice
+  //       };
+  //     })
+  //     .filter(cart => cart.items.length > 0 && cart.totalPrice > 0); // Filter out stores with no items or total price 0
+  //   setUpdatedCartWithDetails(updatedCart);
+  // }, [CartItems]);
 
   useEffect(() => {
     setOutletsNEW(vegMode ? outletsNEW.filter(shop => shop.type === "PureVeg") : outletsNEW);
@@ -262,6 +305,7 @@ export const GlobalStateProvider = ({ children }) => {
       const filteredHistory = filterRecentHistory(history);
       const jsonValue = JSON.stringify(filteredHistory);
       await AsyncStorage.setItem('@history', jsonValue);
+      console.log('History stored:', jsonValue);
     } catch (e) {
       console.error("Error saving history", e);
     }
@@ -270,6 +314,7 @@ export const GlobalStateProvider = ({ children }) => {
   const loadHistory = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@history');
+      console.log('Loaded history:', jsonValue);
       return jsonValue != null ? JSON.parse(jsonValue) : [];
     } catch (e) {
       console.error("Error loading history", e);
@@ -277,16 +322,43 @@ export const GlobalStateProvider = ({ children }) => {
     }
   };
 
+  const saveCart = async (cart) => {
+    try {
+      const jsonValue = JSON.stringify(cart);
+      await AsyncStorage.setItem('@Cart', jsonValue);
+      console.log('Cart stored:', jsonValue);
+    } catch (e) {
+      console.error("Error saving cart", e);
+    }
+  };
+
+  const loadCart = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@Cart');
+      console.log("Loaded cart:", jsonValue);
+      return jsonValue != null ? JSON.parse(jsonValue) : [];
+    } catch (e) {
+      console.error("Error loading cart", e);
+      return [];
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const loadedHistory = await loadHistory();
+      const loadedCart = await loadCart();
       setHistory(filterRecentHistory(loadedHistory));
+      setCartItems(loadedCart);
+console.log(CartItems)
+      console.log('Loaded Cart on init:', loadedCart);
     })();
   }, []);
 
   useEffect(() => {
     saveHistory(History);
-  }, [History]);
+    saveCart(cartItemsNEW);
+  }, [History, cartItemsNEW]);
+
 
   // const fetchFeatures = async () => {
   // setcampusShops(mockCampusShops)
@@ -307,8 +379,53 @@ export const GlobalStateProvider = ({ children }) => {
   // }
   // };
 
+
+  let segregatedData = {};
+  const [segregatedDataList, setSegregatedDataList] = useState()
+  function segregateData(outlets) {
+    segregatedData = {}; // Reset segregatedData
+
+    outlets.forEach(store => {
+      store.menu.forEach(menu => {
+        menu.items.forEach(item => {
+          const itemKey = item.item;
+          if (!segregatedData[itemKey]) {
+            segregatedData[itemKey] = {
+              name: itemKey,
+              image: item.image,
+              availability: [],
+              rating: item.rating,
+              ratingcount: item.ratingcount,
+              menutype: menu.title,
+              type: item.type,
+              featured: store.featured
+            };
+          }
+          const availabilityDetails = {
+            location: store.location,
+            menutype: menu.title,
+            type: item.type,
+            name: store.name,
+            price: item.price,
+            upiId: store.upiId,
+            shopkeepername: store.shopkeeperName,
+            image: store.image,
+            rating: item.rating,
+            ratingcount: item.ratingcount
+          };
+          segregatedData[itemKey].availability.push(availabilityDetails);
+        });
+      });
+    });
+    setSegregatedDataList(Object.values(segregatedData));
+  }
+
+  useEffect(() => {
+    segregateData(outletsNEW);
+  }, [outletsNEW]);
+
   return (
-    <GlobalStateContext.Provider value={{ fontsLoaded, fontFamilies, userData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode }}>
+    <GlobalStateContext.Provider value={{ segregatedDataList, setSegregatedDataList, fontsLoaded, fontFamilies, userData, setUserData, cartItemsNEW, setCartItemsNEW, outletsNEW, setOutletsNEW, outlets, userRole, setUserRole, dateGroup, History, setHistory, campusShops, setcampusShops, quantity, setQuantity, campusMenu, setcampusMenu, CartItems, setCartItems, updateQuantity, updatedCartWithDetails, setUpdatedCartWithDetails, vegMode, setVegMode, setDarkMode, darkMode }}>
       {children}
     </GlobalStateContext.Provider>
   );

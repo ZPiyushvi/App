@@ -6,7 +6,7 @@ import TruncatedTextComponent from './TruncatedTextComponent';
 import Colors from './Colors';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from './removeStoreFromCart';
-import { mockCampusShops } from '../Data/mockCampusShops';
+import TextStyles from '../Style/TextStyles';
 
 const RenderCartItem = ({ item, setVisible, navigation }) => {
   // const { cartItemsNEW, outletsNEW, storeName, storeDetails, items } = item;
@@ -20,6 +20,7 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
   const totalPrice = item.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0);
   const totalItems = item.orders.reduce((acc, order) => acc + order.quantity, 0);
 
+  const fontstyles = TextStyles();
   return (
     <View
       key={item.id}
@@ -34,17 +35,18 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
             Pragma: 'no-cache',
           },
         }}
-        defaultSource={require('./../../assets/favicon.png')}
+        defaultSource={require('./../../assets/store.jpg')}
         className='w-12 h-12 rounded-full mr-2'
         alt="Logo"
       />
       <View>
-        <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-lg'>
-          {item.name}
+        <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>
+        {/* {item.name} */}
+        {TruncatedTextComponent(item.name,11)}
         </Text>
         <TouchableOpacity onPress={() => navToDetails(outletsNEW.find(shop => shop.id === item.id))} className='flex-row items-center'>
-          <Text style={{ color: Colors.dark.colors.textColor }} className='font-semibold text-base underline'>
-            View Full Menu
+          <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className=' underline'>
+            view full menu
           </Text>
           <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} />
         </TouchableOpacity>
@@ -59,7 +61,7 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
           }}
         >
           <View className='flex-row items-center justify-center'>
-            <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.mainTextColor }}>
+            <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
               {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '}
               {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} */}
               {totalItems} {totalItems === 1 ? 'item' : 'items'}
@@ -70,11 +72,11 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
               size={16}
               color={Colors.dark.colors.mainTextColor}
             />
-            <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-normal text-sm'>
+            <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
               ₹{totalPrice}
             </Text>
           </View>
-          <Text style={{ color: Colors.dark.colors.mainTextColor }} className='font-black text-base'>
+          <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>
             CheckOut
           </Text>
         </TouchableOpacity>

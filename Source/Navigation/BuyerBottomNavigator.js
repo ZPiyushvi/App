@@ -46,8 +46,6 @@ export default function BuyerBottomNavigator() {
     }
   }, [userRole]);
 
-  console.log('userData', userRole);
-
   if (!isRoleDefined) {
     return <Error />;
   }
@@ -175,9 +173,11 @@ export default function BuyerBottomNavigator() {
                   backgroundColor: Colors.dark.colors.backGroundColor, //'black'
                 },
                 headerTitleStyle: {
-                  fontWeight: '900',
-                  fontSize: 24,
-                },
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  color: Colors.dark.colors.mainTextColor,
+                  textAlign: 'center', // Center the title
+              },
                 headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
               }}
               name="Orders"

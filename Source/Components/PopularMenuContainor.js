@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './Colors';
 import TruncatedTextComponent from './TruncatedTextComponent';
+import TextStyles from '../Style/TextStyles';
+import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 
 const PopularMenuContainer = ({ data }) => {
     const navigation = useNavigation();
@@ -14,11 +16,13 @@ const PopularMenuContainer = ({ data }) => {
         navigation.navigate("Details", { data: item });
     };
 
+    const fontstyles = TextStyles();
+
     const renderItem = ({ item, index }) => {
         const isLastItem = index === data.length - 1;
 
         return (
-            <View style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
+            <Animated.View entering={FadeInRight.delay(index*100).springify()} style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
                 {/* onPress={() => navToDetails(item)} */}
                 <TouchableOpacity>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
@@ -30,7 +34,7 @@ const PopularMenuContainer = ({ data }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/menu.jpg')}
                             // onLoadStart={() => setIsLoading(true)}
                             // onLoadEnd={() => setIsLoading(false)}
                             // source={item.image}
@@ -44,23 +48,23 @@ const PopularMenuContainer = ({ data }) => {
                                     source={require('./../../assets/favicon.png')}
                                     style={{ flex: 1, justifyContent: 'center' }}
                                     resizeMode='cover'
-                                    defaultSource={require('./../../assets/favicon.png')}
+                                    defaultSource={require('./../../assets/menu.jpg')}
                                 />
                             )} */}
                             <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                                 <View className='absolute bottom-1 p-2'>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-extrabold text-xl -mb-1' style={{ color: Colors.dark.colors.mainTextColor }}>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' className='-mb-1' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>
                                         {item.name}
                                     </Text>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='font-semibold text-sm' style={{ color: Colors.dark.colors.textColor }}>
-                                        {item.name}
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>
+                                        {item.menutype}
                                     </Text>
                                 </View>
                             </LinearGradient>
                         </ImageBackground>
                     </View>
                 </TouchableOpacity>
-            </View>
+            </Animated.View>
         );
     }
 

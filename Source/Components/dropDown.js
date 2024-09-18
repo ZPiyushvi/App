@@ -10,11 +10,15 @@ import { FlatList } from 'react-native';
 import useIncrementHandler from '../Components/handleIncrement';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ADDMENU_ENDPOINT, API_BASE_URL } from '../Constants/Constants';
+import TextStyles from '../Style/TextStyles';
+import Animated, { FadeInDown, SlideInUp } from 'react-native-reanimated';
 
 
 
-export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, handleChanges) => {
-    
+export const dropDown = (index, fontstyles, menu, navigation, setOpenDropdowns, openDropdowns, handleChanges) => {
+
+    // const fontstyles = TextStyles();
+
     const toggleDropdown = (title) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
@@ -22,38 +26,42 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
         }));
     };
 
-    const renderDropdownItem = ({ item, title, navigation }) => {
+    const renderDropdownItem = ({ index, item, title, navigation }) => {
 
         return (
-            <>
+            <Animated.View entering={FadeInDown.delay(index * 100).springify().damping(12)} key={`${item.item.id}_${index}`}>
                 <View
                     className=' flex-row p-3 pb-6'
+
                 >
                     <TouchableOpacity
                         className='w-6/12 h-full'
                         // activeOpacity={1}
                         onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
                     >
-                        {/* <View className='flex-row'>
-                        {
-                            item.type &&
-                            <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
-                        }
-                        {
-                            item.category.split('_').map((part, index) => (
-                                <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
-                            ))
-                        }
-                    </View> */}
-                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
+                        <View className='flex-row'>
+                            {
+                                item.type &&
+                                <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
+                            }
+                            {
+                                item.category.split('_').map((part, index) => (
+                                    <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
+                                ))
+                            }
+                        </View>
+                        <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.blackh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
                             {item.item}
                         </Text>
 
-                        <Text className='text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}>₹{item.price}</Text>
+                        <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>₹{item.price}</Text>
                         <View className=' flex-row py-2'>
                             {item.rating &&
                                 <LongStarIcon rating={item.rating} ratingcount={item.ratingcount} border={1} />}
-                            <Text className='text font-medium' style={{ color: Colors.dark.colors.mainTextColor }}>  {item.ratingcount} ratings</Text>
+                            <View className=' flex-row items-end'>
+                                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>  {item.ratingcount}</Text>
+                                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}> ratings</Text>
+                            </View>
                         </View>
 
                         <Text numberOfLines={3} ellipsizeMode='middle' style={styles.descriptionText}>{item.description}</Text>
@@ -71,7 +79,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                                         Pragma: 'no-cache',
                                     },
                                 }}
-                                defaultSource={require('./../../assets/favicon.png')}
+                                defaultSource={require('./../../assets/menu.jpg')}
                                 resizeMode="cover"
                                 alt="Logo"
                                 className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
@@ -90,10 +98,10 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                             className=' absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                         >
                             <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]}
-                               onPress={() => handleChanges( title, 'status', !item.status, item.item)}
+                                onPress={() => handleChanges(title, 'status', !item.status, item.item)}
                             // onPress={() => handleChange('type', 'PureVeg')}
                             >
-                                <Text className=' text-xl font-black' style={{ color: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.status == true ? 'In Stock' : 'Sold Out'}</Text>
+                                <Text style={[fontstyles.h3, { marginBottom: -3, color: item.status == true ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }]}>{item.status == true ? 'In Stock' : 'Sold Out'}</Text>
                             </TouchableOpacity>
                             <Text className=' top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>{item.status == true ? '+' : '-'}</Text>
                         </View>
@@ -101,7 +109,7 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>
                 <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
-            </>
+            </Animated.View>
         )
     };
 
@@ -109,19 +117,19 @@ export const dropDown = (menu, navigation, setOpenDropdowns, openDropdowns, hand
 
     return (
         <>
-            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }} key={menu.title}>
+            <Animated.View key={`${menu.item}_${index}`} entering={FadeInDown.delay(index * 100).springify()} style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
                 <TouchableOpacity className=' mb-6 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                    <Text className=' text-xl font-black' style={[{ color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                    <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
                     <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
                 </TouchableOpacity>
                 {openDropdowns[menu.title] && (
                     <FlatList
                         data={menu.items}
-                        renderItem={({ item }) => renderDropdownItem({ item, title: menu.title, navigation })}
+                        renderItem={({ item, index }) => renderDropdownItem({ index, item, title: menu.title, navigation })}
                         keyExtractor={item => item.id}
                     />
                 )}
-            </View>
+            </Animated.View >
         </>
     )
 };

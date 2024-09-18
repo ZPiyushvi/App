@@ -113,7 +113,7 @@ const useIncrementHandler = () => {
                 return prevCartItems;
             }
         });
-        console.log('cartItemsNEW', cartItemsNEW);
+        console.log('Updated through handleIncrement');
     }, []);    
 
     return {

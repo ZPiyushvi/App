@@ -130,37 +130,37 @@ export default function Details_Seller({ navigation, handleChange }) {
         }
     };
 
-    const handleSubmit = async () => {
-        if (!name || !location || !cuisine) {
-            Alert.alert("All fields are required");
-            return;
-        }
+    // const handleSubmit = async () => {
+    //     if (!name || !location || !cuisine) {
+    //         Alert.alert("All fields are required");
+    //         return;
+    //     }
 
-        try {
-            const token = await AsyncStorage.getItem("token");
-            const OutletData = { name, location, cuisine, token };
+    //     try {
+    //         const token = await AsyncStorage.getItem("token");
+    //         const OutletData = { name, location, cuisine, token };
 
-            const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(OutletData)
-            });
+    //         const response = await fetch(`${API_BASE_URL}:${ADDOUTLET_ENDPOINT}`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(OutletData)
+    //         });
 
-            const data = await response.json();
-            if (data.status === "ok") {
-                Alert.alert("Outlet added successfully");
-                getUserOutlets(); // Refresh the outlets list
-            } else {
-                Alert.alert(data.data);
-            }
-        } catch (error) {
-            console.error("Error adding outlet:", error);
-        }
-    };
+    //         const data = await response.json();
+    //         if (data.status === "ok") {
+    //             Alert.alert("Outlet added successfully");
+    //             getUserOutlets(); // Refresh the outlets list
+    //         } else {
+    //             Alert.alert(data.data);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error adding outlet:", error);
+    //     }
+    // };
 
-    const scrollA = useRef(new Animated.Value(0)).current;
+    // const scrollA = useRef(new Animated.Value(0)).current;
 
     const [openDropdowns, setOpenDropdowns] = useState(() => {
         const initialDropdowns = {};

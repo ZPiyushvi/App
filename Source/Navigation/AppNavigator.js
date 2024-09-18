@@ -1,9 +1,8 @@
 import React, { Profiler, useEffect, useState } from 'react'
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from '../Screen/Login';
 import Details from '../Screen/Details';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import SelectAddress from '../Screen/SelectAddress';
 import Profile from '../Screen/Profile';
@@ -22,25 +21,10 @@ import BuyerBottomNavigator from './BuyerBottomNavigator';
 import Insights from '../Screen/Insights';
 import EditRestorent from '../Screen/EditRestorent';
 import EditMain from '../Screen/EditMain';
+import SplashScreen from '../Screen/SplashScreen';
 
 const Stack = createStackNavigator();
 
-const HeaderRightIcons = () => (
-    <View style={{ flexDirection: 'row', marginRight: 10 }}>
-        <TouchableOpacity style={{ marginHorizontal: 5 }}>
-            <Ionicons name="search-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ marginHorizontal: 5 }}>
-            <Ionicons name="heart-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ marginHorizontal: 5 }}>
-            <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-        <TouchableOpacity style={{ marginHorizontal: 5 }}>
-            <Ionicons name="ellipsis-vertical-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-    </View>
-);
 
 const CustomBackButton = () => {
     const navigation = useNavigation();
@@ -52,7 +36,6 @@ const CustomBackButton = () => {
 };
 
 export default function AppNavigator() {
-
     const [isLoggedInValue, setisLoggedInValue] = useState(false)
 
     const handle_isLoggedIn = async () => {
@@ -65,13 +48,31 @@ export default function AppNavigator() {
         handle_isLoggedIn();
     }, [isLoggedInValue]);
 
+    const [showToast, setShowToast] = useState(false);
+
+    const HeaderRightIcons = () => (
+        <View style={{ flexDirection: 'row', marginRight: 10 }}>
+            <TouchableOpacity style={{ marginHorizontal: 5 }}>
+                <Ionicons name="search-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginHorizontal: 5 }}>
+                <Ionicons name="heart-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginHorizontal: 5 }}>
+                <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowToast(!showToast)} style={{ marginHorizontal: 5 }}>
+                <Ionicons name="ellipsis-vertical-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+            </TouchableOpacity>
+        </View>
+    );
 
     const LoginNavigationStack = () => (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="StaterScreen"
                 component={StaterScreen}
-            />
+            /> */}
             <Stack.Screen
                 name="RoleSelection"
                 component={RoleSelection}
@@ -84,7 +85,7 @@ export default function AppNavigator() {
                 name="LoginScreen"
                 component={LoginScreen}
             />
-            
+
             <Stack.Screen
                 name="BuyerNavigationStack"
                 options={{ headerShown: false }}
@@ -109,7 +110,7 @@ export default function AppNavigator() {
                     headerShown: true,
                     title: '',
                     headerTintColor: Colors.dark.colors.mainTextColor,
-                    // headerLeft: () => <CustomBackButton />,
+                    headerLeft: () => <CustomBackButton />,
                     headerRight: () => <HeaderRightIcons />
                 }}
                 component={Details}
@@ -123,6 +124,21 @@ export default function AppNavigator() {
                 component={OrderHistory}
             />
             <Stack.Screen
+                options={({ route }) => ({
+                    headerLeft: () => <CustomBackButton />,
+                    headerStyle: {
+                        backgroundColor: Colors.dark.colors.backGroundColor,
+                    },
+                    headerShown: true,
+                    title: route.params?.item?.name || '', // Default to an empty string if storeName is not provided
+                    headerTintColor: Colors.dark.colors.mainTextColor,
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        color: Colors.dark.colors.mainTextColor,
+                        textAlign: 'center', // Center the title
+                    },
+                })}
                 name="IndiviualCart"
                 component={IndiviualCart}
             />
@@ -182,13 +198,50 @@ export default function AppNavigator() {
         </Stack.Navigator>
     )
 
+    const [isSplashVisible, setIsSplashVisible] = useState(true);
+
+    useEffect(() => {
+        // Show splash screen for at least 3 seconds
+        const timer = setTimeout(() => {
+            setIsSplashVisible(false);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <NavigationContainer>
+            {showToast &&
+                <View className=' absolute w-full h-full z-40'>
+                    <TouchableOpacity className=' w-full h-full z-30' onPress={() => { setShowToast(false) }}
+                    // style={{backgroundColor: 'rgba(355, 355, 355, 0.07)'}} 
+                    />
+                    <View className='absolute pl-3 z-40 rounded-xl mt-12 mr-2 flex-1 top-0 right-0 w-[43%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+                        <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Profile'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Profile</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Insights'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>InSights</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('YettoUpdate'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Wallet</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setShowToast(false); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            }
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {isLoggedInValue ? (
+                {isSplashVisible ? (
+                    <Stack.Screen name='Splash' component={SplashScreen} />
+                ) : isLoggedInValue ? (
                     <Stack.Screen name='BuyerNavigationStack' component={BuyerNavigationStack} />
                 ) : (
-                    <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
+                    <>
+                        <Stack.Screen name='StarterScreen' component={StaterScreen} />
+                        <Stack.Screen name='LoginNavigationStack' component={LoginNavigationStack} />
+                    </>
                 )}
             </Stack.Navigator>
         </NavigationContainer>

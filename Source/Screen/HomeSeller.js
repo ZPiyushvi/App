@@ -1,4 +1,4 @@
-const BANNER_H = Dimensions.get('window').height * 0.50;
+const BANNER_H = Dimensions.get('window').height * 0.55;
 const Gradient_H = Dimensions.get('window').height * 0.5;
 
 import React, { useState, useEffect, useContext, useRef } from 'react';
@@ -24,22 +24,26 @@ import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import ToastNotification from '../Components/ToastNotification';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Size from '../Components/Size';
+import TextStyles from '../Style/TextStyles';
+import { StatusBar } from 'react-native';
+import UpModelScreen from './UpModelScreen';
 
 export default function HomeSeller({ navigation }) {
 
     const [type, settype] = useState('');
     const { show, hide, RenderModel } = ModelScreen();
-    const [userData, setUserData] = useState([]);
+    // const [userData, setUserData] = useState([]);
     const [outlets, setOutlets] = useState([]);
     const [newItem, setNewItem] = useState();
     const [sortItem, setSortItem] = useState('AllItems');
 
-    const { fontsLoaded, fontFamilies } = useContext(GlobalStateContext);
+    const { fontsLoaded, userData, setUserData, fontFamilies } = useContext(GlobalStateContext);
 
     if (!fontFamilies) {
         return null;
     }
     // fontFamily: fontFamilies.bold,
+    const { show_UpModelScreen, hide_UpModelScreen, RenderModel_UpModelScreen } = UpModelScreen();
 
     useFocusEffect(
         React.useCallback(() => {
@@ -136,7 +140,7 @@ export default function HomeSeller({ navigation }) {
         const initialDropdowns = {};
         // if (Array.isArray(outlets[0])) {
         newItem?.forEach(menu => {
-            console.log('title', menu.title)
+            // console.log('title', menu.title)
             initialDropdowns[menu.title] = true;
         })
         // };
@@ -155,21 +159,12 @@ export default function HomeSeller({ navigation }) {
 
 
     const [showToast, setShowToast] = useState(false);
-    useEffect(() => {
-        let timer;
-        if (showToast) {
-            timer = setTimeout(() => {
-                setShowToast(false);
-            }, 3000); // 10 seconds
-        }
-        return () => clearTimeout(timer);
-    }, [showToast]);
 
     const handleSaveMenu = async () => {
-
         try {
             const token = await AsyncStorage.getItem("token");
             const dataToSend = { menu: newItem, token };
+            const privdataToSend = { menu: newItem, token };
             console.log('Sending data:', dataToSend);
             // newItem.forEach((item) => {
             //     console.log('itemxxxx', item.items);
@@ -185,10 +180,15 @@ export default function HomeSeller({ navigation }) {
 
             const data = await response.json();
             if (data.status === "ok") {
-                setShowToast(true);
+                // setShowToast(true);
+
+                // setTimeout(() => {
+                //     setShowToast(false);
+                // }, 2500);
+                console.log('HomeSellerUpdated')
                 // Alert.alert("Menu saved successfully");
             } else {
-                Alert.alert(data.data);
+                // Alert.alert(data.data);
             }
         } catch (error) {
             console.error("Error saving menu:", error);
@@ -226,14 +226,14 @@ export default function HomeSeller({ navigation }) {
     // }));
     // const filter()
 
+    const fontstyles = TextStyles();
     return (
         <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-            {/* <StatusBar backgroundColor='black' /> */}
+            <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
             <LinearGradient
                 // Button Linear Gradient
                 colors={["black", Colors.dark.colors.backGroundColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Gradient_H, backgroundColor: Colors.dark.colors.componentColor }} />
-            {/* <StatusBar backgroundColor='black' /> */}
             {/* <LinearGradient
             // Button Linear Gradient
             colors={["black", "black", Colors.dark.colors.backGroundColor, Colors.dark.colors.componentColor, Colors.dark.colors.secComponentColor]} className='bodyBGContainer absolute w-full rounded-b-lg' style={{ height: Dimensions.get('window').height * 0.5, backgroundColor: Colors.dark.colors.componentColor }}
@@ -255,10 +255,10 @@ export default function HomeSeller({ navigation }) {
                                 <View>
                                     <View className=' flex-row'>
                                         {/* {console.log(userData.name)} */}
-                                        <Text numberOfLines={1} ellipsizeMode='tail' className=' text-xl font-bold' style={{ color: Colors.dark.colors.mainTextColor }}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
+                                        <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
                                         <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
                                     </View>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className=' text-base font-normal' style={{ color: Colors.dark.colors.textColor }}>{userData.name ? userData.role : "UserRole"}</Text>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
                                 </View>
                             </View>
                             <View className='address flex-row gap-2 items-center'>
@@ -269,12 +269,12 @@ export default function HomeSeller({ navigation }) {
 
                         <View className='pt-7 px-4'>
                             <View className='flex-row items-center'>
-                                
-                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>How</Text>
-                                <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.diffrentColorOrange }}> Our App</Text>
+
+                                <Text style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>How</Text>
+                                <Text style={[fontstyles.h1, { color: Colors.dark.colors.diffrentColorOrange }]}> Our App</Text>
                             </View>
 
-                            <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: Colors.dark.colors.mainTextColor }}>displays it.</Text>
+                            <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>displays it.</Text>
 
                         </View>
                         <View className=' mt-5' >
@@ -291,8 +291,8 @@ export default function HomeSeller({ navigation }) {
                 <View style={styles.verticalScrollContainer}>
                     {/* ---------------------- Added ---------------------- */}
 
-                    <View style={{ height: Dimensions.get('window').height * 0.08 }}>
-                        <Titles title={"Your Offerings"} width={60} />
+                    <View className='mx-4 pt-6 overflow-hidden' style={{ height: Dimensions.get('window').height * 0.08 }}>
+                        <Titles title={"Your Offerings"} width={80} />
                     </View>
 
                     <View className='searchBodyContainer flex-row justify-between my-3' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
@@ -304,18 +304,19 @@ export default function HomeSeller({ navigation }) {
                         </TouchableOpacity>
                     </View>
                     <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
-                        <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
-                            <Text style={{  fontFamily: fontFamilies.bold, fontSize: Size.size.mediumText, color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>All Items </Text>
-                            <Text className='font-light text-sm' style={{ color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                        <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
+                            {/* {console.log(newItem)} */}
+                            <Text style={[fontstyles.number, { color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }]}>All Items </Text>
+                            {/* <Text style={[fontstyles.entryUpper, { color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }]}>(12)</Text> */}
                             {/* <Ionicons name="options-outline" size={18} color={Colors.dark.colors.mainTextColor} /> */}
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => setSortItem('InStock')} className='flex-row justify-center items-center rounded-xl py-2 px-2' style={{ borderColor: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>In Stock </Text>
-                            <Text className='font-light text-sm' style={{ color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                        <TouchableOpacity onPress={() => setSortItem('InStock')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
+                            <Text style={[fontstyles.number, { color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }]}>In Stock </Text>
+                            {/* <Text style={[fontstyles.number, { color: sortItem == 'InStock' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }]}>(12)</Text> */}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => setSortItem('SoldOut')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
-                            <Text className='font-semibold text-base' style={{ color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }}>Sold Out </Text>
-                            <Text className='font-light text-sm' style={{ color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text>
+                            <Text style={[fontstyles.number, { color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }]}>Sold Out </Text>
+                            {/* <Text className='font-light text-sm' style={{ color: sortItem == 'SoldOut' ? Colors.dark.colors.diffrentColorPerpleBG : Colors.dark.colors.textColor }}>(12)</Text> */}
                         </TouchableOpacity>
                     </View>
 
@@ -324,12 +325,12 @@ export default function HomeSeller({ navigation }) {
                     <FlatList
                         data={(() => {
                             if (sortItem === 'InStock') {
-                                return newItem.map(category => ({
+                                return newItem?.map(category => ({
                                     ...category,
                                     items: category.items.filter(item => item.status === true)
                                 }));
                             } else if (sortItem === 'SoldOut') {
-                                return newItem.map(category => ({
+                                return newItem?.map(category => ({
                                     ...category,
                                     items: category.items.filter(item => item.status === false)
                                 }));
@@ -337,24 +338,24 @@ export default function HomeSeller({ navigation }) {
                                 return newItem;
                             }
                         })()}
-                        renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
-                        keyExtractor={(item, index) => index.toString()} // Example key extractor, adjust as needed
+                        renderItem={({ item, index }) => dropDown(index, fontstyles, item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
+                        keyExtractor={(item, index) => `${item.item}_${index}`} // Example key extractor, adjust as needed
                         ListFooterComponent={
                             <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                                 <View className='gap-3' >
-                                    <Text className='font-black text-lg -mb-1' style={{ color: Colors.dark.colors.textColor }}>
+                                    <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>
                                         Disclaimer:
                                     </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         Be mindful of portion sizes, especially when dining out, as restaurant portions are often larger than necessary.
                                     </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         Not all fats are bad. Omega-3 fatty acids, found in fish, flaxseeds, and walnuts, are beneficial for heart health.
                                     </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         The average adult needs about 8 cups (2 liters) of water per day, but individual needs may vary based on activity level, climate, and overall health.
                                     </Text>
-                                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
                                         An average active adult requires 2,000 kcal of energy per day; however, calorie needs may vary.
                                     </Text>
                                 </View>
@@ -362,7 +363,7 @@ export default function HomeSeller({ navigation }) {
                                 <TouchableOpacity className='flex-row justify-between items-center py-3'>
                                     <View className='flex-row items-center'>
                                         <Ionicons color={'red'} name={'alert-circle-outline'} size={22} />
-                                        <Text className='font-black text-lg' style={{ color: 'red' }}> Report an issue with the menu</Text>
+                                        <Text style={[fontstyles.h4, { color: 'red' }]}> Report an issue with the menu</Text>
                                     </View>
                                     <Ionicons color={'red'} name={'caret-forward-outline'} size={22} />
                                 </TouchableOpacity>
@@ -370,11 +371,11 @@ export default function HomeSeller({ navigation }) {
                                 <View>
                                     <Image
                                         source={require("./../Data/fssai.png")}
-                                        defaultSource={require('./../../assets/favicon.png')}
+                                        defaultSource={require('./../../assets/store.jpg')}
                                         className='w-14 h-11'
                                         alt="Logo"
                                     />
-                                    <Text className='font-semibold text-base' style={{ color: Colors.dark.colors.textColor }}>Lic. No. 11521055001181</Text>
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>Lic. No. 11521055001181</Text>
                                 </View>
                             </View>
                         }
@@ -387,50 +388,16 @@ export default function HomeSeller({ navigation }) {
 
             </Animated.ScrollView>
             {RenderModel({ type: { type } })}
-            {showToast && <ToastNotification title={"Info"} description={"Menu updated successfully"} />}
+            {RenderModel_UpModelScreen()}
+            {showToast && (
+                <ToastNotification
+                    title="Success!"
+                    description="Status updated successfully."
+                    showToast={showToast}
+                />
+            )}
         </View>
     );
-
-    // return (
-    //     <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-    //         <ListCard_Self2 item={YouRestorent} />
-    //     </View>
-    //     // <View style={styles.container}>
-    //     //     <TextInput
-    //     //         style={styles.textInput}
-    //     //         placeholder="Enter Outlet Name"
-    //     //         placeholderTextColor={Colors.dark.colors.textColor}
-    //     //         value={name}
-    //     //         onChangeText={setName}
-    //     //     />
-    //     //     <TextInput
-    //     //         style={styles.textInput}
-    //     //         placeholder="Enter Location"
-    //     //         placeholderTextColor={Colors.dark.colors.textColor}
-    //     //         value={location}
-    //     //         onChangeText={setLocation}
-    //     //     />
-    //     //     <TextInput
-    //     //         style={styles.textInput}
-    //     //         placeholder="Enter Cuisine"
-    //     //         placeholderTextColor={Colors.dark.colors.textColor}
-    //     //         value={cuisine}
-    //     //         onChangeText={setCuisine}
-    //     //     />
-    //     //     <TouchableOpacity onPress={handleSubmit} style={styles.addButton}>
-    //     //         <Text style={styles.addButtonText}>ADD</Text>
-    //     //     </TouchableOpacity>
-    //     //     <FlatList
-    //     //         data={outlets}
-    //     //         keyExtractor={(item) => item._id}
-    //     //         renderItem={({ item }) => (
-    //     //             <View style={styles.outletItem}>
-    //     //                 <Text style={styles.outletText}>{item.name} - {item.location} - {item.cuisine}</Text>
-    //     //             </View>
-    //     //         )}
-    //     //     />
-    //     // </View>
-    // );
 }
 
 const styles = StyleSheet.create({
@@ -442,9 +409,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        // paddingVertical: 8, // Adjust padding instead of fixed height
-        // paddingHorizontal: 10, // Add padding for horizontal space
-        // backgroundColor: '#114232',
     },
     container: {
         flex: 1,
@@ -494,8 +458,8 @@ const styles = StyleSheet.create({
     verticalScrollContainer: {
         // marginTop: Dimensions.get('window').height * 0.1,
         // minHeight: Dimensions.get('window').height * 3,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         flex: 1,
         // backgroundColor: 'white',
         backgroundColor: Colors.dark.colors.backGroundColor, // bg color

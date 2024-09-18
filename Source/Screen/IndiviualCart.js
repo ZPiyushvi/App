@@ -10,6 +10,9 @@ import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { removeStoreFromCart } from '../Components/removeStoreFromCart';
 import useIncrementHandler from '../Components/handleIncrement';
 import { API_BASE_URL, ORDERS_ENDPOINT } from '../Constants/Constants';
+import TextStyles from '../Style/TextStyles';
+import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native';
 
 const Cart = ({ route }) => {
 
@@ -19,7 +22,6 @@ const Cart = ({ route }) => {
   // const { item } = route.params;
 
   async function createOrder(orderData) {
-    console.log('orderData', orderData)
 
     try {
       const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
@@ -179,8 +181,8 @@ const Cart = ({ route }) => {
         <View className='flex-row w-full' >
           <View className=' absolute right-3'>
             {item.status ?
-              <Text className='font-black text-base uppercase' style={{ color: Colors.dark.colors.diffrentColorGreen }}>InStock</Text>
-              : <Text className='font-black text-base uppercase' style={{ color: Colors.dark.colors.diffrentColorRed }}>SoldOut</Text>
+              <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorGreen }]}>InStock</Text>
+              : <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>
             }
           </View>
 
@@ -194,7 +196,7 @@ const Cart = ({ route }) => {
                   Pragma: 'no-cache',
                 },
               }}
-              defaultSource={require('./../../assets/favicon.png')}
+              defaultSource={require('./../../assets/menu.jpg')}
               resizeMode="cover"
               alt="Logo"
               className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'
@@ -202,11 +204,11 @@ const Cart = ({ route }) => {
             />
           </View>
           <View className=' w-9/12 px-3'>
-            <Text className='font-black text-base' numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.mainTextColor }}>{item.item}</Text>
-            <Text className='font-normal text-sm' style={{ color: Colors.dark.colors.textColor }}>Quantity: {item.quantity} * ₹{item.price}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>{item.item}</Text>
+            <Text style={[fontstyles.h6, { color: Colors.dark.colors.textColor }]}>Quantity: {item.quantity} * ₹{item.price}</Text>
             <View className=' flex-row justify-between w-full '>
               <View className='flex-1 justify-end'>
-                <Text className='font-normal text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                   ₹{item.price * item.quantity}
                 </Text>
               </View>
@@ -220,7 +222,7 @@ const Cart = ({ route }) => {
                     <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
                       <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
                     </TouchableOpacity>
-                    <Text className=' uppercase text-base font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{item.quantity}</Text>
+                    <Text className='text-base font-black text-center' style={{ color: item.status ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.quantity}</Text>
                     <TouchableOpacity onPress={() => { handleIncrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 right-0 absolute w-6/12 items-center'>
                       <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
                     </TouchableOpacity>
@@ -277,7 +279,7 @@ const Cart = ({ route }) => {
             const { name, username } = userData;
 
             if (orders.length !== 0) {
-              console.log('userDatammmmm', userData)
+              
               createOrder({
                 id: Date.now().toString(),
                 items: item,
@@ -324,7 +326,7 @@ const Cart = ({ route }) => {
     } else {
       console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
-      console.log('userDatammmmm', userData.contactinfo)
+     
       // const { name, username } = userData;
 
       createOrder({
@@ -365,27 +367,16 @@ const Cart = ({ route }) => {
       removeStoreFromCart(item.name, setCartItemsNEW);
       navigation.navigate("Orders");
     }
-
-    console.log('History', item.name)
   };
 
 
+  const fontstyles = TextStyles();
 
   return (
     // View style={{backgroundColor: Colors.dark.colors.backGroundColor}}
-    <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-      <View className=' p-2 flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={{ paddingHorizontal: 10 }}>
-          <Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-        <View className='flex-row items-center'>
+    <SafeAreaView className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
 
-          <Text numberOfLines={1} ellipsizeMode='tail' className='text-2xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{item?.name}</Text>
-        </View>
-        <TouchableOpacity className='p-2'>
-          <Ionicons name="arrow-redo-outline" size={24} color={Colors.dark.colors.mainTextColor} />
-        </TouchableOpacity>
-      </View>
+      <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <ScrollView>
         <View className=' p-5 h-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
@@ -394,22 +385,22 @@ const Cart = ({ route }) => {
             <View className='p-3 flex-row' >
               <Ionicons name="bag-check-outline" size={24} color={Colors.dark.colors.mainTextColor} />
               <View className=' ml-3 flex-row'>
-                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>You have </Text>
-                <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>You have </Text>
+                <Text style={[fontstyles.number, { marginTop: 3, color: Colors.dark.colors.mainTextColor }]}>
                   {totalQuantity} {totalQuantity > 1 ? 'items' : 'item'}
                 </Text>
-                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}> in your list</Text>
+                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}> in your list</Text>
               </View>
             </View>
             <View className='flex-row p-3' >
               <Ionicons name="document-text-outline" size={24} color={Colors.dark.colors.mainTextColor} />
               <View className=' ml-3'>
                 <View className='flex-row'>
-                  <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Note for the outlet </Text>
+                  <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Note for the outlet </Text>
                   {/* <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>₹{totalPrice}</Text> */}
                 </View>
                 <TextInput
-                  className='font-medium text-base'
+                  className='font-medium text-sm'
                   style={{ color: Colors.dark.colors.textColor }}
                   value={massage}
                   multiline={true}
@@ -439,8 +430,8 @@ const Cart = ({ route }) => {
             <View className='p-3 flex-row' >
               <Ionicons name="timer-outline" size={24} color={Colors.dark.colors.mainTextColor} />
               <View className=' ml-3 flex-row'>
-                <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Average Time is </Text>
-                <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>20 mins</Text>
+                <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Average Time is </Text>
+                <Text style={[fontstyles.number, { marginTop: 3, color: Colors.dark.colors.mainTextColor }]}>20 mins</Text>
               </View>
             </View>
 
@@ -449,10 +440,10 @@ const Cart = ({ route }) => {
                 <Ionicons name="receipt-outline" size={24} color={Colors.dark.colors.mainTextColor} />
                 <View className=' ml-3'>
                   <View className='flex-row'>
-                    <Text className='font-medium text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Total Bill </Text>
-                    <Text className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>₹{totalPrice}</Text>
+                    <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Total Bill </Text>
+                    <Text style={[fontstyles.number, { marginTop: 2, color: Colors.dark.colors.mainTextColor }]}>₹{totalPrice}</Text>
                   </View>
-                  <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>Incl. taxes, charges & donation</Text>
+                  <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>Incl. taxes, charges & donation</Text>
                 </View>
               </View>
               <View className='absolute top-3 right-3 items-end'>
@@ -462,8 +453,8 @@ const Cart = ({ route }) => {
           </View>
 
           <View className='mt-4 mb-24'>
-            <Text className='font-semibold text-xl spacing tracking-[4]' style={{ color: Colors.dark.colors.textColor }}>CANCELLATION POLICY</Text>
-            <Text className='mt-1 font-medium text-sm' style={{ color: Colors.dark.colors.textColor }}>
+            <Text className='spacing tracking-[4]' style={[fontstyles.entryUpper, { color: Colors.dark.colors.textColor }]}>CANCELLATION POLICY</Text>
+            <Text className='mt-1' style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>
               Help us reduce food waste by avoiding cancellations after placing your order. A 100% cancellation fee will be applied.
             </Text>
           </View>
@@ -475,17 +466,19 @@ const Cart = ({ route }) => {
 
       <View className=' p-5 rounded-t-2xl flex-row items-center w-full justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
         <View>
-          <Text className='text-xl font-black' style={{ color: Colors.dark.colors.diffrentColorOrange }}>₹{totalPrice}</Text>
-          <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>View Detailed Bill</Text>
+          <View className=' flex-row'>
+            <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.diffrentColorOrange }]}>₹{totalPrice.toFixed(2)}</Text>
+          </View>
+          <Text className='font-medium text-base' style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>TOTAL</Text>
         </View>
         {/* {console.log(today, getFormattedDate(today))} */}
         <TouchableOpacity
           onPress={() => handleProceedPayment(item)}
-          className=' p-3 flex-row justify-center items-center rounded-xl' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
-          <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Proceed to Pay</Text>
+          className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
+          <Text style={[ fontstyles.number, { fontSize: 18,  color: Colors.dark.colors.mainTextColor }]}>Proceed to Pay</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

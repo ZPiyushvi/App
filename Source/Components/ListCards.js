@@ -4,8 +4,11 @@ import Colors from "./Colors";
 import Icons from "./Icons";
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import { mockCampusShops } from "../Data/mockCampusShops";
 import TruncatedTextComponent from "./TruncatedTextComponent";
+import TextStyles from "../Style/TextStyles";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import { useContext } from "react";
+import { GlobalStateContext } from "../Context/GlobalStateContext";
 
 const { StarIcon, CarIcon } = Icons();
 
@@ -55,7 +58,7 @@ const InProgress = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/store.jpg')}
                             className=' w-full h-44'
                             alt="Logo"
                         />
@@ -109,7 +112,7 @@ export const ListCard_Self1 = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/store.jpg')}
                         className=' h-full w-7/12 rounded-xl'
                         style={{ borderWidth: 2, borderColor: Colors.dark.colors.backGroundColor }}
                         alt="Logo"
@@ -157,7 +160,7 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
                                     Pragma: 'no-cache',
                                 },
                             }}
-                            defaultSource={require('./../../assets/favicon.png')}
+                            defaultSource={require('./../../assets/store.jpg')}
                             className=' w-full h-full mr-2'
                             alt="Logo"
                         >
@@ -199,11 +202,15 @@ export const ListCard_Self3 = ({ item, hide_Model }) => {
     );
 }
 
-export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
+
+export const ListCard_Self2 = ({ index, item, hide_Model, onPress }) => {
+    const fontstyles = TextStyles();
+
     const navigation = useNavigation();
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+
     return (
         item == 'null' ?
             <TouchableOpacity activeOpacity={1}
@@ -220,97 +227,99 @@ export const ListCard_Self2 = ({ item, hide_Model, onPress }) => {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <Text className=' text-2xl font-black' style={{ color: Colors.dark.colors.textColor }}>You don't have store?</Text>
-                            <Text className=' text-xl font-black' style={{ color: Colors.dark.colors.textColor }}>Add Now!</Text>
+                            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>You don't have store?</Text>
+                            <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.textColor }]}>Add Now!</Text>
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
             :
-            <TouchableOpacity activeOpacity={1}
-                onPress={() => {
-                    hide_Model?.();
-                    onPress ? onPress() : navToDetails(item);
-                }}
-            >
-                <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-                    <TouchableOpacity activeOpacity={1}
-                        onPress={() => {
-                            // hide_Model?.();
-                            onPress ? onPress() : navToDetails(item);
-                        }}
-                    >
-                        <View className='overflow-hidden' style={styles.foodItemContainer}>
-                            <ImageBackground
-                                source={{
-                                    uri: item.image,
-                                    method: 'POST',
-                                    headers: {
-                                        Pragma: 'no-cache',
-                                    },
-                                }}
-                                defaultSource={require('./../../assets/favicon.png')}
-                                className=' h-full w-full overflow-hidden'
-                                alt="Logo"
-                                resizeMode='cover'
-                                style={{ flex: 1, justifyContent: 'center', }}
-                            >
-                                <LinearGradient
-                                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
-                                    className='overflow-hidden h-full w-full'
-                                    colors={['transparent', Colors.dark.colors.backGroundColor]}
+            <Animated.View entering={FadeInDown.delay(index*100).springify().damping(12)}>
+                <TouchableOpacity activeOpacity={1}
+                    onPress={() => {
+                        hide_Model?.();
+                        onPress ? onPress() : navToDetails(item);
+                    }}
+                >
+                    <View className='flex-row mb-2 drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+                        <TouchableOpacity activeOpacity={1}
+                            onPress={() => {
+                                // hide_Model?.();
+                                onPress ? onPress() : navToDetails(item);
+                            }}
+                        >
+                            <View className='overflow-hidden' style={styles.foodItemContainer}>
+                                <ImageBackground
+                                    source={{
+                                        uri: item.image,
+                                        method: 'POST',
+                                        headers: {
+                                            Pragma: 'no-cache',
+                                        },
+                                    }}
+                                    defaultSource={require('./../../assets/store.jpg')}
+                                    className=' h-full w-full overflow-hidden'
+                                    alt="Logo"
+                                    resizeMode='cover'
+                                    style={{ flex: 1, justifyContent: 'center', }}
                                 >
-                                </LinearGradient>
-                                <View className='absolute bottom-2 right-2'>
-                                    <View className='flex-row justify-center items-center'>
-                                        {item.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                                        <Text className='ml-1 font-medium text-base' style={{ color: Colors.dark.colors.textColor }}>{item.type}</Text>
+                                    <LinearGradient
+                                        start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                                        className='overflow-hidden h-full w-full'
+                                        colors={['transparent', Colors.dark.colors.backGroundColor]}
+                                    >
+                                    </LinearGradient>
+                                    <View className='absolute bottom-2 right-2'>
+                                        <View className='flex-row justify-center items-center'>
+                                            {item.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                                            <Text className='ml-1' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.type}</Text>
+                                        </View>
                                     </View>
-                                </View>
-                            </ImageBackground>
-                        </View>
-                    </TouchableOpacity>
-
-                    <LinearGradient
-                        start={{ x: 0.0, y: 0.25 }} end={{ x: 0.8, y: 1 }}
-                        colors={['transparent', Colors.dark.colors.backGroundColor]}
-                        className=' -ml-1 flex-1 justify-center '
-                    >
-                        <Text numberOfLines={1} ellipsizeMode='middle' className='font-black text-xl' style={{ color: Colors.dark.colors.diffrentColorOrange }}>
-                            {/* {item.name} */}
-                            {item.name}
-                        </Text>
-                        <View className='flex-row'>
-                            <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
-                                {StarIcon()}
-                                <Text className=' text-base font-semibold' style={{ color: Colors.dark.colors.mainTextColor }}> {item.rating} ({item.ratingcount}+)</Text>
+                                </ImageBackground>
                             </View>
-                        </View>
-                        <View className='font-extralight text-sm flex-row items-center' >
-                            {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text> */}
-                            {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                            <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text>
-                            {/* {console.log('menuType', item.menuType)} */}
-                            {item.menuType.map((item, index) => (
+                        </TouchableOpacity>
+
+                        <LinearGradient
+                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.8, y: 1 }}
+                            colors={['transparent', Colors.dark.colors.backGroundColor]}
+                            className=' -ml-1 flex-1 justify-center '
+                        >
+                            <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
+                                {/* {item.name} */}
+                                {item.name}
+                            </Text>
+                            <View className='flex-row'>
+                                <View className='rounded-xl justify-center items-center flex-row' style={{ height: Dimensions.get('window').height * 0.04 }}>
+                                    {StarIcon()}
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}> {item.rating} ({item.ratingcount}+)</Text>
+                                </View>
+                            </View>
+                            <View className='font-extralight text-sm flex-row items-center' >
+                                {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base '>{item.type}</Text> */}
+                                {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
+                                {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text> */}
+                                {/* {console.log('menuType', item.menuType)} */}
+                                {item.menuType.map((item, index) => (
                                     <View className=' flex-row items-center'>
                                         {/* {console.log(index)} */}
                                         {index == 0 ? null : <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />}
-                                        <Text className='font-medium text-base' style={{ color: Colors.dark.colors.textColor }}> {item} </Text>
+                                        <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {item} </Text>
                                     </View>
                                 ))}
-                        </View>
-                        <LinearGradient
-                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
-                            colors={[Colors.dark.colors.backGroundColor, 'transparent']}
-                            className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
-                        >
-                            {CarIcon()}
-                            <Text numberOfLines={1} ellipsizeMode='tail' style={{ color: Colors.dark.colors.diffrentColorPerple }} className=' font-black uppercase text'>  {item.location.split(',')[0]}</Text>
-                        </LinearGradient>
+                            </View>
+                            <LinearGradient
+                                start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}
+                                colors={[Colors.dark.colors.backGroundColor, 'transparent']}
+                                className=' w-44 mt-4 font-semibold text-sm flex-row items-center p-2 rounded-l-full flex'
+                            >
+                                {CarIcon()}
+                                <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.number, { textTransform: 'uppercase', color: Colors.dark.colors.diffrentColorPerple }]}>  {item.location.split(',')[0]}</Text>
+                            </LinearGradient>
 
-                    </LinearGradient>
-                </View>
-            </TouchableOpacity>
+                        </LinearGradient>
+                    </View>
+                </TouchableOpacity>
+            </Animated.View>
     );
 }
 
@@ -322,26 +331,28 @@ export const ListCard_Menu_Self2 = ({ item, hide_Model }) => {
     return (
         <>
             {/* {console.log(item.availability)} */}
-            {/* navToDetails(mockCampusShops.find(shop => shop.name === avail.name))} */}
             <FlatList
                 showsVerticalScrollIndicator={false}
                 keyboardDismissMode='on-drag'
                 data={item.availability} //campusShops
-                renderItem={({ item }) => <ListCard_Z item={item} navigationMenu={true} hide_Model={hide_Model} />}
+                renderItem={({ item, index }) => <ListCard_Z index={index} item={item} navigationMenu={true} hide_Model={hide_Model} />}
                 // renderItem={({ item }) => {console.log(item.location)}}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => `${index}_${item.name}`}
             />
         </>
     );
 }
 
-export const ListCard_Z = ({ item, hide_Model, navigationMenu }) => {
+export const ListCard_Z = ({ index, item, hide_Model, navigationMenu }) => {
     const navigation = useNavigation();
+    const {outletsNEW} = useContext(GlobalStateContext);
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+    
     return (
-        <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(navigationMenu ? mockCampusShops.find(shop => shop.name === item.name) : item) }}>
+        <Animated.View entering={FadeInDown.delay(100).springify().damping(12)}>
+        <TouchableOpacity onPress={() => { hide_Model?.(), navToDetails(navigationMenu ? outletsNEW.find(shop => shop.name === item.name) : item)}} activeOpacity={1}>
             <LinearGradient
                 className='mb-2 drop-shadow-2xl overflow-hidden p-2'
                 colors={[Colors.dark.colors.secComponentColor, Colors.dark.colors.componentColor]}
@@ -355,7 +366,7 @@ export const ListCard_Z = ({ item, hide_Model, navigationMenu }) => {
                             Pragma: 'no-cache',
                         },
                     }}
-                    defaultSource={require('./../../assets/favicon.png')}
+                    defaultSource={require('./../../assets/store.jpg')}
                     className=' h-full w-full overflow-hidden '
                     alt="Logo"
                     resizeMode='cover'
@@ -399,6 +410,7 @@ export const ListCard_Z = ({ item, hide_Model, navigationMenu }) => {
                 </ImageBackground>
             </LinearGradient>
         </TouchableOpacity>
+        </Animated.View>
     );
 }
 
@@ -407,6 +419,7 @@ export const ListCard_S = ({ item, hide_Model }) => {
     const navToDetails = (item) => {
         navigation.navigate("Details", { Data: item });
     };
+
     return (
         // <Text>{item.type}</Text>
         <TouchableOpacity activeOpacity={1} onPress={() => { hide_Model?.(), navToDetails(item) }}>
@@ -426,7 +439,7 @@ export const ListCard_S = ({ item, hide_Model }) => {
                                 Pragma: 'no-cache',
                             },
                         }}
-                        defaultSource={require('./../../assets/favicon.png')}
+                        defaultSource={require('./../../assets/store.jpg')}
                         style={styles.CardImageBG}
                         resizeMode="cover">
                         <View style={styles.CardRatingContainer}>
@@ -571,15 +584,8 @@ const styles = StyleSheet.create({
     },
 
     shadowProp: {
-        backgroundColor: 'rgba(180, 180, 180, 0.1)',
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 12,
-        // },
-        // shadowOpacity: 0.58,
-        // shadowRadius: 16.00,
-        elevation: 30,
-
+        backgroundColor: Colors.dark.colors.shadowcolor,
+        elevation: 5,
     },
     foodItemCollectionContainer: {
         marginHorizontal: Dimensions.get('window').width * 0.07,

@@ -28,15 +28,15 @@ const useShopStatus = (openingTime, closingTime, offDays, leaveDayString) => {
     if (leaveDays.includes(current.format('dddd'))) {
       setStatus({
         text: `Today, the shop is under maintenance. It will resume operations on ${moment(leaveDays[leaveDays.length - 1], 'dddd').add(1, 'days').format('dddd, MMMM Do YYYY')} at ${opening.format('h:mm A')}.`,
-        color: ["#FF0000", "#6f0000"],
+        color: ["#FF0000", Colors.dark.colors.backGroundColor], //"#6f0000"
         state: "closedForMaintenance"
       });
     } else if (current.format('dddd') === offDays) {
-      setStatus({ text: `We're closed today. But don't worry and come back tomorrow.`, color: ["#FF0000", "#6f0000"], state: "closed" });
+      setStatus({ text: `We're closed today. But don't worry and come back tomorrow.`, color: ["#FF0000", Colors.dark.colors.backGroundColor], state: "closed" });
     } else if (current.isBetween(opening, closing)) {
       setStatus({ text: "We're open and ready to serve! Dive into our menu now and enjoy a delicious meal!", color: ['#00FF00', '#1A4314'], state: "open" });
     } else {
-      setStatus({ text: "Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place", color: ["#FF0000", "#6f0000"], state: "closed" });
+      setStatus({ text: "Oops! You missed it! Closed for now, but we'll return tomorrow, same spot, same place", color: ["#FF0000",Colors.dark.colors.backGroundColor], state: "closed" });
     }
   };
 

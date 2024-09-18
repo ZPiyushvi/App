@@ -1,17 +1,20 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, Button, ScrollView, Image, StatusBar, Dimensions, FlatList } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, FlatList, StatusBar } from 'react-native';
 // import { GlobalStateContext } from '../Context/GlobalStateContext';
 import Colors from '../Components/Colors';
-import { Ionicons } from '@expo/vector-icons';
-import TruncatedTextComponent from '../Components/TruncatedTextComponent';
 import { useNavigation } from '@react-navigation/native';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { avalableLanguages } from '../Data/avalableLanguages';
 import LangContent from '../Components/RenderLangContent';
 import RenderStatusContent from '../Components/RenderStatusContent';
+import RenderCartContent from '../Components/RenderCartContent';
 import { availableStatus } from '../Data/availableStatus';
+import TextStyles from '../Style/TextStyles';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 
 export default function ModelScreen() {
+    const fontstyles = TextStyles();
+
     const navigation = useNavigation();
     const [visible, setVisible] = useState(false);
     const { CartItems, updatedCartWithDetails, cartItemsNEW } = useContext(GlobalStateContext);
@@ -27,7 +30,7 @@ export default function ModelScreen() {
             } else if (type.type === "status") {
                 return 'Select Status';
             } else {
-                return `Your Carts ${cartItemsNEW.length}`;
+                return `Your Carts (${cartItemsNEW.length})`;
             }
         };
 
@@ -42,20 +45,21 @@ export default function ModelScreen() {
         };
 
         return (
-            <>
-                {/* <StatusBar hidden /> */}
+            <View>
+                <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
                 <Modal
+                    // animationType="slide"
                     visible={visible}
                     onRequestClose={hide}
-                    animationType="fade"
+                    animationType='fade'
                     transparent
                 >
-                    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(355, 355, 355, 0.3)' }}>
+                    <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                         <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide() }} />
 
-                        <View className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <Animated.View entering={SlideInDown.duration(300)} className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
                             <View className='flex-row justify-between p-1 pb-3 items-center'>
-                                <Text style={{ color: Colors.dark.colors.mainTextColor, fontWeight: 'bold', fontSize: 20 }}>
+                                <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>
                                     {/* {type.type === "lang" ? "Select Language" : `Your Carts ${cartItemsNEW.length}`} */}
                                     {getText()}
                                 </Text>
@@ -75,7 +79,7 @@ export default function ModelScreen() {
                                     } else if (type.type === "status") {
                                         return <RenderStatusContent item={item} selected={selectedStatus} setSelected={setSelectedStatus} setVisible={setVisible} navigation={navigation} />;
                                     } else {
-                                        return <RenderCartItem item={item} setVisible={setVisible} navigation={navigation} />;
+                                        return <RenderCartContent item={item} setVisible={setVisible} navigation={navigation} />;
                                     }
                                 }}
                             />
@@ -92,11 +96,11 @@ export default function ModelScreen() {
                                 />
                             )
                         } */}
-                        </View>
+                        </Animated.View>
 
                     </View>
                 </Modal>
-            </>
+            </View>
         )
     };
 

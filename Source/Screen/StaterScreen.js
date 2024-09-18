@@ -15,6 +15,7 @@ import Colors from '../Components/Colors';
 import Size from '../Components/Size';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
 import { useContext } from 'react';
+import TextStyles from '../Style/TextStyles';
 
 const { width } = Dimensions.get('window');
 const AnimatedAntDesign = Animated.createAnimatedComponent(AntDesign);
@@ -41,18 +42,18 @@ const colors = [
 
 const quotes = [
   {
-    normaltitle: 'Welcome to ',
+    normaltitle: 'Welcome to',
     quote: 'Foodie Fiesta! 🍔🍕🥗',
     author: "Indulge in a culinary adventure with an incredible selection of dishes from the best spots in town. Discover new flavors and enjoy your all-time favorites, all in one place!",
   },
   {
-    quote: "Customize👨‍🍳🧤🍽️",
-    normaltitle: "to Your Heart's Content",
+    normaltitle: "Customize 👨‍🍳🧤🍽️",
+    quote: "to Your Heart's Content",
     author: 'Make every meal uniquely yours with a plethora of add-ons! Whether you crave extra cheese, spicy sauces, or a healthy side, tailor your order to perfection.',
   },
   {
-    normaltitle: "Pick up your meal",
-    quote: "without waiting 📆⏳🕜👀",
+    normaltitle: "Pick up your meal 📆⏳🕜👀",
+    quote: "without waiting ",
     author: "Say goodbye to long waits and hello to convenience! Pick up your food exactly when you want it, ensuring it's fresh and hot every time.",
   },
 ];
@@ -185,7 +186,7 @@ export default function StaterScreen() {
 
   const onPress = () => {
     if (index === quotes.length - 1) {
-      navigation.navigate("RoleSelection");
+      navigation.navigate("LoginNavigationStack");
     } else {
       animatedValue.setValue(0);
       animatedValue2.setValue(0);
@@ -196,6 +197,8 @@ export default function StaterScreen() {
   if (!fontFamilies) {
     return null;
   }
+
+  const fontstyles = TextStyles();
 
   return (
     <View className='w-full h-full pt-32'>
@@ -231,21 +234,23 @@ export default function StaterScreen() {
         {quotes.slice(0, colors.length).map(({ quote, author, normaltitle }, i) => {
           return (
             <View className='p-3' style={{ paddingRight: width, width: width * 2 }} key={i}>
+                <StatusBar backgroundColor='transparent'/>
+
               <Text
-                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.titleText, color: colors[i].nextBgColor }}
+                style={[fontstyles.entryUpper, {color: colors[i].nextBgColor }]}
               >
                 {normaltitle}
               </Text>
               <Text
-                className=' pt-1'  style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.headerText, color: colors[i].nextBgColor }}
+                className=' pt-1'  style={[fontstyles.h1, {color: colors[i].nextBgColor }]}
               >
                 {quote}
               </Text>
               <Text
                 className=' pt-5'
-                style={{ fontFamily: fontFamilies.bold, fontSize: Size.size.largeText,
+                style={[fontstyles.h3, {
                   color: Colors.dark.colors.mainTextColor,
-                }}
+                }]}
               >
                 {author}
               </Text>
