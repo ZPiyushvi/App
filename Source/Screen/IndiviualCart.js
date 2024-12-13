@@ -132,7 +132,7 @@ const Cart = ({ route }) => {
   }
 
   const renderItem = ({ item, index }) => (
-    <View key={`${index}-${item.name}`} className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+    <View key={`${index}-${item.id}`} className='p-3 py-6 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
       <View className='flex-row items-center' >
         {
           item.type &&
@@ -177,7 +177,7 @@ const Cart = ({ route }) => {
 
   const renderItem2 = ({ item, index, hotelId }) => (
     <>
-      <View key={item.id} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+      <View key={`${index}-${item.id}`}  className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
         {/* {console.log('[...item.orders, item.id]', { orders: item.orders, id: hotelId })} */}
         <View className='flex-row w-full' >
           <View className=' absolute right-3'>

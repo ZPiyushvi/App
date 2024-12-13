@@ -209,7 +209,7 @@ export const ListCard_Self2 = ({ index, item = null, hide_Model, onPress, shopSt
         navigation.navigate("Details", { Data: item });
     };
 
-    const uniqueKey = item === 'null' ? `null-${index}` : item.id || `item-${index}`;
+    const uniqueKey = item === 'null' ? `null-${index}` : `${index}_${item.id}` || `item-${index}`;
 
     return (
         <Animated.View key={uniqueKey} entering={FadeInDown.delay(index * 100).springify().damping(12)}>
@@ -242,7 +242,7 @@ export const ListCard_Self2 = ({ index, item = null, hide_Model, onPress, shopSt
                                 onPress ? onPress() : navToDetails(item);
                             }}
                         > */}
-                        <View key={item.id} className='overflow-hidden' style={styles.foodItemContainer}>
+                        <View className='overflow-hidden' style={styles.foodItemContainer}>
                             <ImageBackground
                                 source={{
                                     uri: item.image,
@@ -298,13 +298,20 @@ export const ListCard_Self2 = ({ index, item = null, hide_Model, onPress, shopSt
                                 {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
                                 {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-base'>{item.menutype}</Text> */}
                                 {/* {console.log('menuType', item.menuType)} */}
+                                
                                 {item.menuType.map((item, index) => (
-                                    <View className=' flex-row items-center'>
+                                    <View key={`menuType-${index}`} className=' flex-row items-center'>
                                         {/* {console.log(index)} */}
                                         {index == 0 ? null : <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />}
                                         <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {item} </Text>
                                     </View>
                                 ))}
+                                {/* {item.menuType.map((menuItem, menuIndex) => (
+                                    <View key={`menuType-${menuIndex}`} className='flex-row items-center'>
+                                        {menuIndex !== 0 && <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />}
+                                        <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {menuItem} </Text>
+                                    </View>
+                                ))} */}
                             </View>
                             <LinearGradient
                                 start={{ x: 0.0, y: 0.25 }} end={{ x: 0.7, y: 1.0 }}

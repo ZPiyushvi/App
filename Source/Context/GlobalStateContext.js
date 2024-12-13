@@ -305,7 +305,7 @@ export const GlobalStateProvider = ({ children }) => {
       const filteredHistory = filterRecentHistory(history);
       const jsonValue = JSON.stringify(filteredHistory);
       await AsyncStorage.setItem('@history', jsonValue);
-      console.log('History stored:', jsonValue);
+      console.log('History Loaded'); //jsonValue
     } catch (e) {
       console.error("Error saving history", e);
     }
@@ -314,7 +314,7 @@ export const GlobalStateProvider = ({ children }) => {
   const loadHistory = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@history');
-      console.log('Loaded history:', jsonValue);
+      console.log('History Loaded',); //jsonValue
       return jsonValue != null ? JSON.parse(jsonValue) : [];
     } catch (e) {
       console.error("Error loading history", e);
@@ -326,7 +326,7 @@ export const GlobalStateProvider = ({ children }) => {
     try {
       const jsonValue = JSON.stringify(cart);
       await AsyncStorage.setItem('@Cart', jsonValue);
-      console.log('Cart stored:', jsonValue);
+      console.log('Cart Updated'); //jsonValue
     } catch (e) {
       console.error("Error saving cart", e);
     }
@@ -349,7 +349,7 @@ export const GlobalStateProvider = ({ children }) => {
       const loadedCart = await loadCart();
       setHistory(filterRecentHistory(loadedHistory));
       setCartItems(loadedCart);
-console.log(CartItems)
+      console.log(CartItems)
       console.log('Loaded Cart on init:', loadedCart);
     })();
   }, []);

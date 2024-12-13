@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler, StatusBar, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -463,7 +453,7 @@ const DetailsScreen = ({ route }) => {
                                             <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {Data.type}</Text>
                                         </View>
                                         {Data.menuType.map((item, index) => (
-                                            <View className=' flex-row items-center'>
+                                            <View key={`menuType-${index}`} className=' flex-row items-center'>
                                                 {/* {console.log(index)} */}
                                                 <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
                                                 <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}> {item} </Text>
@@ -574,7 +564,7 @@ const DetailsScreen = ({ route }) => {
                             {cartItemsNEW.map((item, index) => (
                                 // console.log('item', item),
                                 item.id === Data.id ? ( //dataWithoutMenu.id
-                                    <TouchableOpacity onPress={() => navigation.navigate('IndiviualCart', { item })}>
+                                    <TouchableOpacity key={`${index}`} onPress={() => navigation.navigate('IndiviualCart', { item })}>
                                         <View className=' flex-row items-center justify-between p-4' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} key={`${index}_${item.id}`}>
                                             <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>
                                                 {item?.orders.reduce((acc, order) => acc + order.quantity, 0)}
