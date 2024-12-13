@@ -1,4 +1,5 @@
 // npx nodemon app
+// npx run expo
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -81,7 +82,7 @@ app.post("/login", async (req, res) => {
         }
 
         if (oldUser.role !== role) {
-            return res.status(400).send({ status: "error", data: 'Incorrect role. The appropriate role is ${oldUser.role}' });
+            return res.status(400).send({ status: "error", data: `Incorrect role. The appropriate role is ${oldUser.role}`});
         }
 
         const isPasswordMatch = await bcrypt.compare(password, oldUser.password);

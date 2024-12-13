@@ -211,7 +211,7 @@ const LoginScreen = () => {
           <View className='inputContainer mt-5 flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: password_verify ? Colors.dark.colors.componentColor : Colors.dark.colors.backGroundColor }}>
             <Ionicons name={password_verify ? "extension-puzzle" : "extension-puzzle-outline"} size={22} color={password_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
-              style={[fontstyles.h5, styles.textInput]}
+              style={[styles.textInput]}
               placeholder="Enter your password"
               placeholderTextColor={Colors.dark.colors.textColor}
               secureTextEntry={secureEntry}

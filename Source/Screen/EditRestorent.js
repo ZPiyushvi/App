@@ -55,7 +55,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
       // const updatedMenuType = { ...prevState, category: category.join('_') };
 
       const dataToSend = { menu: editingMenu, token };
-      console.log('Sending data:', dataToSend);
+      console.log('Sending data'); //dataToSend
 
       const response = await fetch(`${API_BASE_URL}:${ADDMENU_ENDPOINT}`, {
         method: "POST",
@@ -83,7 +83,10 @@ const ManageCategoriesScreen = ({ navigation }) => {
   const addCategory = () => {
     const categoryExists = editingMenu.find(menuCategory => menuCategory.title === newCategoryTitle);
 
-    if (!categoryExists) {
+    if (newCategoryTitle == '') {
+      Alert.alert("Incomplete Form", "Please fill in all the required fields before submitting.");
+    }
+    else if (!categoryExists) {
       const newCategory = {
         id: Date.now().toString(),
         title: newCategoryTitle,
@@ -92,17 +95,20 @@ const ManageCategoriesScreen = ({ navigation }) => {
       setEditingMenu([...editingMenu, newCategory]);
       setNewCategoryTitle('');
     } else {
-      Alert.alert('Category exists');
+      Alert.alert("Category Exists", "This category already exists. Please choose a different category name.");
     }
   };
 
   const editCategory = (id, newTitle) => {
+    // Create a new array where only the item with the matching _id is modified.
     const updatedMenu = editingMenu.map(menuCategory => {
-      if (menuCategory._id === id) {
-        return { ...menuCategory, title: newTitle };
+      if (menuCategory.id === id) {
+        return { ...menuCategory, title: newTitle };  // Update the title for the matching category
       }
-      return menuCategory;
+      return menuCategory; // Keep the other items unchanged
     });
+
+    // Set the new state with the updated menu array
     setEditingMenu(updatedMenu);
   };
 
@@ -131,7 +137,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
       ratingcount: newItem.ratingcount || 7,
     };
 
-    console.log('category', newItemObj.category)
+    // console.log('category', newItemObj.category)
 
     const updatedMenu = editingMenu.map(menuCategory => {
       if (menuCategory.title === selectedCategory.title) {
@@ -162,8 +168,18 @@ const ManageCategoriesScreen = ({ navigation }) => {
     setNewItem(item);
   };
 
+  const handleDeleteItem = (itemId) => {
+    // Find the category of the selected category
+    const updatedMenu = editingMenu.map(menuCategory => {
+      if (menuCategory.title === selectedCategory?.title) {
+        // Filter out the item with the given itemId from the items array
+        menuCategory.items = menuCategory.items.filter(item => item.id !== itemId);
+      }
+      return menuCategory;
+    });
 
-
+    setEditingMenu(updatedMenu);
+  };
 
   const scrollViewRef = useRef(null);
 
@@ -206,6 +222,14 @@ const ManageCategoriesScreen = ({ navigation }) => {
     setSelectedCategory(item)
   };
 
+  const handleDeleteCategory = (categoryId) => {
+    const updatedMenu = editingMenu.filter(item => item !== categoryId);
+    setEditingMenu(updatedMenu);
+    if (selectedCategory == categoryId) {
+      setSelectedCategory(null)
+    }
+  };
+
   const handleCatigoryMenuTypeToggle = (type) => {
     setNewItem(prevState => {
       const updatedMenuType = prevState.category.includes(type)
@@ -226,7 +250,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
       >
         <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
-        <View className='mt-3 rounded-xl'>
+        <View className='mt-3 rounded-xl overflow-hidden'>
           <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
             <View className='items-center flex-row mb-3'>
               <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
@@ -258,16 +282,16 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
               {openDropdown && (
                 <View className='overflow-hidden font-black mt-2 text-base rounded-md' style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}>
-                  {editingMenu.map((item) => (
+                  {editingMenu.map((item, index) => (
                     <>
-                      <View style={{ padding: 10 }} className=' flex-row justify-between'>
+                      {/* {console.log(item.id)} */}
+                      <View key={`${item.id}-${index}`} style={{ padding: 10 }} className='flex-row justify-between'>
                         <View className='flex-row gap-2'>
-                          <Ionicons name="pencil-sharp" size={24} color={selectedCategory?.title == item.title ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor} />
                           <TextInput
                             className='font-black overflow-hidden flex-row justify-between text-base rounded-md'
-                            style={{ color: selectedCategory?.title == item.title ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
+                            style={{ color: selectedCategory?.title === item.title ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }}
                             value={item.title}
-                            onChangeText={(text) => editCategory(item._id, text)}
+                            onChangeText={(text) => editCategory(item.id, text)}
                             placeholder="Edit category title"
                           />
                         </View>
@@ -285,8 +309,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
 
                           <TouchableOpacity className=' bg-red-200 justify-center items-center px-2 rounded-md'
                             onPress={() => {
-                              handleMenuTypeToggle(item);
-                              toggleDropdown()
+                              handleDeleteCategory(item);
                             }}
                           >
                             <Ionicons color={Colors.dark.colors.diffrentColorRed} name="trash-bin" size={18} />
@@ -331,95 +354,78 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Your Cusines in {selectedCategory?.title}</Text>
                 </View>
 
-                <Animated.FlatList
-                  itemLayoutAnimation={LinearTransition}
-                  data={selectedCategory.items}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <View
-                      // key={storeName}
-                      className='rounded-xl p-2 mb-3 flex-row'
-                      style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
-                    >
-                      <Image
-                        source={{
-                          uri: item.image,
-                          method: 'POST',
-                          headers: {
-                            Pragma: 'no-cache',
-                          },
-                        }}
-                        defaultSource={require('./../../assets/menu.jpg')}
-                        className='w-12 h-12 rounded-full mr-1'
-                        alt="Logo"
-                      />
-                      <View>
-                        <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]} numberOfLines={1} ellipsizeMode='tail'>
-                          {TruncatedTextComponent(item.item, 11)}
+                {/* <ScrollView contentContainerStyle={{ paddingBottom: 20 }}> */}
+                {selectedCategory.items.map((item, index) => (
+
+                  <View
+                  key={`${item.id}-${index}`}  // Use item.id or any unique property as the key
+                    className="rounded-xl p-2 mb-3 flex-row"
+                    style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
+                  >
+                    <Image
+                      source={{
+                        uri: item.image,
+                        method: 'POST',
+                        headers: {
+                          Pragma: 'no-cache',
+                        },
+                      }}
+                      defaultSource={require('./../../assets/menu.jpg')}
+                      className="w-12 h-12 rounded-full mr-1"
+                      alt="Logo"
+                    />
+                    <View>
+                      <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]} numberOfLines={1} ellipsizeMode="tail">
+                        {TruncatedTextComponent(item.item, 11)}
+                      </Text>
+                      <TouchableOpacity className="flex-row items-center">
+                        <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>
+                          {item.category?.split('_').join(', ')}
                         </Text>
-                        <TouchableOpacity className='flex-row items-center'>
-                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} >
-                            {item.category.split('_').join(', ')}
-                          </Text>
-                          {/* <Ionicons name='caret-forward' size={16} color={Colors.dark.colors.diffrentColorOrange} /> */}
-                        </TouchableOpacity>
-                      </View>
-                      <View className='flex-row gap-x-2 absolute right-2 top-2 h-full'>
-                        <TouchableOpacity
-                          className='justify-center items-center rounded-lg px-3'
-                          style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}
-                          onPress={() => editItem(item)}
-                        >
-                          <Text style={[fontstyles.h5, { color: Colors.dark.colors.backGroundColor }]}>
-                            {item.type}
-                          </Text>
-
-                          <View className='flex-row items-center justify-center'>
-                            <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
-                              Edit
-                              {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0)} {' '} */}
-                              {/* {items.reduce((total, item) => total + parseInt(item.quantity, 10), 0) === 1 ? 'item' : 'items'} */}
-                            </Text>
-                            <Ionicons
-                              style={{ transform: [{ rotate: '90deg' }], margin: -3 }}
-                              name="remove-outline"
-                              size={16}
-                            // color={Colors.dark.colors.mainTextColor}
-                            />
-                            <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
-                              ₹{item.price}
-                            </Text>
-                          </View>
-
-                        </TouchableOpacity>
-                        {/* <View className='items-center justify-center h-full'> */}
-                        <TouchableOpacity className=' bg-red-200 justify-center items-center px-2 rounded-lg'
-
-                        // onPress={() => {
-                        //   handleMenuTypeToggle(item);
-                        // }}
-                        >
-                          <Ionicons color={Colors.dark.colors.diffrentColorRed} name="trash-bin-outline" size={20} />
-                        </TouchableOpacity>
-                        {/* </View> */}
-                      </View>
+                      </TouchableOpacity>
                     </View>
-                    // <View style={styles.itemContainer}>
-                    //   <Text style={styles.item}>{item.item}</Text>
-                    //   <Text style={styles.item}>{item.price}</Text>
-                    //   <Text style={styles.item}>{item.description}</Text>
-                    //   <Text style={styles.item}>{item.status ? "Available" : "Unavailable"}</Text>
-                    //   <Button title="Edit" onPress={() => editItem(item)} />
-                    // </View>
-                  )}
-                />
+                    <View className="flex-row gap-x-2 absolute right-2 top-2 h-full">
+                      <TouchableOpacity
+                        className="justify-center items-center rounded-lg px-3"
+                        style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}
+                        onPress={() => editItem(item)}
+                      >
+                        <Text style={[fontstyles.h5, { color: Colors.dark.colors.backGroundColor }]}>
+                          {item.type}
+                        </Text>
+
+                        <View className="flex-row items-center justify-center">
+                          <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
+                            Edit
+                          </Text>
+                          <Ionicons
+                            style={{ transform: [{ rotate: '90deg' }], margin: -3 }}
+                            name="remove-outline"
+                            size={16}
+                          />
+                          <Text style={[fontstyles.number, { color: Colors.dark.colors.backGroundColor }]}>
+                            ₹{item.price}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        className="bg-red-200 justify-center items-center px-2 rounded-lg"
+                        onPress={() => handleDeleteItem(item.id)} // Pass item.id to the handleDeleteItem function
+                      >
+                        <Ionicons color={Colors.dark.colors.diffrentColorRed} name="trash-bin-outline" size={20} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
+                {/* </ScrollView> */}
               </View>
             }
           </View>
         </View>
 
         {selectedCategory &&
-          <View className='mt-3 rounded-xl'>
+          <View className='mt-3 rounded-xl overflow-hidden'>
             <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
               <View className='items-center flex-row mt-1'>
                 <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />

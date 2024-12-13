@@ -13,12 +13,13 @@ import { API_BASE_URL, ORDERS_ENDPOINT } from '../Constants/Constants';
 import TextStyles from '../Style/TextStyles';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
+import useShopStatus from '../Components/useShopStatus';
 
 const Cart = ({ route }) => {
 
   const { handleIncrement } = useIncrementHandler();
   const { handleDecrement } = useIncrementHandler();
-  // const { storeName, items, totalPrice, storeDetails } = route.params;
+  // const { storeName, items, storeDetails } = route.params;
   // const { item } = route.params;
 
   async function createOrder(orderData) {
@@ -35,7 +36,7 @@ const Cart = ({ route }) => {
       const result = await response.json();
 
       if (response.ok) {
-        console.log('Order created successfully:', result.data);
+        // console.log('Order created successfully:', result.data);
         return result.data;
       } else {
         console.error('Error creating order:', result.data);
@@ -261,7 +262,8 @@ const Cart = ({ route }) => {
     const removeItemsWithStatusFalse = () => {
       item.orders = item.orders.filter(order => order.status == true);
     };
-    const outOfStockItems = item.orders.some(order => order.status === false);
+    const outOfStockItems = item.orders.some(order => order.status == false);
+    console.log('--------------------------------------------------------------------------------------------', item.orders, outOfStockItems)
 
     if (outOfStockItems) {
       Alert.alert(
@@ -273,13 +275,13 @@ const Cart = ({ route }) => {
           text: "Yes, Proceed",
           onPress: () => {
             removeItemsWithStatusFalse();
-            console.log("Proceeding with item:", item);
+            // console.log("Proceeding with item:", item);
 
             const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
             const { name, username } = userData;
 
             if (orders.length !== 0) {
-              
+
               createOrder({
                 id: Date.now().toString(),
                 items: item,
@@ -324,9 +326,9 @@ const Cart = ({ route }) => {
         }]
       );
     } else {
-      console.log("Proceeding with item:", item);
+      // console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
-     
+
       // const { name, username } = userData;
 
       createOrder({
@@ -367,6 +369,8 @@ const Cart = ({ route }) => {
       removeStoreFromCart(item.name, setCartItemsNEW);
       navigation.navigate("Orders");
     }
+
+    // navigation.navigate("Orders");
   };
 
 
@@ -472,11 +476,19 @@ const Cart = ({ route }) => {
           <Text className='font-medium text-base' style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>TOTAL</Text>
         </View>
         {/* {console.log(today, getFormattedDate(today))} */}
-        <TouchableOpacity
-          onPress={() => handleProceedPayment(item)}
-          className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
-          <Text style={[ fontstyles.number, { fontSize: 18,  color: Colors.dark.colors.mainTextColor }]}>Proceed to Pay</Text>
-        </TouchableOpacity>
+        {useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state == 'closed' ?
+          <TouchableOpacity
+            className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorRed, width: Dimensions.get('window').width * 0.53 }}>
+            <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>Store Closed</Text>
+          </TouchableOpacity>
+          :
+          <TouchableOpacity
+            onPress={() => handleProceedPayment(item)}
+            className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
+            <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>Proceed to Pay</Text>
+          </TouchableOpacity>
+        }
+
       </View>
     </SafeAreaView>
   );

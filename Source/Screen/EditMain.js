@@ -219,17 +219,17 @@ export default function EditScreen({ route, navigation }) {
 
                         <View className='w-full px-3 items-center rounded-2xl overflow-hidden' style={{ height: Dimensions.get('window').height * 0.25 }}>
                             {/* <View className='w-full rounded-3xl items-center justify-center p-2' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}> */}
-                            <Text className='mb-1' style={[ fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>{editingOutlet.name}</Text>
+                            <Text className='mb-1' style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>{editingOutlet.name}</Text>
                             <View className='flex-row justify-center items-center mb-3'>
                                 <View className='flex-row justify-center items-center'>
                                     {editingOutlet.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                                    <Text className='ml-1'                                     style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.textColor }]}>{editingOutlet.type} </Text>
+                                    <Text className='ml-1' style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.textColor }]}>{editingOutlet.type} </Text>
                                 </View>
                                 {editingOutlet.menuType.map((item, index) => (
-                                    <View className=' flex-row items-center'>
+                                    <View key={index} className=' flex-row items-center'>
                                         {/* {console.log(item)} */}
                                         <Ionicons name="ellipse" size={5} color={Colors.dark.colors.textColor} />
-                                        <Text className='ml-1'                                     style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.textColor }]}> {item} </Text>
+                                        <Text className='ml-1' style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.textColor }]}> {item} </Text>
                                     </View>
                                 ))}
                             </View>
@@ -242,10 +242,10 @@ export default function EditScreen({ route, navigation }) {
                                     start={{ x: 0.0, y: 0.01 }} end={{ x: 0.01, y: 0.8 }}
                                     // colors={[Shopstatus.color[0], Shopstatus.color[1]]}
                                     className=' rounded-2xl px-5 justify-center' style={{ backgroundColor: Colors.dark.colors.secComponentColor, height: Dimensions.get('window').height * 0.13 }}> */}
-                            <Text className='text-center' style={[ fontstyles.h4, { color: Colors.dark.colors.mainTextColor }]}>
+                            <Text className='text-center' style={[fontstyles.h4, { color: Colors.dark.colors.mainTextColor }]}>
                                 {editingOutlet.openingTime} to {editingOutlet.closingTime}
                             </Text>
-                            <Text className='text-center' style={[ fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>
+                            <Text className='text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>
                                 OffDays: {editingOutlet.offDays.join(', ')}
                             </Text>
                             {/* </LinearGradient> */}
@@ -272,7 +272,7 @@ export default function EditScreen({ route, navigation }) {
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                             <Ionicons name='pricetags-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>
-                        <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4'     style={[fontstyles.h3, {color: Colors.dark.colors.mainTextColor }]}>Add Offers</Text>
+                        <Text numberOfLines={1} ellipsizeMode='tail' className='absolute left-6 bottom-4' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>Add Offers</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -284,14 +284,14 @@ export default function EditScreen({ route, navigation }) {
                         <View className='p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
                             <Ionicons name='duplicate-outline' size={24} color={Colors.dark.colors.mainTextColor} />
                         </View>
-                        <Text className='absolute left-6 bottom-4'     style={[fontstyles.h3, {color: Colors.dark.colors.mainTextColor }]}>Add Menu</Text>
+                        <Text className='absolute left-6 bottom-4' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>Add Menu</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View className='rounded-xl mt-3 w-full' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                     <View className='p-3 items-center flex-row justify-between'>
                         <View className='flex-row items-center'>
-                            <Text  style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Featured</Text>
+                            <Text style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Featured</Text>
                         </View>
                         <TouchableOpacity onPress={() => handleChange('featured', !editingOutlet.featured)}>
                             {/* {console.log(editingOutlet.featured)} */}
@@ -305,7 +305,7 @@ export default function EditScreen({ route, navigation }) {
                     </View>
                 </View>
 
-                <View className='mt-3 rounded-xl'>
+                <View className='mt-3 rounded-xl overflow-hidden'>
                     <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className=' flex-row items-center justify-between'>
                             <View className=' flex-row justify-between'>
@@ -314,28 +314,28 @@ export default function EditScreen({ route, navigation }) {
                                     style={{ backgroundColor: editingOutlet.type === 'PureVeg' ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.backGroundColor }}
                                     className=' w-[35%] p-3 rounded-l-lg items-center'
                                 >
-                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[ fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Pure Veg</Text>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Pure Veg</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => handleChange('type', 'Veg')}
                                     style={{ backgroundColor: editingOutlet.type === 'Veg' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.backGroundColor }}
                                     className=' w-[30%] p-3 items-center'
                                 >
-                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[ fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Veg</Text>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Veg</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => handleChange('type', 'NonVeg')}
                                     style={{ backgroundColor: editingOutlet.type === 'NonVeg' ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.backGroundColor }}
                                     className=' w-[35%] p-3 rounded-r-lg items-center'
                                 >
-                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[ fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Non Veg</Text>
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Non Veg</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
                 </View>
 
-                <View className='mt-3 rounded-xl'>
+                <View className='mt-3 rounded-xl overflow-hidden'>
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
@@ -396,7 +396,7 @@ export default function EditScreen({ route, navigation }) {
                     </View>
                 </View>
 
-                <View className='mt-3 rounded-xl'>
+                <View className='mt-3 rounded-xl overflow-hidden'>
                     <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
@@ -519,15 +519,15 @@ export default function EditScreen({ route, navigation }) {
                 </View>
 
                 <View className='mt-3 rounded-xl'>
-                    <View className='rounded-xl p-3' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                    <View className='rounded-xl p-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
-                            <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
+                            <View className='absolute z-0 -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
                             <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}> Operating Period</Text>
                         </View>
 
                         <View className='my-1 flex-row items-center justify-between'>
                             <View className='w-[43%]'>
-                                <Text style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]} className='underline mb-3'>Opening Time</Text>
+                                <Text style={[fontstyles.h5, { marginBottom: 0, color: Colors.dark.colors.mainTextColor }]} className=' mb-3'>Opening Time</Text>
                                 <TouchableOpacity
                                     onPress={() => {
                                         Keyboard.dismiss();
@@ -535,16 +535,16 @@ export default function EditScreen({ route, navigation }) {
                                     }}
                                 >
                                     <TextInput
-                                        className='rounded-md p-2'
-                                        style={[ fontstyles.number, { borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }]}
+                                        className='rounded-md p-3'
+                                        style={[fontstyles.number, { borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }]}
                                         value={editingOutlet.openingTime}
                                         editable={false}
                                     />
                                 </TouchableOpacity>
                             </View>
-                            <Text style={[ fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]} className='top-3'>to</Text>
+                            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]} className='top-3'>to</Text>
                             <View className='w-[43%]'>
-                                <Text style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]} className='underline mb-1'>Closing Time</Text>
+                                <Text style={[fontstyles.h5, { marginBottom: 0, color: Colors.dark.colors.mainTextColor }]} className=' mb-1'>Closing Time</Text>
                                 <TouchableOpacity
                                     onPress={() => {
                                         Keyboard.dismiss();
@@ -552,8 +552,8 @@ export default function EditScreen({ route, navigation }) {
                                     }}
                                 >
                                     <TextInput
-                                        className='rounded-md p-2'
-                                        style={[ fontstyles.number, { borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }]}
+                                        className='rounded-md p-3'
+                                        style={[fontstyles.number, { borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }]}
                                         value={editingOutlet.closingTime}
                                         editable={false}
                                     />
@@ -562,7 +562,7 @@ export default function EditScreen({ route, navigation }) {
                         </View>
 
                         <View className='my-1 flex-1'>
-                            <Text numberOfLines={1} ellipsizeMode='tail' className='mb-6' style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Leave Days</Text>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='mb-6' style={[fontstyles.h5, { marginBottom: 0, color: Colors.dark.colors.mainTextColor }]}>Leave Days</Text>
 
 
                             <TouchableOpacity
@@ -575,17 +575,17 @@ export default function EditScreen({ route, navigation }) {
                             >
                                 <Text
                                     className='flex-row justify-between rounded-md'
-                                    style={[fontstyles.h5, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}
+                                    style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}
                                 >
                                     {editingOutlet.leaveDay}
                                 </Text>
-                                { editingOutlet.leaveDay !=='None' &&
+                                {editingOutlet.leaveDay !== 'None' &&
                                     <Ionicons
-                                    onPress={() => handleChange('leaveDay', 'None')}
-                                    name="close"
-                                    size={20}
-                                    color={Colors.dark.colors.mainTextColor}
-                                />
+                                        onPress={() => handleChange('leaveDay', 'None')}
+                                        name="close"
+                                        size={20}
+                                        color={Colors.dark.colors.mainTextColor}
+                                    />
                                 }
                             </TouchableOpacity>
                         </View>
@@ -611,7 +611,7 @@ export default function EditScreen({ route, navigation }) {
                     </View>
                 </View>
 
-                <View className='mt-3 rounded-xl'>
+                <View className='mt-3 rounded-xl overflow-hidden'>
                     <View className='rounded-xl p-3 ' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
                         <View className='items-center flex-row mb-3'>
                             <View className='absolute -left-11 rounded-lg h-full w-10' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }} />
@@ -642,8 +642,9 @@ export default function EditScreen({ route, navigation }) {
 
                             {openDropdown && (
                                 <View className='overflow-hidden font-black mt-2 text-base rounded-md' style={{ borderWidth: 1, borderColor: Colors.dark.colors.mainTextColor, color: Colors.dark.colors.mainTextColor }}>
-                                    {menuTypes.map((item) => (
+                                    {menuTypes.map((item, index) => (
                                         <TouchableOpacity
+                                            key={index}
                                             style={{
                                                 padding: 10,
                                                 flexDirection: 'row',
@@ -664,7 +665,7 @@ export default function EditScreen({ route, navigation }) {
                                         >
                                             <Text
                                                 className=' overflow-hidden flex-row justify-between rounded-md'
-                                                style={[ fontstyles.h5, { color: editingOutlet.menuType.includes(item) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }]}
+                                                style={[fontstyles.h5, { color: editingOutlet.menuType.includes(item) ? Colors.dark.colors.mainTextColor : Colors.dark.colors.textColor }]}
                                             >{item}
                                             </Text>
                                             {editingOutlet.menuType.includes(item) && (
@@ -676,7 +677,7 @@ export default function EditScreen({ route, navigation }) {
                                         style={styles.doneButton}
                                         onPress={toggleDropdown}
                                     >
-                                        <Text style={[ fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Done</Text>
+                                        <Text style={[fontstyles.h5, { marginTop: -2, color: Colors.dark.colors.mainTextColor }]}>Done</Text>
                                     </TouchableOpacity>
                                 </View>
                             )}

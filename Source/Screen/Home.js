@@ -27,6 +27,8 @@ import { ListCard_Self2, ListCard_Z } from '../Components/ListCards';
 import Size from '../Components/Size';
 import TextStyles from '../Style/TextStyles';
 import { SafeAreaView } from 'react-native';
+import useShopStatus from '../Components/useShopStatus';
+import { connect } from 'react-redux';
 
 const Home = () => {
   // const [userData, setUserData] = useState([]);
@@ -249,13 +251,71 @@ const Home = () => {
               </View>
             </View> */}
 
-              <FlatList
+              {/* <FlatList
                 data={outletsNEW}
                 renderItem={({ item, index }) => <ListCard_Self2 item={item} index={index} />} // ListCard_O && ListCard_Z
                 keyExtractor={(item, index) => `${index}_${item.id}`}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
-              />
+              /> */}
+
+              <ScrollView
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+              >
+                <View>
+                  {/* First, render open shops */}
+                  {outletsNEW.filter(item => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return !Shopstatus.state.includes("closed") && !Shopstatus.state.includes("opening soon");
+                  }).map((item, index) => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return (
+                      <View key={`${index}_${item.id}`}>
+                        <ListCard_Self2
+                          item={item}
+                          index={index}
+                          shopStatus={Shopstatus.state}
+                        />
+                      </View>
+                    );
+                  })}
+
+                  {/* Then, render opening soon shops */}
+                  {outletsNEW.filter(item => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return Shopstatus.state.includes("openingSoon");
+                  }).map((item, index) => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return (
+                      <View key={`${index}_${item.id}`}>
+                        <ListCard_Self2
+                          item={item}
+                          index={index}
+                          shopStatus={Shopstatus.state}
+                        />
+                      </View>
+                    );
+                  })}
+
+                  {/* Finally, render closed shops at the bottom */}
+                  {outletsNEW.filter(item => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return Shopstatus.state.includes("closed");
+                  }).map((item, index) => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return (
+                      <View key={`${index}_${item.id}`} className="grayscale">
+                        <ListCard_Self2
+                          item={item}
+                          index={index}
+                          shopStatus={Shopstatus.state}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
 
               <View className=' items-center justify-center' style={{ height: Dimensions.get('window').height * 0.12 }}>
                 <Text

@@ -62,7 +62,7 @@ const LoginScreen = () => {
           AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
           userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")
         } else {
-          Alert.alert(data.data || "Login failed");
+          Alert.alert("Login failed", data.data || "An error occurred while logging in. Please try again.");
         }
       })
       .catch(error => console.log("err", error));

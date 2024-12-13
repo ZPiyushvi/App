@@ -45,7 +45,7 @@ export const dropDown = (index, fontstyles, menu, navigation, setOpenDropdowns, 
                                 <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
                             }
                             {
-                                item.category.split('_').map((part, index) => (
+                                item.category?.split('_').map((part, index) => (
                                     <FoodTypeIcon key={index} type={part} size={15} padding={3} textShow={false} />
                                 ))
                             }

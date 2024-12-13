@@ -1,4 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+
+
+
+
+
+
+
+
+
+
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Dimensions, ImageBackground, Modal, BackHandler, StatusBar, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
@@ -20,6 +30,42 @@ import TextStyles from '../Style/TextStyles';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
+    // const flatListRef = useRef(null);
+    const dropdownRefs = useRef([]);
+    const handleScrollToItem = (index) => {
+        const dropdownRef = dropdownRefs.current[index];
+        if (dropdownRef) {
+            dropdownRef.scrollToIndex({ animated: true, index: 0 }); // Scroll to the first item in that section
+        }
+    };
+    const scrollToCategory = (index) => {
+        if (dropdownRefs.current[index]) {
+            const offset = 100;
+            const element = dropdownRefs.current[index];
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+
+            window.scrollTo({
+                top: elementPosition - offset,
+                behavior: 'smooth',
+            });
+
+            setSelectedCategory(index);
+        }
+    };
+    const handleScroll = () => {
+        const categories = dropdownRefs.current;
+        const scrollPosition = window.scrollY;
+
+        categories.forEach((category, index) => {
+            const categoryPosition = category.getBoundingClientRect().top + scrollPosition;
+            const isInView = scrollPosition >= categoryPosition - 100 && scrollPosition < categoryPosition + category.offsetHeight;
+
+            if (isInView) {
+                setSelectedCategory(index);
+            }
+        });
+    };
+
     useFocusEffect(
         React.useCallback(() => {
             const onBackPress = () => {
@@ -57,7 +103,7 @@ const DetailsScreen = ({ route }) => {
     const [menuItems, setMenuItems] = useState(Data.menu);
     // console.log(menuItems)
     const { cartItemsNEW, setCartItemsNEW, CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
-    const Shopstatus = useShopStatus(Data.openingtime, Data.closingtime, Data.offdays, Data.leaveDay);
+    const Shopstatus = useShopStatus(Data.openingTime, Data.closingTime, Data.offDays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))
 
@@ -191,15 +237,48 @@ const DetailsScreen = ({ route }) => {
                                 className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
                                 style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
                             >
-                                {/* <LinearGradient
-                            start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
-                            className='overflow-hidden h-full w-full'
-                            colors={['transparent', Colors.dark.colors.backGroundColor]}
-                        >
-                        </LinearGradient> */}
+                                {/* 
+                                <LinearGradient
+                                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                                    className='overflow-hidden h-full w-full'
+                                    colors={['transparent', Colors.dark.colors.backGroundColor]}
+                                >
+                                </LinearGradient> 
+                            */}
                             </ImageBackground>
                         </TouchableOpacity>
-                        {item.status ?
+                        <View
+                            style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+                            className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
+                        >
+                            {(() => {
+                                // Find the hotel in the cart
+                                const hotel = cartItemsNEW.find(hotel => hotel.id === dataWithoutMenu.id);
+                                // Find the item in the hotel's orders if the hotel exists
+                                const orderItem = hotel ? hotel.orders.find(order => order.item === item.item) : null;
+                                const quantity = orderItem ? orderItem.quantity : 0;
+
+                                return quantity > 0 ? (
+                                    <>
+                                        <TouchableOpacity onPress={() => handleDecrement(item.id, title, item, dataWithoutMenu)} className='z-10 left-0 absolute w-6/12 items-center'>
+                                            <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={22} />
+                                        </TouchableOpacity>
+                                        <Text className='uppercase text-xl font-black text-center' style={{ color: Colors.dark.colors.diffrentColorGreen }}>{quantity}</Text>
+                                        <TouchableOpacity onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)} className='z-10 right-0 absolute w-6/12 items-center'>
+                                            <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={22} />
+                                        </TouchableOpacity>
+                                    </>
+                                ) : (
+                                    <>
+                                        <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor }]} onPress={() => handleIncrement(item.id, title, item, dataWithoutMenu)}>
+                                            <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.diffrentColorGreen }]}>ADD</Text>
+                                        </TouchableOpacity>
+                                        <Text className='top-0 right-2 absolute text-xl font-medium' style={{ color: Colors.dark.colors.textColor }}>+</Text>
+                                    </>
+                                );
+                            })()}
+                        </View>
+                        {/* {(item.status && !Shopstatus.text.includes('closed')) ?
                             <View
                                 style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                                 className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
@@ -231,7 +310,7 @@ const DetailsScreen = ({ route }) => {
                                     );
                                 })()}
                             </View>
-                            : null}
+                            : null} */}
                     </View>
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>
@@ -249,7 +328,11 @@ const DetailsScreen = ({ route }) => {
                 key={`${index}_${typetitle}`}
                 // style={{ padding: 12 }}
                 className=' px-4'
-                onPress={() => setSelectedIndex(index)} // Update the selected index on press
+                onPress={() => {
+                    scrollToCategory(index)
+                    setSelectedIndex(index); // Update selected index
+                    handleScrollToItem(index); // Scroll to the corresponding dropdown section
+                }}
             >
                 <Text
                     style={[fontstyles.h3, {
@@ -262,22 +345,23 @@ const DetailsScreen = ({ route }) => {
         );
     }
 
-    const renderDropdown = (menu) => (
-        <>
-            <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-                <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
-                    <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
-                    <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
-                </TouchableOpacity>
-                {openDropdowns[menu.title] && (
-                    <FlatList
-                        data={menu.items}
-                        renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
-                        keyExtractor={(item, index) => `${index}_${item.id}`}
-                    />
-                )}
-            </View>
-        </>
+    const renderDropdown = (menu, index) => (
+        <View
+            ref={(ref) => (dropdownRefs.current[index] = ref)} // Set the ref for each dropdown section
+            style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
+        >
+            <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
+                <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>{menu.title}</Text>
+                <Ionicons color={Colors.dark.colors.mainTextColor} name={openDropdowns[menu.title] ? "caret-up-outline" : "caret-down-outline"} size={20} />
+            </TouchableOpacity>
+            {openDropdowns[menu.title] && (
+                <FlatList
+                    data={menu.items}
+                    renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
+                    keyExtractor={(item, index) => `${index}_${item.id}`}
+                />
+            )}
+        </View>
     );
 
     const getShopImageSource = (state) => {
@@ -364,6 +448,7 @@ const DetailsScreen = ({ route }) => {
                 {visible &&
                     <FlatList
                         data={filteredMenuItems}
+                        // ref={flatListRef}
                         showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => renderDropdown(item)}
                         // renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, menuItems)}

@@ -27,6 +27,7 @@ import Size from '../Components/Size';
 import TextStyles from '../Style/TextStyles';
 import { StatusBar } from 'react-native';
 import UpModelScreen from './UpModelScreen';
+import MenuSellerFlatlist from '../Components/MenuSellerFlatlist';
 
 export default function HomeSeller({ navigation }) {
 
@@ -130,7 +131,7 @@ export default function HomeSeller({ navigation }) {
             setOutlets(data.data);
             setNewItem(data.data[0].menu)
         } catch (error) {
-            console.error('Error fetching user outlets:', error);
+            console.log('user has not set outlet yet');
         }
     };
 
@@ -165,7 +166,7 @@ export default function HomeSeller({ navigation }) {
             const token = await AsyncStorage.getItem("token");
             const dataToSend = { menu: newItem, token };
             const privdataToSend = { menu: newItem, token };
-            console.log('Sending data:', dataToSend);
+            console.log('Sending data'); //dataToSend 
             // newItem.forEach((item) => {
             //     console.log('itemxxxx', item.items);
             // });
@@ -277,12 +278,12 @@ export default function HomeSeller({ navigation }) {
                             <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>displays it.</Text>
 
                         </View>
-                        <View className=' mt-5' >
-                            {outlets[0] ?
-                                <ListCard_Self2 item={outlets[0]} onPress={navToEditRestorent} />
-                                :
-                                <ListCard_Self2 item={'null'} onPress={navToEditMain} />
-                            }
+                        <View className='mt-5'>
+                            {outlets[0] ? (
+                                <ListCard_Self2 index={0} item={outlets[0]} onPress={navToEditRestorent} />
+                            ) : (
+                                <ListCard_Self2 index={0} item={'null'} onPress={navToEditMain} />
+                            )}
                         </View>
                         {/* ---------------------- Added ---------------------- */}
                     </Animated.View>
@@ -295,15 +296,15 @@ export default function HomeSeller({ navigation }) {
                         <Titles title={"Your Offerings"} width={80} />
                     </View>
 
-                    <View className='searchBodyContainer flex-row justify-between my-3' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
+                    {/* <View className='searchBodyContainer flex-row justify-between my-3' style={{ marginHorizontal: Dimensions.get('window').width * 0.03 }}>
                         <TouchableOpacity className='w-[83%]' onPress={() => show_UpModelScreen()}>
                             <SearchBox />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('YettoUpdate')}>
                             <Ionicons color={Colors.dark.colors.diffrentColorOrange} name="mic" size={24} className='searchIcon' style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 15, width: 50, height: 50, textAlign: 'center', textAlignVertical: 'center' }} />
                         </TouchableOpacity>
-                    </View>
-                    <View className='flex-row gap-x-2 py-4 px-2 mt-3'>
+                    </View> */}
+                    <View className='flex-row gap-x-2 py-4 px-2 mt-3 top-0 sticky'>
                         <TouchableOpacity onPress={() => setSortItem('AllItems')} className='flex-row justify-center items-center rounded-xl py-1 px-2' style={{ borderColor: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor, borderWidth: 1 }}>
                             {/* {console.log(newItem)} */}
                             <Text style={[fontstyles.number, { color: sortItem == 'AllItems' ? Colors.dark.colors.diffrentColorPerple : Colors.dark.colors.mainTextColor }]}>All Items </Text>
@@ -339,7 +340,7 @@ export default function HomeSeller({ navigation }) {
                             }
                         })()}
                         renderItem={({ item, index }) => dropDown(index, fontstyles, item, navigation, setOpenDropdowns, openDropdowns, handleChanges)}
-                        keyExtractor={(item, index) => `${item.item}_${index}`} // Example key extractor, adjust as needed
+                        keyExtractor={(item, index) => `${item.id}_${index}`} // Example key extractor, adjust as needed
                         ListFooterComponent={
                             <View className='p-3' style={{ backgroundColor: Colors.dark.colors.backGroundColor, height: Dimensions.get('window').height * 0.9 }}>
                                 <View className='gap-3' >
@@ -381,6 +382,9 @@ export default function HomeSeller({ navigation }) {
                         }
                         showsHorizontalScrollIndicator={false}
                     />
+                    {/* <MenuSellerFlatlist fontstyles={fontstyles}
+                    newItem={newItem} sortItem={sortItem} navigation={navigation} setOpenDropdowns={setOpenDropdowns} openDropdowns={openDropdowns} handleChanges={handleChanges}
+                    /> */}
 
                     {/* <Details_Seller navigation={navigation} /> */}
                     {/* ---------------------- Added ---------------------- */}
@@ -401,6 +405,17 @@ export default function HomeSeller({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    stickyHeader: {
+        flexDirection: 'row',
+        gap: 8,
+        paddingVertical: 16,
+        paddingHorizontal: 8,
+        marginTop: 20,
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+        backgroundColor: 'white',
+      },
     descriptionText: {
         fontSize: 14,
         color: '#666',
