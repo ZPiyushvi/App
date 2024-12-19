@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT || 5001;
+const { v4: uuidv4 } = require('uuid'); // For unique OTP generation
+const nodemailer = require('nodemailer'); // For sending OTP via email
 
 const app = express();
 app.use(express.json());

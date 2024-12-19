@@ -9,10 +9,7 @@ const OtpScreen = () => {
   };
 
   const handleVerifyOtp = () => {
-    // Implement your OTP verification logic here
     console.log('Entered OTP:', otp);
-    // Example: Send OTP to server for verification
-    // ...
   };
 
   return (
