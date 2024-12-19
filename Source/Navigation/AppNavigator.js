@@ -22,6 +22,7 @@ import Insights from '../Screen/Insights';
 import EditRestorent from '../Screen/EditRestorent';
 import EditMain from '../Screen/EditMain';
 import SplashScreen from '../Screen/SplashScreen';
+import OtpScreen from '../Screen/OtpScreen';
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,10 @@ export default function AppNavigator() {
             <Stack.Screen
                 name="SignupScreen"
                 component={SignupScreen}
+            />
+            <Stack.Screen
+                name="OtpScreen"
+                component={OtpScreen}
             />
             <Stack.Screen
                 name="LoginScreen"

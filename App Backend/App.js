@@ -1,5 +1,5 @@
 // npx nodemon app
-// npx run expo
+// npx expo start
 
 const express = require("express");
 const mongoose = require("mongoose");

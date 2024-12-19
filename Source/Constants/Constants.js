@@ -20,7 +20,7 @@ export const TOPNAVI_H = 50;
 
 
 
-export const API_BASE_URL = 'http://192.168.13.12';
+export const API_BASE_URL = 'http://192.168.78.12';
 
 export const LOGIN_ENDPOINT = '5001/login';
 export const REGISTER_ENDPOINT = '5001/register';

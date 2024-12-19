@@ -128,7 +128,7 @@ const LoginScreen = () => {
     navigation.goBack();
   };
   const handleSignup = () => {
-    navigation.navigate("LoginScreen");
+    navigation.navigate("OtpScreen"); //OtpScreen LoginScreen
   };
 
   const fontstyles = TextStyles();
