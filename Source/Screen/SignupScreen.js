@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  StatusBar,
 } from "react-native";
 import React, { useContext, useState } from "react";
 
@@ -20,7 +21,6 @@ import { API_BASE_URL, REGISTER_ENDPOINT, USERSDATA_ENDPOINT } from "../Constant
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
 import TextStyles from "../Style/TextStyles";
-import { StatusBar } from "react-native";
 
 const LoginScreen = () => {
 
@@ -128,7 +128,7 @@ const LoginScreen = () => {
     navigation.goBack();
   };
   const handleSignup = () => {
-    navigation.navigate("OtpScreen"); //OtpScreen LoginScreen
+    navigation.navigate("LoginScreen");
   };
 
   const fontstyles = TextStyles();

@@ -7,6 +7,7 @@ export const TOPNAVI_H = 50;
 // export const API_BASE_URL = 'https://zpiyushviiitoutlets-backend.onrender.com';
 
 // export const VERIFYOTP_ENDPOINT = '/verifyotp';
+// export const RESENDOTP_ENDPOINT = '/resendotp';
 // export const LOGIN_ENDPOINT = '/login';
 // export const REGISTER_ENDPOINT = '/register';
 // export const USERSDATA_ENDPOINT = '/userdata';
@@ -24,6 +25,7 @@ export const TOPNAVI_H = 50;
 export const API_BASE_URL = 'http://192.168.78.12';
 
 export const VERIFYOTP_ENDPOINT = '5001/verifyotp';
+export const RESENDOTP_ENDPOINT = '5001/resendotp';
 export const LOGIN_ENDPOINT = '5001/login';
 export const REGISTER_ENDPOINT = '5001/register';
 export const USERSDATA_ENDPOINT = '5001/userdata';

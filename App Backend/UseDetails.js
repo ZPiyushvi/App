@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     role: { type: String, required: true },
     otp: { type: String },
     otpExpiry: { type: Date },
+    isVerified: { type: Boolean, required: true },
 });
 // userSchema.index({ contactinfo: 1, role: 1 }, { unique: true });
 
