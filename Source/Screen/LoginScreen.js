@@ -19,7 +19,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE_URL, LOGIN_ENDPOINT } from "../Constants/Constants";
+import { API_BASE_URL, LOGIN_ENDPOINT, RESENDOTP_ENDPOINT } from "../Constants/Constants";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
 import TextStyles from "../Style/TextStyles";
@@ -62,7 +62,55 @@ const LoginScreen = () => {
           AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
           userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")
         } else {
-          Alert.alert("Login failed", data.data || "An error occurred while logging in. Please try again.");
+          if (data.status === 'notVerified') {
+            Alert.alert(
+              'Email not Verified',
+              'Your email is not verified',
+              [
+                {
+                  text: "Verify",
+                  onPress: async () => {
+                    const handleResendOtp = async () => {
+                      try {
+                        // setResendDisabled(true); // Disable resend button temporarily
+          
+                        const response = await fetch(`${API_BASE_URL}:${RESENDOTP_ENDPOINT}`, {
+                          method: "POST",
+                          headers: {
+                            "Content-Type": "application/json"
+                          },
+                          body: JSON.stringify({ contactinfo })
+                        });
+          
+                        const data = await response.json();
+          
+                        if (data.status === "ok") {
+                          Alert.alert("OTP resent successfully!");
+                          navigation.navigate("OtpScreen", { contactinfo: userData.contactinfo });
+                        } else {
+                          Alert.alert(data.data || "Failed to resend OTP.");
+                          // setResendDisabled(false); // Re-enable button
+                        }
+                      } catch (error) {
+                        console.error("Error:", error);
+                        Alert.alert("Failed to resend OTP. Please try again later.");
+                        // setResendDisabled(false); // Re-enable button
+                      }
+                    };
+          
+                    await handleResendOtp();
+                  }
+                },
+                {
+                  text: "No",
+                  onPress: () => null
+                }
+              ]
+            );
+          }
+           else {
+            Alert.alert("Login failed", data.data || "An error occurred while logging in. Please try again.");
+          }
         }
       })
       .catch(error => console.log("err", error));
@@ -140,7 +188,7 @@ const LoginScreen = () => {
           size={22}
         />
       </TouchableOpacity> */}
-<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+      <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
@@ -246,13 +294,13 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity>
-            <Text className='mb-8 text-right mt-4' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Forgot Password?</Text>
+            <Text className='mb-8 text-right mt-4' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Forgot Password?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => handleLogin()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>Login</Text>
+            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>Login</Text>
           </TouchableOpacity>
-          <Text className=' py-3 text-center' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
+          <Text className=' py-3 text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
           {/* {console.log(userRole)} */}
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}
             onPress={() => userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")}
@@ -262,12 +310,12 @@ const LoginScreen = () => {
               color={Colors.dark.colors.mainTextColor}
               size={20}
             />
-            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
+            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Don’t have an account?</Text>
+            <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Don’t have an account?</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Sign up</Text>
+              <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
