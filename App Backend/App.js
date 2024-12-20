@@ -34,7 +34,25 @@ app.get("/", (req, res) => {
     res.send({ status: "started" });
 });
 
+// ----------------------------- Otp ----------------------------- //
+// const generateOTP = () => Math.floor(100000 + Math.random() * 900000)
+
+// Email setup for OTP (example using nodemailer)
+let transporter = nodemailer.createTransport({
+    secure: true,
+    host: 'smtp.gmail.com',
+    // sendmail: true,
+    // newline: 'unix',
+    path: 465, // '/usr/sbin/sendmail'
+    auth: {
+        user: 'vipulapatil21@gmail.com',
+        pass: 'ksfx licp iqco qxfo'
+    }
+});
+
 // ----------------------------- register ----------------------------- //
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
+
 app.post("/register", async (req, res) => {
     const { name, contactinfo, password, role } = req.body;
 
@@ -43,29 +61,65 @@ app.post("/register", async (req, res) => {
     }
 
     try {
-
-        // Check if user with the same contactinfo and role already exists
-        const oldUser = await User.findOne({ contactinfo: contactinfo, role: role });
+        const oldUser = await User.findOne({ contactinfo, role });
         if (oldUser) {
             return res.status(400).send({ status: "error", data: "User with this contact info and role already exists" });
         }
 
+        const otp = generateOTP();
+        const otpExpiry = new Date(Date.now() + 5 * 60 * 1000).toString();
+
         const encryptedPassword = await bcrypt.hash(password, 10);
         const user = new User({
-            name: name,
-            contactinfo: contactinfo,
+            name,
+            contactinfo,
             password: encryptedPassword,
-            role: role
+            role,
+            otp,
+            otpExpiry,
         });
 
         await user.save();
 
-        res.status(201).send({ status: "ok", data: "User Created" });
+        transporter.sendMail({
+            to: contactinfo,
+            subject: 'Your OTP Code',
+            html: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+        });
 
-    } catch (err) {
-        if (err.code === 11000) {
-            return res.status(400).send({ status: "error", data: "Duplicate key error: contact info and role already exist" });
+        res.status(201).send({ status: "ok", data: "OTP sent to your contact info" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// Verify OTP endpoint
+app.post("/verifyotp", async (req, res) => {
+    const { contactinfo, otp } = req.body;
+
+    try {
+        const user = await User.findOne({ contactinfo });
+        if (!user) {
+            return res.status(400).send({ status: "error", data: "User not found" });
         }
+
+        if (user.otpExpiry < Date.now()) {
+            return res.status(400).send({ status: "error", data: "OTP expired" });
+        }
+
+        if (user.otp !== otp) {
+            return res.status(400).send({ status: "error", data: "OTP InCorrect" });
+        }
+
+        // Clear OTP and activate the user
+        user.otp = null;
+        user.otpExpiry = null;
+        await user.save();
+
+        res.status(200).send({ status: "ok", data: "OTP verified, user registered" });
+    } catch (error) {
+        console.error(error);
         res.status(500).send({ status: "error", data: "Internal server error" });
     }
 });
@@ -84,7 +138,7 @@ app.post("/login", async (req, res) => {
         }
 
         if (oldUser.role !== role) {
-            return res.status(400).send({ status: "error", data: `Incorrect role. The appropriate role is ${oldUser.role}`});
+            return res.status(400).send({ status: "error", data: `Incorrect role. The appropriate role is ${oldUser.role}` });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, oldUser.password);

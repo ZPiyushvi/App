@@ -60,8 +60,8 @@ const LoginScreen = () => {
         .then(data => {
           // console.log("Response Data:", data);
           if (data.status === "ok") {
-            Alert.alert("Register Successful");
-            navigation.navigate("LoginScreen");
+            Alert.alert("OTP sent to your contact info");
+            navigation.navigate("OtpScreen", { contactinfo: userData.contactinfo });
           } else {
             Alert.alert(data.data);
           }
@@ -141,7 +141,7 @@ const LoginScreen = () => {
           size={22}
         />
       </TouchableOpacity> */}
-<StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
+      <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
       <View className=' h-full justify-center'>
         {/* <View style={styles.textContainer}> */}
@@ -151,7 +151,7 @@ const LoginScreen = () => {
         {/* </View> */}
         {/* form  */}
         <View className=' mt-10'>
-          <View className='inputContainer flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: name_verify ? Colors.dark.colors.componentColor : Colors.dark.colors.backGroundColor}}>
+          <View className='inputContainer flex-row items-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: name_verify ? Colors.dark.colors.componentColor : Colors.dark.colors.backGroundColor }}>
             <Ionicons name={name_verify ? "person" : "person-outline"} size={22} color={name_verify ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.textColor} />
             <TextInput
               style={[styles.textInput]}
@@ -251,21 +251,21 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity onPress={() => handleSubmit()} className='inputContainer mt-8 flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor, backgroundColor: Colors.dark.colors.diffrentColorOrange }}>
-            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>Register</Text>
+            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>Register</Text>
           </TouchableOpacity>
-          <Text className=' py-3 text-center' style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
+          <Text className=' py-3 text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}
               size={20}
             />
-            <Text style={[ fontstyles.boldh2, {color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
+            <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  Google</Text>
           </TouchableOpacity>
           <View style={styles.footerContainer}>
-            <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Already have an account!</Text>
+            <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Already have an account!</Text>
             <TouchableOpacity onPress={handleSignup}>
-              <Text style={[ fontstyles.h5, {color: Colors.dark.colors.mainTextColor }]}>Login</Text>
+              <Text style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>

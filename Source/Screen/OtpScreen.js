@@ -1,50 +1,47 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,TouchableOpacity, Alert } from 'react-native';
+import { API_BASE_URL, VERIFYOTP_ENDPOINT } from '../Constants/Constants';
+import { useNavigation } from '@react-navigation/native';
 
-const OtpScreen = () => {
-  const [otp, setOtp] = useState('');
+const OtpScreen = ({ route }) => {
+      const navigation = useNavigation();
+    const { contactinfo } = route.params;
+    const [otp, setOtp] = useState('');
 
-  const handleOtpChange = (text) => {
-    setOtp(text);
-  };
+    const handleVerifyOtp = () => {
+        fetch(`${API_BASE_URL}:${VERIFYOTP_ENDPOINT}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ contactinfo, otp })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "ok") {
+                Alert.alert("Registration Successful");
+                navigation.navigate("LoginScreen");
+            } else {
+                Alert.alert(data.data);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    };
 
-  const handleVerifyOtp = () => {
-    console.log('Entered OTP:', otp);
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enter OTP</Text>
-      <TextInput
-        style={styles.input}
-        keyboardType="number-pad"
-        maxLength={6} // Adjust max length as needed
-        onChangeText={handleOtpChange}
-        value={otp}
-      />
-      <Button title="Verify OTP" onPress={handleVerifyOtp} />
-    </View>
-  );
+    return (
+        <View>
+            <Text>Enter OTP sent to {contactinfo}</Text>
+            <TextInput
+                value={otp}
+                onChangeText={setOtp}
+                placeholder="Enter OTP"
+                keyboardType="numeric"
+            />
+            <TouchableOpacity onPress={handleVerifyOtp}>
+                <Text>Verify OTP</Text>
+            </TouchableOpacity>
+        </View>
+    );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    width: '80%',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-});
 
 export default OtpScreen;
