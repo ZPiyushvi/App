@@ -51,6 +51,12 @@ const Cart = ({ route }) => {
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
 
+  useEffect(() => {
+    if (!item || item.length === 0) {
+      navigation.navigate('OrderHistory');
+    }
+  }, [item]);
+
   const updateCartItemsStatus = () => {
     const updatedCartItems = cartItemsNEW.map(cartItem => {
       const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
@@ -175,11 +181,11 @@ const Cart = ({ route }) => {
     </View>
   );
 
-  const renderItem2 = ({ item, index, hotelId }) => (
+  const renderItem2 = ({ item, index, hotelId, key }) => (
     <>
-      <View key={`${index}-${item.id}`}  className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-        {/* {console.log('[...item.orders, item.id]', { orders: item.orders, id: hotelId })} */}
-        <View className='flex-row w-full' >
+      <View key={`${hotelId}-${index}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+        {console.log(`${index}-${item.id}`)}
+        <View className='flex-row w-full'>
           <View className=' absolute right-3'>
             {item.status ?
               <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorGreen }]}>InStock</Text>
@@ -187,7 +193,6 @@ const Cart = ({ route }) => {
             }
           </View>
 
-          {/* {console.log(item.image)} */}
           <View className=' w-3/12'>
             <ImageBackground
               source={{
@@ -207,7 +212,7 @@ const Cart = ({ route }) => {
           <View className=' w-9/12 px-3'>
             <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>{item.item}</Text>
             <Text style={[fontstyles.h6, { color: Colors.dark.colors.textColor }]}>Quantity: {item.quantity} * ₹{item.price}</Text>
-            <View className=' flex-row justify-between w-full '>
+            <View className=' flex-row justify-between w-full'>
               <View className='flex-1 justify-end'>
                 <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
                   ₹{item.price * item.quantity}
@@ -219,7 +224,6 @@ const Cart = ({ route }) => {
               >
                 {item.quantity > 0 ? (
                   <>
-                    {/* {console.log('xxxxx', item)} */}
                     <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
                       <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
                     </TouchableOpacity>
@@ -321,7 +325,7 @@ const Cart = ({ route }) => {
               ]);
             }
             removeStoreFromCart(item.name, setCartItemsNEW);
-            navigation.navigate("Orders");
+            navigation.navigate("OrderHistory");
           }
         }]
       );
@@ -341,7 +345,7 @@ const Cart = ({ route }) => {
           : 0,
         // Noformatdate: today,
         date: getFormattedDate(today),
-        status: 'Scheduled',
+        status: 'Scheduled', // waiting_for_acceptance
         name: userData,
       })
       // createOrder({
@@ -367,10 +371,11 @@ const Cart = ({ route }) => {
         ...prevHistory
       ]);
       removeStoreFromCart(item.name, setCartItemsNEW);
-      navigation.navigate("Orders");
+      // navigation.navigate("OrderHistory");
     }
 
     // navigation.navigate("Orders");
+    navigation.navigate("OrderHistory");
   };
 
 
@@ -409,7 +414,7 @@ const Cart = ({ route }) => {
                   value={massage}
                   multiline={true}
                   onChangeText={(text) => setMassage(text)}
-                  placeholder="Edit category title"
+                  placeholder="Write your Massage"
                   placeholderTextColor={Colors.dark.colors.textColor}
                 />
               </View>
@@ -425,9 +430,10 @@ const Cart = ({ route }) => {
             /> */}
             {/* {console.log(items.item)} */}
             {item?.orders.map((items, index) => (
-              renderItem2({ hotelId: item.id, item: items, index: index, })
-              // console.log(items[index])
+              renderItem2({ hotelId: item.id, item: items, index: index, key: `${item.id}-${index}` })
             ))}
+
+            {console.log(item)}
           </View>
 
           <View className=' mt-5 rounded-xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
@@ -476,19 +482,50 @@ const Cart = ({ route }) => {
           <Text className='font-medium text-base' style={[fontstyles.number, { color: Colors.dark.colors.textColor }]}>TOTAL</Text>
         </View>
         {/* {console.log(today, getFormattedDate(today))} */}
-        {useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state == 'closed' ?
-          <TouchableOpacity
-            className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorRed, width: Dimensions.get('window').width * 0.53 }}>
-            <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>Store Closed</Text>
-          </TouchableOpacity>
-          :
-          <TouchableOpacity
-            onPress={() => handleProceedPayment(item)}
-            className=' p-3 flex-row justify-center items-center rounded-lg' style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange, width: Dimensions.get('window').width * 0.53 }}>
-            <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>Proceed to Pay</Text>
-          </TouchableOpacity>
+        {
+          item ? (
+            useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state === 'closed'
+              ? (
+                <TouchableOpacity
+                  className="p-3 flex-row justify-center items-center rounded-lg"
+                  style={{
+                    backgroundColor: Colors.dark.colors.diffrentColorRed,
+                    width: Dimensions.get('window').width * 0.53
+                  }}
+                >
+                  <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>
+                    Store Closed
+                  </Text>
+                </TouchableOpacity>
+              )
+              : (
+                <TouchableOpacity
+                  onPress={() => handleProceedPayment(item)}
+                  className="p-3 flex-row justify-center items-center rounded-lg"
+                  style={{
+                    backgroundColor: Colors.dark.colors.diffrentColorGreen,
+                    width: Dimensions.get('window').width * 0.53
+                  }}
+                >
+                  <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>
+                    Proceed to Pay
+                  </Text>
+                </TouchableOpacity>
+              )
+          ) : (
+            <TouchableOpacity
+              className="p-3 flex-row justify-center items-center rounded-lg"
+              style={{
+                backgroundColor: Colors.dark.colors.diffrentColorRed,
+                width: Dimensions.get('window').width * 0.53
+              }}
+            >
+              <Text onPress={() => navigation.navigate('HomeScreen')} style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>
+                Select Items
+              </Text>
+            </TouchableOpacity>
+          )
         }
-
       </View>
     </SafeAreaView>
   );

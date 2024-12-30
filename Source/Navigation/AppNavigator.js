@@ -1,5 +1,5 @@
 import React, { Profiler, useEffect, useState } from 'react'
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { DarkTheme, NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Details from '../Screen/Details';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -69,7 +69,10 @@ export default function AppNavigator() {
     );
 
     const LoginNavigationStack = () => (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{
+            cardStyle: { backgroundColor: '#1C1C1E' },
+            headerShown: false
+        }}  >
             {/* <Stack.Screen
                 name="StaterScreen"
                 component={StaterScreen}
@@ -100,7 +103,10 @@ export default function AppNavigator() {
     )
 
     const BuyerNavigationStack = () => (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{
+            cardStyle: { backgroundColor: '#1C1C1E' },
+            headerShown: false
+        }}>
             <Stack.Screen
                 name="HomeScreen"
                 options={{ headerShown: false }}
@@ -215,7 +221,7 @@ export default function AppNavigator() {
     }, []);
 
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={DarkTheme}>
             {showToast &&
                 <View className=' absolute w-full h-full z-40'>
                     <TouchableOpacity className=' w-full h-full z-30' onPress={() => { setShowToast(false) }}

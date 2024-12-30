@@ -450,9 +450,44 @@ app.post("/getorderseller", async (req, res) => {
     try {
         const orderSeller = await OrderInfo.find({ "items.userId": contactinfo });
         if (orderSeller.length === 0) {
-            return res.status(400).send({ status: "error", data: "Seller not found" });
+            return res.status(300).send({ status: 'alert', data: "No orders Found" });
         }
         res.status(200).send({ status: 'ok', data: orderSeller });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+// ----------------------------- order status endpoint ----------------------------- //
+
+
+// Accept an Order and Set Timer
+app.post('/acceptOrder', async (req, res) => {
+    try {
+        const { orderId, timer } = req.body;
+        const order = await OrderInfo.findOne({ id: orderId });
+
+        if (!order) {
+            return res.status(404).send({ status: "error", data: "Order not found" });
+        }
+
+        // Update order status to "Accepted"
+        order.status = "Accepted";
+
+        // Set the timer for the order
+        order.startTime = new Date();  // Sets the current timestamp
+        order.timer = timer;
+
+        // Check if startTime is undefined before saving
+        if (!order.startTime) {
+            return res.status(400).send({ status: "error", data: "Start time is required." });
+        }
+
+        // Save the order
+        await order.save();
+
+        res.status(200).send({ status: "ok", data: order });
     } catch (err) {
         console.log(err);
         res.status(500).send({ status: "error", data: "Internal server error" });
@@ -462,7 +497,71 @@ app.post("/getorderseller", async (req, res) => {
 
 
 
+// Decline an Order
+app.post('/declineOrder', async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        // Find the order by ID
+        const order = await OrderInfo.findOne({ id: orderId });
+
+        if (!order) {
+            return res.status(404).send({ status: "error", data: "Order not found" });
+        }
+
+        // Update order status to "Declined"
+        order.status = "Declined";
+        await order.save();
+
+        // Now delete the order if status is "Declined"
+        await OrderInfo.deleteOne({ id: orderId });
+
+        res.status(200).send({ status: "ok", data: "Order declined and deleted" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+app.post('/changeOrderStatus', async (req, res) => {
+    try {
+        const { orderId, newStatus } = req.body;
+
+        // Find the order by ID
+        const order = await OrderInfo.findOne({ id: orderId });
+
+        if (!order) {
+            return res.status(404).send({ status: "error", data: "Order not found" });
+        }
+
+        // Update order status to "Closed"
+        order.status = newStatus;
+        await order.save();
+
+        // Now delete the order if status is "Closed"
+        if (newStatus == "Delivered"){
+            await OrderInfo.deleteOne({ id: orderId });
+        }
+
+        res.status(200).send({ status: "ok", data: "Order closed and deleted" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ status: "error", data: "Internal server error" });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
-

@@ -1,272 +1,348 @@
-import { View, Text, Dimensions, Alert, FlatList, StyleSheet, TouchableOpacity, Linking, Modal } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import Colors from '../Components/Colors';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    Modal,
+    StyleSheet,
+    Dimensions,
+    FlatList,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { API_BASE_URL, ORDERS_ENDPOINT, ORDERSSELLER_ENDPOINT } from '../Constants/Constants';
+import Slider from '@react-native-community/slider';
+import { ACCEPTORDER_ENDPOINT, API_BASE_URL, CHANGEORDERSTATUS_ENDPOINT, DECLINEORDER_ENDPOINT, ORDERSSELLER_ENDPOINT } from '../Constants/Constants';
 import { GlobalStateContext } from '../Context/GlobalStateContext';
-import { LinearGradient } from 'expo-linear-gradient';
-import ModelScreen from './ModelScreen';
+import Colors from '../Components/Colors';
+import TextStyles from '../Style/TextStyles';
 
 export default function OrderHistorySeller() {
-    const [Orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [noOrders, setNoOrders] = useState(true);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [timer, setTimer] = useState(0); // Timer state
     const { userData } = useContext(GlobalStateContext);
-    const { show, hide, RenderModel } = ModelScreen();
-    const [type, settype] = useState('');
-    const [selectedStatus, setSelectedStatus] = useState('');
 
-    async function createOrder(orderData) {
-        // console.log('orderData', orderData)
+    const fontstyles = TextStyles();
+
+    // Fetch orders for the seller
+    const fetchOrders = async () => {
+        const contactinfo = { contactinfo: userData.contactinfo };
 
         try {
-            const response = await fetch(`${API_BASE_URL}:${ORDERS_ENDPOINT}`, {
+            const response = await fetch(`${API_BASE_URL}:${ORDERSSELLER_ENDPOINT}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(contactinfo),
             });
 
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log('Order created successfully:', result.data);
-                return result.data;
+            const data = await response.json();
+            if (data.status === 'ok') {
+                setOrders(data.data);
+                setNoOrders(data.data.length === 0); // If no orders, set noOrders to true
+            } else if (data.status === "alert") {
+                setNoOrders(true); // No orders available, set noOrders to true
             } else {
-                console.error('Error creating order:', result.data);
+                console.error('Error fetching orders:', data);
+                setNoOrders(true); // In case of error, set noOrders to true
             }
         } catch (error) {
-            console.error('Error creating order:', error);
-        }
-    }
-
-    function GetOrdersSeller() {
-        // console.log(userData);
-
-        const contactinfo = {
-            contactinfo: userData.contactinfo,
-        };
-
-        fetch(`${API_BASE_URL}:${ORDERSSELLER_ENDPOINT}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(contactinfo)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('order Updated');
-                if (data.status === "ok") {
-                    setOrders(data.data);
-                }
-            })
-            .catch(error => console.log("err", error));
-    }
-
-    // useEffect(() => {
-    //     GetOrdersSeller();
-    // }, []);
-    
-    useEffect(() => {
-        GetOrdersSeller();
-        const intervalId = setInterval(() => {
-            
-        }, 10000); // Poll every 10 seconds
-    
-        return () => clearInterval(intervalId); // Cleanup on unmount
-      }, []);
-
-    const dialNumber = (input) => {
-        if (input.includes('@gmail.c')) {
-            // Handle email
-            Linking.openURL(`mailto:${input}`);
-        } else {
-            // Handle phone number
-            Linking.openURL(`tel:${input}`);
+            console.error('Error fetching orders:', error);
+            setNoOrders(true); // In case of error, set noOrders to true
         }
     };
 
-    const OrderStatusDropdown = ({ order, item, onChangeStatus }) => {
-        const [modalVisible, setModalVisible] = useState(false);
-        const [selectedStatus, setSelectedStatus] = useState(item.status);
 
-        const statuses = [
-            // "Pending",
-            // "Processing",
-            // "Shipped",
-            // "Delivered",
-            
-            "Scheduled",
-            "Not Started",
-            "In Progress",
-            "On Hold",
-            "Delayed",
-            "Finished"
-        ];
+    useEffect(() => {
+        fetchOrders();
+        const intervalId = setInterval(() => {
+            fetchOrders(); // Refresh orders every 10 seconds
+        }, 10000); // Poll every 10 seconds
 
-        const handleStatusChange = (status) => {
-            setSelectedStatus(status);
-            createOrder({
-                id: order.id,
-                items: order.items,
-                // name: userData,    
-                massage: order.massage,
-                totalPrice: order.totalPrice,
-                // Noformatdate: today,
-                date: order.date,
-                status: status,
-                name: order.name,
-            })
-            // onChangeStatus(status);
-            setModalVisible(false);
-        };
+        return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    }, []);
+
+
+    const interpolateColor = (percentage) => {
+        // Adjust colors from green (start) to red (end)
+        const r = Math.min(255, Math.max(0, Math.floor((percentage / 100) * 255)));
+        const g = Math.min(255, Math.max(0, Math.floor((1 - percentage / 100) * 255)));
+        const b = 0;
+
+        return `rgb(${r},${g},${b})`;
+    };
+
+    const getRemainingTime = (startTime, timer) => {
+        const targetTime = new Date(startTime).getTime() + timer * 60000; // startTime + timer in milliseconds
+        const currentTime = new Date().getTime();
+        const remainingTime = targetTime - currentTime;
+
+        if (remainingTime <= 0) {
+            return { minutes: 0, seconds: 0 };
+        }
+
+        const remainingMinutes = Math.floor(remainingTime / 60000);
+        const remainingSeconds = Math.floor((remainingTime % 60000) / 1000);
+
+        const remainingTime_inPersent = ((remainingMinutes * 60) / (timer * 60)) * 100
+
+        return { minutes: remainingMinutes, seconds: remainingSeconds, persent: remainingTime_inPersent };
+    };
+
+
+    // Accept an order and set timer (merged backend call)
+    const acceptOrder = async (orderId, timer) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}:${ACCEPTORDER_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId, timer }), // Pass both orderId and timer
+            });
+
+            const data = await response.json();
+            if (data.status === 'ok') {
+                fetchOrders(); // Refresh the orders after accepting
+                setModalVisible(false); // Close the modal
+            } else {
+                console.error('Error accepting order:', data);
+            }
+        } catch (error) {
+            console.error('Error accepting order:', error);
+        }
+    };
+
+    // Chnage an order Status (Call backend /declineOrder)
+
+    const changeOrderStatus = async (orderId, newStatus) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}:${CHANGEORDERSTATUS_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId, newStatus }),
+            });
+
+            const data = await response.json();
+            if (data.status === 'ok') {
+                fetchOrders(); // Refresh the orders after declining
+                setModalVisible(false); // Close the modal
+            } else {
+                console.error('Error declining order:', data);
+            }
+        } catch (error) {
+            console.error('Error declining order:', error);
+        }
+    };
+
+    // Decline an order (Call backend /declineOrder)
+    const declineOrder = async (orderId) => {
+        try {
+            const response = await fetch(`${API_BASE_URL}:${DECLINEORDER_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId }),
+            });
+
+            const data = await response.json();
+            if (data.status === 'ok') {
+                fetchOrders(); // Refresh the orders after declining
+                setModalVisible(false); // Close the modal
+            } else {
+                console.error('Error declining order:', data);
+            }
+        } catch (error) {
+            console.error('Error declining order:', error);
+        }
+    };
+
+    const renderOrderItem = ({ item }) => {
+        const { minutes, seconds, persent } = getRemainingTime(item.startTime, item.timer); // Calculate the remaining time
+        const persentBackgroundColor = persent;
 
         return (
-            <View>
-                <TouchableOpacity
-                    onPress={() => setModalVisible(true)}
-                    className='items-center flex-row p-1 rounded-sm px-2'
-                    style={{ backgroundColor: Colors.dark.colors.diffrentColorPerple }}
-                >
-                    <Text className='text-base font-black' style={{ color: Colors.dark.colors.mainTextColor }}>
-                        {selectedStatus}
-                    </Text>
-                    <Ionicons name="caret-down-outline" size={18} color={Colors.dark.colors.mainTextColor} />
-                </TouchableOpacity>
+            <View style={styles.orderContainer}>
+                <View className='flex-row justify-between'>
+                    <View>
+                        <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order ID</Text>
+                        <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{item.id}</Text>
+                    </View>
+                    <View className='items-end'>
+                        <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Status</Text>
+                        <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.diffrentColorOrange }]}>{item.status}</Text>
+                    </View>
+                </View>
 
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => setModalVisible(false)}
-                >
-                    <View className="flex-1 justify-center items-center">
-                        <View className="w-3/4 bg-white rounded-lg p-4">
-                            {statuses.map((status) => (
-                                <TouchableOpacity
-                                    key={status}
-                                    onPress={() => handleStatusChange(status)}
-                                    className="py-2"
-                                >
-                                    <Text className="text-lg">{status}</Text>
-                                </TouchableOpacity>
-                            ))}
+                {item?.items?.orders?.map((order, index) => {
+                    return (
+                        <View key={`${order.id}_${index}`} className='flex-row justify-between'>
+                            <Text style={[fontstyles.h4, { fontSize: 20, }]} className='text-white'>
+                                {order.quantity} x {order.item}
+                            </Text>
+                            <Text style={[fontstyles.number, { fontSize: 15, }]} className='text-white'>
+                                ₹ {order.quantity * order.price}
+                            </Text>
+                        </View>
+                    );
+                })}
+
+                <View className=' my-3 flex-row '>
+                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Amount:  </Text>
+                    <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.mainTextColor, marginTop: 5 }]}>₹ {item.totalPrice}</Text>
+                </View>
+
+                {
+                    item.status !== "Scheduled" ? (
+                        item.status === "Prepared" ? (
                             <TouchableOpacity
-                                onPress={() => setModalVisible(false)}
-                                className="mt-4 py-2 bg-gray-200 rounded-lg"
+                                onPress={() => {
+                                    changeOrderStatus(item.id, "Delivered"); // Mark the order as delivered
+                                }}
+                                style={[
+                                    {
+                                        paddingVertical: 10,
+                                        borderRadius: 5,
+                                        backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                                    },
+                                ]}
+                                className="bg-white overflow-hidden flex-row items-center justify-center"
                             >
-                                <Text className="text-center text-lg">Cancel</Text>
+                                <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
+                                    Waiting for User to Receive
+                                </Text>
+                                <View
+                                    style={{
+                                        backgroundColor: Colors.dark.colors.diffrentColorPerple,
+                                        width: `${persentBackgroundColor}%`,
+                                    }}
+                                    className="-z-10 absolute top-0 left-0 h-20"
+                                />
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    changeOrderStatus(item.id, "Prepared"); // Mark the order as prepared
+                                }}
+                                style={[
+                                    {
+                                        paddingVertical: 10,
+                                        borderRadius: 5,
+                                        backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                                    },
+                                ]}
+                                className="bg-white overflow-hidden flex-row items-center justify-center"
+                            >
+                                <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
+                                    Order Ready
+                                </Text>
+                                <Text style={[fontstyles.number]} className="text-black text-center">
+                                    ({minutes}m {seconds}s)
+                                </Text>
+                                <View
+                                    style={{
+                                        backgroundColor: Colors.dark.colors.diffrentColorPerple,
+                                        width: `${persentBackgroundColor}%`,
+                                    }}
+                                    className="-z-10 absolute top-0 left-0 h-20"
+                                />
+                            </TouchableOpacity>
+                        )
+                    ) : (
+                        <View style={styles.buttonsContainer}>
+                            <TouchableOpacity
+                                style={[styles.button, styles.acceptButton]}
+                                onPress={() => openModal(item, "Accept")}
+                            >
+                                <Text style={styles.buttonText}>Accept</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.button, styles.declineButton]}
+                                onPress={() => {
+                                    declineOrder(item.id); // Decline the order
+                                }}
+                            >
+                                <Text style={styles.buttonText}>Decline</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                </Modal>
+                    )
+                }
+
             </View>
         );
     };
 
-    const renderItem = ({ item, onChangeStatus }) => {
-        return (
-            <TouchableOpacity className='px-4'>
-                <View className='rounded-lg flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-                    <LinearGradient
-                        start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
-                        colors={['transparent', Colors.dark.colors.backGroundColor]}
-                        className='-ml-1 flex-1'
-                    >
-                        <View className='px-3 py-2 flex-row justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-                            <View className='flex-row'>
-                                <View>
-                                    <Text className='text-xl font-black' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name.contactinfo}</Text>
-                                    <Text className='text-lg font-light' style={{ color: Colors.dark.colors.textColor }}>{item.date}</Text>
-                                </View>
-                            </View>
-                            <View className='items-end'>
-                                <Text className='text-xl font-black text-left' style={{ color: Colors.dark.colors.mainTextColor }}>Total ₹{item.totalPrice}</Text>
-                                <Text className='text-lg font-light' style={{ color: Colors.dark.colors.diffrentColorOrange }}>Qty: {item.totalPrice}</Text>
-                            </View>
-                        </View>
-                        <FlatList
-                            className='px-3 py-2'
-                            data={item.items.orders}
-                            keyExtractor={(order) => order.id}
-                            renderItem={({ item: order }) => (
-                                <View className='flex-row justify-between items-center'>
-                                    <View className='flex-row py-2'>
-                                        <Text className='font-black text-lg' style={{ color: Colors.dark.colors.mainTextColor }}>{order.item}</Text>
-                                        <Text className='font-black text-lg' style={{ color: Colors.dark.colors.diffrentColorOrange }}> ₹</Text>
-                                        <Text className='font-black text-lg' style={{ color: Colors.dark.colors.mainTextColor }}>{order.price}</Text>
-                                    </View>
-                                    <View className='w-[40%] flex-row py-2 justify-between'>
-                                        <View className='flex-row overflow-hidden'>
-                                            <Text className='font-black text-lg' style={{ color: Colors.dark.colors.diffrentColorOrange }}>X </Text>
-                                            <Text className='font-black text-lg' style={{ color: Colors.dark.colors.mainTextColor }}>{order.quantity}</Text>
-                                        </View>
-                                        <Text className='font-black text-lg' style={{ color: Colors.dark.colors.diffrentColorOrange }}>{order.price * order.quantity}</Text>
-                                    </View>
-                                </View>
-                            )}
-                        />
-                        <View className='px-3 py-2'>
-                            <View className='flex-row mb-2 items-center'>
-                                <Text className='text-base font-black' style={{ color: Colors.dark.colors.textColor }}>Massage: </Text>
-                                <Text className='text-base font-light' numberOfLines={null} style={{ color: Colors.dark.colors.textColor }}>{item.massage === '' ? 'No Massage' : item.massage}</Text>
-                            </View>
-                            <View className='flex-row justify-between'>
-                                <View className='flex-row items-center'>
-                                    <Text className='text-base font-black' style={{ color: Colors.dark.colors.textColor }}>Order Status: </Text>
-                                    <OrderStatusDropdown order={item} item={item} onChangeStatus={(status) => onChangeStatus(item.id, status)} />
-                                    {/* onPress={() => { settype('status'), show() }} */}
-                                </View>
-                                <TouchableOpacity
-                                    onPress={() => dialNumber(item.name.contactinfo)}
-                                    className='flex-row p-1 rounded-sm px-3'
-                                    style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen }}
-                                >
-                                    <Text className='text-base font-black' style={{ color: Colors.dark.colors.mainTextColor }}>Contact</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </LinearGradient>
-                </View>
-            </TouchableOpacity>
-        );
+    // Open modal to accept/decline and set timer
+    const openModal = (order, action) => {
+        setSelectedOrder(order);
+        setTimer(0); // Reset timer to 0
+        setModalVisible(true);
     };
 
     return (
-        <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
-            <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View className=' mb-36'>
-                    {Orders.length === 0 ? (
-                        <View className='flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>
-                            <Ionicons name={'thumbs-down'} size={42} color={Colors.dark.colors.mainTextColor} />
-                            <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-                                No Orders Yet? Seriously?
-                            </Text>
-                            <Text className='font-normal text-base text-center' style={{ color: Colors.dark.colors.textColor }}>
-                                You haven't placed any orders yet. Don't miss out on our amazing items! Go ahead and fill up this space with delicious memories!
-                            </Text>
+        <View style={styles.container}>
+            {noOrders ? (
+                <Text style={styles.noOrdersText}>No orders yet</Text>
+            ) : (
+                <FlatList
+                    data={orders}
+                    renderItem={renderOrderItem}
+                    keyExtractor={(item) => item?.id?.toString()}
+                />
+            )}
+
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>
+                            {selectedOrder ? `Order #${selectedOrder.id}` : 'Order'}
+                        </Text>
+                        <Text style={styles.modalSubtitle}>Set Timer (0-60 minutes)</Text>
+
+                        <Slider
+                            value={timer}
+                            onValueChange={txt => setTimer(txt)}
+                            minimumValue={0}
+                            maximumValue={60}
+                            step={1}
+                            style={{ width: 200, height: 40 }}
+                        />
+                        <Text style={styles.timerText}>{timer} minutes</Text>
+
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity
+                                style={styles.setTimerButton}
+                                onPress={() => {
+                                    if (selectedOrder) {
+                                        acceptOrder(selectedOrder.id, timer); // Accept the order and set the timer
+                                    }
+                                }}
+                            >
+                                <Text style={styles.buttonText}>Accept</Text>
+                            </TouchableOpacity>
+
                         </View>
-                    ) : (
-                        <>
-                            <FlatList
-                                data={Orders}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item._id}
-                            />
-                            {/* <Text style={styles.totalPrice}>Total Price of All Orders: ${totalPrice}</Text> */}
-                        </>
-                    )}
+
+                        <TouchableOpacity
+                            style={styles.cancelButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={styles.buttonText}>Cancel</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </ScrollView>
-            {<RenderModel
-                type={{ type: type }}
-                selectedStatus={selectedStatus}
-                setSelectedStatus={setSelectedStatus}
-            />}
-            {/* {RenderModel({ type: { type }, selectedStatus: {selectedStatus}, setSelectedStatus: {setSelectedStatus} })} */}
+            </Modal>
         </View>
     );
 }
@@ -303,5 +379,104 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    noOrdersText: {
+        fontSize: 18,
+        color: Colors.dark.colors.mainTextColor,
+        textAlign: 'center',
+        marginTop: 20,
+        fontWeight: 'bold',
+    },
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: Colors.dark.colors.bbackGroundColor,
+    },
+    orderContainer: {
+        marginBottom: 20,
+        padding: 15,
+        backgroundColor: Colors.dark.colors.shadowcolor,
+        borderRadius: 8,
+        // borderWidth: 1,
+    },
+    orderDetails: {
+        marginBottom: 10,
+    },
+    orderText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: Colors.dark.colors.mainTextColor,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+    },
+    acceptButton: {
+        backgroundColor: Colors.dark.colors.diffrentColorGreen,
+    },
+    declineButton: {
+        backgroundColor: Colors.dark.colors.diffrentColorRed,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        width: '80%',
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    modalTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    modalSubtitle: {
+        fontSize: 16,
+        marginBottom: 15,
+    },
+    slider: {
+        width: '100%',
+        height: 40,
+    },
+    timerText: {
+        fontSize: 16,
+        marginVertical: 10,
+        fontWeight: 'bold',
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    setTimerButton: {
+        backgroundColor: Colors.dark.colors.diffrentColorGreen,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        marginVertical: 5,
+        flex: 1,
+        marginRight: 10,
+    },
+    cancelButton: {
+        marginTop: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        backgroundColor: Colors.dark.colors.diffrentColorGreen,
+        borderRadius: 5,
     },
 });

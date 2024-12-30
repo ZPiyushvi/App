@@ -195,7 +195,7 @@ const ListCard_Self3 = ({ item }) => {
 }
 
 const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW }) => {
-  
+
   const navigation = useNavigation();
   const navToDetails = (item) => {
     navigation.navigate("Details", { Data: item });
@@ -210,122 +210,122 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW }) => {
   );
 
   return (
-    <Animated.View key={index} entering={FadeInDown.delay(index*100).springify().damping(12)}>
+    <Animated.View key={index} entering={FadeInDown.delay(index * 100).springify().damping(12)}>
       <TouchableOpacity onPress={() => { navToDetails(outletsNEW.find(shop => shop.name === item.storeDetails.name)) }}>
-      <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
-        <LinearGradient
-          start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
-          colors={['transparent', Colors.dark.colors.backGroundColor]}
-          className=' -ml-1 flex-1 '
-        >
-          <View className='px-3 py-2 flex-row items-center'>
-            <View className=' w-2/5 h-32 rounded-xl overflow-hidden'>
-              <ImageBackground
-                // source={require('./../Data/banner.jpg')}
-                source={{
-                  uri: item.storeDetails.image,
-                  method: 'POST',
-                  headers: {
-                    Pragma: 'no-cache',
-                  },
-                }}
-                defaultSource={require('./../../assets/store.jpg')}
-                className=' w-full h-full mr-2'
-                alt="Logo"
-              >
-                <LinearGradient
-                  start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
-                  className='overflow-hidden h-full w-full'
-                  colors={['transparent', Colors.dark.colors.backGroundColor]}
-                />
-                <View className='absolute bottom-2 right-2'>
-                  <View className='flex-row justify-center items-center'>
+        <View className='flex-row drop-shadow-2xl overflow-hidden' style={[styles.foodItemCollectionContainer, styles.shadowProp]}>
+          <LinearGradient
+            start={{ x: 0.4, y: -0.1 }} end={{ x: 0.8, y: 0.9 }}
+            colors={['transparent', Colors.dark.colors.backGroundColor]}
+            className=' -ml-1 flex-1 '
+          >
+            <View className='px-3 py-2 flex-row items-center'>
+              <View className=' w-2/5 h-32 rounded-xl overflow-hidden'>
+                <ImageBackground
+                  // source={require('./../Data/banner.jpg')}
+                  source={{
+                    uri: item.storeDetails.image,
+                    method: 'POST',
+                    headers: {
+                      Pragma: 'no-cache',
+                    },
+                  }}
+                  defaultSource={require('./../../assets/store.jpg')}
+                  className=' w-full h-full mr-2'
+                  alt="Logo"
+                >
+                  <LinearGradient
+                    start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
+                    className='overflow-hidden h-full w-full'
+                    colors={['transparent', Colors.dark.colors.backGroundColor]}
+                  />
+                  <View className='absolute bottom-2 right-2'>
                     <View className='flex-row justify-center items-center'>
-                      {item.storeDetails.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
-                      <Text className='ml-1' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.type}</Text>
+                      <View className='flex-row justify-center items-center'>
+                        {item.storeDetails.type === "PureVeg" && <Ionicons name="leaf" size={16} color={Colors.dark.colors.diffrentColorGreen} />}
+                        <Text className='ml-1' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.type}</Text>
+                      </View>
                     </View>
                   </View>
-                </View>
-              </ImageBackground>
-            </View>
-            <View className=' ml-2'>
-              <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>
-                {item.storeDetails.name}
-              </Text>
-              <View className='flex-row items-center' >
-                {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
+                </ImageBackground>
+              </View>
+              <View className=' ml-2'>
+                <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>
+                  {item.storeDetails.name}
+                </Text>
+                <View className='flex-row items-center' >
+                  {/* <Text style={{ color: Colors.dark.colors.textColor }} className='text-sm '>{item.storeDetails.type}</Text>
                 <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                {/* <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.menutype}</Text> */}
-                {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
-                <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorPerple }]}>{item.storeDetails.location}</Text>
-              </View>
-              <View className='flex-row py-2'>
-                <View className=' px-4 rounded-md' style={{ backgroundColor:Colors.dark.colors.subbackGroundColor, paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
-                  {/* <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}> */}
-                  <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
-                    {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
-                  </Text>
-                  {/* </Text> */}
+                  {/* <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.textColor }]}>{item.storeDetails.menutype}</Text> */}
+                  {/* <Ionicons style={{ marginTop: 4, paddingHorizontal: 4 }} name="ellipse" size={5} color={Colors.dark.colors.textColor} /> */}
+                  <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorPerple }]}>{item.storeDetails.location}</Text>
                 </View>
+                <View className='flex-row py-2'>
+                  <View className=' px-4 rounded-md' style={{ backgroundColor: Colors.dark.colors.subbackGroundColor, paddingVertical: 8, borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
+                    {/* <Text className='font-light text-base' style={{ color: Colors.dark.colors.textColor }}> */}
+                    <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
+                      {item.items.length} {item.items.length > 1 ? 'items' : 'item'}
+                    </Text>
+                    {/* </Text> */}
+                  </View>
 
-                <View className='flex-row ml-2 items-center'>
-                  <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
-                  <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}> {item.totalPrice}</Text>
+                  <View className='flex-row ml-2 items-center'>
+                    <Text style={[fontstyles.h5, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
+                    <Text style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}> {item.totalPrice}</Text>
+                  </View>
                 </View>
               </View>
+
+              <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className='pt-10 pl-80 flex-row items-center absolute right-4 bottom-2'>
+                {/* <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline mr-1'>view full order</Text> */}
+                <Ionicons name={showDetails ? 'caret-up' : 'caret-down'} size={16} color={Colors.dark.colors.diffrentColorOrange} />
+              </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className='pt-10 pl-80 flex-row items-center absolute right-4 bottom-2'>
-              {/* <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]} className='underline mr-1'>view full order</Text> */}
-              <Ionicons name={showDetails ? 'caret-up' : 'caret-down'} size={16} color={Colors.dark.colors.diffrentColorOrange} />
-            </TouchableOpacity>
-          </View>
-
-          {showDetails && item.items.map((cartItem, index) => (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('YettoUpdate')}>
-              <View className='px-3 flex-row justify-between items-center'>
-                <View className='flex-row py-2'>
-                  <View className=' w-14 h-12 rounded-l-xl overflow-hidden'>
-                    <ImageBackground
-                      source={{
-                        uri: cartItem.image, // item.image,
-                        method: 'POST',
-                        headers: {
-                          Pragma: 'no-cache',
-                        },
-                      }}
-                      defaultSource={require('./../../assets/menu.jpg')}
-                      className=' w-full h-full mr-2'
-                      alt="Logo"
-                    >
-                      {/* <LinearGradient
+            {showDetails && item.items.map((cartItem, index) => (
+              <TouchableOpacity key={index} onPress={() => navigation.navigate('YettoUpdate')}>
+                <View className='px-3 flex-row justify-between items-center'>
+                  <View className='flex-row py-2'>
+                    <View className=' w-14 h-12 rounded-l-xl overflow-hidden'>
+                      <ImageBackground
+                        source={{
+                          uri: cartItem.image, // item.image,
+                          method: 'POST',
+                          headers: {
+                            Pragma: 'no-cache',
+                          },
+                        }}
+                        defaultSource={require('./../../assets/menu.jpg')}
+                        className=' w-full h-full mr-2'
+                        alt="Logo"
+                      >
+                        {/* <LinearGradient
                     start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
                     className='overflow-hidden h-full w-full'
                     colors={['transparent', 'black']}
                   /> */}
-                    </ImageBackground>
+                      </ImageBackground>
+                    </View>
+                    <View className=' w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ backgroundColor: Colors.dark.colors.subbackGroundColor, marginLeft: 4 }}>
+                      <Text style={[fontstyles.h4, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
+                      <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.price}</Text>
+                    </View>
                   </View>
-                  <View className=' w-36 h-12 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ backgroundColor:Colors.dark.colors.subbackGroundColor, marginLeft: 4 }}>
-                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.diffrentColorOrange }]}>₹</Text>
-                    <Text style={[ fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.price}</Text>
+                  <View className='h-14 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
+                    <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>X</Text>
+                    <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.quantity}</Text>
                   </View>
+                  <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>{cartItem.price * cartItem.quantity}</Text>
                 </View>
-                <View className='h-14 rounded-r-xl pl-3 pr-5 flex-row items-center' style={{ marginLeft: 4 }}>
-                  <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>X</Text>
-                  <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>  {cartItem.quantity}</Text>
-                </View>
-                <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.diffrentColorOrange }]}>{cartItem.price * cartItem.quantity}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </LinearGradient>
+              </TouchableOpacity>
+            ))}
+          </LinearGradient>
 
-        {/* <TouchableOpacity className=' items-center justify-center' onPress={onShowDetails}>
+          {/* <TouchableOpacity className=' items-center justify-center' onPress={onShowDetails}>
           <Ionicons name="chevron-forward-outline" size={28} color={Colors.dark.colors.textColor} />
         </TouchableOpacity> */}
 
-      </View>
-    </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
     </Animated.View>
   );
 }
@@ -351,13 +351,20 @@ export default function OrderHistory() {
               </Text>
             </View>
           }
+          {console.log(dateGroup)}
           {dateGroup.map((group, index) => {
             return (
               <View className='my-6 px-4' key={index}>
                 <View className='flex-row justify-between -mb-2'>
                   <View>
                     <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Date</Text>
-                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{group.date}</Text>
+                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{new Date(group.Noformatdate).toLocaleDateString('en-EN', {
+                      weekday: 'short', // Short weekday name (Mon, Tue, ...)
+                      month: 'short', // Short month name (Jan, Feb, ...)
+                      day: 'numeric', // Numeric day (1, 2, 3, ...)
+                      year: 'numeric'
+                    })}</Text>
+                    {console.log(group.date)}
                   </View>
                   <View className='items-end'>
                     <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Amount</Text>
@@ -368,7 +375,7 @@ export default function OrderHistory() {
                 <View>
                   {group.orders.map((order, index) => (
                     <View key={index}>
-                      <ListCard_Self1 index={index} fontstyles={fontstyles} item={order} outletsNEW={outletsNEW}/>
+                      <ListCard_Self1 index={index} fontstyles={fontstyles} item={order} outletsNEW={outletsNEW} />
                     </View>
                   ))}
                 </View>

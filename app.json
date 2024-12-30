@@ -16,7 +16,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.vsp.app2"
+      "package": "com.vsp.app2",
+      "backgroundColor": "#000000",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -19,11 +19,12 @@ export const TOPNAVI_H = 50;
 // export const ALLOUTLETS2_ENDPOINT = '/alloutlets2';
 // export const ORDERS_ENDPOINT = '/createorder';
 // export const ORDERSSELLER_ENDPOINT = '/getorderseller';
+// export const ACCEPTORDER_ENDPOINT = '/acceptOrder';
+// export const DECLINEORDER_ENDPOINT = '/declineOrder';
+// export const CHANGEORDERSTATUS_ENDPOINT = '/changeOrderStatus';
 
 
-
-export const API_BASE_URL = 'http://192.168.78.12';
-
+export const API_BASE_URL = 'http://192.168.1.3';
 export const VERIFYOTP_ENDPOINT = '5001/verifyotp';
 export const RESENDOTP_ENDPOINT = '5001/resendotp';
 export const LOGIN_ENDPOINT = '5001/login';
@@ -37,3 +38,6 @@ export const ALLOUTLETS2_ENDPOINT = '5001/alloutlets2';
 export const ALLOUTLETS_ENDPOINT = '5001/alloutlets';
 export const ORDERS_ENDPOINT = '5001/createorder';
 export const ORDERSSELLER_ENDPOINT = '5001/getorderseller';
+export const ACCEPTORDER_ENDPOINT = '5001/acceptOrder';
+export const DECLINEORDER_ENDPOINT = '5001/declineOrder';
+export const CHANGEORDERSTATUS_ENDPOINT = '5001/changeOrderStatus';

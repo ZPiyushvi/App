@@ -1,6 +1,6 @@
 const BANNER_H = 600;
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Image, FlatList, TouchableOpacity, Dimensions, ScrollView, Animated, BackHandler, Alert, StatusBar, KeyboardAvoidingView, Platform } from 'react-native';
 import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -151,7 +151,12 @@ const Home = () => {
   };
 
   return (
+    // <KeyboardAvoidingView
+    //               behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    //               style={{ flex: 1, backgroundColor: '#yourPreferredColor' }}
+    //           >
     <SafeAreaView>
+      
       <StatusBar hidden={false} backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
       <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
@@ -355,7 +360,9 @@ const Home = () => {
         {RenderModel({ type: { type } })}
         {RenderModel_UpModelScreen()}
       </View>
+      
     </SafeAreaView>
+    // </KeyboardAvoidingView>
   );
 };
 

@@ -186,11 +186,11 @@ const DetailsScreen = ({ route }) => {
                                 item.type &&
                                 <FoodIcon style={{ backgroundColor: 'black' }} type={item.type} size={11} padding={2} />
                             }
-                            {/* {
-                                item.category.split('_').map((part, index) => (
+                            {
+                                item.category?.split('_').map((part, index) => (
                                     <FoodTypeIcon key={`${index}_${part}`} type={part} size={15} padding={3} textShow={false} />
                                 ))
-                            } */}
+                            }
                         </View>
                         <Text numberOfLines={1} ellipsizeMode='middle' style={[fontstyles.blackh2, { color: Colors.dark.colors.diffrentColorOrange }]}>
                             {item.item}
@@ -375,7 +375,7 @@ const DetailsScreen = ({ route }) => {
     const fontstyles = TextStyles();
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#1c1c1e' }}>
             <View style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
                 <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
 
