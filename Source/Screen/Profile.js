@@ -152,7 +152,7 @@ const LoginScreen = () => {
   return (
     <>
       {/* mt-7 // marginextra */}
-      <SafeAreaView className=' w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
+      <SafeAreaView className='px-3 w-full justify-between' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
         <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
 
         {userDataVisible && <View className='px-3 first-letter:flex-row items-center pb-4'>
@@ -163,7 +163,7 @@ const LoginScreen = () => {
         </View>}
 
 
-        <ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible} className='mx-3 rounded-2xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.25, }}>
+        <ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible} className=' mb-3 w-full rounded-2xl overflow-hidden ' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.25, }}>
           <View className=' h-3/5 flex-row items-center'>
             <View className=' w-16 h-16 mx-3 rounded-full items-center justify-center' style={{ backgroundColor: Colors.dark.colors.diffrentColorPerpleBG }}>
               <Text style={[fontstyles.h1, { marginBottom: -5, color: Colors.dark.colors.diffrentColorPerple }]}>
@@ -198,7 +198,7 @@ const LoginScreen = () => {
 
       <ScrollView showsVerticalScrollIndicator={false} className='px-3 h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
 
-        <View className=' mt-3 px-2 flex-row justify-center'>
+        <View className=' px-2 flex-row justify-center'>
           {!userDataVisible ? <>
             <ShimmerPlaceholder shimmerColors={shimmerColors} visible={userDataVisible} className='w-1/2 rounded-2xl overflow-hidden mr-3 justify-between' style={{ backgroundColor: Colors.dark.colors.componentColor, height: Dimensions.get('window').height * 0.15, }}>
               <View className=' p-2 absolute left-6 top-4 rounded-full' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
