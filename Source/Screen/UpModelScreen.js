@@ -199,7 +199,7 @@ export default function ModelScreen() {
 
     const RenderModel_UpModelScreen = () => (
         <SafeAreaView>
-            <StatusBar hidden={false} backgroundColor={Colors.dark.colors.backGroundColor} />
+            <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

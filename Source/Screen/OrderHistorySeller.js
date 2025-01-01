@@ -239,7 +239,7 @@ export default function OrderHistorySeller() {
                                 className="bg-white overflow-hidden flex-row items-center justify-center"
                             >
                                 <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
-                                    Order Ready
+                                    Ready Order
                                 </Text>
                                 <Text style={[fontstyles.number]} className="text-black text-center">
                                     ({minutes}m {seconds}s)

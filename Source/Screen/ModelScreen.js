@@ -10,7 +10,7 @@ import RenderStatusContent from '../Components/RenderStatusContent';
 import RenderCartContent from '../Components/RenderCartContent';
 import { availableStatus } from '../Data/availableStatus';
 import TextStyles from '../Style/TextStyles';
-import Animated, { SlideInDown } from 'react-native-reanimated';
+import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
 
 export default function ModelScreen() {
     const fontstyles = TextStyles();
@@ -45,7 +45,7 @@ export default function ModelScreen() {
         };
 
         return (
-            <View>
+            <View >
                 <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
                 <Modal
                     // animationType="slide"
@@ -57,7 +57,7 @@ export default function ModelScreen() {
                     <View className=' w-full h-full' style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                         <TouchableOpacity style={{ flex: 1 }} onPress={() => { hide() }} />
 
-                        <Animated.View entering={SlideInDown.duration(300)} className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
+                        <Animated.View entering={FadeIn.duration(300)}  className=' absolute w-full bottom-0 p-3' style={{ maxHeight: 400, borderTopRightRadius: 21, borderTopLeftRadius: 21, backgroundColor: Colors.dark.colors.backGroundColor }}>
                             <View className='flex-row justify-between p-1 pb-3 items-center'>
                                 <Text style={[fontstyles.entryUpper, { color: Colors.dark.colors.mainTextColor }]}>
                                     {/* {type.type === "lang" ? "Select Language" : `Your Carts ${cartItemsNEW.length}`} */}

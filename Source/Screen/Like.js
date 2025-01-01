@@ -45,7 +45,7 @@ export default function Like() {
   const fontstyles = TextStyles();
   return (
     <View style={{ backgroundColor: Colors.dark.colors.subbackGroundColor }} className='p-2 h-full w-full items-center justify-center'>
-      <StatusBar hidden />
+      {/* <StatusBar hidden /> */}
       <Animated.View style={{ padding: circleTop, backgroundColor: Colors.dark.colors.componentColor }} className='items-center justify-center rounded-full'>
         <Animated.View style={{ padding: circleBottom, backgroundColor: Colors.dark.colors.secComponentColor }} className='items-center justify-center rounded-full'>
           <Image

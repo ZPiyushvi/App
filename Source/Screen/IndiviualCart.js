@@ -182,9 +182,8 @@ const Cart = ({ route }) => {
   );
 
   const renderItem2 = ({ item, index, hotelId, key }) => (
-    <>
       <View key={`${hotelId}-${index}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-        {console.log(`${index}-${item.id}`)}
+        {/* {console.log(`${index}-${item.id}`)} */}
         <View className='flex-row w-full'>
           <View className=' absolute right-3'>
             {item.status ?
@@ -247,7 +246,6 @@ const Cart = ({ route }) => {
 
         </View>
       </View>
-    </>
   );
 
 
@@ -433,7 +431,7 @@ const Cart = ({ route }) => {
               renderItem2({ hotelId: item.id, item: items, index: index, key: `${item.id}-${index}` })
             ))}
 
-            {console.log(item)}
+            {/* {console.log(item)} */}
           </View>
 
           <View className=' mt-5 rounded-xl overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>

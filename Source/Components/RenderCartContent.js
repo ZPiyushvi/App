@@ -24,7 +24,7 @@ const RenderCartItem = ({ item, setVisible, navigation }) => {
   return (
     <View
       key={item.id}
-      className='rounded-xl p-2 mb-3 flex-row'
+      className='rounded-xl p-2 mb-3 flex-row bottom-0'
       style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
     >
       <Image

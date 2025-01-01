@@ -156,8 +156,8 @@ const Home = () => {
     //               style={{ flex: 1, backgroundColor: '#yourPreferredColor' }}
     //           >
     <SafeAreaView>
-      
-      <StatusBar hidden={false} backgroundColor={Colors.dark.colors.subbackGroundColor} />
+
+      <StatusBar backgroundColor={Colors.dark.colors.subbackGroundColor} />
 
       <View className={`bodyContainer w-full flex`} style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
         <LinearGradient
@@ -182,8 +182,8 @@ const Home = () => {
                   <View>
                     <View className=' flex-row'>
                       {/* {console.log(userData.name)} */}
-                      <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 21) : "UserName"} </Text>
-                      <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'center' }} />
+                      <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>{userData.name ? TruncatedTextComponent(userData.name, 15) : "UserName"} </Text>
+                      <Ionicons color={Colors.dark.colors.mainTextColor} name="chevron-down" size={24} style={{ textAlign: 'center', textAlignVertical: 'bottom', top: 4 }} />
                     </View>
                     <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{userData.name ? 'you are a ' + userData.role : "UserRole"}</Text>
                   </View>
@@ -269,10 +269,40 @@ const Home = () => {
                 showsVerticalScrollIndicator={false}
               >
                 <View>
+                  {/* {outletsNEW.map((item, index) => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return (
+                      <View key={`${index}_${item.id}`} className="grayscale">
+                        <ListCard_Self2
+                          item={item}
+                          index={index}
+                          shopStatus={Shopstatus.state}
+                        />
+                      </View>
+                    );
+                  })} */}
+
                   {/* First, render open shops */}
                   {outletsNEW.filter(item => {
                     const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
-                    return !Shopstatus.state.includes("closed") && !Shopstatus.state.includes("opening soon");
+                    return Shopstatus.state.includes("open") && !Shopstatus.state.includes("openingSoon");
+                  }).map((item, index) => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return (
+                      <View key={`${index}_${item.id}`}>
+                        <ListCard_Self2
+                          item={item}
+                          index={index}
+                          shopStatus={Shopstatus.state}
+                        />
+                      </View>
+                    );
+                  })}
+
+                  {/* Then, render closing soon shops */}
+                  {outletsNEW.filter(item => {
+                    const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
+                    return Shopstatus.state.includes("closingSoon");
                   }).map((item, index) => {
                     const Shopstatus = useShopStatus(item.openingTime, item.closingTime, item.offDays, item.leaveDay);
                     return (
@@ -360,7 +390,7 @@ const Home = () => {
         {RenderModel({ type: { type } })}
         {RenderModel_UpModelScreen()}
       </View>
-      
+
     </SafeAreaView>
     // </KeyboardAvoidingView>
   );
