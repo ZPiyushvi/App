@@ -374,11 +374,11 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
               </View>
             </View> */}
           <View className='p-3'>
-            {item.status == 'Delivered' ?
+            {item.status == 'Delivered' || item.status == 'Missing' ?
               <View className=' h-12 flex-row justify-between'>
                 <TouchableOpacity
                   onPress={() => {
-                    changeOrderStatus(item.id, "Received"); // Mark the order as prepared
+                    changeOrderStatus(item._id, "Received"); // Mark the order as prepared
                   }}
                   className=' items-center rounded-xl justify-center px-4'
                   style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen, }}
@@ -388,8 +388,12 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
 
                 <TouchableOpacity
                   onPress={() => {
-                    changeOrderStatus(item.id, "Missing");
-                    navigation.navigate('ComplaintScreen')
+                    changeOrderStatus(item._id, "Missing");
+                    navigation.navigate('ComplaintScreen', {
+                      outletName: item.items.name,
+                      orderNumber: item.id,
+                      order_Id: item._id,
+                  });
                   }}
                   className=' items-center rounded-xl justify-center px-4'
                   style={{ backgroundColor: Colors.dark.colors.diffrentColorRed, }}
@@ -426,7 +430,7 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
             }
             {/* getRemainingTime */}
           </View>
-
+          {/* {console.log('item', item.items.name)} */}
         </LinearGradient>
 
         {/* <TouchableOpacity className=' items-center justify-center' onPress={onShowDetails}>

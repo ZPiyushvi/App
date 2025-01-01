@@ -17,33 +17,49 @@ import { Ionicons } from "@expo/vector-icons";
 import TextStyles from "../Style/TextStyles";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import { SafeAreaView } from "react-native";
+import { API_BASE_URL, CHANGEORDERSTATUS_ENDPOINT } from "../Constants/Constants";
 
 const Complaint = () => {
+
+    const route = useRoute();
+    const orderNumber = route.params?.orderNumber || '';
+    const order_Id = route.params?.order_Id || '';
+    const outletName = route.params?.outletName || '';
+
     const { setUserData, fontFamilies, userData } = useContext(GlobalStateContext);
     const navigation = useNavigation();
 
-    const [complaintText, setComplaintText] = useState('');
-    const [orderNumber, setOrderNumber] = useState('');
-    const [outletName, setOutletName] = useState(''); // Outlet name passed as prop
+    const [issue, setIssue] = useState('');
+    // const [orderNumber, setOrderNumber] = useState('');
+    // const [outletName, setOutletName] = useState(''); // Outlet name passed as prop
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Form validation
-    const isFormValid = complaintText.length > 10 && orderNumber.length > 0;
+    const isFormValid = issue.length > 5
 
-    // Handle submit
-    const handleComplaintSubmit = () => {
+    const changeOrderStatus = async (orderId, newStatus, issue) => {
         if (!isFormValid) {
             Alert.alert("Please provide a valid complaint and order number.");
             return;
         }
-        setIsSubmitting(true);
 
-        // Simulate API request (this could be an actual API call)
-        setTimeout(() => {
-            setIsSubmitting(false);
-            Alert.alert("Complaint submitted successfully!");
-            navigation.goBack(); // Go back after submitting
-        }, 1500);
+        try {
+            const response = await fetch(`${API_BASE_URL}:${CHANGEORDERSTATUS_ENDPOINT}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId, newStatus, issue }),
+            });
+
+            const data = await response.json();
+            if (data.status === 'ok') {
+                navigation.goBack(); 
+            } else {
+                console.error('Error declining order:', data);
+            }
+        } catch (error) {
+            console.error('Error declining order:', error);
+        }
     };
 
     return (
@@ -81,9 +97,8 @@ const Complaint = () => {
                     <TextInput
                         style={styles.input}
                         value={orderNumber}
-                        onChangeText={setOrderNumber}
-                        placeholder="Enter your order number"
-                        keyboardType="numeric"
+                        placeholder="Enter the outlet name"
+                        editable={false} // Outlet name is passed and cannot be edited
                     />
                 </View>
 
@@ -92,17 +107,18 @@ const Complaint = () => {
                     <Text style={[TextStyles.h5, { color: Colors.dark.colors.textColor }]}>Complaint Details</Text>
                     <TextInput
                         style={[styles.input, { height: 120 }]}
-                        value={complaintText}
-                        onChangeText={setComplaintText}
+                        value={issue}
+                        onChangeText={setIssue}
                         multiline
-                        placeholder="Describe the issue with your order (e.g., missing items)"
+                        placeholderTextColor={Colors.dark.colors.textColor}
+                        placeholder="Please describe the issue with your order in detail (at least 50 characters)."
                     />
                 </View>
 
                 {/* Submit Button */}
                 <TouchableOpacity
                     style={[styles.submitButton, { backgroundColor: isFormValid ? Colors.dark.colors.diffrentColorOrange : Colors.dark.colors.secComponentColor }]}
-                    onPress={handleComplaintSubmit}
+                    onPress={() => changeOrderStatus(order_Id, "Complaint_Registered", issue)}
                     disabled={!isFormValid || isSubmitting}
                 >
                     <Text style={[TextStyles.h5, { color: Colors.dark.colors.mainTextColor }]}>

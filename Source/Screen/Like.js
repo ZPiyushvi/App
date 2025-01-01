@@ -45,18 +45,7 @@ export default function Like() {
   const fontstyles = TextStyles();
   return (
     <View style={{ backgroundColor: Colors.dark.colors.subbackGroundColor }} className='p-2 h-full w-full items-center justify-center'>
-      {/* <StatusBar hidden /> */}
-      <Animated.View style={{ padding: circleTop, backgroundColor: Colors.dark.colors.componentColor }} className='items-center justify-center rounded-full'>
-        <Animated.View style={{ padding: circleBottom, backgroundColor: Colors.dark.colors.secComponentColor }} className='items-center justify-center rounded-full'>
-          <Image
-            source={require("./../../assets/store.jpg")}
-            className='w-28 h-28 rounded-full'
-            alt="Logo"
-          />
-        </Animated.View>
-      </Animated.View>
-      <Text className='text-center pt-3' style={[fontstyles.h1, { color: Colors.dark.colors.mainTextColor }]}>Namaskar !!!</Text>
-      <Text className='text-center' style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{loadingMessage}</Text>
+      <Text>This is like screen</Text>
     </View>
   );
 }

@@ -199,59 +199,98 @@ export default function OrderHistorySeller() {
 
                 {
                     item.status !== "Scheduled" ? (
-                        item.status === "Prepared" ? (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    changeOrderStatus(item.id, "Delivered"); // Mark the order as delivered
-                                }}
-                                style={[
-                                    {
-                                        paddingVertical: 10,
-                                        borderRadius: 5,
-                                        backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
-                                    },
-                                ]}
-                                className="bg-white overflow-hidden flex-row items-center justify-center"
-                            >
-                                <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
-                                    Waiting for User to Receive
-                                </Text>
+                        item.status == "Delivered" || item.status == "Missing" ? (
+                            <>
                                 <View
-                                    style={{
-                                        backgroundColor: Colors.dark.colors.diffrentColorPerple,
-                                        width: `${persentBackgroundColor}%`,
-                                    }}
-                                    className="-z-10 absolute top-0 left-0 h-20"
-                                />
-                            </TouchableOpacity>
+                                    // TouchableOpacity
+                                    // onPress={() => {
+                                    //     changeOrderStatus(item._id, "Delivered"); // Mark the order as delivered
+                                    // }}
+                                    style={[
+                                        {
+                                            paddingVertical: 10,
+                                            borderRadius: 5,
+                                            backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                                        },
+                                    ]}
+                                    className="bg-white overflow-hidden flex-row items-center justify-center"
+                                >
+                                    <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]} className=" text-center uppercase mr-2">
+                                        {item.status == "Missing" ? "User not found order" : "Waiting for User Confirmation"}
+                                    </Text>
+                                    <View
+                                        style={{
+                                            backgroundColor: item.status == "Missing" ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.diffrentColorPerple,
+                                            width: `100%`,
+                                        }}
+                                        className="-z-10 absolute top-0 left-0 h-20"
+                                    />
+                                </View>
+                                {/* </TouchableOpacity> */}
+                                {/* <Text className='text-center' style={[fontstyles.h7, { color: Colors.dark.colors.mainTextColor, marginTop: 5 }]}>*Click above to complete order </Text> */}
+                            </>
                         ) : (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    changeOrderStatus(item.id, "Prepared"); // Mark the order as prepared
-                                }}
-                                style={[
-                                    {
-                                        paddingVertical: 10,
-                                        borderRadius: 5,
-                                        backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
-                                    },
-                                ]}
-                                className="bg-white overflow-hidden flex-row items-center justify-center"
-                            >
-                                <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
-                                    Ready Order
-                                </Text>
-                                <Text style={[fontstyles.number]} className="text-black text-center">
-                                    ({minutes}m {seconds}s)
-                                </Text>
-                                <View
-                                    style={{
-                                        backgroundColor: Colors.dark.colors.diffrentColorPerple,
-                                        width: `${persentBackgroundColor}%`,
-                                    }}
-                                    className="-z-10 absolute top-0 left-0 h-20"
-                                />
-                            </TouchableOpacity>
+                            item.status === "Prepared" ? (
+                                <>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            changeOrderStatus(item._id, "Delivered"); // Mark the order as delivered
+                                        }}
+                                        style={[
+                                            {
+                                                paddingVertical: 10,
+                                                borderRadius: 5,
+                                                backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                                            },
+                                        ]}
+                                        className="bg-white overflow-hidden flex-row items-center justify-center"
+                                    >
+                                        <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
+                                            Waiting for User to Receive
+                                        </Text>
+                                        <View
+                                            style={{
+                                                backgroundColor: Colors.dark.colors.diffrentColorPerple,
+                                                width: `${persentBackgroundColor}%`,
+                                            }}
+                                            className="-z-10 absolute top-0 left-0 h-20"
+                                        />
+
+                                    </TouchableOpacity>
+                                    <Text className='text-center' style={[fontstyles.h7, { color: Colors.dark.colors.mainTextColor, marginTop: 5 }]}>*Click above to complete order </Text>
+                                </>
+                            ) : (
+                                <>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            changeOrderStatus(item._id, "Prepared"); // Mark the order as prepared
+                                        }}
+                                        style={[
+                                            {
+                                                paddingVertical: 10,
+                                                borderRadius: 5,
+                                                backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                                            },
+                                        ]}
+                                        className="bg-white overflow-hidden flex-row items-center justify-center"
+                                    >
+                                        <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
+                                            Ready Order
+                                        </Text>
+                                        <Text style={[fontstyles.number]} className="text-black text-center">
+                                            ({minutes}m {seconds}s)
+                                        </Text>
+                                        <View
+                                            style={{
+                                                backgroundColor: Colors.dark.colors.diffrentColorPerple,
+                                                width: `${persentBackgroundColor}%`,
+                                            }}
+                                            className="-z-10 absolute top-0 left-0 h-20"
+                                        />
+                                    </TouchableOpacity>
+                                    <Text className='text-center' style={[fontstyles.h7, { color: Colors.dark.colors.mainTextColor, marginTop: 5 }]}>*Click above to set the order for prepared</Text>
+                                </>
+                            )
                         )
                     ) : (
                         <View style={styles.buttonsContainer}>
@@ -264,7 +303,7 @@ export default function OrderHistorySeller() {
                             <TouchableOpacity
                                 style={[styles.button, styles.declineButton]}
                                 onPress={() => {
-                                    declineOrder(item.id); // Decline the order
+                                    declineOrder(item._id); // Decline the order
                                 }}
                             >
                                 <Text style={styles.buttonText}>Decline</Text>
@@ -325,7 +364,7 @@ export default function OrderHistorySeller() {
                                 style={styles.setTimerButton}
                                 onPress={() => {
                                     if (selectedOrder) {
-                                        acceptOrder(selectedOrder.id, timer); // Accept the order and set the timer
+                                        acceptOrder(selectedOrder._id, timer); // Accept the order and set the timer
                                     }
                                 }}
                             >
