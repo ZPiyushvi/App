@@ -51,11 +51,11 @@ const Cart = ({ route }) => {
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
 
-  useEffect(() => {
-    if (!item || item.length === 0) {
-      navigation.navigate('OrderHistory');
-    }
-  }, [item]);
+  // useEffect(() => {
+  //   if (!item || item.length === 0) {
+  //     navigation.navigate('OrderHistory');
+  //   }
+  // }, [item]);
 
   const updateCartItemsStatus = () => {
     const updatedCartItems = cartItemsNEW.map(cartItem => {
@@ -182,70 +182,70 @@ const Cart = ({ route }) => {
   );
 
   const renderItem2 = ({ item, index, hotelId, key }) => (
-      <View key={`${hotelId}-${index}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
-        {/* {console.log(`${index}-${item.id}`)} */}
-        <View className='flex-row w-full'>
-          <View className=' absolute right-3'>
-            {item.status ?
-              <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorGreen }]}>InStock</Text>
-              : <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>
-            }
-          </View>
-
-          <View className=' w-3/12'>
-            <ImageBackground
-              source={{
-                uri: item.image,
-                method: 'POST',
-                headers: {
-                  Pragma: 'no-cache',
-                },
-              }}
-              defaultSource={require('./../../assets/menu.jpg')}
-              resizeMode="cover"
-              alt="Logo"
-              className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'
-              style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
-            />
-          </View>
-          <View className=' w-9/12 px-3'>
-            <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>{item.item}</Text>
-            <Text style={[fontstyles.h6, { color: Colors.dark.colors.textColor }]}>Quantity: {item.quantity} * ₹{item.price}</Text>
-            <View className=' flex-row justify-between w-full'>
-              <View className='flex-1 justify-end'>
-                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
-                  ₹{item.price * item.quantity}
-                </Text>
-              </View>
-              <View
-                style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
-                className='h-8 w-20  flex-row overflow-hidden mb-1'
-              >
-                {item.quantity > 0 ? (
-                  <>
-                    <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
-                      <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
-                    </TouchableOpacity>
-                    <Text className='text-base font-black text-center' style={{ color: item.status ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.quantity}</Text>
-                    <TouchableOpacity onPress={() => { handleIncrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 right-0 absolute w-6/12 items-center'>
-                      <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
-                    </TouchableOpacity>
-                  </>
-                ) : (
-                  <>
-                    <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} >
-                      <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
-                    </TouchableOpacity>
-                    <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
-                  </>
-                )}
-              </View>
-
-            </View>
-          </View>
-
+    <View key={`${hotelId}-${index}`} className='py-3 pl-3 overflow-hidden' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+      {/* {console.log(`${index}-${item.id}`)} */}
+      <View className='flex-row w-full'>
+        <View className=' absolute right-3'>
+          {item.status ?
+            <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorGreen }]}>InStock</Text>
+            : <Text className='uppercase' style={[fontstyles.number, { color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>
+          }
         </View>
+
+        <View className=' w-3/12'>
+          <ImageBackground
+            source={{
+              uri: item.image,
+              method: 'POST',
+              headers: {
+                Pragma: 'no-cache',
+              },
+            }}
+            defaultSource={require('./../../assets/menu.jpg')}
+            resizeMode="cover"
+            alt="Logo"
+            className='w-full h-20 border-2 rounded-lg overflow-hidden border-slate-950'
+            style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
+          />
+        </View>
+        <View className=' w-9/12 px-3'>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>{item.item}</Text>
+          <Text style={[fontstyles.h6, { color: Colors.dark.colors.textColor }]}>Quantity: {item.quantity} * ₹{item.price}</Text>
+          <View className=' flex-row justify-between w-full'>
+            <View className='flex-1 justify-end'>
+              <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
+                ₹{item.price * item.quantity}
+              </Text>
+            </View>
+            <View
+              style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
+              className='h-8 w-20  flex-row overflow-hidden mb-1'
+            >
+              {item.quantity > 0 ? (
+                <>
+                  <TouchableOpacity onPress={() => { handleDecrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 left-0 absolute w-6/12 items-center'>
+                    <Ionicons color={Colors.dark.colors.textColor} name={'remove'} size={16} />
+                  </TouchableOpacity>
+                  <Text className='text-base font-black text-center' style={{ color: item.status ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.diffrentColorRed }}>{item.quantity}</Text>
+                  <TouchableOpacity onPress={() => { handleIncrement(item.id, item.id, item, { id: hotelId }) }} className='z-10 right-0 absolute w-6/12 items-center'>
+                    <Ionicons color={Colors.dark.colors.textColor} name={'add'} size={16} />
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity style={[styles.button, { backgroundColor: Colors.dark.colors.diffrentColorGreen }]} >
+                    <Text className=' uppercase text-base font-black' style={{ color: Colors.dark.colors.diffrentColorGreen }}>Add</Text>
+                  </TouchableOpacity>
+                  <Text className=' top-0 right-2 absolute text-base font-medium' style={{ color: Colors.dark.colors.diffrentColorGreen }}>+</Text>
+                </>
+              )}
+            </View>
+
+          </View>
+        </View>
+
       </View>
+    </View>
   );
 
 
@@ -308,19 +308,19 @@ const Cart = ({ route }) => {
               //   date: getFormattedDate(today),
               //   userData: { name, username }
               // })
-              setHistory(prevHistory => [
-                {
-                  items: orders,
-                  storeDetails: storeDetails,
-                  totalPrice: item?.orders
-                    ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
-                    : 0,
-                  date: getFormattedDate(today),
-                  massage: massage,
-                  status: 'Scheduled',
-                },
-                ...prevHistory
-              ]);
+              // setHistory(prevHistory => [
+              //   {
+              //     items: orders,
+              //     storeDetails: storeDetails,
+              //     totalPrice: item?.orders
+              //       ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
+              //       : 0,
+              //     date: getFormattedDate(today),
+              //     massage: massage,
+              //     status: 'Scheduled',
+              //   },
+              //   ...prevHistory
+              // ]);
             }
             removeStoreFromCart(item.name, setCartItemsNEW);
             navigation.navigate("OrderHistory");
@@ -328,9 +328,7 @@ const Cart = ({ route }) => {
         }]
       );
     } else {
-      // console.log("Proceeding with item:", item);
       const { orders, ...storeDetails } = item;  // Destructure to separate orders from the rest of the item properties
-
       // const { name, username } = userData;
 
       createOrder({
@@ -346,36 +344,14 @@ const Cart = ({ route }) => {
         status: 'Scheduled', // waiting_for_acceptance
         name: userData,
       })
-      // createOrder({
-      //   id: Date.now().toString(),
-      //   items: orders,
-      //   storeDetails: storeDetails,
-      //   totalPrice: item?.orders
-      //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
-      //     : 0,
-      //   Noformatdate: today,
-      //   date: getFormattedDate(today),
-      //   userData: userData //{name, username}
-      // })
 
-      setHistory(prevHistory => [
-        {
-          items: orders,
-          storeDetails: storeDetails,
-          totalPrice: totalPrice,
-          Noformatdate: today,
-          date: getFormattedDate(today)
-        },
-        ...prevHistory
-      ]);
       removeStoreFromCart(item.name, setCartItemsNEW);
-      // navigation.navigate("OrderHistory");
+      // setCartItemsNEW(prevCartItems => {
+      //   return prevCartItems.filter(itemee => itemee.name !== item.name);
+      // });
+      navigation.navigate("OrderHistory");
     }
-
-    // navigation.navigate("Orders");
-    navigation.navigate("OrderHistory");
   };
-
 
   const fontstyles = TextStyles();
 

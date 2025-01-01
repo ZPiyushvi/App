@@ -23,6 +23,7 @@ import EditRestorent from '../Screen/EditRestorent';
 import EditMain from '../Screen/EditMain';
 import SplashScreen from '../Screen/SplashScreen';
 import OtpScreen from '../Screen/OtpScreen';
+import Complaint from '../Screen/Complaint';
 
 const Stack = createStackNavigator();
 
@@ -173,6 +174,10 @@ export default function AppNavigator() {
             <Stack.Screen
                 name="EditRestorent"
                 component={EditRestorent}
+            />
+            <Stack.Screen
+                name="ComplaintScreen"
+                component={Complaint}
             />
             <Stack.Screen
                 name="EditMain"

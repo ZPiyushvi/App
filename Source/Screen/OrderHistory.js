@@ -8,7 +8,7 @@ import Icons from '../Components/Icons'
 import { GlobalStateContext } from '../Context/GlobalStateContext'
 import TextStyles from '../Style/TextStyles'
 import Animated, { FadeInDown } from 'react-native-reanimated'
-import { API_BASE_URL, ORDERSBUYER_ENDPOINT } from '../Constants/Constants'
+import { API_BASE_URL, CHANGEORDERSTATUS_ENDPOINT, ORDERSBUYER_ENDPOINT } from '../Constants/Constants'
 const { StarIcon, CarIcon } = Icons();
 
 
@@ -195,7 +195,9 @@ const { StarIcon, CarIcon } = Icons();
 //   );
 // }
 
-const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW }) => {
+const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus }) => {
+
+
 
   const navigation = useNavigation();
   const navToDetails = (item) => {
@@ -372,32 +374,56 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW }) => {
               </View>
             </View> */}
           <View className='p-3'>
-            <View className=' h-12 rounded-xl flex items-center justify-center overflow-hidden'
-              style={[
-                {
-                  paddingVertical: 10,
-                  borderRadius: 5,
-                  backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
-                },
-              ]}
-            >
-              <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
-                {item.status == 'Scheduled' ? 'Waiting for approval' : item.status == 'Accepted' ? 'Estimated Wait Time' : item.status}
-              </Text>
-              {item.status == 'Accepted' &&
-                <Text style={[fontstyles.number]} className="text-black text-center">
-                  ({minutes}m {seconds}s)
-                </Text>
-              }
+            {item.status == 'Delivered' ?
+              <View className=' h-12 flex-row justify-between'>
+                <TouchableOpacity
+                  onPress={() => {
+                    changeOrderStatus(item.id, "Received"); // Mark the order as prepared
+                  }}
+                  className=' items-center rounded-xl justify-center px-4'
+                  style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen, }}
+                >
+                  <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>Received</Text>
+                </TouchableOpacity>
 
-              <View
-                style={{
-                  backgroundColor: Colors.dark.colors.diffrentColorPerple,
-                  width: `${100 - persentBackgroundColor}%`,
-                }}
-                className=" -z-10 absolute top-0 left-0 h-20"
-              />
-            </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    changeOrderStatus(item.id, "Missing");
+                    navigation.navigate('ComplaintScreen')
+                  }}
+                  className=' items-center rounded-xl justify-center px-4'
+                  style={{ backgroundColor: Colors.dark.colors.diffrentColorRed, }}
+                >
+                  <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}> Missing </Text>
+                </TouchableOpacity>
+              </View>
+              :
+              <View className=' h-12 rounded-xl flex items-center justify-center overflow-hidden'
+                style={[
+                  {
+                    paddingVertical: 10,
+                    borderRadius: 5,
+                    backgroundColor: Colors.dark.colors.diffrentColorPerpleBG,
+                  },
+                ]}
+              >
+                <Text style={[fontstyles.number]} className="text-black text-center uppercase mr-2">
+                  {item.status == 'Scheduled' ? 'Waiting for approval' : item.status == 'Accepted' ? 'Estimated Wait Time' : item.status}
+                </Text>
+                {item.status == 'Accepted' &&
+                  <Text style={[fontstyles.number]} className="text-black text-center">
+                    ({minutes}m {seconds}s)
+                  </Text>
+                }
+                <View
+                  style={{
+                    backgroundColor: Colors.dark.colors.diffrentColorPerple,
+                    width: `${100 - persentBackgroundColor}%`,
+                  }}
+                  className=" -z-10 absolute top-0 left-0 h-20"
+                />
+              </View>
+            }
             {/* getRemainingTime */}
           </View>
 
@@ -449,6 +475,27 @@ export default function OrderHistory() {
     }
   };
 
+  const changeOrderStatus = async (orderId, newStatus) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}:${CHANGEORDERSTATUS_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId, newStatus }),
+      });
+
+      const data = await response.json();
+      if (data.status === 'ok') {
+        fetchOrders(); // Refresh the orders after declining
+      } else {
+        console.error('Error declining order:', data);
+      }
+    } catch (error) {
+      console.error('Error declining order:', error);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
     const intervalId = setInterval(() => {
@@ -497,6 +544,7 @@ export default function OrderHistory() {
           <View className='mb-6 px-4'>
             {orders.map((item, index) => (
               <ListCard_Self1
+                changeOrderStatus={changeOrderStatus}
                 key={item.id} // or key={`${item.id}_${index}`} if item.id is not unique
                 index={index}
                 fontstyles={fontstyles}
