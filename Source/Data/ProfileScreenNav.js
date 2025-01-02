@@ -30,7 +30,7 @@ export const ProfileScreenNav = [
         {
           "subtitle": "Your Orders",
           "iconName": "cart-outline",
-          "navScreen": "Cart",
+          "navScreen": "History",
         },
         {
           "subtitle": "Order History",

@@ -24,6 +24,7 @@ import EditMain from '../Screen/EditMain';
 import SplashScreen from '../Screen/SplashScreen';
 import OtpScreen from '../Screen/OtpScreen';
 import Complaint from '../Screen/Complaint';
+import History from '../Screen/History';
 
 const Stack = createStackNavigator();
 
@@ -172,6 +173,23 @@ export default function AppNavigator() {
                 component={YettoUpdate}
             />
             <Stack.Screen
+                options={{
+                     headerShown: true,
+                     title: 'Order History',
+                     headerStyle: {
+                        backgroundColor: Colors.dark.colors.subbackGroundColor,
+                    },
+                     headerTintColor: Colors.dark.colors.mainTextColor, 
+                     headerTitleStyle: {
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        color: Colors.dark.colors.mainTextColor,
+                        textAlign: 'center', // Center the title
+                    },}}
+                name="History"
+                component={History}
+            />
+            <Stack.Screen
                 name="EditRestorent"
                 component={EditRestorent}
             />
@@ -225,6 +243,8 @@ export default function AppNavigator() {
         return () => clearTimeout(timer);
     }, []);
 
+//   const navigation = useNavigation();
+
     return (
         <NavigationContainer theme={DarkTheme}>
             {showToast &&
@@ -241,6 +261,9 @@ export default function AppNavigator() {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('YettoUpdate'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Wallet</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('History') }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                            <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>History</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { setShowToast(false); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
                             <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Close</Text>

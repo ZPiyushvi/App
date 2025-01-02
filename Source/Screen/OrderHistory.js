@@ -9,6 +9,7 @@ import { GlobalStateContext } from '../Context/GlobalStateContext'
 import TextStyles from '../Style/TextStyles'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import { API_BASE_URL, CHANGEORDERSTATUS_ENDPOINT, ORDERSBUYER_ENDPOINT } from '../Constants/Constants'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const { StarIcon, CarIcon } = Icons();
 
 
@@ -195,9 +196,7 @@ const { StarIcon, CarIcon } = Icons();
 //   );
 // }
 
-const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus }) => {
-
-
+const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus, History, setHistory }) => {
 
   const navigation = useNavigation();
   const navToDetails = (item) => {
@@ -324,7 +323,9 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
 
 
           {showDetails && item.items.orders.map((cartItem, index) => (
-            <TouchableOpacity key={`${index}_${cartItem.id}`} onPress={() => navigation.navigate('YettoUpdate')}>
+            <TouchableOpacity key={`${index}_${cartItem.id}`} 
+            // onPress={() => navigation.navigate('YettoUpdate')}
+            >
               <View className='px-3 flex-row justify-between items-center'>
                 <View className='flex-row py-2'>
                   <View className=' w-14 h-12 rounded-l-xl overflow-hidden'>
@@ -378,7 +379,10 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
               <View className=' h-12 flex-row justify-between'>
                 <TouchableOpacity
                   onPress={() => {
-                    changeOrderStatus(item._id, "Received"); // Mark the order as prepared
+                    const { name, items: { __v, closingTime, details, featured, leaveDay, offDays, openingTime, rating, ratingcount, ...restOfItems }, ...itemWithoutName } = item;
+                    setHistory(prevHistory => [...prevHistory, {itemWithoutName, items: restOfItems}]);
+                    console.log('Histry Updated')
+                    changeOrderStatus(item._id, "Received");
                   }}
                   className=' items-center rounded-xl justify-center px-4'
                   style={{ backgroundColor: Colors.dark.colors.diffrentColorGreen, }}
@@ -393,7 +397,7 @@ const ListCard_Self1 = ({ index, fontstyles, item, outletsNEW, changeOrderStatus
                       outletName: item.items.name,
                       orderNumber: item.id,
                       order_Id: item._id,
-                  });
+                    });
                   }}
                   className=' items-center rounded-xl justify-center px-4'
                   style={{ backgroundColor: Colors.dark.colors.diffrentColorRed, }}
@@ -448,7 +452,7 @@ export default function OrderHistory() {
   const [noOrders, setNoOrders] = useState(true);
 
   const navigation = useNavigation();
-  const { userData, dateGroup, outletsNEW } = useContext(GlobalStateContext);
+  const { userData, dateGroup, outletsNEW, History, setHistory } = useContext(GlobalStateContext);
   const [showDetails, setShowDetails] = useState(null);
 
   const fetchOrders = async () => {
@@ -479,6 +483,29 @@ export default function OrderHistory() {
     }
   };
 
+  useEffect(() => {
+    fetchOrders();
+  }, [])
+
+  // useEffect(() => {
+  //   // Debugging AsyncStorage retrieval
+  //   const fetchHistory = async () => {
+  //     try {
+  //       const storedHistory = await AsyncStorage.getItem('@history');
+  //       console.log('Fetched History:', storedHistory); // Debug: Check the raw data from AsyncStorage
+  //       if (storedHistory) {
+  //         const parsedHistory = JSON.parse(storedHistory);
+  //         console.log('Parsed History:', parsedHistory); // Debug: Check parsed data
+  //         setHistory(parsedHistory); // Update context state
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to load history:', error);
+  //     }
+  //   };
+
+  //   fetchHistory(); // Fetch the history when component mounts
+  // }, []); //setHistory
+
   const changeOrderStatus = async (orderId, newStatus) => {
     try {
       const response = await fetch(`${API_BASE_URL}:${CHANGEORDERSTATUS_ENDPOINT}`, {
@@ -490,6 +517,7 @@ export default function OrderHistory() {
       });
 
       const data = await response.json();
+
       if (data.status === 'ok') {
         fetchOrders(); // Refresh the orders after declining
       } else {
@@ -516,47 +544,43 @@ export default function OrderHistory() {
       <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          {orders.length == 0 &&
-            <View className=' flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>
-              <Ionicons name={'thumbs-down'} size={42} color={Colors.dark.colors.mainTextColor} />
-              <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>No Orders Yet? Seriously?</Text>
-              <Text className='font-normal text-base text-center' style={{ color: Colors.dark.colors.textColor }}>
-                You haven't placed any orders yet. Don't miss out on our amazing items! Go ahead and fill up this space with delicious memories!
+          {(noOrders || orders.length == 0) ?
+            <View className='flex-1 justify-center items-center p-2' style={{ height: Dimensions.get('window').height * 0.8 }}>
+              <Text className='font-black text-xl text-center py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                No Orders Placed Yet!
               </Text>
+              <Text className='font-normal text-base text-center' style={{ color: Colors.dark.colors.textColor }}>
+                It looks like you haven’t placed any orders so far. Want to revisit your previous orders? You can always explore your past purchases and make some new delicious memories!
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('History')}
+                className=' mt-4 items-center rounded-xl justify-center p-4'
+                style={{ backgroundColor: Colors.dark.colors.diffrentColorOrange }}
+              >
+                <Text style={[fontstyles.number, { color: Colors.dark.colors.mainTextColor }]}>
+                  View Order History
+                </Text>
+              </TouchableOpacity>
+            </View>
+            :
+            <View className='mb-6 px-4'>
+              {orders.map((item, index) => (
+                <ListCard_Self1
+                  History={History}
+                  setHistory={setHistory}
+                  changeOrderStatus={changeOrderStatus}
+                  key={item.id} // or key={`${item.id}_${index}`} if item.id is not unique
+                  index={index}
+                  fontstyles={fontstyles}
+                  item={item}
+                  outletsNEW={outletsNEW}
+                />
+              ))}
             </View>
           }
 
-          {/* {console.log(dateGroup)} */}
-          {/* {orders.map((order, index) => {
-            return (
-              <View className='my-6 px-4' key={index}>
-                <View className='flex-row justify-between -mb-2'>
-                  <View>
-                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Status</Text>
-                    <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{order.status == 'Scheduled' ? 'Waiting for approval.' : order.status}</Text>
-                  </View>
-                  <View className='items-end'>
-                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Amount</Text>
-                    <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.diffrentColorOrange }]}>₹ {order.totalPrice.toFixed(2)}</Text>
-                  </View>
-                </View>
-              </View>
-            )
-          }
-          )} */}
 
-          <View className='mb-6 px-4'>
-            {orders.map((item, index) => (
-              <ListCard_Self1
-                changeOrderStatus={changeOrderStatus}
-                key={item.id} // or key={`${item.id}_${index}`} if item.id is not unique
-                index={index}
-                fontstyles={fontstyles}
-                item={item}
-                outletsNEW={outletsNEW}
-              />
-            ))}
-          </View>
+
 
 
         </View>

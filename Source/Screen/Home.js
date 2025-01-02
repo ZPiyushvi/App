@@ -190,11 +190,11 @@ const Home = () => {
                   {/* {console.log(height)} */}
                 </TouchableOpacity>
                 <View className='address flex-row gap-2 items-center'>
-                  <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
-                    <Ionicons onPress={() => { settype('lang'), show() }} color={Colors.dark.colors.textColor} name="language" size={24} />
+                  <TouchableOpacity  onPress={() => { settype('lang'), show() }} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
-                    <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} onPress={() => navigation.navigate('Profile', { userData })} name="person" size={24} />
+                  <TouchableOpacity onPress={() => navigation.navigate('Profile', { userData })} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                    <Ionicons color={Colors.dark.colors.diffrentColorPerple} activeOpacity={1} name="person" size={24} />
                   </TouchableOpacity>
                 </View>
               </View>

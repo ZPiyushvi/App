@@ -8,12 +8,12 @@ import { ALLOUTLETS2_ENDPOINT, ALLOUTLETS_ENDPOINT, API_BASE_URL, USEROUTLETS_EN
 import { Alert } from 'react-native';
 import { useFonts } from 'expo-font';
 
-const filterRecentHistory = (history) => {
-  const currentDate = new Date();
-  const sixtyDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 3));
+// const filterRecentHistory = (history) => {
+//   const currentDate = new Date();
+//   const sixtyDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 3));
 
-  return history.filter(entry => new Date(entry.Noformatdate) >= sixtyDaysAgo);
-};
+//   return history.filter(entry => new Date(entry.Noformatdate) >= sixtyDaysAgo);
+// };
 
 
 export const GlobalStateProvider = ({ children }) => {
@@ -201,33 +201,34 @@ export const GlobalStateProvider = ({ children }) => {
   };
   // console.log(outlets)
 
-  useEffect(() => {
-    const groupOrdersByDate = (orders) => {
-      const groupedOrders = orders.reduce((acc, order) => {
-        const { date, totalPrice, Noformatdate } = order;
-        if (!acc[date]) {
-          acc[date] = { total: 0, orders: [], Noformatdate: '' };
-        }
-        acc[date].total += totalPrice;
-        acc[date].orders.push(order);
-        acc[date].Noformatdate = Noformatdate;
-        return acc;
-      }, {});
-      return groupedOrders;
-    }
+  // useEffect(() => {
+  //   const groupOrdersByDate = (orders) => {
+  //     console.log(orders)
+  //     const groupedOrders = orders.reduce((acc, order) => {
+  //       const { date, totalPrice, Noformatdate } = order;
+  //       if (!acc[date]) {
+  //         acc[date] = { total: 0, orders: [], Noformatdate: '' };
+  //       }
+  //       acc[date].total += totalPrice;
+  //       acc[date].orders.push(order);
+  //       acc[date].Noformatdate = Noformatdate;
+  //       return acc;
+  //     }, {});
+  //     return groupedOrders;
+  //   }
 
-    const groupedOrders = groupOrdersByDate(History);
+  //   const groupedOrders = groupOrdersByDate(History);
 
-    const DateGroup = Object.keys(groupedOrders).map(date => ({
-      date,
-      total: groupedOrders[date].total,
-      orders: groupedOrders[date].orders,
-      Noformatdate: groupedOrders[date].Noformatdate
-    }));
+  //   const DateGroup = Object.keys(groupedOrders).map(date => ({
+  //     date,
+  //     total: groupedOrders[date].total,
+  //     orders: groupedOrders[date].orders,
+  //     Noformatdate: groupedOrders[date].Noformatdate
+  //   }));
 
-    setDateGroup(DateGroup);
+  //   setDateGroup(DateGroup);
 
-  }, [History]);
+  // }, [History]);
 
   // ------------------------ getUserRole && getVegData ----------------------------------------//
   useEffect(() => {
@@ -302,8 +303,7 @@ export const GlobalStateProvider = ({ children }) => {
 
   const saveHistory = async (history) => {
     try {
-      const filteredHistory = filterRecentHistory(history);
-      const jsonValue = JSON.stringify(filteredHistory);
+      const jsonValue = JSON.stringify(history);
       await AsyncStorage.setItem('@history', jsonValue);
       console.log('History Loaded'); //jsonValue
     } catch (e) {
@@ -347,7 +347,7 @@ export const GlobalStateProvider = ({ children }) => {
     (async () => {
       const loadedHistory = await loadHistory();
       const loadedCart = await loadCart();
-      setHistory(filterRecentHistory(loadedHistory));
+      setHistory(loadedHistory);
       setCartItems(loadedCart);
       console.log(CartItems)
       console.log('Loaded Cart on init:', loadedCart);

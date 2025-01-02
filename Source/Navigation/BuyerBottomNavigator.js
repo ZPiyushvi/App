@@ -57,19 +57,24 @@ export default function BuyerBottomNavigator() {
           <TouchableOpacity className=' w-full h-full z-30' onPress={() => { setShowToast(false) }}
           // style={{backgroundColor: 'rgba(355, 355, 355, 0.07)'}} 
           />
-          <View className='absolute pl-3 z-40 rounded-xl mt-12 mr-2 flex-1 top-0 right-0 w-[43%]' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
-            <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Profile'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Insights'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>InSights</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('YettoUpdate'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Wallet</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { setShowToast(false); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
-              <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Close</Text>
-            </TouchableOpacity>
+          <View className='absolute pl-3 z-40 rounded-3xl mt-3 mr-4 flex-1 top-0 right-0 w-[43%] overflow-hidden' style={{ backgroundColor: Colors.dark.colors.secComponentColor }}>
+            <View style={{ backgroundColor: Colors.dark.colors.shadowcolor }}>
+              <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Profile'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Profile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('Insights'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>InSights</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('YettoUpdate'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Wallet</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('History'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>History</Text>
+              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={() => { setShowToast(false); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+                <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Close</Text>
+              </TouchableOpacity> */}
+            </View>
           </View>
         </View>
       }
@@ -177,7 +182,7 @@ export default function BuyerBottomNavigator() {
                   fontSize: 20,
                   color: Colors.dark.colors.mainTextColor,
                   textAlign: 'center', // Center the title
-              },
+                },
                 headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
               }}
               name="Orders"
