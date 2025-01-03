@@ -20,6 +20,9 @@ import TextStyles from '../Style/TextStyles';
 const ShimmerPlaceholder = createShimmerPlaceHolder(LinearGradient)
 
 const DetailsScreen = ({ route }) => {
+
+    const { cartItemsNEW, outletsNEW, setCartItemsNEW, CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
+
     // const flatListRef = useRef(null);
     const dropdownRefs = useRef([]);
     const handleScrollToItem = (index) => {
@@ -92,7 +95,6 @@ const DetailsScreen = ({ route }) => {
     const { Data } = route.params || {};
     const [menuItems, setMenuItems] = useState(Data.menu);
     // console.log(menuItems)
-    const { cartItemsNEW, setCartItemsNEW, CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
     const Shopstatus = useShopStatus(Data.openingTime, Data.closingTime, Data.offDays, Data.leaveDay);
     // const [HotelCartItems, setHotelCartItems] = useState([{hotelname}]);
     // menuItems.forEach((item) => console.log(item))

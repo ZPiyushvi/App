@@ -57,10 +57,13 @@ const Cart = ({ route }) => {
   //   }
   // }, [item]);
 
+  useEffect(() => {
+    updateCartItemsStatus(cartItemsNEW, outletsNEW);
+  }, [outletsNEW]);
+
   const updateCartItemsStatus = () => {
     const updatedCartItems = cartItemsNEW.map(cartItem => {
       const outlet = outletsNEW.find(outlet => outlet.id === cartItem.id);
-      // console.log(outlet, 'outlet')
       if (outlet) {
         const updatedOrders = cartItem.orders.map(order => {
           const menu = outlet.menu.flatMap(menu => menu.items);
@@ -82,10 +85,6 @@ const Cart = ({ route }) => {
     });
     setCartItemsNEW(updatedCartItems);
   };
-
-  useEffect(() => {
-    updateCartItemsStatus();
-  }, []);
 
   useEffect(() => {
     if (!item) {
