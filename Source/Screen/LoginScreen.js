@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 // import { colors } from "../utils/colors";
 // import { fonts } from "../utils/fonts";
@@ -19,10 +19,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Colors from "../Components/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_BASE_URL, LOGIN_ENDPOINT, RESENDOTP_ENDPOINT } from "../Constants/Constants";
+import { API_BASE_URL, LOGIN_ENDPOINT, RESENDOTP_ENDPOINT, STORETOKENFCM_ENDPOINT } from "../Constants/Constants";
 import { GlobalStateContext } from "../Context/GlobalStateContext";
 import Size from "../Components/Size";
 import TextStyles from "../Style/TextStyles";
+import * as Notifications from 'expo-notifications';
 
 const LoginScreen = () => {
 
@@ -57,6 +58,7 @@ const LoginScreen = () => {
       .then(data => {
         console.log(data);
         if (data.status === "ok") {
+          fetchPushToken();
           Alert.alert("Logged In Successful");
           AsyncStorage.setItem('token', data.data);
           AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
@@ -73,7 +75,7 @@ const LoginScreen = () => {
                     const handleResendOtp = async () => {
                       try {
                         // setResendDisabled(true); // Disable resend button temporarily
-          
+
                         const response = await fetch(`${API_BASE_URL}:${RESENDOTP_ENDPOINT}`, {
                           method: "POST",
                           headers: {
@@ -81,9 +83,9 @@ const LoginScreen = () => {
                           },
                           body: JSON.stringify({ contactinfo })
                         });
-          
+
                         const data = await response.json();
-          
+
                         if (data.status === "ok") {
                           Alert.alert("OTP resent successfully!");
                           navigation.navigate("OtpScreen", { contactinfo: userData.contactinfo });
@@ -97,7 +99,7 @@ const LoginScreen = () => {
                         // setResendDisabled(false); // Re-enable button
                       }
                     };
-          
+
                     await handleResendOtp();
                   }
                 },
@@ -108,7 +110,7 @@ const LoginScreen = () => {
               ]
             );
           }
-           else {
+          else {
             Alert.alert("Login failed", data.data || "An error occurred while logging in. Please try again.");
           }
         }
@@ -125,6 +127,30 @@ const LoginScreen = () => {
   // const [password_verify, setpassword_verify] = useState(null);
   const [contactinfo, setcontactinfo] = useState('');
   // const [contactinfo_verify, setcontactinfo_verify] = useState(null);
+
+  async function fetchPushToken() {
+    const storetokenFCM = (await Notifications.getDevicePushTokenAsync()).data;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}:${STORETOKENFCM_ENDPOINT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ storetokenFCM, contactinfo }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'ok') {
+        console.error('Stored FCM');
+      } else {
+        console.error('Error in Stored FCM');
+      }
+    } catch (error) {
+      console.error('Error in Stored FCM');
+    }
+  };
 
   // function handle_contactinfophone(input) {
   //   const phoneVar = input.nativeEvent.text;

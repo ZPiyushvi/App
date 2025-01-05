@@ -50,7 +50,10 @@
     "react-native-svg": "^15.8.0",
     "react-redux": "^9.1.2",
     "session": "^0.1.0",
-    "typescript": "~5.3.3"
+    "typescript": "~5.3.3",
+    "expo-notifications": "~0.29.11",
+    "expo-device": "~7.0.1",
+    "expo-constants": "~17.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
