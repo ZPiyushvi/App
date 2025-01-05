@@ -329,7 +329,8 @@ const LoginScreen = () => {
           <Text className=' py-3 text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
           {/* {console.log(userRole)} */}
           <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}
-            onPress={() => userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")}
+            onPress={() => { Alert.alert("We are working on that feature"); }}
+          // onPress={() => userRole == 'Seller' ? navigation.navigate("BuyerNavigationStack") : navigation.navigate("BuyerNavigationStack")}
           >
             <Ionicons
               name={"logo-google"}

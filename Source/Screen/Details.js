@@ -168,7 +168,7 @@ const DetailsScreen = ({ route }) => {
     };
 
 
-    const renderDropdownItem = ({ item, title }) => {
+    const renderDropdownItem = ({ storename, item, title }) => {
         const dataWithoutMenu = { ...Data };
         delete dataWithoutMenu.menu;
         return (
@@ -181,7 +181,7 @@ const DetailsScreen = ({ route }) => {
                     <TouchableOpacity
                         className='w-6/12 h-full'
                         // activeOpacity={1}
-                        onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
+                        onPress={() => { navigation.navigate('DetailView', { Data: { ...item, storename } }) }}
                     >
                         <View className='flex-row'>
                             {
@@ -213,7 +213,7 @@ const DetailsScreen = ({ route }) => {
                     <View className='w-6/12 p-2'>
                         <TouchableOpacity
                             activeOpacity={1}
-                            onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
+                            onPress={() => { navigation.navigate('DetailView', { Data: item, }) }}
                         >
                             <ImageBackground
                                 source={{
@@ -337,7 +337,7 @@ const DetailsScreen = ({ route }) => {
         );
     }
 
-    const renderDropdown = (menu, index) => (
+    const renderDropdown = (storename, menu, index) => (
         <View
             ref={(ref) => (dropdownRefs.current[index] = ref)} // Set the ref for each dropdown section
             style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
@@ -349,7 +349,7 @@ const DetailsScreen = ({ route }) => {
             {openDropdowns[menu.title] && (
                 <FlatList
                     data={menu.items}
-                    renderItem={({ item }) => renderDropdownItem({ item, title: menu.title })}
+                    renderItem={({ item }) => renderDropdownItem({ storename, item, title: menu.title })}
                     keyExtractor={(item, index) => `${index}_${item.id}`}
                 />
             )}
@@ -442,7 +442,7 @@ const DetailsScreen = ({ route }) => {
                         data={filteredMenuItems}
                         // ref={flatListRef}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => renderDropdown(item)}
+                        renderItem={({ item }) => renderDropdown(Data.name, item)}
                         // renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, menuItems)}
                         keyExtractor={(item, index) => `${index}_${item.title}`}
                         ListHeaderComponent={

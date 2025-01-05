@@ -133,7 +133,28 @@ export default function BuyerBottomNavigator() {
         {
           userRole == 'Seller' ?
             null :
-            <Tab.Screen name="Likes" component={Likes} />
+            <Tab.Screen name="Likes" component={Likes}
+            options={{
+              // headerLeft: () => <TouchableOpacity onPress={() => navigation.goBack()} className='px-4'><Ionicons name="chevron-back-outline" size={24} color={Colors.dark.colors.mainTextColor} /></TouchableOpacity>,
+              // headerRight: () => (
+              //   <TouchableOpacity onPress={() => setShowToast(!showToast)} className='px-4'>
+              //     <Ionicons name="ellipsis-vertical-outline" size={24} color={Colors.dark.colors.mainTextColor} />
+              //   </TouchableOpacity>
+              // ),
+              headerShown: true,
+              headerTitle: 'Your Favorites',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                // height: 65,
+                backgroundColor: Colors.dark.colors.backGroundColor, //'black'
+              },
+              headerTitleStyle: {
+                fontWeight: '900',
+                fontSize: 24,
+              },
+              headerTintColor: Colors.dark.colors.mainTextColor, //Colors.dark.colors.diffrentColorOrange,
+            }}
+            />
         }
         {
           userRole == 'Seller' ?

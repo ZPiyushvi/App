@@ -50,14 +50,18 @@ const Cart = ({ route }) => {
 
   // cartItemsNEW.find((cart) => console.log(cart.name));
   const item = cartItemsNEW?.find((cart) => cart.name === route.params.item.name);
-
   // useEffect(() => {
   //   if (!item || item.length === 0) {
   //     navigation.navigate('OrderHistory');
   //   }
   // }, [item]);
 
+  const [outletStatus, setOutletStatus] = useState(true);
+
   useEffect(() => {
+    const outletSts = outletsNEW.find(shop => shop.name === item.name)
+    const Shopstatus = useShopStatus(outletSts.openingTime, outletSts.closingTime, outletSts.offDays, outletSts.leaveDay);
+    setOutletStatus(Shopstatus.state)
     updateCartItemsStatus(cartItemsNEW, outletsNEW);
   }, [outletsNEW]);
 
@@ -457,7 +461,8 @@ const Cart = ({ route }) => {
         {/* {console.log(today, getFormattedDate(today))} */}
         {
           item ? (
-            useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state === 'closed'
+            useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state !== 'open'
+            || outletStatus !== 'open'
               ? (
                 <TouchableOpacity
                   className="p-3 flex-row justify-center items-center rounded-lg"

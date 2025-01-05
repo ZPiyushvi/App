@@ -178,7 +178,7 @@ const LoginScreen = () => {
               keyboardType={EmailPhone ? "email-address" : "phone-pad"}
               maxLength={EmailPhone ? null : 10}
             />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 setEmailPhone((prev) => !prev);
                 // console.log(contactinfo)
@@ -202,7 +202,7 @@ const LoginScreen = () => {
                   color={Colors.dark.colors.textColor}
                 />
               )}
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Email address must be a valid</Text>
               :
               contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Phone number must be 10 digits.</Text>}
@@ -254,7 +254,9 @@ const LoginScreen = () => {
             <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>Register</Text>
           </TouchableOpacity>
           <Text className=' py-3 text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
-          <TouchableOpacity className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
+          <TouchableOpacity 
+                      onPress={() => { Alert.alert("We are working on that feature"); }}
+          className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}
