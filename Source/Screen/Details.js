@@ -239,7 +239,7 @@ const DetailsScreen = ({ route }) => {
                             */}
                             </ImageBackground>
                         </TouchableOpacity>
-                        <View
+                        {/* <View
                             style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                             className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
                         >
@@ -269,8 +269,8 @@ const DetailsScreen = ({ route }) => {
                                     </>
                                 );
                             })()}
-                        </View>
-                        {/* {(item.status && !Shopstatus.text.includes('closed')) ?
+                        </View> */}
+                        {(item.status && !Shopstatus.text.includes('closed')) ?
                             <View
                                 style={[styles.button, { backgroundColor: Colors.dark.colors.componentColor, borderColor: Colors.dark.colors.textColor, borderWidth: 1 }]}
                                 className='absolute left-[18%] w-[74%] -bottom-2 h-9 flex-row overflow-hidden'
@@ -302,7 +302,7 @@ const DetailsScreen = ({ route }) => {
                                     );
                                 })()}
                             </View>
-                            : null} */}
+                            : null}
                     </View>
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>

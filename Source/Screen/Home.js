@@ -133,9 +133,32 @@ const Home = () => {
 
   // console.log(outletsNEW)
   const featuredData = outletsNEW ? outletsNEW.filter(item => item.featured === true) : [];
-  const popularMenu = campusMenu ? campusMenu.filter(item =>
-    item.availability.some(avail => avail.menutype === 'Popular')
-  ) : [];
+  // const popularMenu = campusMenu ? campusMenu.filter(item => item.featured === 'true') : [];
+
+  //   const popularMenu = ) : [];
+  // console.log(popularMenu)
+
+  // .filter(item => item.menu.map(item => item.items.map(item => item.featured === 'true')))
+  const popularMenu = outletsNEW ? outletsNEW.map(outlet => ({
+    name: outlet.name,
+    items: outlet.menu.flatMap(menuItem =>
+      menuItem.items.filter(item => item.featured === true)
+        .map(item => ({
+          item: item.item,
+          price: item.price,
+          image: item.image
+        }))
+    )
+  })) : [];
+
+  const flattenedMenu = popularMenu.flatMap(outlet =>
+    outlet.items.map(item => ({
+      item: item.item,
+      image: item.image,
+      price: item.price,
+      storeName: outlet.name
+    }))
+  );
 
   const viewabilityMenuConfig = {
     itemVisiblePercentThreshold: 50
@@ -190,7 +213,7 @@ const Home = () => {
                   {/* {console.log(height)} */}
                 </TouchableOpacity>
                 <View className='address flex-row gap-2 items-center'>
-                  <TouchableOpacity  onPress={() => { settype('lang'), show() }} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity onPress={() => { settype('lang'), show() }} style={{ backgroundColor: Colors.dark.colors.secComponentColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
                     <Ionicons color={Colors.dark.colors.textColor} name="language" size={24} />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => navigation.navigate('Profile', { userData })} style={{ backgroundColor: Colors.dark.colors.mainTextColor, borderRadius: 10, width: 40, height: 40, alignItems: 'center', justifyContent: 'center' }}>
@@ -229,7 +252,7 @@ const Home = () => {
                 <Titles title={"What’s on your heart?"} width={30} />
               </View>
 
-              <PopularMenuContainor data={popularMenu} />
+              <PopularMenuContainor data={flattenedMenu} />
             </Animated.View>
           </View>
 

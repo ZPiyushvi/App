@@ -1,19 +1,22 @@
 import { StyleSheet, Text, View, FlatList, Dimensions, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './Colors';
 import TruncatedTextComponent from './TruncatedTextComponent';
 import TextStyles from '../Style/TextStyles';
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 const PopularMenuContainer = ({ data }) => {
+    const { outletsNEW } = useContext(GlobalStateContext);
+
     const navigation = useNavigation();
 
     const [isLoading, setIsLoading] = useState(true);
 
     const navToDetails = (item) => {
-        navigation.navigate("Details", { data: item });
+        navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === item.storeName) });
     };
 
     const fontstyles = TextStyles();
@@ -22,9 +25,9 @@ const PopularMenuContainer = ({ data }) => {
         const isLastItem = index === data.length - 1;
 
         return (
-            <Animated.View entering={FadeInRight.delay(index*100).springify()} style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
-                {/* onPress={() => navToDetails(item)} */}
-                <TouchableOpacity>
+            <Animated.View entering={FadeInRight.delay(index * 100).springify()} style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
+                {/*  */}
+                <TouchableOpacity onPress={() => navToDetails(item)}>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
                         <ImageBackground
                             source={{
@@ -53,11 +56,11 @@ const PopularMenuContainer = ({ data }) => {
                             )} */}
                             <LinearGradient className='overflow-hidden h-full w-full' colors={['transparent', Colors.dark.colors.backGroundColor]}>
                                 <View className='absolute bottom-1 p-2'>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' className='-mb-1' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>
-                                        {item.name}
+                                    <Text numberOfLines={1} ellipsizeMode='tail' className='-mb-1' style={[fontstyles.h3, { color: Colors.dark.colors.mainTextColor }]}>
+                                        {item.item}
                                     </Text>
-                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h5, { color: Colors.dark.colors.textColor }]}>
-                                        {item.menutype}
+                                    <Text numberOfLines={1} ellipsizeMode='tail' style={[fontstyles.h6, { color: Colors.dark.colors.textColor }]}>
+                                        {item.storeName}
                                     </Text>
                                 </View>
                             </LinearGradient>

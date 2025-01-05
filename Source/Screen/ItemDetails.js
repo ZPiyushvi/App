@@ -102,11 +102,11 @@ export default DetailView = ({ route }) => {
                             <View className='flex-row'>
                                 {
                                     data?.type &&
-                                    <FoodIcon style={{ backgroundColor: 'black' }} type={data?.type} size={22} padding={7} />
+                                    <FoodIcon key={`${data?.type}`} style={{ backgroundColor: 'black' }} type={data?.type} size={22} padding={7} />
                                 }
                                 {
                                     data?.category.split('_').map((part, index) => (
-                                        <FoodTypeIcon key={index} type={part} size={25} padding={7} textShow={false} />
+                                        <FoodTypeIcon key={`${index}_${part}`} type={part} size={25} padding={7} textShow={false} />
                                     ))
                                 }
                             </View>
@@ -129,7 +129,7 @@ export default DetailView = ({ route }) => {
                             Nutrition Facts
                         </Text>
                         {content.map((item, index) => (
-                            <>
+                            <View key={`${index}_${item.name}`}>
                                 <View className=' flex-row justify-between mt-3'>
                                     <Text className=' font-bold text-base' style={{ color: Colors.dark.colors.mainTextColor }}>{item.name}</Text>
                                     <Text className=' font-normal text-base' style={{ color: Colors.dark.colors.textColor }}>{item.size}</Text>
@@ -137,7 +137,7 @@ export default DetailView = ({ route }) => {
                                 {/* {content.length - 1 != index && */}
                                 <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
                                 {/* } */}
-                            </>
+                            </View>
                         ))}
                     </View>
                 </View>

@@ -30,6 +30,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
     image: '',
     rating: '',
     ratingcount: '',
+    featured: false,
   });
 
   const fetchOutlets = async () => {
@@ -135,6 +136,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
       image: newItem.image,
       rating: newItem.rating || 3,
       ratingcount: newItem.ratingcount || 7,
+      featured: newItem.featured,
     };
 
     // console.log('category', newItemObj.category)
@@ -358,7 +360,7 @@ const ManageCategoriesScreen = ({ navigation }) => {
                 {selectedCategory.items.map((item, index) => (
 
                   <View
-                  key={`${item.id}-${index}`}  // Use item.id or any unique property as the key
+                    key={`${item.id}-${index}`}  // Use item.id or any unique property as the key
                     className="rounded-xl p-2 mb-3 flex-row"
                     style={{ backgroundColor: Colors.dark.colors.secComponentColor }}
                   >
@@ -493,6 +495,22 @@ const ManageCategoriesScreen = ({ navigation }) => {
                   placeholder={`Item category`}
                   multiline={true}
                 />
+              </View>
+
+              <View className='rounded-xl mt-3 w-full' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
+                <View className='p-3 items-center flex-row justify-between'>
+                  <View className='flex-row items-center'>
+                    <Text style={[fontstyles.h3, { marginBottom: -4, color: Colors.dark.colors.mainTextColor }]}>Featured</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => handleChange('featured', !newItem.featured)}>
+                    <Ionicons
+                      name='toggle'
+                      size={38}
+                      style={{ transform: [{ rotate: newItem.featured ? '0deg' : '180deg' }] }}
+                      color={newItem.featured ? Colors.dark.colors.diffrentColorGreen : Colors.dark.colors.mainTextColor}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
               {/* <TextInput
                 style={styles.input}
