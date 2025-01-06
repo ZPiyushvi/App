@@ -23,41 +23,58 @@ const DetailsScreen = ({ route }) => {
 
     const { cartItemsNEW, outletsNEW, setCartItemsNEW, CartItems, setCartItems, updatedCartWithDetails } = useContext(GlobalStateContext);
 
-    // const flatListRef = useRef(null);
+    const flatListRef = useRef(null);
+    const itemRefs = useRef([]);
+
     const dropdownRefs = useRef([]);
-    const handleScrollToItem = (index) => {
-        const dropdownRef = dropdownRefs.current[index];
-        if (dropdownRef) {
-            dropdownRef.scrollToIndex({ animated: true, index: 0 }); // Scroll to the first item in that section
-        }
-    };
-    const scrollToCategory = (index) => {
-        if (dropdownRefs.current[index]) {
-            const offset = 100;
-            const element = dropdownRefs.current[index];
-            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
 
-            window.scrollTo({
-                top: elementPosition - offset,
-                behavior: 'smooth',
-            });
+    const scrollViewRef = useRef(null);
 
-            setSelectedCategory(index);
-        }
-    };
-    const handleScroll = () => {
-        const categories = dropdownRefs.current;
-        const scrollPosition = window.scrollY;
+    const { Data, initialIndex = 0 } = route.params || {};
+    const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
-        categories.forEach((category, index) => {
-            const categoryPosition = category.getBoundingClientRect().top + scrollPosition;
-            const isInView = scrollPosition >= categoryPosition - 100 && scrollPosition < categoryPosition + category.offsetHeight;
+    const handleScrollToIndex = (index) => {
 
-            if (isInView) {
-                setSelectedCategory(index);
+        if (flatListRef.current) {
+            try {
+                flatListRef.current.scrollToIndex({
+                    index,
+                    animated: true,
+                    viewPosition: 0.5
+                });
+            } catch (error) {
+                console.error('Error scrolling to index:', error);
             }
-        });
+        }
     };
+
+    useEffect(() => {
+        // handleScrollToItem(index, 1);
+        handleScrollToIndex(selectedIndex)
+    }, [selectedIndex]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            handleScrollToIndex(selectedIndex);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, []); 
+
+        // const flatListRefs = useRef([]);
+
+    // const handleScrollToItem = (dropdownIndex, itemIndex) => {
+    //     // Ensure the FlatList for the given dropdown is available
+    //     const flatListRef = flatListRefs.current[dropdownIndex];
+    //     if (flatListRef && itemRefs.current[dropdownIndex][itemIndex]) {
+    //         // Scroll to the item in the dropdown
+    //         flatListRef.scrollToIndex({
+    //             index: itemIndex,
+    //             animated: true,
+    //         });
+    //     }
+    // };
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -92,7 +109,6 @@ const DetailsScreen = ({ route }) => {
     // const hide = () => setVisible(false);
     const { show, hide, RenderModel } = ModelScreen();
 
-    const { Data } = route.params || {};
     const [menuItems, setMenuItems] = useState(Data.menu);
     // console.log(menuItems)
     const Shopstatus = useShopStatus(Data.openingTime, Data.closingTime, Data.offDays, Data.leaveDay);
@@ -168,12 +184,17 @@ const DetailsScreen = ({ route }) => {
     };
 
 
-    const renderDropdownItem = ({ storename, item, title }) => {
+    const renderDropdownItem = ({ storename, item, title, ind, itemIndex }) => {
         const dataWithoutMenu = { ...Data };
         delete dataWithoutMenu.menu;
         return (
-            <>
-                {item.status ? null : <Text className=' absolute top-[40%] left-0 right-0 text-center' style={[fontstyles.h1, { fontSize: 70, marginTop: -30, color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>}
+            <View
+                ref={(el) => {
+                    if (!itemRefs.current[ind]) itemRefs.current[ind] = [];
+                    itemRefs.current[ind][itemIndex] = el;
+                }}
+            >
+                {item.status ? null : <Text className=' absolute top-[40%] z-10 left-0 right-0 text-center' style={[fontstyles.h1, { fontSize: 70, marginTop: -30, color: Colors.dark.colors.diffrentColorRed }]}>SoldOut</Text>}
                 <View
                     // style={{ backgroundColor: 'rgba(355, 355, 355, 0.)' }}
                     className={`flex-row p-3 ${item.status ? 'pb-6' : 'opacity-40'}`}
@@ -181,7 +202,7 @@ const DetailsScreen = ({ route }) => {
                     <TouchableOpacity
                         className='w-6/12 h-full'
                         // activeOpacity={1}
-                        onPress={() => { navigation.navigate('DetailView', { Data: { ...item, storename } }) }}
+                        onPress={() => { item.status && navigation.navigate('DetailView', { Data: { ...item, storename } }) }}
                     >
                         <View className='flex-row'>
                             {
@@ -213,7 +234,7 @@ const DetailsScreen = ({ route }) => {
                     <View className='w-6/12 p-2'>
                         <TouchableOpacity
                             activeOpacity={1}
-                            onPress={() => { navigation.navigate('DetailView', { Data: item, }) }}
+                            onPress={() => { item.status && navigation.navigate('DetailView', { Data: item, }) }}
                         >
                             <ImageBackground
                                 source={{
@@ -229,6 +250,9 @@ const DetailsScreen = ({ route }) => {
                                 className='rounded-3xl w-full h-36 border-2 overflow-hidden border-slate-950'
                                 style={{ borderWidth: 2, borderColor: Colors.dark.colors.secComponentColor }}
                             >
+                                <View className=' absolute top-2 right-2'>
+                                    <Ionicons color={Colors.dark.colors.bbackGroundColor} name={'information-circle'} size={24} />
+                                </View>
                                 {/* 
                                 <LinearGradient
                                     start={{ x: 0.0, y: 0.25 }} end={{ x: 0.3, y: 1.1 }}
@@ -307,11 +331,10 @@ const DetailsScreen = ({ route }) => {
                     {/* {renderModal({ data: selectedItemData })} */}
                 </View>
                 <Text numberOfLines={1} ellipsizeMode='clip' style={{ color: Colors.dark.colors.textColor }}>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
-            </>
+            </View>
         )
     };
 
-    const [selectedIndex, setSelectedIndex] = useState(null);
     const renderMenuScroll = ({ typetitle, index }) => {
         const isSelected = selectedIndex === index; // Check if the current item is selected
 
@@ -319,11 +342,10 @@ const DetailsScreen = ({ route }) => {
             <TouchableOpacity
                 key={`${index}_${typetitle}`}
                 // style={{ padding: 12 }}
-                className=' px-4'
+                className=' p-4 '
                 onPress={() => {
-                    scrollToCategory(index)
-                    setSelectedIndex(index); // Update selected index
-                    handleScrollToItem(index); // Scroll to the corresponding dropdown section
+                    setSelectedIndex(index);
+                    // handleScrollToIndex(index);
                 }}
             >
                 <Text
@@ -337,9 +359,9 @@ const DetailsScreen = ({ route }) => {
         );
     }
 
-    const renderDropdown = (storename, menu, index) => (
+    const renderDropdown = (storename, menu, ind) => (
         <View
-            ref={(ref) => (dropdownRefs.current[index] = ref)} // Set the ref for each dropdown section
+            ref={(ref) => (dropdownRefs.current[ind] = ref)} // Set the ref for each dropdown section
             style={{ backgroundColor: Colors.dark.colors.backGroundColor }}
         >
             <TouchableOpacity className=' mb-6 border-b-2 flex-row items-center justify-between p-3' style={[{ borderColor: Colors.dark.colors.mainTextColor, backgroundColor: Colors.dark.colors.secComponentColor }]} onPress={() => toggleDropdown(menu.title)}>
@@ -349,7 +371,7 @@ const DetailsScreen = ({ route }) => {
             {openDropdowns[menu.title] && (
                 <FlatList
                     data={menu.items}
-                    renderItem={({ item }) => renderDropdownItem({ storename, item, title: menu.title })}
+                    renderItem={({ item, index }) => renderDropdownItem({ storename, item, title: menu.title, ind: ind, itemIndex: index })}
                     keyExtractor={(item, index) => `${index}_${item.id}`}
                 />
             )}
@@ -440,9 +462,10 @@ const DetailsScreen = ({ route }) => {
                 {visible &&
                     <FlatList
                         data={filteredMenuItems}
-                        // ref={flatListRef}
+                        ref={flatListRef}
+                        // ref={(ref, index) => (flatListRefs.current[index] = ref)} 
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => renderDropdown(Data.name, item)}
+                        renderItem={({ item, index }) => renderDropdown(Data.name, item, index)}
                         // renderItem={({ item }) => dropDown(item, navigation, setOpenDropdowns, openDropdowns, menuItems)}
                         keyExtractor={(item, index) => `${index}_${item.title}`}
                         ListHeaderComponent={

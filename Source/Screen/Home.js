@@ -28,7 +28,6 @@ import Size from '../Components/Size';
 import TextStyles from '../Style/TextStyles';
 import { SafeAreaView } from 'react-native';
 import useShopStatus from '../Components/useShopStatus';
-import { connect } from 'react-redux';
 
 const Home = () => {
   // const [userData, setUserData] = useState([]);
@@ -141,22 +140,26 @@ const Home = () => {
   // .filter(item => item.menu.map(item => item.items.map(item => item.featured === 'true')))
   const popularMenu = outletsNEW ? outletsNEW.map(outlet => ({
     name: outlet.name,
-    items: outlet.menu.flatMap(menuItem =>
+    items: outlet.menu.flatMap((menuItem, categoryIndex) =>
       menuItem.items.filter(item => item.featured === true)
         .map(item => ({
           item: item.item,
           price: item.price,
-          image: item.image
+          image: item.image,
+          category: menuItem.title, // Add category (menuItem.title)
+          categoryIndex: categoryIndex // Add category index (categoryIndex)
         }))
     )
   })) : [];
-
+  
   const flattenedMenu = popularMenu.flatMap(outlet =>
     outlet.items.map(item => ({
       item: item.item,
       image: item.image,
       price: item.price,
-      storeName: outlet.name
+      storeName: outlet.name,
+      category: item.category, // Include category from the above transformation
+      categoryIndex: item.categoryIndex // Include category index from the above transformation
     }))
   );
 

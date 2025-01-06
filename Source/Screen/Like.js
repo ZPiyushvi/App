@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../Components/Colors';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import FoodIcon from '../Components/FoodIcon';
 import FoodTypeIcon from '../Components/FoodTypeIcon';
 import { Ionicons } from '@expo/vector-icons';
 import ModelScreen from './ModelScreen';
+import { GlobalStateContext } from '../Context/GlobalStateContext';
 
 export default function Like() {
   const [likedItems, setLikedItems] = useState([]);
@@ -31,10 +32,14 @@ export default function Like() {
   };
 
   const [liked, setLiked] = useState(false);
+  const { outletsNEW } = useContext(GlobalStateContext);
 
   const renderItem2 = ({ item, index, key }) => (
     <TouchableOpacity
-      onPress={() => { navigation.navigate('DetailView', { Data: item }) }}
+      onPress={() => { 
+        navigation.navigate('DetailView', { Data: item }) 
+        // navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === item.storename), initialIndex: 1 });
+      }}
       key={`${index}`} className='py-3 pl-3 overflow-hidden mt-3 rounded-lg' style={{ backgroundColor: Colors.dark.colors.componentColor }}>
       {/* {console.log(`${index}-${item.id}`)} */}
       <View className='flex-row w-full'>

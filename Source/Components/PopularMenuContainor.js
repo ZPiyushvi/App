@@ -15,8 +15,8 @@ const PopularMenuContainer = ({ data }) => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const navToDetails = (item) => {
-        navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === item.storeName) });
+    const navToDetails = (item, initialIndex) => {
+        navigation.navigate("Details", { Data: outletsNEW.find(shop => shop.name === item.storeName), initialIndex: initialIndex });
     };
 
     const fontstyles = TextStyles();
@@ -27,7 +27,7 @@ const PopularMenuContainer = ({ data }) => {
         return (
             <Animated.View entering={FadeInRight.delay(index * 100).springify()} style={[styles.foodItemCollectionContainer, isLastItem && { marginRight: 15 }]}>
                 {/*  */}
-                <TouchableOpacity onPress={() => navToDetails(item)}>
+                <TouchableOpacity onPress={() => navToDetails(item, item.categoryIndex)}>
                     <View className='overflow-hidden' style={styles.foodItemContainer}>
                         <ImageBackground
                             source={{
