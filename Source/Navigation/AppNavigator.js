@@ -25,6 +25,8 @@ import SplashScreen from '../Screen/SplashScreen';
 import OtpScreen from '../Screen/OtpScreen';
 import Complaint from '../Screen/Complaint';
 import History from '../Screen/History';
+import OrderHistorySeller from '../Screen/OrderHistorySeller';
+import HistorySeller from '../Screen/HistorySeller';
 
 const Stack = createStackNavigator();
 
@@ -171,6 +173,23 @@ export default function AppNavigator() {
             <Stack.Screen
                 name="YettoUpdate"
                 component={YettoUpdate}
+            />
+            <Stack.Screen
+                options={{
+                     headerShown: true,
+                     title: 'Order History',
+                     headerStyle: {
+                        backgroundColor: Colors.dark.colors.backGroundColor,
+                    },
+                     headerTintColor: Colors.dark.colors.mainTextColor, 
+                     headerTitleStyle: {
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                        color: Colors.dark.colors.mainTextColor,
+                        textAlign: 'center', // Center the title
+                    },}}
+                name="HistorySeller"
+                component={HistorySeller}
             />
             <Stack.Screen
                 options={{

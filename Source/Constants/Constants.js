@@ -22,6 +22,7 @@ export const TOPNAVI_H = 50;
 // export const DECLINEORDER_ENDPOINT = '/declineOrder';
 // export const CHANGEORDERSTATUS_ENDPOINT = '/changeOrderStatus';
 // export const STORETOKENFCM_ENDPOINT = '/storetoken';
+// export const ORDERHISTORYDATA_ENDPOINT = '/orderhistorydata';
 
 export const API_BASE_URL = 'http://10.7.5.82';
 export const VERIFYOTP_ENDPOINT = '5001/verifyotp';
@@ -42,3 +43,4 @@ export const ACCEPTORDER_ENDPOINT = '5001/acceptOrder';
 export const DECLINEORDER_ENDPOINT = '5001/declineOrder';
 export const CHANGEORDERSTATUS_ENDPOINT = '5001/changeOrderStatus';
 export const STORETOKENFCM_ENDPOINT = '5001/storetoken';
+export const ORDERHISTORYDATA_ENDPOINT = '5001/orderhistorydata';

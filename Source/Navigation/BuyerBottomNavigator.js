@@ -68,7 +68,7 @@ export default function BuyerBottomNavigator() {
               <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('YettoUpdate'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
                 <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>Wallet</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => { setShowToast(false); navigation.navigate('History'); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
+              <TouchableOpacity onPress={() => { setShowToast(false); userRole == 'Seller' ? navigation.navigate('HistorySeller') : navigation.navigate('History') }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>
                 <Text numberOfLines={1} ellipsizeMode='tail' className='font-black text-base' style={{ color: Colors.dark.colors.mainTextColor }}>History</Text>
               </TouchableOpacity>
               {/* <TouchableOpacity onPress={() => { setShowToast(false); }} numberOfLines={1} ellipsizeMode='tail' className='font-black text-base py-3' style={{ color: Colors.dark.colors.mainTextColor }}>

@@ -162,16 +162,21 @@ export default function OrderHistorySeller() {
         }
     };
 
-    const renderOrderItem = ({ item }) => {
+    const renderOrderItem = ({ item, index }) => {
         const { minutes, seconds, persent } = getRemainingTime(item.startTime, item.timer); // Calculate the remaining time
         const persentBackgroundColor = persent;
+
+        const infoUserID = infoUserIDState[index] ?? true;
 
         return (
             <View style={styles.orderContainer}>
                 <View className='flex-row justify-between'>
                     <View>
-                        <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order ID</Text>
-                        <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{item.id}</Text>
+                        <View className='flex-row items-center'>
+                            <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Details</Text>
+                            <Ionicons style={{paddingTop: 7, paddingLeft: 4}} onPress={() => toggleInfoUserID(index)} color={Colors.dark.colors.mainTextColor} name={'information-circle'} size={21} />
+                        </View>
+                        <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>{infoUserID ? item.id : item.name.contactinfo.split('@')[0]}</Text>
                     </View>
                     <View className='items-end'>
                         <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Status</Text>
@@ -199,7 +204,7 @@ export default function OrderHistorySeller() {
 
                 {
                     item.status !== "Scheduled" ? (
-                        item.status == "Delivered" || item.status == "Missing" ? (
+                        item.status == "Received" || item.status == "Delivered" || item.status == "Missing" ? (
                             <>
                                 <View
                                     // TouchableOpacity
@@ -321,6 +326,14 @@ export default function OrderHistorySeller() {
         setSelectedOrder(order);
         setTimer(0); // Reset timer to 0
         setModalVisible(true);
+    };
+
+    const [infoUserIDState, setInfoUserIDState] = useState({});
+    const toggleInfoUserID = (index) => {
+        setInfoUserIDState((prevState) => ({
+            ...prevState,
+            [index]: !prevState[index], // Toggle the visibility for the specific index
+        }));
     };
 
     return (
