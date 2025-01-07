@@ -68,7 +68,13 @@ const LoginScreen = () => {
         })
         .catch(error => console.log("Error:", error));
     } else {
-      Alert.alert("Fill Required Details");
+      if (!name_verify) {
+        Alert.alert("Error", "Please fill in your name.");
+      } else if (!contactinfo_verify) {
+        Alert.alert("Error", "Please provide your contact information in IIT Gn domain");
+      } else if (!password_verify) {
+        Alert.alert("Error", "Please provide a password.");
+      }
     }
   }
 
@@ -93,9 +99,21 @@ const LoginScreen = () => {
     const emailVar = input.nativeEvent.text;
     setcontactinfo(emailVar);
     setcontactinfo_verify(false);
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVar)) {
-      setcontactinfo(emailVar);
-      setcontactinfo_verify(true);
+
+    const emailRegexSeller = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegexUser = /^[a-zA-Z0-9._%+-]+(?:\.[a-zA-Z0-9._%+-]+)*@iitgn\.ac\.in$/;
+
+    if (userRole === 'Seller') {
+      if (emailRegexSeller.test(emailVar)) {
+        console.log(userRole)
+        setcontactinfo(emailVar);
+        setcontactinfo_verify(true);
+      }
+    } else {
+      if (emailRegexUser.test(emailVar)) {
+        setcontactinfo(emailVar);
+        setcontactinfo_verify(true);
+      }
     }
   }
 
@@ -203,7 +221,7 @@ const LoginScreen = () => {
                 />
               )}
             </TouchableOpacity> */}
-            {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Email address must be a valid</Text>
+            {EmailPhone ? contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>{userRole === 'Seller' ? 'Email address must be a valid' : 'Email must be of IIT GN domain'}</Text>
               :
               contactinfo_verify ? null : <Text className='absolute top-0' style={[fontstyles.h7, styles.textInputSub]}>Phone number must be 10 digits.</Text>}
           </View>
@@ -254,9 +272,9 @@ const LoginScreen = () => {
             <Text style={[fontstyles.boldh2, { color: Colors.dark.colors.mainTextColor }]}>Register</Text>
           </TouchableOpacity>
           <Text className=' py-3 text-center' style={[fontstyles.h5, { color: Colors.dark.colors.mainTextColor }]}>or continue with</Text>
-          <TouchableOpacity 
-                      onPress={() => { Alert.alert("We are working on that feature"); }}
-          className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
+          <TouchableOpacity
+            onPress={() => { Alert.alert("We are working on that feature"); }}
+            className='inputContainer flex-row items-center justify-center px-4 h-14 border-solid border-2 rounded-full' style={{ borderColor: Colors.dark.colors.secComponentColor }}>
             <Ionicons
               name={"logo-google"}
               color={Colors.dark.colors.mainTextColor}
