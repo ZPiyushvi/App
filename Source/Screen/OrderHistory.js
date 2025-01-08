@@ -460,53 +460,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-async function registerForPushNotificationsAsync() {
-  let token;
-
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('myNotificationChannel', {
-      name: 'A channel is needed for the permissions prompt to appear',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-
-    try {
-      const projectId =
-        Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
-      if (!projectId) {
-        throw new Error('Project ID not found');
-      }
-      token = (
-        await Notifications.getExpoPushTokenAsync({
-          projectId,
-        })
-      ).data;
-      console.log(token);
-    } catch (e) {
-      token = `${e}`;
-    }
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  return token;
-}
-
-
 export default function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [noOrders, setNoOrders] = useState(true);
@@ -600,113 +553,6 @@ export default function OrderHistory() {
   // console.log('dateordersGroup', orders)
   const fontstyles = TextStyles();
 
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [orderTimers, setOrderTimers] = useState([]);
-  const [notification, setNotification] = useState(undefined);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  const updateOrderTimers = () => {
-    const updatedTimers = orders.map(order => {
-      if (order.status === 'Accepted' && order.timer) {
-        const timerInMinutes = Math.floor(order.timer / 60);
-        const timerInSeconds = order.timer % 60;
-        return {
-          ...order,
-          timerDisplay: `${timerInMinutes}m ${timerInSeconds}s`
-        };
-      }
-      return order;
-    });
-
-    setOrderTimers(updatedTimers); // Update state with timers
-  };
-
-  async function schedulePushNotification(content) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: content.title,
-        body: content.body,
-        data: { data: 'goes here', test: { test1: 'more data' } },
-        sound: 'default',
-      },
-      trigger: {
-        type: 'time',
-        seconds: 2,
-      },
-      android: {
-        channelId: 'myNotificationChannel',
-      },
-    });
-  }
-
-  const sendNotifications = (orders) => {
-    orders.forEach(async (order) => {
-      if (order.status === 'Accepted' && order.timerDisplay) {
-        const content = {
-          title: `Order Accepted: ${order.items[0].item}`,
-          body: `Your order is accepted! Time remaining: ${order.timerDisplay}`,
-        };
-        await schedulePushNotification(content);
-      }
-    });
-  };
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
-
-    if (Platform.OS === 'android') {
-      Notifications.getNotificationChannelsAsync().then(value => setChannels(value ?? []));
-    }
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(notificationListener.current);
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (orders.length > 0) {
-      updateOrderTimers(); 
-      sendNotifications(orders);// Call the function to update timers
-    }
-  }, [orders]);
-
-  const handlePress = async () => {
-    try {
-      // Use fetch to send a POST request
-      const response = await fetch(`${API_BASE_URL}:5001/sample`, {
-        method: 'POST', // Specify the method as POST
-        headers: {
-          'Content-Type': 'application/json', // Ensure your server expects JSON
-        },
-      });
-  
-      // Check if the response status is 200 (OK)
-      if (response.status === 200) {
-        Alert.alert('Notification Sent', 'The push notification was sent successfully!');
-      } else {
-        // Handle any non-200 responses
-        Alert.alert('Error', 'Failed to send the notification.');
-      }
-    } catch (error) {
-      // Catch and handle errors such as network issues
-      console.error(error);
-      Alert.alert('Error', 'Something went wrong, please try again.');
-    }
-  };
-  
-
   return (
     <View className='h-full w-full' style={{ backgroundColor: Colors.dark.colors.backGroundColor }}>
       <StatusBar backgroundColor={Colors.dark.colors.backGroundColor} />
@@ -758,7 +604,6 @@ export default function OrderHistory() {
                 {showDetails === index && <ListCard_Self3 item={item} />}
               </View>
             ))} */}
-<Button title="Send Push Notification" onPress={handlePress} />
       </ScrollView >
     </View >
   )

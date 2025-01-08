@@ -24,7 +24,7 @@ export default function OrderHistorySeller() {
     const { userData } = useContext(GlobalStateContext);
 
     const fontstyles = TextStyles();
-
+    
     // Fetch orders for the seller
     const fetchOrders = async () => {
         const contactinfo = { contactinfo: userData.contactinfo };
