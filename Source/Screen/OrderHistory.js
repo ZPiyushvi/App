@@ -487,11 +487,11 @@ export default function OrderHistory() {
       } else if (data.status === "alert") {
         setNoOrders(true); // No orders available, set noOrders to true
       } else {
-        console.error('Error fetching orders:', data);
+        console.error('Error fetching orders: OrderHistory', data);
         setNoOrders(true); // In case of error, set noOrders to true
       }
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.error('Error fetching orders: OrderHistory', error);
       setNoOrders(true); // In case of error, set noOrders to true
     }
   };
