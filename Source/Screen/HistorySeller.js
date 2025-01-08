@@ -92,7 +92,11 @@ const ListCard_Self4 = ({ orderData, fontstyles, index }) => {
         <View style={styles.orderContainer}>
             <View className='flex-row justify-between'>
                 <View>
-                    <TouchableOpacity onPress={() => setInfoUserIDState(!infoUserIDState)} className='flex-row items-center'>
+                    <Text className=' mr-1' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Order Status</Text>
+                    <Text style={[fontstyles.h3, { color: (orderData.status == 'Declined' || orderData.status == 'Complaint_Registered') ? Colors.dark.colors.diffrentColorRed : Colors.dark.colors.textColor }]}>
+                        {orderData.status}
+                    </Text>
+                    {/* <TouchableOpacity onPress={() => setInfoUserIDState(!infoUserIDState)} className='flex-row items-center'>
                         <Text className=' mr-1' style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Details</Text>
                         <Ionicons
                             style={{ marginTop: 7 }}
@@ -103,15 +107,15 @@ const ListCard_Self4 = ({ orderData, fontstyles, index }) => {
                     </TouchableOpacity>
                     <Text style={[fontstyles.h4, { color: Colors.dark.colors.textColor }]}>
                         {infoUserIDState ? orderData.id : orderData.userInfocontactinfo.split('@')[0]}
-                    </Text>
+                    </Text> */}
                 </View>
                 <View className='items-end'>
-                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Price</Text>
+                    <Text style={[fontstyles.blackh2, { color: Colors.dark.colors.mainTextColor }]}>Total Amount</Text>
                     <Text style={[fontstyles.number, { fontSize: 16, color: Colors.dark.colors.diffrentColorOrange }]}>₹{orderData.totalPrice}</Text>
                 </View>
             </View>
 
-            <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className='flex-row justify-end rounded-md items-end' style={{  borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
+            <TouchableOpacity onPress={() => setShowDetails(!showDetails)} className='flex-row justify-end rounded-md items-end' style={{ borderWidth: 0, borderColor: Colors.dark.colors.diffrentColorOrange }}>
                 <Text style={[fontstyles.h4, { fontSize: 20, color: Colors.dark.colors.textColor }]}>
                     {orderData.orders.length} {orderData.orders.length > 1 ? 'items' : 'item'}
                 </Text>

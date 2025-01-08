@@ -59,8 +59,8 @@ const Cart = ({ route }) => {
   const [outletStatus, setOutletStatus] = useState(true);
 
   useEffect(() => {
-    const outletSts = outletsNEW.find(shop => shop.name === item.name)
-    const Shopstatus = useShopStatus(outletSts.openingTime, outletSts.closingTime, outletSts.offDays, outletSts.leaveDay);
+    const outletSts = outletsNEW.find(shop => shop?.name === item?.name)
+    const Shopstatus = useShopStatus(outletSts?.openingTime, outletSts?.closingTime, outletSts?.offDays, outletSts?.leaveDay);
     setOutletStatus(Shopstatus.state)
     updateCartItemsStatus(cartItemsNEW, outletsNEW);
   }, [outletsNEW]);
@@ -90,11 +90,11 @@ const Cart = ({ route }) => {
     setCartItemsNEW(updatedCartItems);
   };
 
-  useEffect(() => {
-    if (!item) {
-      navigation.goBack();
-    }
-  }, [item]);
+  // useEffect(() => {
+  //   if (!item) {
+  //     navigation.goBack();
+  //   }
+  // }, [item]);
 
 
   // const totalPrice = item.orders ? item.orders.reduce((acc, order) => acc + (parseInt(order.price) * order.quantity), 0) : 0;
@@ -286,7 +286,6 @@ const Cart = ({ route }) => {
             const { name, username } = userData;
 
             if (orders.length !== 0) {
-
               createOrder({
                 id: Date.now().toString(),
                 items: item,
@@ -300,33 +299,11 @@ const Cart = ({ route }) => {
                 status: 'Scheduled',
                 name: userData,
               })
-              // createOrder({
-              //   id: Date.now().toString(),
-              //   items: orders,
-              //   storeDetails: storeDetails,
-              //   totalPrice: item?.orders
-              //     ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
-              //     : 0,
-              //   Noformatdate: today,
-              //   date: getFormattedDate(today),
-              //   userData: { name, username }
-              // })
-              // setHistory(prevHistory => [
-              //   {
-              //     items: orders,
-              //     storeDetails: storeDetails,
-              //     totalPrice: item?.orders
-              //       ? item.orders.reduce((acc, order) => acc + (parseInt(order.price, 10) * order.quantity), 0)
-              //       : 0,
-              //     date: getFormattedDate(today),
-              //     massage: massage,
-              //     status: 'Scheduled',
-              //   },
-              //   ...prevHistory
-              // ]);
+              removeStoreFromCart(item.name, setCartItemsNEW);
+              navigation.navigate('Orders')
+            } else {
+              Alert.alert('All are out of stock');
             }
-            removeStoreFromCart(item.name, setCartItemsNEW);
-            navigation.navigate("OrderHistory");
           }
         }]
       );
@@ -352,7 +329,7 @@ const Cart = ({ route }) => {
       // setCartItemsNEW(prevCartItems => {
       //   return prevCartItems.filter(itemee => itemee.name !== item.name);
       // });
-      navigation.navigate("OrderHistory");
+      navigation.navigate('Orders')
     }
   };
 
@@ -462,9 +439,10 @@ const Cart = ({ route }) => {
         {
           item ? (
             useShopStatus(item?.openingTime, item?.closingTime, item?.offDays, item?.leaveDay).state !== 'open'
-            || outletStatus !== 'open'
+              || outletStatus !== 'open'
               ? (
                 <TouchableOpacity
+                  onPress={() => navigation.navigate('HomeScreen')}
                   className="p-3 flex-row justify-center items-center rounded-lg"
                   style={{
                     backgroundColor: Colors.dark.colors.diffrentColorRed,
@@ -492,13 +470,14 @@ const Cart = ({ route }) => {
               )
           ) : (
             <TouchableOpacity
+              onPress={() => navigation.navigate('HomeScreen')}
               className="p-3 flex-row justify-center items-center rounded-lg"
               style={{
                 backgroundColor: Colors.dark.colors.diffrentColorRed,
                 width: Dimensions.get('window').width * 0.53
               }}
             >
-              <Text onPress={() => navigation.navigate('HomeScreen')} style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>
+              <Text style={[fontstyles.number, { fontSize: 18, color: Colors.dark.colors.mainTextColor }]}>
                 Select Items
               </Text>
             </TouchableOpacity>
